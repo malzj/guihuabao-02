@@ -9,6 +9,7 @@ class Task {
     String fzuid
     String lookstatus
     String cid
+    String bid
     String bigentime
     String overtime
     String time
@@ -23,6 +24,7 @@ class Task {
         fzuid(nullable: true)
         lookstatus(nullable: true)
         cid(nullable: true)
+        bid(nullable: true)
         bigentime(nullable: true)
         overtime(nullable: true)
         time(nullable: true)

@@ -4,10 +4,12 @@ import grails.converters.JSON
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.multipart.MultipartFile
 
+
 import java.util.logging.Logger
 
 class FrontController {
     private  Logger logger
+
 
     def index() {
         print("!")
@@ -564,7 +566,7 @@ class FrontController {
                 return
             }
         }
-        print(params)
+
         myReportInfo.properties = params
         if (myReportInfo.save(flush: true)) {
             rs.msg = true
@@ -715,12 +717,21 @@ class FrontController {
         redirect(action: "replyReport",id: id)
     }
     //任务
-    def taskCreate(){}
+
+    def taskCreate(){
+        def bumenInstance = Bumen.findAllByCid(session.company.id)
+        def taskInstance = Task.findAllByCidAndPlayuidAndStatus(session.company.id,session.user.id,0)
+        [taskInstance: taskInstance,bumenInstance: bumenInstance]
+    }
+
 
     def taskSave(){
         def taskInstance = new Task(params)
         taskInstance.cid = session.company.id
         taskInstance.fzuid = session.user.id
+
+        taskInstance.status = 0
+
 
         if (!taskInstance.save(flush: true)) {
             render(view: "create", model: [taskInstance: taskInstance])
@@ -728,7 +739,58 @@ class FrontController {
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'task.label', default: 'Task'), taskInstance.id])
-        redirect(action: "show", id: taskInstance.id)
+
+        redirect(action: "taskCreate", id: taskInstance.id)
+    }
+
+    def taskUpdate(Long id, Long version){
+        def taskInstance = Task.findByIdAndCid(id,session.company.id)
+        taskInstance.status = 1
+        if (!taskInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "taskCreate")
+            return
+        }
+
+        if (version != null) {
+            if (taskInstance.version > version) {
+                taskInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'task.label', default: 'task')] as Object[],
+                        "Another user has updated this User while you were editing")
+                render(view: "taskCreate", model: [taskInstance: taskInstance])
+                return
+            }
+        }
+
+        taskInstance.properties = params
+        taskInstance.status = 1
+
+        if (!taskInstance.save(flush: true)) {
+            render(view: "taskCreate", model: [companyUserInstance: taskInstance])
+            return
+        }
+print(1);
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'task.label', default: 'Task'), taskInstance.id])
+        redirect(action: "taskCreate", id: taskInstance.id)
+    }
+
+    def taskDelete(){
+        def taskInstnstance =
+        if (!companyUserInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
+            redirect(action: "companyUserList")
+            return
+        }
+
+        try {
+            companyUserInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
+            redirect(action: "companyUserList")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
+            redirect(action: "companyUserShow", id: id)
+        }
     }
 
 }

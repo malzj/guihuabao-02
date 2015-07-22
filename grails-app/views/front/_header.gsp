@@ -19,7 +19,7 @@
         <ul class="nav">
             <li><a href="javascript:;"><i class="home"></i>首页</a></li>
             <li><a href="javascript:;"><i class="aim"></i>目标</a></li>
-            <li><a href="javascript:;"><i class="rw"></i>任务</a></li>
+            <li><g:link action="taskCreate"><i class="rw"></i>任务</g:link></li>
             <li><g:link action="myReport"><i class="bg"></i>报告</g:link></li>
             <li><a href="javascript:;"><i class="app"></i>应用</a></li>
             <li><g:link action="companyUserList" ><i class="ht"></i>后台</g:link></li>
