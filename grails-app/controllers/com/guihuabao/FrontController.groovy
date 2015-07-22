@@ -775,7 +775,7 @@ print(1);
     }
 
     def taskDelete(){
-        def taskInstnstance =
+        def taskInstnstance
         if (!companyUserInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
             redirect(action: "companyUserList")
@@ -792,5 +792,8 @@ print(1);
             redirect(action: "companyUserShow", id: id)
         }
     }
+    def apply(){
 
+
+    }
 }
