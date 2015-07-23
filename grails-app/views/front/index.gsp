@@ -24,6 +24,7 @@
             <tr>
                 <td><input class="btn btn-info" type="submit" value="登录" /></td>
             </tr>
+            <p>${msg}</p>
         </table>
     </g:form>
 </div>
