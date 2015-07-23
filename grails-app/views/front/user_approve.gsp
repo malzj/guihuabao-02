@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: karl
-  Date: 2015/7/22
-  Time: 14:22
+  Date: 2015/7/23
+  Time: 15:39
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -37,20 +37,22 @@
     datalist{width:200px;}
     #myfilter{border:none;width:100%;text-align:center;}
     .icon{background:#03a9f4;color:#fff;width:20px;height:20px;display:inline-block;border-radius:50px;margin-right:10px;}
-    #apply_tab{font-size:14px;padding:0;margin:20px 0 -1px 0;border:1px solid #d2d2d2;background:#fff;}
+    #apply_tab{font-size:14px;padding:0;margin:0;border:1px solid #d2d2d2;margin-bottom:-1px;margin-top:20px;background:#fff;}
     #apply_tab tr{border-bottom:1px solid #d2d2d2;display:block;}
     #apply_tab .th{background:#f8f8f8;}
     #apply_tab td{padding:10px;margin:0;}
-    #apply_tab tr td:nth-of-type(1){width:140px;}
-    #apply_tab tr td:nth-of-type(2){width:1000px;}
-    #apply_tab tr td:nth-of-type(3){width:200px;}
-    #apply_tab tr td:nth-of-type(4){width:140px;}
-    #apply_tab tr td:nth-of-type(5){width:140px;}
+    #apply_tab td:nth-of-type(1){width:140px;}
+    #apply_tab td:nth-of-type(2){width:1000px;}
+    #apply_tab td:nth-of-type(3){width:200px;}
+    #apply_tab td:nth-of-type(4){width:140px;}
+    #apply_tab td:nth-of-type(5){width:140px;}
     .select{width:300px;height:35px;border:1px solid #d0d0d0;}
     textarea{border:1px solid #d0d0d0;width:500px;height:400px;resize:none;}
     .panel-content{margin:15px;}
     .panel-content li{margin:15px 0;}
-
+    #pass,#nopass{width:80px; height:32px;border-radius:3px;border:none;color:#fff;}
+    #pass{background:#03a9f4;}
+    #nopass{background:#ff0000;}
     </style>
 </head>
 <body>
@@ -96,14 +98,14 @@
             <!-- sidebar menu start-->
             <ul class="sidebar-menu" id="nav-accordion">
                 <li class="sub-menu dcjq-parent-li">
-                    <a class="dcjq-parent active" href="#">
+                    <a class="dcjq-parent " href="apply">
                         <span>我的申请</span>
                         <em class="f-r">7</em>
                     </a>
 
                 </li>
                 <li class="sub-menu dcjq-parent-li">
-                    <a class="dcjq-parent" href="user_approve">
+                    <a class="dcjq-parent active" href="#">
                         <span>我的审批</span>
                         <em class="f-r">7</em>
                     </a>
@@ -129,22 +131,22 @@
                 <!--<div class="info_title">-->
                 <table id="apply_top" width="100%" height="50px">
                     <tr>
-                        <td width="10%">我的申请</td>
+                        <td width="10%">我的审批</td>
                         <td width="10%">
                             <input id="myfilter" list="filter" value="筛选">
                             <datalist id="filter">
-                                <option value="默认">默认</option>
+                                <option value="默认">默认</option><dd></dd>
                                 <option value="已通过"></option>
                                 <option value="未通过"></option>
                                 <option value="待处理"></option>
                             </datalist>
                         </td>
-                        <td width="70%"></td>
-                        <td width="10%" ><a href="#" id="newapply"><span class="icon">+</span>新建申请</a></td>
+                        <td width="80"></td>
+
                     </tr>
                 </table>
                 <!--</div>-->
-                <div class=" clearfix" id="text">
+                <div  id="text">
                     <table width="100%" id="apply_tab">
                         <tr class="th">
                             <td >申请类型</td>
@@ -154,15 +156,12 @@
                             <td>申请时间</td>
                         </tr>
                         <tr>
-
                             <td>出差申请单</td>
                             <td>新项目调研，需出差五天！</td>
                             <td>营销部经理-法拉利</td>
                             <td>已通过</td>
                             <td>2015-7-15</td>
-
                         </tr>
-
                         <tr>
                             <td>出差申请单</td>
                             <td>新项目调研，需出差五天！</td>
@@ -193,59 +192,8 @@
     <!--main content end-->
 
 </section>
-<!--新建弹层 start-->
-<div class="passwordedit" id="newapplydetail">
-    <div class="m_box" style="width:804px;height:466px;">
-        <header class="panel-heading">
-            <span><i class="yh"></i>新建申请</span>
-            <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
-        </header>
-        <form>
-            <table>
-                <tr>
-                    <td align="right">申请类型</td>
-                    <td width="300">
-                        <select name="kind" class="select">
-                            <option></option>
-                            <option value="1"></option>
 
-                        </select>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td align="right">审批人</td>
-                    <td><!--<input class="form-control form-control-inline input-medium default-date-picker" data-toggle="dropdown" name="newapply" />-->
-                        <select name="shenpiren" class="select">
-                            <option></option>
-                            <option value="1">营销部经理-法拉利</option>
-                            <option value="2">品牌部经理-艾瑞克</option>
-                            <option value="3">财务部副经理-休斯顿</option>
-                            <option value="4">董事长-詹姆斯</option>
-                            <option value="2">市场部经理-休斯顿</option>
-                        </select>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">申请内容</td>
-                    <td><textarea class=" form-control form-control-inline input-medium default-date-picker"  name="applycontent" cols="60" rows="8"></textarea></td>
-
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-info">存草稿</button>
-                        <button type="submit" class="btn btn-info">提交</button>
-                    </td>
-                    <td></td>
-                </tr>
-            </table>
-        </form>
-    </div>
-</div>
-<!--新建弹层 end-->
-<!--申请详情弹层 start-->
+<!--审批详情弹层 start-->
 <div class="passwordedit" id="applydetails">
     <div class="m_box" style="width:804px;">
         <header class="panel-heading">
@@ -260,11 +208,13 @@
                 <li>申请时间：<span>2015-7-15</span></li>
                 <li>申请结果：<span>已通过</span></li>
             </ul>
+            <input type="button" value="通过" id="pass"/>
+            <input type="button" value="未通过" id="nopass"/>
         </div>
 
     </div>
 </div>
-<!--申请详情弹层 end-->
+<!--审批详情弹层 end-->
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="${resource(dir:'js',file:'jquery.js')}"></script>
 <script src="${resource(dir:'js',file:'bootstrap.min.js')}"></script>
@@ -291,12 +241,6 @@
 <!--弹出框 js-->
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#newapply").click(function(){
-            $("#newapplydetail").css("display","block");
-        });
-        $(".close").click(function(){
-            $("#newapplydetail").css("display","none");
-        });
 
         $("#apply_tab tr").click(function(){
             $("#applydetails").css("display","block");
@@ -304,7 +248,6 @@
         $(".close").click(function(){
             $("#applydetails").css("display","none");
         });
-
 
     })
 </script>

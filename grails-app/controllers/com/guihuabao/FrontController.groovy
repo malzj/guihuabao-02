@@ -804,4 +804,6 @@ print(1);
 
 
     }
+    def user_draft(){}
+    def user_approve(){}
 }
