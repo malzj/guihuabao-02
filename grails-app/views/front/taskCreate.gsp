@@ -49,37 +49,72 @@
                         <span>我的任务</span>
                         <div class="shaixuan">
                             <a class="task-order">排序<i class="fa fa-caret-down"></i></a>
+                            <ul>
+                                <li>
+                                    <g:link action="taskCreate" params="[selected: 1]">默认</g:link>
+                                </li>
+                                <li>
+                                    <g:link action="taskCreate" params="[selected: 2]">按任务到期时间</g:link>
+                                </li>
+                                <li>
+                                    <g:link action="taskCreate" params="[selected: 3]">按任务创建时间</g:link>
+                                </li>
+                                <li>
+                                    <g:link action="taskCreate" params="[selected: 4]">按任务更新时间</g:link>
+                                </li>
+                            </ul>
                         </div>
                         <a href="#" id="addrenwu" class="f-r"><i class="fa fa-plus-circle"></i>新建任务</a>
                     </div>
                     <div class="e-list-group today">
                         <div class="e-list-head">
                             <a class="group-add f-r">+</a>
-                            <a class="e-list-title"><strong>今天开始（2）</strong><i class="fa fa-angle-right"></i></a>
+                            <a class="e-list-title"><strong>今天开始（${todayTaskInstance.size()}）</strong><i class="fa fa-angle-right"></i></a>
                         </div>
                         <ul class="e-list">
-                        <g:each in="${taskInstance}" status="i" var="taskInfo">
-                            <li>
-                                <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
-                                <span class="sn">${i+1}</span>
-                                <span class="title">${taskInfo.title}</span>
-                                <div class="right">
-                                    <span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
-                                    <span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span>
-                                    <span class="date f-r">${taskInfo.overtime}</span>
-                                </div>
-                            </li>
-                        </g:each>
+                        <g:if test="${todayTaskInstance}">
+                            <g:each in="${todayTaskInstance}" status="i" var="taskInfo">
+                                <li>
+                                    <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
+                                    <span class="sn">${i+1}</span>
+                                    <span class="title" data-task-id="${taskInfo.id}">${taskInfo.title}</span>
+                                    <div class="right">
+                                        <span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
+                                        <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
+                                        <span class="date f-r">${taskInfo.overtime}</span>
+                                    </div>
+                                </li>
+                            </g:each>
+                        </g:if>
+                        <g:else>
+                            <li><span class="mark"></span>没有任务！</li>
+                        </g:else>
                         </ul>
                     </div>
                     <div class="e-list-group tomorrow">
                         <div class="e-list-head">
                             <a class="group-add f-r">+</a>
-                            <a class="e-list-title"><strong>明天开始</strong><i class="fa fa-angle-right"></i></a>
+                            <a class="e-list-title"><strong>明天开始（${tomorrowTaskInstance.size()}）</strong><i class="fa fa-angle-right"></i></a>
                         </div>
                         <ul class="e-list">
-                            <li>1234</li>
-                            <li>2345</li>
+                        <g:if test="${tomorrowTaskInstance}">
+                            <g:each in="${tomorrowTaskInstance}" status="i" var="tomorrowTaskInfo">
+                                <li>
+                                    <span class="mark <g:if test="${tomorrowTaskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${tomorrowTaskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${tomorrowTaskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${tomorrowTaskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
+                                    <span class="sn">${i+1}</span>
+                                    <span class="title"  data-task-id="${tomorrowTaskInfo.id}">${tomorrowTaskInfo.title}</span>
+                                    <div class="right">
+                                        <span class="hsfinish"><g:link action="taskUpdate" id="${tomorrowTaskInfo.id}" params="[version: tomorrowTaskInfo.version]"><i class="fa <g:if test="${tomorrowTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
+                                        <g:if test="${tomorrowTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${tomorrowTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
+                                        <span class="date f-r">${tomorrowTaskInfo.overtime}</span>
+                                    </div>
+                                </li>
+                            </g:each>
+
+                        </g:if>
+                        <g:else>
+                            <li><span class="mark"></span>没有任务！</li>
+                        </g:else>
                         </ul>
                     </div>
                     <div class="e-list-group overdate">
@@ -88,22 +123,35 @@
                             <a class="e-list-title"><strong>即将到期任务</strong><i class="fa fa-angle-right"></i></a>
                         </div>
                         <ul class="e-list">
-                            <li>
-                                <span class="mark mark-nomarl"><i></i></span>
-                                <span class="sn">1</span>
-                                <span class="title">任务标题</span>
-                                <div class="right">
-                                    <span class="hsfinish"><i class="fa fa-square-o"></i>标记完成</span>
-                                    <span class="del"><i class="fa fa-trash-o"></i>删除任务</span>
-                                    <span class="date f-r">2015-7-16</span>
-                                </div>
-                            </li>
-                            <li>2345</li>
+                            <g:if test="${taskInstance}">
+                                <g:each in="${taskInstance}" status="i" var="taskInfo">
+                                    <li>
+                                        <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
+                                        <span class="sn">${i+1}</span>
+                                        <span class="title" data-task-id="${taskInfo.id}">${taskInfo.title}</span>
+                                        <div class="right">
+                                            <span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
+                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
+                                            <span class="date f-r">${taskInfo.overtime}</span>
+                                        </div>
+                                    </li>
+                                </g:each>
+
+                            </g:if>
+                            <g:else>
+                                <li><span class="mark"></span>没有任务！</li>
+                            </g:else>
                         </ul>
                     </div>
                 </div>
-                <div class="col-cell" style="width:340px;">
-
+                <div class="col-cell bfb" style="width:340px;">
+                    <div class="count">
+                        <div class="bfb_hearder">
+                            今日任务统计
+                        </div>
+                        <canvas style="width: 340px; height: 255px;" id="doughnut" height="255" width="340"></canvas>
+                        <div class="bfb_fl"></div>
+                    </div>
                 </div>
             </div>
             <!--弹层 start-->
@@ -147,6 +195,7 @@
                                     <td>
                                         <input type="hidden" id="playuid" name="playuid" value="" />
                                         <input type="hidden" id="playbid" name="playbid" value="" />
+                                        <input type="hidden" id="playname" name="playname" value="" />
                                         <div class="zhxr">
                                             <a id="playman">选择</a>
                                         </div>
@@ -154,7 +203,7 @@
                                 </tr>
                                 <tr>
                                     <td>起止日期</td>
-                                    <td><input id="startdate" name="bigentime" value="" readonly="" class="form_datetime" type="text">-<input id="enddate" name="overtime" value="" readonly="" class="form_datetime" type="text"></td>
+                                    <td><input id="startdate" name="bigentime" value="" readonly="" class="default-date-picker" type="text">-<input id="enddate" name="overtime" value="" readonly="" class="form_datetime" type="text"></td>
                                 </tr>
                             </table>
                         </div>
@@ -165,6 +214,20 @@
                 </div>
             </div>
             <!--弹层 end-->
+            <!--任务详情 start-->
+            <div id="task" style="display: none">
+                <div class="task_hearder">
+                    <div class="task_hearder_title">
+                        <span><i class="yh"></i>任务详情</span>
+                        <div class="taskclose"><a href="javascript:;" class="fa fa-times"></a></div>
+                    </div>
+                    <a class="print_icon"></a>
+                    <a class="copy_icon"></a>
+                </div>
+                <div class="task_content">
+                </div>
+            </div>
+            <!--任务详情 end-->
         </section>
     </section>
     <!--main content end-->
@@ -204,7 +267,28 @@
 
 <!--this page  script only-->
 <script src="${resource(dir: 'js', file: 'advanced-form-components.js')}"></script>
+
+<!--百分比图-->
+<script src="${resource(dir: 'assets/chart-master', file: 'Chart.js')}"></script>
+<!--    <script src="js/all-chartjs.js"></script>-->
+<!--详情滑动框-->
+<script src="${resource(dir: 'js', file: 'slidelefthideshow.js')}"></script>
+
 <script type="text/javascript">
+    var Script = function () {
+        var doughnutData = [
+            {
+                value: ${todayTaskInstance.size()},//未完成数
+                color:"#87CEFA"
+            },
+            {
+                value : ${todayFinishedTaskInstance.size()},//已完成数
+                color : "#32CD32"
+            }
+        ];
+        new Chart(document.getElementById("doughnut").getContext("2d")).Doughnut(doughnutData);
+    }();
+
     $(function(){
         $("#addrenwu").click(function(){
             $(".popup_box").css("display","block");
@@ -215,7 +299,62 @@
         $(".popup_box .r-jinji-down a").click(function(){
             var playstatus=$(this).attr("data-playstatus");
             $("#playstatus").val(playstatus);
-        })
+        });
+
+        //详情滑动框
+        $(".e-list-group .e-list .title").click(function(){
+            var taskid = $(this).attr("data-task-id");
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid,
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (data) {
+                    // 去渲染界面
+                    if(data.msg){
+                        var html="";
+                        var playstatus
+                        var status = (data.taskInfo.status)?"已完成":"未完成";
+                        if(data.taskInfo.playstatus==1){
+                            playstatus="紧急且重要";
+                        }else if(data.taskInfo.playstatus==2){
+                            playstatus=" 紧急不重要";
+                        }else if(data.taskInfo.playstatus==3){
+                            playstatus=" 重要不紧急";
+                        }else if(data.taskInfo.playstatus==4){
+                            playstatus=" 不重要不紧急";
+                        }
+                        html+='<div class="task_line"><span class="title">'+data.taskInfo.title+'</span></div>';
+                        html+='<div class="task_line"><span class="content">'+data.taskInfo.content+'</span></div>';
+                        html+='<div class="task_line"><span>指派人：</span><span class="font_blue">'+data.taskInfo.fzname+'</span></div>';
+                        html+='<div class="task_line"><span>执行人：</span><span class="font_blue">'+data.taskInfo.playname+'</span></div>';
+                        html+='<div class="task_line"><span>起始日：</span><span>'+data.taskInfo.bigentime+'</span></div>';
+                        html+='<div class="task_line"><span>起始日：</span><span>'+data.taskInfo.overtime+'</span></div>';
+                        html+='<div class="task_line"><span>紧急程度：</span><span class="font_blue">'+playstatus+'</span></div>';
+                        html+='<div class="task_line"><span>任务状态：</span><span class="font_blue">'+status+'</span></div>';
+                        $("#task .task_content").empty();
+                        $("#task .task_content").append(html);
+                        $("#task").slideLeftShow(400);
+                    }else{
+                        alert("信息读取失败！");
+                    }
+                }
+            })
+        });
+        $(".taskclose").click(function(){
+            $("#task").slideLeftHide(400);
+            $("#task .task_content").empty();
+        });
+        $(".toolkit .task-order").click(function () {
+            var ul = $(".toolkit .shaixuan ul");
+
+            if (ul.css("display") == "none") {
+                ul.slideDown("fast");
+                $(".toolkit .task-order").css("border-bottom","1px solid #fff");
+            } else {
+                ul.slideUp("fast");
+                $(".toolkit .task-order").css("border-bottom","none");
+            }
+        });
         context.init({preventDoubleContext: false});
 
         context.attach('#playman', [
@@ -239,6 +378,7 @@
                 <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
                 {text: '${userInfo.name}', href: '#', action: function(e){
                     $("#playuid").val(${userInfo.id});
+                    $("#playname").val(${userInfo.name});
                     $("#playbid").val(${session.user.bid});
                     $(this).hide();
                     $(".zhxr").html("${userInfo.name}");

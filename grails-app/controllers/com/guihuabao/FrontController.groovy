@@ -4,7 +4,7 @@ import grails.converters.JSON
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.multipart.MultipartFile
 
-
+import java.text.SimpleDateFormat
 import java.util.logging.Logger
 
 class FrontController {
@@ -719,19 +719,30 @@ class FrontController {
     //任务
 
     def taskCreate(){
+        def current = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        def now = time.format(current)
+        def tomorrow = time.format(new Date(current.getTime()+1*24*60*60*1000))
         def bumenInstance = Bumen.findAllByCid(session.company.id)
-        def taskInstance = Task.findAllByCidAndPlayuidAndStatus(session.company.id,session.user.id,0)
-        [taskInstance: taskInstance,bumenInstance: bumenInstance]
+        def order = [sort:"dateCreate",order: "desc"]
+        def todayTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,now,now,order)
+        def todayFinishedTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,1,now,now,order)
+        def tomorrowTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,tomorrow,tomorrow,order)
+        def taskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,now,[sort:"overtime",order:"asc"])
+        [taskInstance: taskInstance,todayTaskInstance: todayTaskInstance,todayFinishedTaskInstance: todayFinishedTaskInstance,tomorrowTaskInstance: tomorrowTaskInstance,bumenInstance: bumenInstance]
     }
 
 
     def taskSave(){
         def taskInstance = new Task(params)
+        def overdate = params.overtime.split(" ")
         taskInstance.cid = session.company.id
         taskInstance.fzuid = session.user.id
-
+        taskInstance.fzname = session.user.name
+        taskInstance.overtime = overdate[0]
+        taskInstance.overhour = overdate[1]
         taskInstance.status = 0
-
+        taskInstance.dateCreate = new Date()
 
         if (!taskInstance.save(flush: true)) {
             render(view: "create", model: [taskInstance: taskInstance])
@@ -769,28 +780,104 @@ class FrontController {
             render(view: "taskCreate", model: [companyUserInstance: taskInstance])
             return
         }
-print(1);
         flash.message = message(code: 'default.updated.message', args: [message(code: 'task.label', default: 'Task'), taskInstance.id])
         redirect(action: "taskCreate", id: taskInstance.id)
     }
 
-    def taskDelete(){
-        def taskInstnstance =
-        if (!companyUserInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
-            redirect(action: "companyUserList")
+    def taskDelete(Long id){
+        def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
+        if (!taskInstnstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "taskCreate")
             return
         }
 
         try {
-            companyUserInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
-            redirect(action: "companyUserList")
+            taskInstnstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "taskCreate")
         }
         catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
-            redirect(action: "companyUserShow", id: id)
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "taskCreate", id: id)
         }
+    }
+    def finishedTaskDelete(Long id){
+        def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
+        if (!taskInstnstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "finishedTask")
+            return
+        }
+
+        try {
+            taskInstnstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "finishedTask")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "finishedTask", id: id)
+        }
+    }
+
+    def allTaskDelete(Long id){
+        def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
+        if (!taskInstnstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "allTask")
+            return
+        }
+
+        try {
+            taskInstnstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "allTask")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "allTask", id: id)
+        }
+    }
+    //任务详情ajax
+    def taskShow(){
+        def taskInfo = Task.findByIdAndCid(params.id,session.company.id)
+        def rs = [:]
+        if(taskInfo){
+            rs.msg = true
+        }else{
+            rs.msg = false
+        }
+        rs<<[taskInfo:taskInfo]
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+
+//    负责任务
+    def fzTask(){
+        def order = [sort:"dateCreate",order: "desc"]
+        def fzFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,1,order)
+        def fzUnFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,0,order)
+        def fzAllTaskInstance = Task.findAllByCidAndFzuid(session.company.id,session.user.id,order)
+        [fzAllTaskInstance: fzAllTaskInstance,fzUnFinishedTaskInstance: fzUnFinishedTaskInstance,fzFinishedTaskInstance: fzFinishedTaskInstance]
+    }
+    //参与任务
+    def cyTask(){
+        def order = [sort:"dateCreate",order: "desc"]
+        def cyFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,1,order)
+        def cyUnFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,0,order)
+        def cyAllTaskInstance = Task.findAllByCidAndFzuid(session.company.id,session.user.id,order)
+        [cyAllTaskInstance: cyAllTaskInstance,cyUnFinishedTaskInstance: cyUnFinishedTaskInstance,cyFinishedTaskInstance: cyFinishedTaskInstance]
+    }
+    def finishedTask(){
+        def finishedTaskInstance = Task.findAllByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)
+        [finishedTaskInstance: finishedTaskInstance]
+    }
+    def allTask(){
+        def allTaskInstance = Task.findAllByCidAndPlayuid(session.company.id,session.user.id,1)
+        [allTaskInstance: allTaskInstance]
     }
 
 }

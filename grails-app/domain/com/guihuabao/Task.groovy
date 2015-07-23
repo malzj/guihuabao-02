@@ -7,12 +7,15 @@ class Task {
     String content
     String playuid
     String fzuid
+    String fzname
+    String playname
     String lookstatus
     String cid
     String bid
     String bigentime
     String overtime
-    String time
+    String overhour
+    Date dateCreate
 
 
     static constraints = {
@@ -27,6 +30,7 @@ class Task {
         bid(nullable: true)
         bigentime(nullable: true)
         overtime(nullable: true)
-        time(nullable: true)
+        overhour(nullable: true)
+        dateCreate(nullable: true)
     }
 }
