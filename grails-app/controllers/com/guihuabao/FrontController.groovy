@@ -753,7 +753,6 @@ class FrontController {
         taskInstance.overtime = overdate[0]
         taskInstance.overhour = overdate[1]
         taskInstance.status = 0
-        taskInstance.playstatus = 0
         taskInstance.lookstatus = 0
         taskInstance.dateCreate = new Date()
 
@@ -916,9 +915,40 @@ class FrontController {
         def finishedTaskInstance = Task.findAllByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)
         [finishedTaskInstance: finishedTaskInstance]
     }
-    def allTask(){
-        def allTaskInstance = Task.findAllByCidAndPlayuid(session.company.id,session.user.id,1)
-        [allTaskInstance: allTaskInstance]
+    def allTask(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def current = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        def now = time.format(current)
+        def cid = session.company.id
+        def uid = session.user.id
+        def selected = params.selected
+        def order = [sort:"dateCreate",order: "desc"]
+        def allTaskInstance
+        def allTaskInstanceTotal
+        def infos=[:]
+        infos.uid = uid
+        infos.cid = cid
+        infos.yq = Task.countByCidAndPlayuidAndStatusAndOvertimeLessThan(cid,uid,0,now)
+        infos.finished = Task.countByCidAndPlayuidAndStatus(cid,uid,1)
+        infos.unfinished = Task.countByCidAndPlayuidAndStatus(cid,uid,0)
+        if(selected=="1"){
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,1,params,order)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,1,order)
+        }else if(selected=="2"){
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,2,params,order)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,2,order)
+        }else if(selected=="3"){
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,3,params,order)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,3,order)
+        }else if(selected=="4"){
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,4,params,order)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,4,order)
+        }else{
+            allTaskInstance = Task.findAllByCidAndPlayuid(cid,uid,params,order)
+            allTaskInstanceTotal = Task.countByCidAndPlayuid(cid,uid,order)
+        }
+        [allTaskInstance: allTaskInstance,allTaskInstanceTotal: allTaskInstanceTotal,selected: selected,infos: infos]
     }
 
     //未读任务
