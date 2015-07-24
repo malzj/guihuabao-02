@@ -7,15 +7,17 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
             <li class="sub-menu dcjq-parent-li">
-                <a class="dcjq-parent" href="javascript:;">
+            <div>
+                <g:link class="dcjq-parent" action="taskCreate">
                     <span>我的任务</span>
                     <span class="dcjq-icon"></span>
-                </a>
-                <ul style="display: block;" class="sub">
-                    <li><a href="#">负责的任务</a></li>
-                    <li><a href="#">参与的任务</a></li>
-                </ul>
-            </li>
+                </g:link>
+            </div>
+            <ul class="sub db">
+                <li><g:link action="fzTask" >负责的任务</g:link></li>
+                <li><g:link action="cyTask" >参与的任务</g:link></li>
+            </ul>
+        </li>
             <li>
                 <a href="/guihuabao/login/companyList">
                     <span>未读任务</span>
@@ -27,14 +29,15 @@
                 </a>
             </li>
             <li>
-                <a href="google_maps.html" >
+                <g:link action="finishedTask" >
                     <span>已完成任务</span>
-                </a>
+                    <em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)}</em>
+                </g:link>
             </li>
             <li>
-                <a href="google_maps.html" >
+                <g:link action="allTask" >
                     <span>全部任务</span>
-                </a>
+                </g:link>
             </li>
         </ul>
         <!-- sidebar menu end-->
