@@ -729,6 +729,7 @@ class FrontController {
     //任务
 
     def taskCreate(){
+        def pid= session.user.pid
         def current = new Date()
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
         def now = time.format(current)
@@ -769,7 +770,6 @@ class FrontController {
 
     def taskUpdate(Long id, Long version){
         def taskInstance = Task.findByIdAndCid(id,session.company.id)
-        taskInstance.status = 1
         if (!taskInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
             redirect(action: "taskCreate")
@@ -921,12 +921,12 @@ class FrontController {
         def unreadTaskInstance
         def unreadTaskInstanceTotal
         def selected = params.selected
-        if(selected==1){
-            unreadTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndPlaystatus(session.company.id,session.user.id,0,1,params)//已完成
-            unreadTaskInstanceTotal= Task.countByCidAndPlayuidAndLookstatusAndPlaystatus(session.company.id,session.user.id,0,1)
-        }else if(selected==2){
-            unreadTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndPlaystatus(session.company.id,session.user.id,0,0,params)//未完成
-            unreadTaskInstanceTotal= Task.countByCidAndPlayuidAndLookstatusAndPlaystatus(session.company.id,session.user.id,0,0)
+        if(selected=="1"){
+            unreadTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,1,params)//已完成
+            unreadTaskInstanceTotal= Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,1)
+        }else if(selected=="2"){
+            unreadTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0,params)//未完成
+            unreadTaskInstanceTotal= Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0)
         }else{
             unreadTaskInstance = Task.findAllByCidAndPlayuidAndLookstatus(session.company.id,session.user.id,0,params)
             unreadTaskInstanceTotal= Task.countByCidAndPlayuidAndLookstatus(session.company.id,session.user.id,0)
@@ -956,7 +956,33 @@ class FrontController {
     def user_approve(){}
 
     //下属任务列表
-    def xsTaskList(){
-        def xsTaskInstance = Task.findAllByCidAndPlayuid()
+    def xsTaskList(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def current = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        def now = time.format(current)
+        def cid = params.cid
+        def uid = params.uid
+        def selected = params.selected
+        def order = [sort:"dateCreate",order: "desc"]
+        def xsTaskInstance
+        def xsTaskInstanceTotal
+        def infos=[:]
+        infos.uid = uid
+        infos.cid = cid
+        infos.yq = Task.countByCidAndPlayuidAndPlaystatusAndOvertimeLessThan(cid,uid,0,now)
+        infos.finished = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,1)
+        infos.unfinished = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,0)
+        if(selected=="1"){
+            xsTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,1,params,order)
+            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,1,order)
+        }else if(selected=="2"){
+            xsTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,0,params,order)
+            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,0,order)
+        }else{
+            xsTaskInstance = Task.findAllByCidAndPlayuid(cid,uid,params,order)
+            xsTaskInstanceTotal = Task.countByCidAndPlayuid(cid,uid,order)
+        }
+        [xsTaskInstance: xsTaskInstance,xsTaskInstanceTotal: xsTaskInstanceTotal,selected: selected,infos: infos]
     }
 }

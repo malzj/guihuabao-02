@@ -35,7 +35,7 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
-    <g:render template="zhoubao_siderbar" />
+    <g:render template="tasksiderbar" />
     <!--sidebar end-->
     <!--main content start-->
     <section id="main-content">
@@ -47,7 +47,7 @@
                     </header>
                     <ul class="xsreport">
                         <g:each in="${bumenInfo}" var="info">
-                            <li><g:link action="reportUserList" params="[bid: info.id,cid: info.cid]"><span>${info.name}</span></g:link></li>
+                            <li><g:link action="taskUserList" params="[bid: info.id,cid: info.cid]"><span>${info.name}</span></g:link></li>
                         </g:each>
                     </ul>
                 </div>

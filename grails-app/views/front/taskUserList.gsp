@@ -35,7 +35,7 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
-    <g:render template="zhoubao_siderbar" />
+    <g:render template="tasksiderbar" />
     <!--sidebar end-->
     <!--main content start-->
     <section id="main-content">

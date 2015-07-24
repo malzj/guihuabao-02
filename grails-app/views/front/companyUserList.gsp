@@ -79,6 +79,9 @@
                 </tr>
             </g:each>
         </table>
+        <div class="pagination">
+            <g:paginate total="${companyUserInstanceTotal}" />
+        </div>
     </div>
 </section>
 <!--main content end-->

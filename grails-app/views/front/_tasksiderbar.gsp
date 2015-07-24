@@ -23,11 +23,13 @@
                     <span>未读任务</span>
                 </g:link>
             </li>
+            <g:if test="${session.user.pid==1||session.user.pid==2}">
             <li>
                 <g:link action="xsTask" >
                     <span>下属任务</span>
                 </g:link>
             </li>
+            </g:if>
             <li>
                 <g:link action="finishedTask" >
                     <span>已完成任务</span>
