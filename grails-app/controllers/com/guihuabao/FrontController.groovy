@@ -4,7 +4,7 @@ import grails.converters.JSON
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.multipart.MultipartFile
 
-
+import java.text.SimpleDateFormat
 import java.util.logging.Logger
 
 class FrontController {
@@ -13,7 +13,8 @@ class FrontController {
         def user = session.user
         def company = session.company
         if(!user&&!company){
-            redirect(action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
         }
     }
 
@@ -802,34 +803,101 @@ class FrontController {
             redirect(action: "companyUserShow", id: id)
         }
     }
-    def apply(){
-        yanzheng()
-        params.max = Math.min(max ?: 2, 100)
+    def apply(Integer max){
+//        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
         def userId= session.user.id
         def companyId = session.company.id
+        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
 
-        def applylist= Apply.findAllByApplyuidAndCid(userId,companyId,params)
+        def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,1,params)
        def applyInstanceTotal= Apply.countByApplyuidAndCid(userId,companyId)
-        [applylist:applylist,applyInstanceTotal:applyInstanceTotal]
+        [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]
 
     }
+
     def applySave(){
+
+
+        def applyInstance  = new Apply(params)
+        applyInstance.applyuid= session.user.id
+        applyInstance.applyusername = session.user.name
+        applyInstance.cid= session.company.id
+        applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+        applyInstance.status="未审核"
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(currentTime);
+        applyInstance.dateCreate=dateString
+        applyInstance.applystatus=0
+        applyInstance.applystatuss=1
+        if (!applyInstance.save(flush: true)) {
+            return
+        }
+
+        def rs=[:]
+        rs<<[msg:true]
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def applySave1(){
 
         yanzheng()
         def applyInstance  = new Apply(params)
         applyInstance.applyuid= session.user.id
         applyInstance.applyusername = session.user.name
         applyInstance.cid= session.company.id
+        applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
         applyInstance.status="未审核"
-        applyInstance.dateCreate=new Date()
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(currentTime);
+        applyInstance.dateCreate=dateString
+        applyInstance.applystatus=0
+        applyInstance.applystatuss=0
         if (!applyInstance.save(flush: true)) {
             return
         }
-        redirect(action: "apply")
+        def rs=[:]
+        rs<<[msg:true]
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
 
     }
-    def user_draft(){}
-    def user_approve(){}
+    def user_draft(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+        def userId= session.user.id
+        def companyId = session.company.id
+        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
+        def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,0,params)
+        def applyInstanceTotal= Apply.countByApplyuidAndCid(userId,companyId)
+        [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]
+
+    }
+    def user_approve(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+    }
 
 
 }

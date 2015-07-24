@@ -71,24 +71,24 @@
             <!-- sidebar menu start-->
             <ul class="sidebar-menu" id="nav-accordion">
                 <li class="sub-menu dcjq-parent-li">
-                    <a class="dcjq-parent active" href="#">
+                    <g:link class="dcjq-parent active" action="apply">
                         <span>我的申请</span>
                         <em class="f-r">7</em>
-                    </a>
+                    </g:link>
 
                 </li>
                 <li class="sub-menu dcjq-parent-li">
-                    <a class="dcjq-parent" href="user_approve">
+                    <g:link class="dcjq-parent" action="user_approve">
                         <span>我的审批</span>
                         <em class="f-r">7</em>
-                    </a>
+                    </g:link>
 
                 </li>
                 <li class="sub-menu dcjq-parent-li">
-                    <a class="dcjq-parent" href="user_draft">
+                    <g:link class="dcjq-parent" action="user_draft">
                         <span>草稿箱</span>
                         <em class="f-r">7</em>
-                    </a>
+                    </g:link>
 
                 </li>
             </ul>
@@ -122,26 +122,25 @@
                 <div class=" clearfix" id="text">
                     <table width="100%" id="apply_tab">
                         <tr class="th">
-                            <th >申请类型</th>
-                            <th>申请内容</th>
-                            <th>审批人</th>
-                            <th>审批结果</th>
-                            <th>申请时间</th>
+                            <td >申请类型</td>
+                            <td>申请内容</td>
+                            <td>审批人</td>
+                            <td>审批结果</td>
+                            <td>申请时间</td>
                         </tr>
-                        <g:each in="">
+                        <g:each in="${applylist}" status="i" var="applyInstance">
                             <tr>
-                                <td>出差申请单</td>
-                                <td>新项目调研，需出差五天！</td>
-                                <td>营销部经理-法拉利</td>
-                                <td>已通过</td>
-                                <td>2015-7-15</td>
+                                <td>${applyInstance.type}</td>
+                                <td>${applyInstance.content}</td>
+                                <td>${applyInstance.approvalusername}</td>
+                                <td>${applyInstance.status}</td>
+                                <td>${applyInstance.dateCreate}</td>
                             </tr>
                         </g:each>
-
-
-
-
                     </table>
+                <div class="pagination">
+                    <g:paginate total="${applyInstanceTotal}" />
+                </div>
                 </div>
             </div>
         </section>
@@ -156,48 +155,42 @@
             <span><i class="yh"></i>新建申请</span>
             <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
         </header>
-        <form>
+
             <table>
                 <tr>
                     <td align="right">申请类型</td>
                     <td width="300">
-                        <select name="kind" class="select">
-                            <option></option>
-                            <option value="1"></option>
-
-                        </select>
+                        <g:select id="type" name="type" from="${['出差', '报销', '请假','外勤','借款','公文','其他']}"/>
                     </td>
 
                 </tr>
                 <tr>
                     <td align="right">审批人</td>
                     <td><!--<input class="form-control form-control-inline input-medium default-date-picker" data-toggle="dropdown" name="newapply" />-->
-                        <select name="shenpiren" class="select">
-                            <option></option>
-                            <option value="1">营销部经理-法拉利</option>
-                            <option value="2">品牌部经理-艾瑞克</option>
-                            <option value="3">财务部副经理-休斯顿</option>
-                            <option value="4">董事长-詹姆斯</option>
-                            <option value="2">市场部经理-休斯顿</option>
+                        <select id="approvaluid" name="approvaluid" class="select">
+                            <g:each in="${companyuserList}" var="user">
+                                <option value="${user.id}">${com.guihuabao.Bumen.get(user.bid).name}${com.guihuabao.Persona.get(user.pid).name}-${user.name}</option>
+                            </g:each>
+
                         </select>
 
                     </td>
                 </tr>
                 <tr>
                     <td align="right">申请内容</td>
-                    <td><textarea class=" form-control form-control-inline input-medium default-date-picker"  name="applycontent" cols="60" rows="8"></textarea></td>
+                    <td><textarea id="content" class=" form-control form-control-inline input-medium default-date-picker"  name="content" cols="60" rows="8"></textarea></td>
 
                 </tr>
                 <tr>
                     <td></td>
                     <td>
-                        <button type="button" class="btn btn-info">存草稿</button>
-                        <button type="submit" class="btn btn-info">提交</button>
+                        <button id="button" type="button" class="btn btn-info">存草稿</button>
+                        <button id="button1" type="button" class="btn btn-info">提交</button>
                     </td>
                     <td></td>
                 </tr>
             </table>
-        </form>
+
     </div>
 </div>
 <!--新建弹层 end-->
@@ -270,6 +263,48 @@
                 $("#filter").css("display","none");
                 $("#myfilter").parent().css("border-bottom","1px solid #d2d2d2");
             })
+        })
+
+    })
+</script>
+<script type="text/javascript">
+    $('#button').click(function(){
+        var content = $('#content').val();
+        var type=$('#type').val();
+        var approvaluid=$('#approvaluid').val()
+        console.log(content+type+approvaluid)
+        $.ajax({
+            url:'${webRequest.baseUrl}/front/applySave1?content='+encodeURI(content)+'&type='+encodeURI(type)+'&approvaluid='+encodeURI(approvaluid),
+            dataType: "jsonp",
+            jsonp: "callback",
+            success: function (data) {
+                // 去渲染界面
+                if(data.msg){
+                    window.location.href='${webRequest.baseUrl}/front/user_draft'
+                }else{
+                    alert("保存失败！");
+                }
+            }
+        })
+
+    })
+    $('#button1').click(function(){
+        var content = $('#content').val();
+        var type=$('#type').val();
+        var approvaluid=$('#approvaluid').val()
+        console.log(content+type+approvaluid)
+        $.ajax({
+            url:'${webRequest.baseUrl}/front/applySave?content='+encodeURI(content)+'&type='+encodeURI(type)+'&approvaluid='+encodeURI(approvaluid),
+            dataType: "jsonp",
+            jsonp: "callback",
+            success: function (data) {
+                // 去渲染界面
+                if(data.msg){
+                    window.location.href='${webRequest.baseUrl}/front/apply'
+                }else{
+                    alert("保存失败！");
+                }
+            }
         })
 
     })
