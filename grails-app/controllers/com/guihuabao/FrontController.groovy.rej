@@ -1,0 +1,36 @@
+diff a/grails-app/controllers/com/guihuabao/FrontController.groovy b/grails-app/controllers/com/guihuabao/FrontController.groovy	(rejected hunks)
+@@ -719,19 +719,30 @@
+     //任务
+ 
+     def taskCreate(){
++        def current = new Date()
++        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
++        def now = time.format(current)
++        def tomorrow = time.format(new Date(current.getTime()+1*24*60*60*1000))
+         def bumenInstance = Bumen.findAllByCid(session.company.id)
+-        def taskInstance = Task.findAllByCidAndPlayuidAndStatus(session.company.id,session.user.id,0)
+-        [taskInstance: taskInstance,bumenInstance: bumenInstance]
++        def order = [sort:"dateCreate",order: "desc"]
++        def todayTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,now,now,order)
++        def todayFinishedTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,1,now,now,order)
++        def tomorrowTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,tomorrow,tomorrow,order)
++        def taskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,now,[sort:"overtime",order:"asc"])
++        [taskInstance: taskInstance,todayTaskInstance: todayTaskInstance,todayFinishedTaskInstance: todayFinishedTaskInstance,tomorrowTaskInstance: tomorrowTaskInstance,bumenInstance: bumenInstance]
+     }
+ 
+ 
+     def taskSave(){
+         def taskInstance = new Task(params)
++        def overdate = params.overtime.split(" ")
+         taskInstance.cid = session.company.id
+         taskInstance.fzuid = session.user.id
+-
++        taskInstance.fzname = session.user.name
++        taskInstance.overtime = overdate[0]
++        taskInstance.overhour = overdate[1]
+         taskInstance.status = 0
+-
++        taskInstance.dateCreate = new Date()
+ 
+         if (!taskInstance.save(flush: true)) {
+             render(view: "create", model: [taskInstance: taskInstance])

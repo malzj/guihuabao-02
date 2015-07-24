@@ -35,8 +35,9 @@
     #text{padding:0;background:none;}
     #apply_top{width:100% height:50px;text-align:center;background:#fff;border:1px solid #d2d2d2;margin-right:-1px;}
     #apply_top td{border-right:1px solid #d2d2d2;border-bottom:1px solid #d2d2d2;}
-    datalist{width:200px;}
-    #myfilter{border:none;width:100%;text-align:center;}
+    #myfilter{border:none;width:100%;text-align:center;width:96px;border-bottom:#ff0000;}
+    #filter {text-align:left;text-indent:20px; position:absolute;top:49px;left:-1px;border:1px solid #d2d2d2;border-top:none;width:160px;margin:0;background:#fff;z-index:2; display:none;padding-top:20px;}
+    #filter li{height:40px;line-height:40px; list-style:none; cursor:pointer;}
     .icon{background:#03a9f4;color:#fff;width:20px;height:20px;display:inline-block;border-radius:50px;margin-right:10px;}
     #apply_tab{font-size:14px;padding:0;margin:20px 0 -1px 0;border:1px solid #d2d2d2;background:#fff;border-spacing:10px 0; border-collapse:collapse;}
     #apply_tab tr{border-bottom:1px solid #d2d2d2;display:block;}
@@ -59,33 +60,7 @@
 
 <section id="container" >
     <!--header start-->
-    <header class="header">
-        <div class="top">
-            <div class="t_left">你好Oscar，上次登录规划宝，今日2015年4月20日 星期三</div>
-            <div class="t_right">
-                <ul>
-                    <li><a href="javascript:;"><i class="fa fa-bell"></i>&nbsp;&nbsp;消息<span class="tsh bg-important">5</span></a></li>
-                    <li>|</li>
-                    <li><a href="javascript:;" ><i class="fa fa-cog"></i>设置</a></li>
-                    <li>|</li>
-                    <li><a href="javascript:;"><i></i>安全退出</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="navbox">
-            <!--logo start-->
-            <a href="index.html" class="logo"><img height="30" src="${resource(dir:'img',file:'logo.png')}"></a>
-            <!--logo end-->
-            <ul class="nav">
-                <li><a href="javascript:;"><i class="home"></i>首页</a></li>
-                <li><a href="javascript:;"><i class="aim"></i>目标</a></li>
-                <li><a href="javascript:;"><i class="rw"></i>任务</a></li>
-                <li><a href="javascript:;"><i class="bg"></i>报告</a></li>
-                <li><a href="javascript:;"><i class="app"></i>应用</a></li>
-                <li><a href="javascript:;"><i class="ht"></i>后台</a></li>
-            </ul>
-            <a href="javascript:;" class="f-r zs"><i></i>和许助手</a>
-        </div>
+    <g:render template="header" />
     </header>
     <!--header end-->
     <!--sidebar start-->
@@ -132,17 +107,17 @@
                 <!--<div class="info_title">-->
                 <table id="apply_top" width="100%" height="50px">
                     <tr>
-                        <td width="10%">我的草稿</td>
-                        <td width="10%">
-                            <input id="myfilter" list="filter" value="筛选">
-                            <datalist id="filter">
-                                <option value="默认">默认</option>
-                                <option value="已通过"></option>
-                                <option value="未通过"></option>
-                                <option value="待处理"></option>
-                            </datalist>
+                        <td width="106px">我的申请</td>
+                        <td style=" position:relative;width:96px;">
+                            <div id="myfilter" href="#"><span id="filter-content">筛选</span><span style="margin-left:20px;"><i class="fa fa-sort-down"></i></span></div>
+                            <ul id="filter">
+                                <li>默认</li>
+                                <li>已通过</li>
+                                <li>未通过</li>
+                                <li>待处理</li>
+                            </ul>
                         </td>
-                        <td width="80%"></td>
+                        <td width="1442px"></td>
 
                     </tr>
                 </table>
@@ -319,7 +294,17 @@
         $(".draft_edit").click(function(){
             $("#draftedit").css("display","block");
         })
-
+        $("#myfilter").click(function(){
+            $("#myfilter").parent().css("border-bottom","1px solid #fff");
+            $("#filter").css("display","block");
+            $("#filter").click(function(ev){
+                var ev=ev||window.event();
+                var target=ev.srcElement||ev.target;
+                $("#filter-content").html(target.innerHTML);
+                $("#filter").css("display","none");
+                $("#myfilter").parent().css("border-bottom","1px solid #d2d2d2");
+            })
+        })
     })
 </script>
 </body>
