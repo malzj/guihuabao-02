@@ -859,21 +859,27 @@ class FrontController {
     def taskShow(){
         def taskInfo = Task.findByIdAndCid(params.id,session.company.id)
         def rs = [:]
-//        def version = params.version
+        def version = params.version
         if(taskInfo){
             rs.msg = true
-//            taskInfo.lookstatus = 1
+            if(taskInfo.lookstatus.toInteger()==0){
+                taskInfo.lookstatus = 1
+                if (version != null) {
+                    if (taskInfo.version > version) {
+                        rs.msg = false
+                    }else{
+                        if (taskInfo.save(flush: true)) {
+                            rs.msg=true
+                        }
+                    }
+                }
+            }
+
         }else{
             rs.msg = false
         }
-//        if (version != null) {
-//            if (taskInfo.version > version) {
-//               rs.msg = false
-//            }
-//        }
-//        if (taskInfo.save(flush: true)) {
-//            rs.msg=true
-//        }
+
+
 
         rs<<[taskInfo:taskInfo]
         if (params.callback) {
@@ -970,15 +976,15 @@ class FrontController {
         def infos=[:]
         infos.uid = uid
         infos.cid = cid
-        infos.yq = Task.countByCidAndPlayuidAndPlaystatusAndOvertimeLessThan(cid,uid,0,now)
-        infos.finished = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,1)
-        infos.unfinished = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,0)
+        infos.yq = Task.countByCidAndPlayuidAndStatusAndOvertimeLessThan(cid,uid,0,now)
+        infos.finished = Task.countByCidAndPlayuidAndStatus(cid,uid,1)
+        infos.unfinished = Task.countByCidAndPlayuidAndStatus(cid,uid,0)
         if(selected=="1"){
-            xsTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,1,params,order)
-            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,1,order)
+            xsTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,1,params,order)
+            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,1,order)
         }else if(selected=="2"){
-            xsTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,0,params,order)
-            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,0,order)
+            xsTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,0,params,order)
+            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,0,order)
         }else{
             xsTaskInstance = Task.findAllByCidAndPlayuid(cid,uid,params,order)
             xsTaskInstanceTotal = Task.countByCidAndPlayuid(cid,uid,order)
