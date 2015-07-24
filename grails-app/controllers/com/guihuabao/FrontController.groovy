@@ -9,10 +9,19 @@ import java.util.logging.Logger
 
 class FrontController {
     private  Logger logger
+    def yanzheng(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect(action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+        }
+    }
 
 
     def index() {
-        print("!")
+        def msg =""
+       msg= params.msg
+        [msg:msg]
     }
 
     def login(){
@@ -62,6 +71,7 @@ class FrontController {
         redirect(action: "companyUserShow", id: companyUserInstance.id)
     }
     def companyUserList(Integer max){
+        yanzheng()
         params.max = Math.min(max ?: 10, 100)
         [companyUserInstanceList: CompanyUser.list(params), companyUserInstanceTotal: CompanyUser.count()]
     }
@@ -769,7 +779,7 @@ class FrontController {
             render(view: "taskCreate", model: [companyUserInstance: taskInstance])
             return
         }
-print(1);
+
         flash.message = message(code: 'default.updated.message', args: [message(code: 'task.label', default: 'Task'), taskInstance.id])
         redirect(action: "taskCreate", id: taskInstance.id)
     }
@@ -793,8 +803,8 @@ print(1);
         }
     }
     def apply(){
-
-
+        yanzheng()
+       
     }
     def user_draft(){}
     def user_approve(){}
