@@ -7,6 +7,9 @@ class Apply {
     String content
     String approvaluid
     String approvalusername
+    String status
+    String cid
+    Date dateCreate
     static constraints = {
         type(nullable: true)
         applyuid(nullable: true)
@@ -14,5 +17,8 @@ class Apply {
         content(nullable: true)
         approvaluid(nullable: true)
         approvalusername(nullable: true)
+        status(nullable: true)
+        cid(nullable: true)
+        dateCreate(nullable: true)
     }
 }

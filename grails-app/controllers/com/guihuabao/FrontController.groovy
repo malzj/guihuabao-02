@@ -804,7 +804,29 @@ class FrontController {
     }
     def apply(){
         yanzheng()
-       
+        params.max = Math.min(max ?: 2, 100)
+        def userId= session.user.id
+        def companyId = session.company.id
+
+        def applylist= Apply.findAllByApplyuidAndCid(userId,companyId,params)
+       def applyInstanceTotal= Apply.countByApplyuidAndCid(userId,companyId)
+        [applylist:applylist,applyInstanceTotal:applyInstanceTotal]
+
+    }
+    def applySave(){
+
+        yanzheng()
+        def applyInstance  = new Apply(params)
+        applyInstance.applyuid= session.user.id
+        applyInstance.applyusername = session.user.name
+        applyInstance.cid= session.company.id
+        applyInstance.status="未审核"
+        applyInstance.dateCreate=new Date()
+        if (!applyInstance.save(flush: true)) {
+            return
+        }
+        redirect(action: "apply")
+
     }
     def user_draft(){}
     def user_approve(){}

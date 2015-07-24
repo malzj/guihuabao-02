@@ -120,43 +120,24 @@
                 <div class=" clearfix" id="text">
                     <table width="100%" id="apply_tab">
                         <tr class="th">
-                            <td >申请类型</td>
-                            <td>申请内容</td>
-                            <td>审批人</td>
-                            <td>审批结果</td>
-                            <td>申请时间</td>
+                            <th >申请类型</th>
+                            <th>申请内容</th>
+                            <th>审批人</th>
+                            <th>审批结果</th>
+                            <th>申请时间</th>
                         </tr>
-                        <tr>
+                        <g:each in="">
+                            <tr>
+                                <td>出差申请单</td>
+                                <td>新项目调研，需出差五天！</td>
+                                <td>营销部经理-法拉利</td>
+                                <td>已通过</td>
+                                <td>2015-7-15</td>
+                            </tr>
+                        </g:each>
 
-                            <td>出差申请单</td>
-                            <td>新项目调研，需出差五天！</td>
-                            <td>营销部经理-法拉利</td>
-                            <td>已通过</td>
-                            <td>2015-7-15</td>
 
-                        </tr>
 
-                        <tr>
-                            <td>出差申请单</td>
-                            <td>新项目调研，需出差五天！</td>
-                            <td>营销部经理-法拉利</td>
-                            <td>已通过</td>
-                            <td>2015-7-15</td>
-                        </tr>
-                        <tr>
-                            <td>出差申请单</td>
-                            <td>新项目调研，需出差五天！</td>
-                            <td>营销部经理-法拉利</td>
-                            <td>已通过</td>
-                            <td>2015-7-15</td>
-                        </tr>
-                        <tr>
-                            <td>出差申请单</td>
-                            <td>新项目调研，需出差五天！</td>
-                            <td>营销部经理-法拉利</td>
-                            <td>已通过</td>
-                            <td>2015-7-15</td>
-                        </tr>
 
                     </table>
                 </div>
