@@ -19,14 +19,14 @@
             </ul>
         </li>
             <li>
-                <a href="/guihuabao/login/companyList">
+                <g:link action="unreadTask" >
                     <span>未读任务</span>
-                </a>
+                </g:link>
             </li>
             <li>
-                <a href="/guihuabao/login/roleList">
+                <g:link action="xsTask" >
                     <span>下属任务</span>
-                </a>
+                </g:link>
             </li>
             <li>
                 <g:link action="finishedTask" >

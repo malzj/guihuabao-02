@@ -77,7 +77,7 @@
                                 <li>
                                     <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                     <span class="sn">${i+1}</span>
-                                    <span class="title" data-task-id="${taskInfo.id}">${taskInfo.title}</span>
+                                    <span class="title" data-task-id="${taskInfo.id}"  data-task-version="${taskInfo.version}">${taskInfo.title}</span>
                                     <div class="right">
                                         <span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
                                         <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
@@ -102,7 +102,7 @@
                                 <li>
                                     <span class="mark <g:if test="${tomorrowTaskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${tomorrowTaskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${tomorrowTaskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${tomorrowTaskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                     <span class="sn">${i+1}</span>
-                                    <span class="title"  data-task-id="${tomorrowTaskInfo.id}">${tomorrowTaskInfo.title}</span>
+                                    <span class="title"  data-task-id="${tomorrowTaskInfo.id}"  data-task-version="${tomorrowTaskInfo.version}">${tomorrowTaskInfo.title}</span>
                                     <div class="right">
                                         <span class="hsfinish"><g:link action="taskUpdate" id="${tomorrowTaskInfo.id}" params="[version: tomorrowTaskInfo.version]"><i class="fa <g:if test="${tomorrowTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
                                         <g:if test="${tomorrowTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${tomorrowTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
@@ -128,7 +128,7 @@
                                     <li>
                                         <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                         <span class="sn">${i+1}</span>
-                                        <span class="title" data-task-id="${taskInfo.id}">${taskInfo.title}</span>
+                                        <span class="title" data-task-id="${taskInfo.id}"  data-task-version="${taskInfo.version}">${taskInfo.title}</span>
                                         <div class="right">
                                             <span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
                                             <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
@@ -303,9 +303,11 @@
 
         //详情滑动框
         $(".e-list-group .e-list .title").click(function(){
-            var taskid = $(this).attr("data-task-id");
+            var $this=$(this)
+            var taskid =$this.attr("data-task-id");
+            var taskversion = $this.attr("data-task-version");
             $.ajax({
-                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid,
+                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid+'&version='+taskversion,
                 dataType: "jsonp",
                 jsonp: "callback",
                 success: function (data) {
@@ -366,10 +368,11 @@
                 <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
                 {text: '${userInfo.name}', href: '#', action: function(e){
                     $("#playuid").val(${userInfo.id});
-                    $("#playbid").val(${bumenInfo.id});
+                    $("#playbid").val(${userInfo.bid});
+                    $("#playname").val("${userInfo.name}");
                     $(this).hide();
                     $(".zhxr").html("${userInfo.name}");
-                }}
+                }},
                 </g:each>
             ]},
             </g:each>
@@ -378,8 +381,8 @@
                 <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
                 {text: '${userInfo.name}', href: '#', action: function(e){
                     $("#playuid").val(${userInfo.id});
-                    $("#playname").val(${userInfo.name});
-                    $("#playbid").val(${session.user.bid});
+                    $("#playbid").val(${userInfo.bid});
+                    $("#playname").val("${userInfo.name}");
                     $(this).hide();
                     $(".zhxr").html("${userInfo.name}");
                 }}
