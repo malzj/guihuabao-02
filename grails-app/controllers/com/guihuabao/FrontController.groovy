@@ -730,18 +730,32 @@ class FrontController {
     //任务
 
     def taskCreate(){
+        def pid= session.user.pid
+        def current = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        def now = time.format(current)
+        def tomorrow = time.format(new Date(current.getTime()+1*24*60*60*1000))
         def bumenInstance = Bumen.findAllByCid(session.company.id)
-        def taskInstance = Task.findAllByCidAndPlayuidAndStatus(session.company.id,session.user.id,0)
-        [taskInstance: taskInstance,bumenInstance: bumenInstance]
+        def order = [sort:"dateCreate",order: "desc"]
+        def todayTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,now,now,order)
+        def todayFinishedTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,1,now,now,order)
+        def tomorrowTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,tomorrow,tomorrow,order)
+        def taskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,now,[sort:"overtime",order:"asc"])
+        [taskInstance: taskInstance,todayTaskInstance: todayTaskInstance,todayFinishedTaskInstance: todayFinishedTaskInstance,tomorrowTaskInstance: tomorrowTaskInstance,bumenInstance: bumenInstance]
     }
 
 
     def taskSave(){
         def taskInstance = new Task(params)
+        def overdate = params.overtime.split(" ")
         taskInstance.cid = session.company.id
         taskInstance.fzuid = session.user.id
-
+        taskInstance.fzname = session.user.name
+        taskInstance.overtime = overdate[0]
+        taskInstance.overhour = overdate[1]
         taskInstance.status = 0
+        taskInstance.lookstatus = 0
+        taskInstance.dateCreate = new Date()
 
 
         if (!taskInstance.save(flush: true)) {
@@ -756,7 +770,6 @@ class FrontController {
 
     def taskUpdate(Long id, Long version){
         def taskInstance = Task.findByIdAndCid(id,session.company.id)
-        taskInstance.status = 1
         if (!taskInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
             redirect(action: "taskCreate")
@@ -785,24 +798,25 @@ class FrontController {
         redirect(action: "taskCreate", id: taskInstance.id)
     }
 
-    def taskDelete(){
-        def taskInstnstance
-        if (!companyUserInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
-            redirect(action: "companyUserList")
+    def taskDelete(Long id){
+        def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
+        if (!taskInstnstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "taskCreate")
             return
         }
 
         try {
-            companyUserInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
-            redirect(action: "companyUserList")
+            taskInstnstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "taskCreate")
         }
         catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
-            redirect(action: "companyUserShow", id: id)
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "taskCreate", id: id)
         }
     }
+
     def apply(Integer max){
 //        yanzheng()
         def user = session.user
@@ -819,10 +833,38 @@ class FrontController {
         def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,1,params)
        def applyInstanceTotal= Apply.countByApplyuidAndCid(userId,companyId)
         [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]
+    }
+    def finishedTaskDelete(Long id){
+        def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
+        if (!taskInstnstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "finishedTask")
+            return
+        }
 
+        try {
+            taskInstnstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "finishedTask")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "finishedTask", id: id)
+        }
+    }
+
+
+    def allTaskDelete(Long id){
+        def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
+        if (!taskInstnstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "allTask")
+            return
+        }
     }
 
     def applySave(){
+
 
 
         def applyInstance  = new Apply(params)
@@ -843,11 +885,51 @@ class FrontController {
 
         def rs=[:]
         rs<<[msg:true]
+
+        try {
+            taskInstnstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "allTask")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "allTask", id: id)
+        }
+    }
+    //任务详情ajax
+    def taskShow(){
+        def taskInfo = Task.findByIdAndCid(params.id,session.company.id)
+        def rs = [:]
+        def version = params.version
+        if(taskInfo){
+            rs.msg = true
+            if(taskInfo.lookstatus.toInteger()==0){
+                taskInfo.lookstatus = 1
+                if (version != null) {
+                    if (taskInfo.version > version) {
+                        rs.msg = false
+                    }else{
+                        if (taskInfo.save(flush: true)) {
+                            rs.msg=true
+                        }
+                    }
+                }
+            }
+
+        }else{
+            rs.msg = false
+        }
+
+
+
+        rs<<[taskInfo:taskInfo]
+
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
             render rs as JSON
     }
+
     def applySave1(){
 
         yanzheng()
@@ -872,7 +954,108 @@ class FrontController {
             render "${params.callback}(${rs as JSON})"
         } else
             render rs as JSON
+    }
+//    负责任务
+    def fzTask(){
+        def current = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        def now = time.format(current)
+        def order = [sort:"dateCreate",order: "desc"]
+        def fzFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,1,order)
+        def fzUnFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,0,order)
+        def fzyqTaskInstance = Task.findAllByCidAndFzuidAndStatusAndOvertimeLessThan(session.company.id,session.user.id,0,now,order)
+        def fzAllTaskInstance = Task.findAllByCidAndFzuid(session.company.id,session.user.id,order)
+        [fzAllTaskInstance: fzAllTaskInstance,fzUnFinishedTaskInstance: fzUnFinishedTaskInstance,fzFinishedTaskInstance: fzFinishedTaskInstance,fzyqTaskInstance: fzyqTaskInstance]
+    }
+    //参与任务
+    def cyTask(){
+        def current = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        def now = time.format(current)
+        def order = [sort:"dateCreate",order: "desc"]
+        def cyFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,1,order)
+        def cyUnFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,0,order)
+        def cyyqTaskInstance = Task.findAllByCidAndFzuidAndStatusAndOvertimeLessThan(session.company.id,session.user.id,0,now,order)
+        def cyAllTaskInstance = Task.findAllByCidAndFzuid(session.company.id,session.user.id,order)
+        [cyAllTaskInstance: cyAllTaskInstance,cyUnFinishedTaskInstance: cyUnFinishedTaskInstance,cyFinishedTaskInstance: cyFinishedTaskInstance,cyyqTaskInstance: cyyqTaskInstance]
+    }
+    def finishedTask(){
+        def finishedTaskInstance = Task.findAllByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)
+        [finishedTaskInstance: finishedTaskInstance]
+    }
+    def allTask(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def current = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        def now = time.format(current)
+        def cid = session.company.id
+        def uid = session.user.id
+        def selected = params.selected
+        def order = [sort:"dateCreate",order: "desc"]
+        def allTaskInstance
+        def allTaskInstanceTotal
+        def infos=[:]
+        infos.uid = uid
+        infos.cid = cid
+        infos.yq = Task.countByCidAndPlayuidAndStatusAndOvertimeLessThan(cid,uid,0,now)
+        infos.finished = Task.countByCidAndPlayuidAndStatus(cid,uid,1)
+        infos.unfinished = Task.countByCidAndPlayuidAndStatus(cid,uid,0)
+        if(selected=="1"){
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,1,params,order)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,1,order)
+        }else if(selected=="2"){
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,2,params,order)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,2,order)
+        }else if(selected=="3"){
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,3,params,order)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,3,order)
+        }else if(selected=="4"){
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,4,params,order)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,4,order)
+        }else{
+            allTaskInstance = Task.findAllByCidAndPlayuid(cid,uid,params,order)
+            allTaskInstanceTotal = Task.countByCidAndPlayuid(cid,uid,order)
+        }
+        [allTaskInstance: allTaskInstance,allTaskInstanceTotal: allTaskInstanceTotal,selected: selected,infos: infos]
+    }
 
+    //未读任务
+    def unreadTask(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def unreadTaskInstance
+        def unreadTaskInstanceTotal
+        def selected = params.selected
+        if(selected=="1"){
+            unreadTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,1,params)//已完成
+            unreadTaskInstanceTotal= Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,1)
+        }else if(selected=="2"){
+            unreadTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0,params)//未完成
+            unreadTaskInstanceTotal= Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0)
+        }else{
+            unreadTaskInstance = Task.findAllByCidAndPlayuidAndLookstatus(session.company.id,session.user.id,0,params)
+            unreadTaskInstanceTotal= Task.countByCidAndPlayuidAndLookstatus(session.company.id,session.user.id,0)
+        }
+        [unreadTaskInstance: unreadTaskInstance,unreadTaskInstanceTotal:unreadTaskInstanceTotal,selected: selected]
+    }
+    //下属任务
+    def xsTask(){
+        def upid = session.user.pid
+        def ubid = session.user.bid
+        def ucid = session.user.cid
+        def bumenInfo
+        if(upid==1){
+            bumenInfo = Bumen.findAllByCid(ucid)
+            render(view: "taskBumenList", model: [bumenInfo: bumenInfo])
+        }else if(upid==2){
+            redirect(action: "taskUserList",params: [bid: ubid,cid: ucid])
+            return
+        }
+    }
+
+
+    def taskUserList(){
+        def companyUserInstance = CompanyUser.findAllByBidAndCid(params.bid,params.cid)
+        [companyUserInstance: companyUserInstance]
     }
     def user_draft(Integer max){
         def user = session.user
@@ -899,5 +1082,35 @@ class FrontController {
         }
     }
 
+    //下属任务列表
+    def xsTaskList(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def current = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        def now = time.format(current)
+        def cid = params.cid
+        def uid = params.uid
+        def selected = params.selected
+        def order = [sort:"dateCreate",order: "desc"]
+        def xsTaskInstance
+        def xsTaskInstanceTotal
+        def infos=[:]
+        infos.uid = uid
+        infos.cid = cid
+        infos.yq = Task.countByCidAndPlayuidAndStatusAndOvertimeLessThan(cid,uid,0,now)
+        infos.finished = Task.countByCidAndPlayuidAndStatus(cid,uid,1)
+        infos.unfinished = Task.countByCidAndPlayuidAndStatus(cid,uid,0)
+        if(selected=="1"){
+            xsTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,1,params,order)
+            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,1,order)
+        }else if(selected=="2"){
+            xsTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,0,params,order)
+            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,0,order)
+        }else{
+            xsTaskInstance = Task.findAllByCidAndPlayuid(cid,uid,params,order)
+            xsTaskInstanceTotal = Task.countByCidAndPlayuid(cid,uid,order)
+        }
+        [xsTaskInstance: xsTaskInstance,xsTaskInstanceTotal: xsTaskInstanceTotal,selected: selected,infos: infos]
+    }
 
 }

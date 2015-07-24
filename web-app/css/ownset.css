@@ -45,6 +45,7 @@ body{padding:0;margin:0;}
 
 /*sidebar start*/
 .sidebar-menu li em{ padding:3px 8px; font-size:12px; font-style:normal; margin-right:15px; background-color:#22272a; border-radius:50px; }
+.sidebar-menu .sub li em{ padding:0px 4px; }
 /*sidebar end*/
 .sidebar_object{color: #AEB2B7;text-decoration: none;padding: 15px 0px 15px 25px;font-size: 16px;outline: medium none;}
 .sidebar_object .page{ display:inline-block; height:25px; width:20px;background:url("../img/page_icon.png") no-repeat;}
@@ -238,8 +239,8 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .toolkit a{ display:inline-block; color:#797979; line-height:16px;padding:14px 18px;border-left:1px #d2d2d2 solid;border-right:1px #d2d2d2 solid;}
 .toolkit a i{color:#03a9f4;margin-right:5px;}
 .toolkit .task-order i{ color:#797979; margin:0 0 0 5px; }
-.toolkit .task-order{ position:relative; z-index:10001;  cursor:pointer; }
-.toolkit .shaixuan ul{ position:absolute; background-color:#fff;border:1px #d2d2d2 solid; margin-top:-1px; z-index:10000; display: none }
+.toolkit .task-order{ position:relative; z-index:1001;  cursor:pointer; }
+.toolkit .shaixuan ul{ position:absolute; background-color:#fff;border:1px #d2d2d2 solid; margin-top:-1px; z-index:1000; display: none }
 .toolkit .shaixuan ul a{ display:inline-block; width:100%; color:#797979; line-height:16px;padding:14px 18px; border:none; }
 .toolkit .shaixuan ul a:hover{ background-color:#f5f5f5; }
 .e-list-group{ margin-top:10px; background:#FFF; border:1px solid #d2d2d2; }
