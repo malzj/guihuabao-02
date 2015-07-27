@@ -73,24 +73,24 @@
             <!-- sidebar menu start-->
             <ul class="sidebar-menu" id="nav-accordion">
                 <li class="sub-menu dcjq-parent-li">
-                    <a class="dcjq-parent" href="apply">
+                    <g:link class="dcjq-parent" action="apply">
                         <span>我的申请</span>
                         <em class="f-r">7</em>
-                    </a>
+                    </g:link>
 
                 </li>
                 <li class="sub-menu dcjq-parent-li">
-                    <a class="dcjq-parent" href="user_approve">
+                    <g:link class="dcjq-parent" action="user_approve">
                         <span>我的审批</span>
                         <em class="f-r">7</em>
-                    </a>
+                    </g:link>
 
                 </li>
                 <li class="sub-menu dcjq-parent-li">
-                    <a class="dcjq-parent active" href="#">
+                    <g:link class="dcjq-parent active" action="user_draft">
                         <span>草稿箱</span>
                         <em class="f-r">7</em>
-                    </a>
+                    </g:link>
 
                 </li>
             </ul>
@@ -108,15 +108,15 @@
                 <table id="apply_top" width="100%" height="50px">
                     <tr>
                         <td width="106px">我的申请</td>
-                        <td style=" position:relative;width:96px;">
-                            <div id="myfilter" href="#"><span id="filter-content">筛选</span><span style="margin-left:20px;"><i class="fa fa-sort-down"></i></span></div>
-                            <ul id="filter">
-                                <li>默认</li>
-                                <li>已通过</li>
-                                <li>未通过</li>
-                                <li>待处理</li>
-                            </ul>
-                        </td>
+                        %{--<td style=" position:relative;width:96px;">--}%
+                            %{--<div id="myfilter" href="#"><span id="filter-content">筛选</span><span style="margin-left:20px;"><i class="fa fa-sort-down"></i></span></div>--}%
+                            %{--<ul id="filter">--}%
+                                %{--<li>默认</li>--}%
+                                %{--<li>已通过</li>--}%
+                                %{--<li>未通过</li>--}%
+                                %{--<li>待处理</li>--}%
+                            %{--</ul>--}%
+                        %{--</td>--}%
                         <td width="1442px"></td>
 
                     </tr>
@@ -135,45 +135,38 @@
                                 操作
                             </td>
                         </tr>
+                        <g:each in="${applylist}" status="i" var="applyInstance">
+                            <tr>
+                                <td>${applyInstance.type}</td>
+                                <td>${applyInstance.content}</td>
+                                <td>${applyInstance.approvalusername}</td>
+                                <td>${applyInstance.status}</td>
+                                <td>${applyInstance.dateCreate}</td>
+                                <td>
+                                    <a href="#" class="draft_pre"><img src="${resource(dir:'img',file:'pre.png')}" alt="pre" title="pre"/></a>
+                                    <a href="#" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="edit"/></a>
+                                    <a href="#" class="draft_delete"><img src="${resource(dir:'img',file:'delete.png')}" alt="delete" title="delete"/></a>
+                                </td>
+                            </tr>
+                        </g:each>
+                        %{--<tr>--}%
+                            %{--<td>出差申请单</td>--}%
+                            %{--<td>新项目调研，需出差五天！</td>--}%
+                            %{--<td>营销部经理-法拉利</td>--}%
+                            %{--<td>已通过</td>--}%
+                            %{--<td>2015-7-15</td>--}%
+                            %{--<td>--}%
+                                %{--<a href="#" class="draft_pre"><img src="${resource(dir:'img',file:'pre.png')}" alt="pre" title="pre"/></a>--}%
+                                %{--<a href="#" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="edit"/></a>--}%
+                                %{--<a href="#" class="draft_delete"><img src="${resource(dir:'img',file:'delete.png')}" alt="delete" title="delete"/></a>--}%
+                            %{--</td>--}%
+                        %{--</tr>--}%
 
-                        <tr>
-                            <td>出差申请单</td>
-                            <td>新项目调研，需出差五天！</td>
-                            <td>营销部经理-法拉利</td>
-                            <td>已通过</td>
-                            <td>2015-7-15</td>
-                            <td>
-                                <a href="#" class="draft_pre"><img src="${resource(dir:'img',file:'pre.png')}" alt="pre" title="pre"/></a>
-                                <a href="#" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="edit"/></a>
-                                <a href="#" class="draft_delete"><img src="${resource(dir:'img',file:'delete.png')}" alt="delete" title="delete"/></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>出差申请单</td>
-                            <td>新项目调研，需出差五天！</td>
-                            <td>营销部经理-法拉利</td>
-                            <td>已通过</td>
-                            <td>2015-7-15</td>
-                            <td>
-                                <a href="#" class="draft_pre"><img src="${resource(dir:'img',file:'pre.png')}" alt="pre" title="pre"/></a>
-                                <a href="#" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="edit"/></a>
-                                <a href="#" class="draft_delete"><img src="${resource(dir:'img',file:'delete.png')}" alt="delete" title="delete"/></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>出差申请单</td>
-                            <td>新项目调研，需出差五天！</td>
-                            <td>营销部经理-法拉利</td>
-                            <td>已通过</td>
-                            <td>2015-7-15</td>
-                            <td>
-                                <a href="#" class="draft_pre"><img src="${resource(dir:'img',file:'pre.png')}" alt="pre" title="pre"/></a>
-                                <a href="#" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="edit"/></a>
-                                <a href="#" class="draft_delete"><img src="${resource(dir:'img',file:'delete.png')}" alt="delete" title="delete"/></a>
-                            </td>
-                        </tr>
 
                     </table>
+                <div class="pagination">
+                    <g:paginate total="${applyInstanceTotal}" />
+                </div>
                 </div>
             </div>
         </section>

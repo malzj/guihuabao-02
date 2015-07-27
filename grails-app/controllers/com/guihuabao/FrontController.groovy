@@ -13,7 +13,8 @@ class FrontController {
         def user = session.user
         def company = session.company
         if(!user&&!company){
-            redirect(action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
         }
     }
 
@@ -815,6 +816,24 @@ class FrontController {
             redirect(action: "taskCreate", id: id)
         }
     }
+
+    def apply(Integer max){
+//        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+        def userId= session.user.id
+        def companyId = session.company.id
+        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
+
+        def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,1,params)
+       def applyInstanceTotal= Apply.countByApplyuidAndCid(userId,companyId)
+        [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]
+    }
     def finishedTaskDelete(Long id){
         def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
         if (!taskInstnstance) {
@@ -834,6 +853,7 @@ class FrontController {
         }
     }
 
+
     def allTaskDelete(Long id){
         def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
         if (!taskInstnstance) {
@@ -842,7 +862,29 @@ class FrontController {
             return
         }
     }
+
     def applySave(){
+
+
+
+        def applyInstance  = new Apply(params)
+        applyInstance.applyuid= session.user.id
+        applyInstance.applyusername = session.user.name
+        applyInstance.cid= session.company.id
+        applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+        applyInstance.status="未审核"
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(currentTime);
+        applyInstance.dateCreate=dateString
+        applyInstance.applystatus=0
+        applyInstance.applystatuss=1
+        if (!applyInstance.save(flush: true)) {
+            return
+        }
+
+        def rs=[:]
+        rs<<[msg:true]
 
         try {
             taskInstnstance.delete(flush: true)
@@ -881,12 +923,38 @@ class FrontController {
 
 
         rs<<[taskInfo:taskInfo]
+
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
             render rs as JSON
     }
 
+    def applySave1(){
+
+        yanzheng()
+        def applyInstance  = new Apply(params)
+        applyInstance.applyuid= session.user.id
+        applyInstance.applyusername = session.user.name
+        applyInstance.cid= session.company.id
+        applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+        applyInstance.status="未审核"
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(currentTime);
+        applyInstance.dateCreate=dateString
+        applyInstance.applystatus=0
+        applyInstance.applystatuss=0
+        if (!applyInstance.save(flush: true)) {
+            return
+        }
+        def rs=[:]
+        rs<<[msg:true]
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
 //    负责任务
     def fzTask(){
         def current = new Date()
@@ -984,12 +1052,35 @@ class FrontController {
         }
     }
 
+
     def taskUserList(){
         def companyUserInstance = CompanyUser.findAllByBidAndCid(params.bid,params.cid)
         [companyUserInstance: companyUserInstance]
     }
-    def user_draft(){}
-    def user_approve(){}
+    def user_draft(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+        def userId= session.user.id
+        def companyId = session.company.id
+        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
+        def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,0,params)
+        def applyInstanceTotal= Apply.countByApplyuidAndCid(userId,companyId)
+        [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]
+
+    }
+    def user_approve(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+    }
 
     //下属任务列表
     def xsTaskList(Integer max){
@@ -1021,4 +1112,5 @@ class FrontController {
         }
         [xsTaskInstance: xsTaskInstance,xsTaskInstanceTotal: xsTaskInstanceTotal,selected: selected,infos: infos]
     }
+
 }
