@@ -39,7 +39,7 @@
     <!--sidebar end-->
     <!--main content start-->
     <section id="main-content">
-        <section class="wrapper">
+        <section class="wrapper wrapper_reset">
             <div class="hxzs_content clearfix">
                 <div class="book_list">
                     <ul class="zblist">
@@ -125,6 +125,15 @@
     <!--月份列表js-->
     <script type="text/javascript">
         $(function(){
+            $(window).bind('resize load', function(){
+
+                $(".wrapper_reset").css("zoom",$(window).width()/1920);
+                $(".wrapper_reset").find().css("zoom",$(window).width()/1920);
+                $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1920+")");
+                $(".wrapper_reset").find().css("-moz-transform-origin","top left");
+
+
+            });
             $(".menu>li>span").click(function(){
                 $(this).next(".weeks").toggle();
             })
@@ -135,6 +144,7 @@
             $(".zhoubao .reply_box .reply").click(function(){
                 $(this).next(".shuru").toggle();
             })
+
         })
     </script>
 </body>

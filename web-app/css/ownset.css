@@ -44,13 +44,14 @@ body{padding:0;margin:0;}
 /*login end*/
 
 /*sidebar start*/
+
 .sidebar-menu li em{ padding:3px 8px; font-size:12px; font-style:normal; margin-right:15px; background-color:#22272a; border-radius:50px; }
 .sidebar-menu .sub li em{ padding:0px 4px; }
 /*sidebar end*/
 .sidebar_object{color: #AEB2B7;text-decoration: none;padding: 15px 0px 15px 25px;font-size: 16px;outline: medium none;}
 .sidebar_object .page{ display:inline-block; height:25px; width:20px;background:url("../img/page_icon.png") no-repeat;}
 .sidebar_object span{display:inline-block;}
-.wrapper_reset{width:1694px;margin-top:170px;}
+.wrapper_reset{width:1694px;}
 .wrapper_title{height:45px;border:1px #d2d2d2 solid;background-color:#fff;margin-bottom:17px;}
 .wrapper_title span,.wrapper_title a{font-size:16px;color:#666;}
 .wrapper_title span{margin:9px 0 0 12px;}

@@ -62,7 +62,7 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
-    <g:render template="spaside">
+    <g:render template="spaside"/>
     <!--sidebar end-->
     <!--main content start-->
     <section id="main-content">
