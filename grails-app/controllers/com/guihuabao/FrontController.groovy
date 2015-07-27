@@ -956,28 +956,67 @@ class FrontController {
             render rs as JSON
     }
 //    负责任务
-    def fzTask(){
+    def fzTask(Integer max){
+        params.max = Math.min(max ?: 10, 100)
         def current = new Date()
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
         def now = time.format(current)
+        def cid = session.company.id
+        def uid = session.user.id
+        def selected = params.selected
         def order = [sort:"dateCreate",order: "desc"]
-        def fzFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,1,order)
-        def fzUnFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,0,order)
-        def fzyqTaskInstance = Task.findAllByCidAndFzuidAndStatusAndOvertimeLessThan(session.company.id,session.user.id,0,now,order)
-        def fzAllTaskInstance = Task.findAllByCidAndFzuid(session.company.id,session.user.id,order)
-        [fzAllTaskInstance: fzAllTaskInstance,fzUnFinishedTaskInstance: fzUnFinishedTaskInstance,fzFinishedTaskInstance: fzFinishedTaskInstance,fzyqTaskInstance: fzyqTaskInstance]
+        def fzTaskInstance
+        def fzTaskInstanceTotal
+        def infos=[:]
+        infos.yq = Task.countByCidAndFzuidAndStatusAndOvertimeLessThan(cid,uid,0,now)
+        infos.finished = Task.countByCidAndFzuidAndStatus(cid,uid,1)
+        infos.unfinished = Task.countByCidAndFzuidAndStatus(cid,uid,0)
+
+        if(selected=="1"){//已完成
+            fzTaskInstance = Task.findAllByCidAndFzuidAndStatus(cid,uid,1,params,order)
+            fzTaskInstanceTotal = infos.finished
+        }else if(selected=="2"){//未完成
+            fzTaskInstance = Task.findAllByCidAndFzuidAndStatus(cid,uid,0,params,order)
+            fzTaskInstanceTotal = infos.unfinished
+        }else if(selected=="3"){//延期任务
+            fzTaskInstance = Task.findAllByCidAndFzuidAndStatusAndOvertimeLessThan(cid,uid,0,now,params,order)
+            fzTaskInstanceTotal = infos.yq
+        }else{//全部负责任务
+            fzTaskInstance = Task.findAllByCidAndFzuid(cid,uid,params,order)
+            fzTaskInstanceTotal = Task.countByCidAndFzuid(cid,uid)
+        }
+        [fzTaskInstance: fzTaskInstance,fzTaskInstanceTotal: fzTaskInstanceTotal,selected: selected,infos: infos]
     }
     //参与任务
-    def cyTask(){
+    def cyTask(Integer max){
+        params.max = Math.min(max ?: 10, 100)
         def current = new Date()
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
         def now = time.format(current)
+        def cid = session.company.id
+        def uid = session.user.id
+        def selected = params.selected
         def order = [sort:"dateCreate",order: "desc"]
-        def cyFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,1,order)
-        def cyUnFinishedTaskInstance = Task.findAllByCidAndFzuidAndStatus(session.company.id,session.user.id,0,order)
-        def cyyqTaskInstance = Task.findAllByCidAndFzuidAndStatusAndOvertimeLessThan(session.company.id,session.user.id,0,now,order)
-        def cyAllTaskInstance = Task.findAllByCidAndFzuid(session.company.id,session.user.id,order)
-        [cyAllTaskInstance: cyAllTaskInstance,cyUnFinishedTaskInstance: cyUnFinishedTaskInstance,cyFinishedTaskInstance: cyFinishedTaskInstance,cyyqTaskInstance: cyyqTaskInstance]
+        def cyTaskInstance
+        def cyTaskInstanceTotal
+        def infos=[:]
+        infos.yq = Task.countByCidAndPlayuidAndStatusAndOvertimeLessThan(cid,uid,0,now)
+        infos.finished = Task.countByCidAndPlayuidAndStatus(cid,uid,1)
+        infos.unfinished = Task.countByCidAndPlayuidAndStatus(cid,uid,0)
+        if(selected=="1"){//已完成
+            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,1,params,order)
+            cyTaskInstanceTotal = infos.finished
+        }else if(selected=="2"){//未完成
+            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,0,params,order)
+            cyTaskInstanceTotal = infos.unfinished
+        }else if(selected=="3"){//延期任务
+            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeLessThan(cid,uid,0,now,params,order)
+            cyTaskInstanceTotal = infos.yq
+        }else{//全部负责任务
+            cyTaskInstance = Task.findAllByCidAndPlayuid(cid,uid,params,order)
+            cyTaskInstanceTotal = Task.countByCidAndPlayuid(cid,uid)
+        }
+        [cyTaskInstance: cyTaskInstance,cyTaskInstanceTotal: cyTaskInstanceTotal,selected: selected,infos: infos]
     }
     def finishedTask(){
         def finishedTaskInstance = Task.findAllByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)
