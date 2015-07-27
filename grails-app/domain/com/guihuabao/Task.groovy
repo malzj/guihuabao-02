@@ -1,15 +1,15 @@
 package com.guihuabao
 
 class Task {
-    String status
-    String playstatus
+    String status    //执行状态
+    String playstatus   //紧急状态
     String title
     String content
     String playuid
     String fzuid
     String fzname
     String playname
-    String lookstatus
+    String lookstatus  //查看状态
     String cid
     String bid
     String bigentime

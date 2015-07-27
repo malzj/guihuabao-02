@@ -14,20 +14,23 @@
                 </g:link>
             </div>
             <ul class="sub db">
-                <li><g:link action="fzTask" >负责的任务</g:link></li>
-                <li><g:link action="cyTask" >参与的任务</g:link></li>
+                <li><g:link action="fzTask" >负责的任务<em class="f-r">${com.guihuabao.Task.countByCidAndFzuid(session.company.id,session.user.id)}</em></g:link></li>
+                <li><g:link action="cyTask" >参与的任务<em class="f-r">${com.guihuabao.Task.countByCidAndPlayuid(session.company.id,session.user.id)}</em></g:link></li>
             </ul>
         </li>
             <li>
-                <a href="/guihuabao/login/companyList">
+                <g:link action="unreadTask" >
                     <span>未读任务</span>
-                </a>
+                    <em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndLookstatus(session.company.id,session.user.id,0)}</em>
+                </g:link>
             </li>
+            <g:if test="${session.user.pid==1||session.user.pid==2}">
             <li>
-                <a href="/guihuabao/login/roleList">
+                <g:link action="xsTask" >
                     <span>下属任务</span>
-                </a>
+                </g:link>
             </li>
+            </g:if>
             <li>
                 <g:link action="finishedTask" >
                     <span>已完成任务</span>

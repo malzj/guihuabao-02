@@ -196,6 +196,10 @@
     var Script = function () {
         var doughnutData = [
             {
+                value: ${fzyqTaskInstance.size()},//延期任务
+                color:"#FF7F50"
+            },
+            {
                 value: ${fzUnFinishedTaskInstance.size()},//未完成数
                 color:"#87CEFA"
             },

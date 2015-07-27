@@ -3,6 +3,7 @@ import com.guihuabao.Clause
 import com.guihuabao.FunIntroduction
 import com.guihuabao.IndexImg
 import com.guihuabao.Inform
+import com.guihuabao.Persona
 import com.guihuabao.User
 
 class BootStrap {
@@ -17,7 +18,7 @@ class BootStrap {
             if(bookUserInstance.save(flush: true)){
                 print(1)
             }else (
-            print(2)
+                    print(2)
             )
 
         }
@@ -77,13 +78,54 @@ class BootStrap {
             )
         }
 
-
-
-        def destroy = {
-
+        def persona0= Persona.get(0)
+        if(!persona0){
+            persona0=new Persona()
+            persona0.name="管理员"
+            if(persona0.save(flush: true)){
+                print(1)
+            }else (
+                    print(2)
+            )
+        }
+            def persona1= Persona.get(1)
+            if(!persona1){
+                persona1=new Persona()
+                persona1.name="董事长"
+                if(persona1.save(flush: true)){
+                    print(1)
+                }else (
+                        print(2)
+                )
+            }
+        def persona2= Persona.get(2)
+        if(!persona2){
+            persona2=new Persona()
+            persona2.name="经理"
+            if(persona2.save(flush: true)){
+                print(1)
+            }else (
+                    print(2)
+            )
+        }
+        def persona3= Persona.get(3)
+        if(!persona3){
+            persona3=new Persona()
+            persona3.name="员工"
+            if(persona3.save(flush: true)){
+                print(1)
+            }else (
+                    print(2)
+            )
         }
 
 
 
+        def destroy = {
+
+                        }
+
     }
-}
+
+
+                }
