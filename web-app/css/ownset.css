@@ -50,6 +50,7 @@ body{padding:0;margin:0;}
 .sidebar_object{color: #AEB2B7;text-decoration: none;padding: 15px 0px 15px 25px;font-size: 16px;outline: medium none;}
 .sidebar_object .page{ display:inline-block; height:25px; width:20px;background:url("../img/page_icon.png") no-repeat;}
 .sidebar_object span{display:inline-block;}
+.wrapper_reset{width:1694px;margin-top:170px;}
 .wrapper_title{height:45px;border:1px #d2d2d2 solid;background-color:#fff;margin-bottom:17px;}
 .wrapper_title span,.wrapper_title a{font-size:16px;color:#666;}
 .wrapper_title span{margin:9px 0 0 12px;}
@@ -148,8 +149,8 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .pick_page .single_page,.pick_page .double_page{padding-left:25px;}
 .pick_page .single_page i{ position:absolute;left: 5px;top: 6px; background:url("../img/page_1.png") no-repeat;}
 .pick_page .double_page i{ position:absolute;left: 5px;top: 6px; background:url("../img/page_2.png") no-repeat;}
-.hxzs_content{ width:1350px; border:1px solid #d2d2d2; margin:0 auto;  background-color:#f8f8f8; }
-.hxzs_content .book_list{ width:200px; height:650px; overflow:hidden; float:left; background-color:#f8f8f8; }
+.hxzs_content{ width:1640px; border:1px solid #d2d2d2; margin:0 auto;  background-color:#f8f8f8; }
+.hxzs_content .book_list{ width:246px; height:926px; overflow:hidden; float:left; background-color:#f8f8f8; }
 .hxzs_content .book_list h2{ font-size:16px; margin:0; padding:10px 0; text-align:center; border-bottom:1px solid #d2d2d2;}
 .hxzs_content .book_list h2 #year{ border:none; background:none; }
 .hxzs_content .book_list dl{ margin:20px 0;height: 569px; width: 216px; overflow-x:hidden; overflow-y: scroll; background:url("../img/line_img.png") repeat-y 46% 0%; }
@@ -159,9 +160,9 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .hxzs_content .book_list dd.active span{ background:url("../img/wbk.png") no-repeat;}
 .hxzs_content .book_list dd.active{ background-position:50% -158%;}
 /*.hxzs_content .book_show{ height:650px; }*/
-.hxzs_content .book_show,.hxzs_content .zhoubao{ width:1148px; min-height:650px; border-left:1px solid #d2d2d2; background-color:#FFF; padding:15px 20px; float:right; }
+.hxzs_content .book_show,.hxzs_content .zhoubao{ width:1372px; min-height:924px; border-left:1px solid #d2d2d2; background-color:#FFF; padding:15px 20px; float:left; }
 .hxzs_content .book_show .top,.hxzs_content .zhoubao .top{ padding-bottom:15px; margin-bottom:20px; border-bottom:1px solid #d2d2d2; }
-.hxzs_content .book_show .page,.hxzs_content .zhoubao .page{ width:543px; height:548px; padding:20px; float:left; border:1px solid #d2d2d2; }
+.hxzs_content .book_show .page,.hxzs_content .zhoubao .page{ width:650px; height:790px; padding:20px; float:left; border:1px solid #d2d2d2; }
 
 /*------------------ǰ̨ҳ��------------------*/
 .info_content{ border:1px solid #d2d2d2; }
@@ -181,7 +182,7 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .passwordedit .m_box{ width:800px;padding-bottom:20px;background-color:#FFF; border-radius:4px; margin:150px auto 0; }
 .passwordedit .m_box table{margin:0 auto;border-spacing: 20px;border-collapse: separate;}
 /*���뵯�� end*/
-.hxzs_content .book_list .menu_side{ margin:20px 0;height: 569px; width: 216px; overflow-x:hidden; overflow-y: scroll; }
+.hxzs_content .book_list .menu_side{ margin:20px 0;height: 926px; width: 246px; overflow-x:hidden; overflow-y: scroll; }
 .hxzs_content .book_list .menu{ background:url("../img/line_img.png") repeat-y 50% 0%; }
 .hxzs_content .menu>li>span { cursor:pointer; display:block; text-align:right; font-size:16px; width:110px; color:#03a9f4; padding:5px 30px; background:url("../img/b_point.png") no-repeat 100% 50%; }
 .hxzs_content .weeks{ display:none; }

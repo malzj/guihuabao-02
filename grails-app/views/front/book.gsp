@@ -40,7 +40,7 @@
     <!--sidebar end-->
     <!--main content start-->
     <section id="main-content">
-        <section class="wrapper">
+        <section class="wrapper wrapper_reset">
             <div class="hxzs_content clearfix">
                 <div class="book_list">
                     <h2><g:fieldValue bean="${bookInstance}" field="bookName"/></h2>
@@ -98,6 +98,16 @@
     <script src="${resource(dir: 'js', file: 'sparkline-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
+    <script>
+        $(window).bind('resize load', function(){
 
+                $(".wrapper_reset").css("zoom",$(window).width()/1920);
+                $(".wrapper_reset").find().css("zoom",$(window).width()/1920);
+                $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1920+")");
+                $(".wrapper_reset").find().css("-moz-transform-origin","top left");
+
+
+        });
+    </script>
 </body>
 </html>
