@@ -51,18 +51,24 @@
                             <a class="task-order">筛选<i class="fa fa-caret-down"></i></a>
                             <ul>
                                 <li>
-                                    <a class="finished" href="javascript:;">已完成</a>
+                                    <g:link action="fzTask">全部</g:link>
                                 </li>
                                 <li>
-                                    <a class="unfinished" href="javascript:;">未完成</a>
+                                    <g:link action="fzTask" params="[selected: 1]">已完成</g:link>
+                                </li>
+                                <li>
+                                    <g:link action="fzTask" params="[selected: 2]">未完成</g:link>
+                                </li>
+                                <li>
+                                    <g:link action="fzTask" params="[selected: 3]">延期任务</g:link>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="e-list-group">
-                        <ul class="e-list fzalltasklist">
-                            <g:if test="${cyAllTaskInstance}">
-                                <g:each in="${cyAllTaskInstance}" status="i" var="fzAllTaskInfo">
+                        <ul class="e-list">
+                            <g:if test="${cyTaskInstance}">
+                                <g:each in="${cyTaskInstance}" status="i" var="fzAllTaskInfo">
                                     <li>
                                         <span class="mark <g:if test="${fzAllTaskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${fzAllTaskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${fzAllTaskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${fzAllTaskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                         <span class="sn">${i+1}</span>
@@ -80,46 +86,9 @@
                                 <li><span class="mark"></span>没有任务！</li>
                             </g:else>
                         </ul>
-                        <ul class="e-list unfinishedlist" style="display: none">
-                            <g:if test="${cyUnFinishedTaskInstance}">
-                                <g:each in="${cyUnFinishedTaskInstance}" status="i" var="fzAllTaskInfo">
-                                    <li>
-                                        <span class="mark <g:if test="${fzAllTaskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${fzAllTaskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${fzAllTaskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${fzAllTaskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
-                                        <span class="sn">${i+1}</span>
-                                        <span class="title" data-task-id="${fzAllTaskInfo.id}">${fzAllTaskInfo.title}</span>
-                                        <div class="right">
-                                            <span class="hsfinish"><g:link action="taskUpdate" id="${fzAllTaskInfo.id}" params="[version: fzAllTaskInfo.version]"><i class="fa <g:if test="${fzAllTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
-                                            <g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${fzAllTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
-                                            <span class="date f-r">${fzAllTaskInfo.overtime}</span>
-                                        </div>
-                                    </li>
-                                </g:each>
-
-                            </g:if>
-                            <g:else>
-                                <li><span class="mark"></span>没有任务！</li>
-                            </g:else>
-                        </ul>
-                        <ul class="e-list finishedlist" style="display: none">
-                            <g:if test="${cyFinishedTaskInstance}">
-                                <g:each in="${cyFinishedTaskInstance}" status="i" var="fzAllTaskInfo">
-                                    <li>
-                                        <span class="mark <g:if test="${fzAllTaskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${fzAllTaskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${fzAllTaskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${fzAllTaskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
-                                        <span class="sn">${i+1}</span>
-                                        <span class="title" data-task-id="${fzAllTaskInfo.id}">${fzAllTaskInfo.title}</span>
-                                        <div class="right">
-                                            <span class="hsfinish"><g:link action="taskUpdate" id="${fzAllTaskInfo.id}" params="[version: fzAllTaskInfo.version]"><i class="fa <g:if test="${fzAllTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
-                                            <g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${fzAllTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
-                                            <span class="date f-r">${fzAllTaskInfo.overtime}</span>
-                                        </div>
-                                    </li>
-                                </g:each>
-
-                            </g:if>
-                            <g:else>
-                                <li><span class="mark"></span>没有任务！</li>
-                            </g:else>
-                        </ul>
+                    </div>
+                    <div class="pagination">
+                        <g:paginate total="${cyTaskInstanceTotal}" params="[selected: selected]" />
                     </div>
                 </div>
                 <div class="col-cell bfb" style="width:340px;">
@@ -196,15 +165,15 @@
     var Script = function () {
         var doughnutData = [
             {
-                value: ${cyyqTaskInstance.size()},//延期任务
+                value: ${infos.yq},//延期任务
                 color:"#FF7F50"
             },
             {
-                value: ${cyUnFinishedTaskInstance.size()},//未完成数
+                value: ${infos.unfinished},//未完成数
                 color:"#87CEFA"
             },
             {
-                value : ${cyFinishedTaskInstance.size()},//已完成数
+                value : ${infos.finished},//已完成数
                 color : "#32CD32"
             }
         ];
@@ -276,20 +245,6 @@
         $(".taskclose").click(function(){
             $("#task").slideLeftHide(400);
             $("#task .task_content").empty();
-        });
-
-        //筛选
-        $(".toolkit .shaixuan .finished").bind("click",function(){
-            $(this).parent().parent(). slideUp("fast");
-            $(".toolkit .task-order").css("border-bottom","none");
-            $(".e-list-group .finishedlist").siblings().hide();
-            $(".e-list-group .finishedlist").show();
-        });
-        $(".toolkit .shaixuan .unfinished").bind("click",function(){
-            $(this).parent().parent(). slideUp("fast");
-            $(".toolkit .task-order").css("border-bottom","none");
-            $(".e-list-group .unfinishedlist").siblings().hide();
-            $(".e-list-group .unfinishedlist").show();
         });
     })
 </script>
