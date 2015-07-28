@@ -65,6 +65,9 @@ body{padding:0;margin:0;}
 .wrapper_title input[type="submit"]{height:30px;width:30px;border:none;background:url("../img/search_icon.png") no-repeat; position:absolute; top:12px; right:5px;}
 
 .content table{border:1px #d2d2d2 solid;}
+#myfilter{border;none;text-align:center;width:96px;position: relative;}
+#filter {text-align:left;text-indent:20px; position:absolute;top:47px;left:-1px;border:1px solid #d2d2d2;border-top:none;width:160px;margin:0;background:#fff;z-index:2; display:none;padding-top:20px;}
+#filter li{height:40px;line-height:40px; list-style:none; cursor:pointer;}
 /*login footer start*/
 .footer{position:fixed;bottom:0px;width:100%;text-align:center;color:#bbb;padding:15px 0;border-top:1px #c9c9c9 solid;}
 /*login footer end*/
@@ -183,6 +186,8 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .passwordedit .m_box .close{ float:right; padding-top:5px; }
 .passwordedit .m_box{ width:800px;padding-bottom:20px;background-color:#FFF; border-radius:4px; margin:150px auto 0; }
 .passwordedit .m_box table{margin:0 auto;border-spacing: 20px;border-collapse: separate;}
+.passwordedit .m_box ul{margin:28px;}
+.passwordedit .m_box ul li{margin-bottom: 15px;}
 /*���뵯�� end*/
 .hxzs_content .book_list .menu_side{ margin:20px 0;height: 926px; width: 246px; overflow-x:hidden; overflow-y: scroll; }
 .hxzs_content .book_list .menu{ background:url("../img/line_img.png") repeat-y 50% 0%; }
