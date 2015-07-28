@@ -39,7 +39,7 @@ class FrontController {
             if (company.dateUse>date){
                 session.user=companyUser
                 session.company=company
-                redirect(action: "companyUserList")
+                redirect(action: "frontIndex")
             }else {
                 flash.message ="您的公司账号已过期"
                 redirect(action: "index",msg:"您的公司账号已过期")
