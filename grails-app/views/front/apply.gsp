@@ -35,9 +35,7 @@
     #apply_top{width:100% height:50px;text-align:center;background:#fff;border:1px solid #d2d2d2;margin-right:-1px;}
     #apply_top td{border-right:1px solid #d2d2d2;border-bottom:1px solid #d2d2d2;}
 
-    #myfilter{border:none;width:100%;text-align:center;width:96px;border-bottom:#ff0000;}
-    #filter {text-align:left;text-indent:20px; position:absolute;top:49px;left:-1px;border:1px solid #d2d2d2;border-top:none;width:160px;margin:0;background:#fff;z-index:2; display:none;padding-top:20px;}
-    #filter li{height:40px;line-height:40px; list-style:none; cursor:pointer;}
+
     .icon{background:#03a9f4;color:#fff;width:20px;height:20px;display:inline-block;border-radius:50px;margin-right:10px;}
     #apply_tab{font-size:14px;padding:0;margin:20px 0 -1px 0;border:1px solid #d2d2d2;background:#fff;}
     #apply_tab tr{border-bottom:1px solid #d2d2d2;display:block;}
@@ -74,7 +72,7 @@
                     <tr>
                         <td width="106px">我的申请</td>
                         <td style=" position:relative;width:96px;">
-                            <div id="myfilter" href="#"><span id="filter-content">筛选</span><span style="margin-left:20px;"><i class="fa fa-sort-down"></i></span></div>
+                            <div id="myfilter" ><span id="filter-content">排序</span><span style="margin-left:20px;"><i class="fa fa-sort-down"></i></span></div>
                             <ul id="filter">
                                 <li>默认</li>
                                 <li>已通过</li>

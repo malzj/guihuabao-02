@@ -18,7 +18,7 @@
         <!--logo end-->
         <ul class="nav">
             <li><a href="javascript:;"><i class="home"></i>首页</a></li>
-            <li><a href="javascript:;"><i class="aim"></i>目标</a></li>
+            <li><g:link action="user_target"><i class="aim"></i>目标</g:link></li>
             <li><g:link action="taskCreate"><i class="rw"></i>任务</g:link></li>
             <li><g:link action="apply"><i class="fa fa-edit" style="font-size:30px;margin-top:10px;"></i>审批</g:link></li>
             <li><g:link action="myReport"><i class="bg"></i>报告</g:link></li>

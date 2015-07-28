@@ -1151,5 +1151,5 @@ class FrontController {
         }
         [xsTaskInstance: xsTaskInstance,xsTaskInstanceTotal: xsTaskInstanceTotal,selected: selected,infos: infos]
     }
-
+    def user_target(){}
 }
