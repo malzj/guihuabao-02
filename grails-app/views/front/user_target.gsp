@@ -34,6 +34,8 @@
         .tar_title{padding:14px;border-bottom: 1px solid #d2d2d2}
         .tar_content{margin:20px 0;font-size:20px;line-height:56px;}
         .percent{clear: both;width:56px;height:56px;margin-left:10px;text-align:center;line-height:56px;border:3px solid #d2d2d2;border-radius: 50px;}
+        .passwordedit input[type='text']{width:100%;height:38px;border:1px solid #d2d2d2;text-indent: 10px;}
+        .passwordedit input[type='button']{width:82px;height:34px;border:none;background:#03a9f4;color:#fff;}
     </style>
 </head>
 
@@ -44,7 +46,7 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
-    <g:render template="siderbar" />
+    <g:render template="spaside" />
     <!--sidebar end-->
     <!--main content start-->
     <section id="main-content">
@@ -56,18 +58,14 @@
                         <div class="shaixuan">
                             <a class="task-order">排序<i class="fa fa-caret-down"></i></a>
                             <ul>
+
                                 <li>
-                                    <a href="#">默认</a>
+                                    <a href="#">按目标到期时间</a>
                                 </li>
                                 <li>
-                                    <a href="#">按任务到期时间</a>
+                                    <a href="#">按目标创建时间</a>
                                 </li>
-                                <li>
-                                    <a href="#">按任务创建时间</a>
-                                </li>
-                                <li>
-                                    <a href="#">按任务更新时间</a>
-                                </li>
+
                             </ul>
                         </div>
                         <a href="#" id="newapply" class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
@@ -85,7 +83,7 @@
                                     </div>
                                     <div style="font-size:20px;" class="f-r">
 
-                                        <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit"></i></a>
+                                        <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit" id="tar_edit"></i></a>
                                         <a href="#" style="color:#40bdf5"><i class="fa fa-trash-o"></i></a>
                                     </div>
                                 </div>
@@ -109,7 +107,31 @@
                                     </div>
                                     <div style="font-size:20px;" class="f-r">
 
-                                        <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit"></i></a>
+                                        <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit" id="tar_edit"></i></a>
+                                        <a href="#" style="color:#40bdf5"><i class="fa fa-trash-o" id="tar_delete"></i></a>
+                                    </div>
+                                </div>
+
+                                <div class="tar_content clearfix">
+                                    <div class="f-l percent">0%</div>
+                                    <div class="f-l"style="margin-left: 10px;">共<span>1</span>位同事参与</div>
+                                </div>
+                                <div class="clearfix" style="width:188px;margin:0 auto;">
+                                    <span class="btime f-l">2015-04-25</span><span class="etime f-l">2015-04-30</span>
+                                </div>
+
+                            </div>
+
+                            <div class="tar_whole f-l">
+                                <div class="tar_title clearfix" >
+                                    <img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="tar_img1"/>
+                                    <div class="f-l" style="margin-left:10px;">
+                                        <h2 style="font-size:20px;margin:4px;color:#40bdf5;">目标名称</h2>
+                                        负责人：<span>艾瑞特</span>
+                                    </div>
+                                    <div style="font-size:20px;" class="f-r">
+
+                                        <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit" id="tar_edit"></i></a>
                                         <a href="#" style="color:#40bdf5"><i class="fa fa-trash-o"></i></a>
                                     </div>
                                 </div>
@@ -133,7 +155,7 @@
                                     </div>
                                     <div style="font-size:20px;" class="f-r">
 
-                                        <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit"></i></a>
+                                        <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit" id="tar_edit"></i></a>
                                         <a href="#" style="color:#40bdf5"><i class="fa fa-trash-o"></i></a>
                                     </div>
                                 </div>
@@ -157,31 +179,7 @@
                                     </div>
                                     <div style="font-size:20px;" class="f-r">
 
-                                        <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit"></i></a>
-                                        <a href="#" style="color:#40bdf5"><i class="fa fa-trash-o"></i></a>
-                                    </div>
-                                </div>
-
-                                <div class="tar_content clearfix">
-                                    <div class="f-l percent">0%</div>
-                                    <div class="f-l"style="margin-left: 10px;">共<span>1</span>位同事参与</div>
-                                </div>
-                                <div class="clearfix" style="width:188px;margin:0 auto;">
-                                    <span class="btime f-l">2015-04-25</span><span class="etime f-l">2015-04-30</span>
-                                </div>
-
-                            </div>
-
-                            <div class="tar_whole f-l">
-                                <div class="tar_title clearfix" >
-                                    <img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="tar_img1"/>
-                                    <div class="f-l" style="margin-left:10px;">
-                                        <h2 style="font-size:20px;margin:4px;color:#40bdf5;">目标名称</h2>
-                                        负责人：<span>艾瑞特</span>
-                                    </div>
-                                    <div style="font-size:20px;" class="f-r">
-
-                                        <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit"></i></a>
+                                        <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit" id="tar_edit"></i></a>
                                         <a href="#" style="color:#40bdf5"><i class="fa fa-trash-o"></i></a>
                                     </div>
                                 </div>
@@ -234,7 +232,7 @@
             <li class="clearfix">
                 <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
                 <div class="f-l">
-                    <input type="text" name="title" placeholder="添加目标名称" style="width:682px;height:38px;border:1px solid #d2d2d2;margin-top: 5px;"/>
+                    <input type="text" name="title" placeholder="添加目标名称" style="margin-top: 5px;width:690px;"/>
                 </div>
 
             </li>
@@ -257,15 +255,77 @@
                     </tr>
                 </table>
             </li>
+            <li class="clearfix">
+                <div class="f-r">
+                    <input type="button"  value="保存" style="margin-right: 10px;"/>
+                    <input type="button"  value="保存并分解目标" style="width:160px;"/>
+                </div>
+            </li>
         </ul>
     </div>
 </div>
 <!--新建弹层 end-->
-<!--目标详情 start-->
-<div class="passwordedit" id="tar_detail">
+<!--目标分解 start-->
+<div class="passwordedit" id="tar_fj">
     <div class="m_box" style="width:804px;">
         <header class="panel-heading" style="padding:10px 28px;">
             <span><i class="yh"></i>目标分解</span>
+            <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
+        </header>
+
+        <ul>
+
+            <li class="clearfix">
+                <h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务一：<span style="color:#797979;">企业数据报告分析</span></h2>
+                <div class="f-l" style="font-size: 20px;">
+                    <a href="#" style="font-size:20px;"><i class="fa fa-edit"></i></a>
+                    <a href="#" style="font-size:20px;"><i class="fa fa-trash-o"></i></a>
+                </div>
+            </li>
+            <li class="clearfix">
+                <table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">
+                    <tr>
+                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">负责人</th>
+                        <td width="75%"><input  name="fzuid" style="border:none;width:100%"/></td>
+
+                    </tr>
+                    <tr>
+                        <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>
+                        <td>
+                            <input  name="fzuid" style="border:none;width:75%"/>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-bordered f-l" style="border-spacing: 0;width:48%;">
+                    <tr>
+                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>
+                        <td width="75%"><span>2015-06-09</span>—<span>2015-06-09</span></td>
+
+                    </tr>
+                    <tr>
+                        <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
+                        <td>
+                            <span>进行中</span>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="percent-mission">40</span>%)</span></h2>
+            </li>
+            <li class="clearfix">
+                <input type="button" value="提交" class="f-r"  disabled/>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--目标分解 end-->
+
+<!--选择图片 start-->
+<div class="passwordedit" id="select_img">
+    <div class="m_box" style="width:804px;">
+        <header class="panel-heading" style="padding:10px 28px;">
+            <span>选择图片</span>
             <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
         </header>
 
@@ -307,12 +367,186 @@
                 </table>
             </li>
             <li>
-                <h2  style="padding:0;margin: 0 20px 0 0;font-size: 20px;" class="f-l"><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span>40%</span>)</span></h2>
+                <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="percent-mission">40</span>%)</span></h2>
             </li>
             <li class="clearfix">
-                <input type="button" value="提交" class="f-r"/>
+                <input type="button" value="提交" class="f-r"  disabled/>
             </li>
         </ul>
+    </div>
+</div>
+<!--选择图片 end-->
+
+<!--新建任务 start-->
+<div class="passwordedit" id="newmissiondetail">
+    <div class="m_box" style="width:804px;">
+        <header class="panel-heading" style="padding:10px 28px;">
+            <span><i class="yh"></i>新建任务</span>
+            <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
+        </header>
+
+        <ul>
+
+            <li >
+                <input type="text" name="title" placeholder="一句话描述任务"/>
+            </li>
+            <li>
+                <input type="text" name="content" placeholder="添加任务详情"/>
+            </li>
+            <li>
+                <table class="table table-bordered" style="border-spacing: 0;margin-right: 20px;">
+                    <tr>
+                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>
+                        <td width="75%"><a href="#" style="color:#03a9f4;line-height:40px;"><i class="fa fa-plus-square-o" ></i></a></td>
+
+                    </tr>
+                    <tr>
+                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>
+                        <td width="75%"> <input type="text" name="btime" style="width:88px;height:28px;"/>—<input type="text" name="etime" style="width:88px;height:28px;"/></td>
+
+                    </tr>
+                    <tr>
+                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">任务权重</th>
+                        <td width="75%"><input  name="fzuid" style="border:none;width:100%"/></td>
+
+                    </tr>
+                    <tr>
+                        <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
+                        <td>
+                            <span>进行中</span>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+
+            <li class="clearfix">
+                <input type="button" value="确认" class="f-r" style="width:82px;height:34px;border:none;background:#03a9f4;color:#fff;"/>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--新建任务 end-->
+
+<!--目标详情 start-->
+<div class="passwordedit" id="tar_detail" style="position:absolute;overflow: scroll;">
+    <div class="m_box" style="width:804px;overflow: scroll;">
+        <header class="panel-heading" style="padding:10px 28px;">
+            <span>目标详情<i class="fa fa-print" style="margin:0 10px;color:#03a9f4;"></i><i class="fa fa-file-text" style="color:#03a9f4;"></i></span>
+            <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
+        </header>
+
+        <ul>
+
+            <li class="clearfix">
+                <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
+                <h2 class="f-l" style="padding:0;margin: 0 20px 0 0;font-size: 20px;line-height:48px;">企业数据报告</h2>
+            </li>
+            <li>
+                详情：需要人力资源部门配合，周末完成
+            </li>
+            <li>
+                负责人：艾瑞克
+            </li>
+            <li>
+                起止日：2015-04-06—2015-05-19
+            </li>
+
+            <h2 style="padding:10px 0;font-size: 20px;border-bottom: 1px solid #d2d2d2;">目标分解</h2>
+
+            <ul style="padding:0;margin:0;">
+                <li class="clearfix">
+                    <h2 style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务一：<span style="color:#797979;">企业数据报告分析</span></h2>
+
+                    <table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">
+                        <tr>
+                            <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">负责人</th>
+                            <td width="75%"><span></span></td>
+
+                        </tr>
+                        <tr>
+                            <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>
+                            <td>
+                                <span></span>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered f-l" style="border-spacing: 0;width:48%;">
+                        <tr>
+                            <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>
+                            <td width="75%"><span>2015-06-09</span>—<span>2015-06-09</span></td>
+
+                        </tr>
+                        <tr>
+                            <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
+                            <td>
+                                <span>进行中</span>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li class="clearfix">
+                    <h2 style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务一：<span style="color:#797979;">企业数据报告分析</span></h2>
+
+                    <table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">
+                        <tr>
+                            <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">负责人</th>
+                            <td width="75%"><span></span></td>
+
+                        </tr>
+                        <tr>
+                            <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>
+                            <td>
+                                <span></span>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered f-l" style="border-spacing: 0;width:48%;">
+                        <tr>
+                            <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>
+                            <td width="75%"><span>2015-06-09</span>—<span>2015-06-09</span></td>
+
+                        </tr>
+                        <tr>
+                            <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
+                            <td>
+                                <span>进行中</span>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li class="clearfix">
+                    <h2 style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务一：<span style="color:#797979;">企业数据报告分析</span></h2>
+
+                    <table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">
+                        <tr>
+                            <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">负责人</th>
+                            <td width="75%"><span></span></td>
+
+                        </tr>
+                        <tr>
+                            <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>
+                            <td>
+                                <span></span>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered f-l" style="border-spacing: 0;width:48%;">
+                        <tr>
+                            <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>
+                            <td width="75%"><span>2015-06-09</span>—<span>2015-06-09</span></td>
+
+                        </tr>
+                        <tr>
+                            <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
+                            <td>
+                                <span>进行中</span>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+        </ul>
+
     </div>
 </div>
 <!--目标详情 end-->
@@ -340,20 +574,22 @@
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
     <script>
         $(document).ready(function() {
-            /*$(window).bind('resize load', function(){
-
-                $(".wrapper_reset").css("zoom",$(window).width()/1920);
-                $(".wrapper_reset").find().css("zoom",$(window).width()/1920);
-                $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1920+")");
-                $(".wrapper_reset").find().css("-moz-transform-origin","top left");
-
-
-            });*/
+            $("#tar_edit").click(function(){
+                $("#tar_fj").css('display','block');
+                event.stopPropagation();
+            })
+            $("#newmission").click(function(){
+                $("#tar_whole").css('display','none');
+                $("#newmissiondetail").css('display','block');
+            })
             $("#newapply").click(function(){
                 $("#newapplydetail").css("display","block");
             });
             $(".close").click(function(){
                 $("#newapplydetail").css("display","none");
+                $("#tar_detail").css("display","none");
+                $("#newmissiondetail").css('display','none');
+                $("#tar_fj").css('display','none');
             });
             $(".toolkit .task-order").click(function () {
                 var ul = $(".toolkit .shaixuan ul");
@@ -369,9 +605,7 @@
             $(".tar_whole").click(function(){
                 $("#tar_detail").css("display","block");
             })
-            $(".close").click(function(){
-                $("#tar_detail").css("display","none");
-            });
+
             /* $("#newapply").click(function(){
                 $("#newapplydetail").css("display","block");
             });
