@@ -30,7 +30,7 @@
         body{-webkit-text-size-adjust:none;}
         .btime,.etime{width:87px;height:25px;display:block;border:1px solid #d2d2d2;text-align:center;line-height:25px;}
         .btime{margin-right: 12px;}
-        .tar_whole{border:1px solid #d2d2d2;width:250px;height:210px;margin:0 15px 15px 0;}
+        .tar_whole{border:1px solid #d2d2d2;width:250px;height:210px;margin:0 15px 15px 0;cursor:pointer;}
         .tar_title{padding:14px;border-bottom: 1px solid #d2d2d2}
         .tar_content{margin:20px 0;font-size:20px;line-height:56px;}
         .percent{clear: both;width:56px;height:56px;margin-left:10px;text-align:center;line-height:56px;border:3px solid #d2d2d2;border-radius: 50px;}
@@ -242,25 +242,80 @@
                 <textarea name="content" rows="4" placeholder="这里可以添加目标详情" style="width:100%;height:68px;resize: none;"></textarea>
             </li>
             <li>
-            <table width="100%" class="table table-bordered" style="border-spacing: 0;">
-                <tr>
-                    <th style="text-align: center;width:15%;background:#f8f8f8">负责人</th>
-                    <td width="85%"><input  name="fzuid" style="border:none;width:100%"/></td>
+                <table width="100%" class="table table-bordered" style="border-spacing: 0;">
+                    <tr>
+                        <th style="text-align: center;width:15%;background:#f8f8f8">负责人</th>
+                        <td width="85%"><input  name="fzuid" style="border:none;width:100%"/></td>
 
-                </tr>
-                <tr>
-                    <th style="text-align:center;width:15%;background:#f8f8f8" >起止日</th>
-                    <td>
-                        <input type="text" name="btime" style="width:88px;height:28px;"/>-
-                        <input type="text" name="etime" style="width:88px;height:28px;"/>
-                    </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center;width:15%;background:#f8f8f8" >起止日</th>
+                        <td>
+                            <input type="text" name="btime" style="width:88px;height:28px;"/>—<input type="text" name="etime" style="width:88px;height:28px;"/>
+                        </td>
 
-                </tr>
-             </li>
+                    </tr>
+                </table>
+            </li>
         </ul>
     </div>
 </div>
 <!--新建弹层 end-->
+<!--目标详情 start-->
+<div class="passwordedit" id="tar_detail">
+    <div class="m_box" style="width:804px;">
+        <header class="panel-heading" style="padding:10px 28px;">
+            <span><i class="yh"></i>目标分解</span>
+            <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
+        </header>
+
+        <ul>
+
+            <li class="clearfix">
+                <h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;" class="f-l">任务一：<span>企业数据报告分析</span></h2>
+                <div class="f-l" style="font-size: 20px;">
+                    <a href="#" style="font-size:20px;"><i class="fa fa-edit"></i></a>
+                    <a href="#" style="font-size:20px;"><i class="fa fa-trash-o"></i></a>
+                </div>
+            </li>
+            <li class="clearfix">
+                <table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">
+                    <tr>
+                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">负责人</th>
+                        <td width="75%"><input  name="fzuid" style="border:none;width:100%"/></td>
+
+                    </tr>
+                    <tr>
+                        <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>
+                        <td>
+                            <input  name="fzuid" style="border:none;width:75%"/>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-bordered f-l" style="border-spacing: 0;width:48%;">
+                    <tr>
+                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>
+                        <td width="75%"><span>2015-06-09</span>—<span>2015-06-09</span></td>
+
+                    </tr>
+                    <tr>
+                        <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
+                        <td>
+                            <span>进行中</span>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <h2  style="padding:0;margin: 0 20px 0 0;font-size: 20px;" class="f-l"><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span>40%</span>)</span></h2>
+            </li>
+            <li class="clearfix">
+                <input type="button" value="提交" class="f-r"/>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--目标详情 end-->
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
     <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
@@ -311,7 +366,12 @@
                     $(".toolkit .task-order").css("border-bottom", "none");
                 }
         });
-
+            $(".tar_whole").click(function(){
+                $("#tar_detail").css("display","block");
+            })
+            $(".close").click(function(){
+                $("#tar_detail").css("display","none");
+            });
             /* $("#newapply").click(function(){
                 $("#newapplydetail").css("display","block");
             });
