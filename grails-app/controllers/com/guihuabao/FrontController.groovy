@@ -49,7 +49,18 @@ class FrontController {
 
     }
     def frontIndex(){
-
+        def uid = session.user.id
+        def cid = session.company.id
+        def current = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        def now = time.format(current)
+        def order = [sort:"dateCreate",order: "desc"]
+        def todayTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(cid,uid,0,now,now,order)//今天任务
+        def taskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeGreaterThanEquals(cid,uid,0,now,[sort:"overtime",order:"asc"])//即将到期
+        def zhoubaoInstance = Zhoubao.findAllByCidAndUid(cid,uid,order)
+        //公司公告
+        def companyNoticeInstance = CompanyNotice.findAllByCid(cid,order)
+        [todayTaskInstance: todayTaskInstance,taskInstance: taskInstance,zhoubaoInstance: zhoubaoInstance,companyNoticeInstance: companyNoticeInstance]
     }
     def companyUserCreate() {
         def bumenList = Bumen.findAllByCid(session.company.id)
@@ -1152,4 +1163,130 @@ class FrontController {
         [xsTaskInstance: xsTaskInstance,xsTaskInstanceTotal: xsTaskInstanceTotal,selected: selected,infos: infos]
     }
     def user_target(){}
+
+    //公司公告
+    def companyNoticeList(Integer max){
+        def cid = session.company.id
+        params.max = Math.min(max ?: 10, 100)
+        def companyNoticeInstanceList = CompanyNotice.findAllByCid(cid,params,[sort: "dateCreate",order: "desc"])
+        def companyNoticeInstanceTotal = CompanyNotice.countByCid(cid)
+        [companyNoticeInstanceList: companyNoticeInstanceList, companyNoticeInstanceTotal: companyNoticeInstanceTotal]
+    }
+
+    def companyNoticeCreate(){
+        [companyNoticeInstance: new CompanyNotice(params)]
+    }
+
+    def companyNoticeSave() {
+        params.cid = session.company.id
+        params.dateCreate = new Date()
+        def companyNoticeInstance = new CompanyNotice(params)
+        if (!companyNoticeInstance.save(flush: true)) {
+            render(view: "companyNoticeCreate", model: [companyNoticeInstance: companyNoticeInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: 'companyNotice.label', default: 'CompanyNotice'), companyNoticeInstance.id])
+        redirect(action: "companyNoticeShow", id: companyNoticeInstance.id)
+    }
+
+    def companyNoticeShow(Long id,Long version){
+        def cid = session.company.id
+        def companyNoticeInstance = CompanyNotice.findByIdAndCid(id,cid)
+        if (!companyNoticeInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyNotice.label', default: 'CompanyNotice'), id])
+            redirect(action: "companyNoticeList")
+            return
+        }
+
+        [companyNoticeInstance: companyNoticeInstance]
+    }
+
+    def companyNoticeEdit(Long id){
+        def cid = session.company.id
+        def companyNoticeInstance = CompanyNotice.findByIdAndCid(id,cid)
+        if (!companyNoticeInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyNotice.label', default: 'CompanyNotice'), id])
+            redirect(action: "list")
+            return
+        }
+
+        [companyNoticeInstance: companyNoticeInstance]
+    }
+
+    def companyNoticeUpdate(Long id, Long version) {
+        def cid = session.company.id
+        def companyNoticeInstance = CompanyNotice.findByIdAndCid(id,cid)
+        if (!companyNoticeInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyNotice.label', default: 'CompanyNotice'), id])
+            redirect(action: "companyNoticeList")
+            return
+        }
+
+        if (version != null) {
+            if (companyNoticeInstance.version > version) {
+                companyNoticeInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'companyNotice.label', default: 'CompanyNotice')] as Object[],
+                        "Another user has updated this CompanyNotice while you were editing")
+                render(view: "companyNoticeEdit", model: [companyNoticeInstance: companyNoticeInstance])
+                return
+            }
+        }
+
+        companyNoticeInstance.properties = params
+
+        if (!companyNoticeInstance.save(flush: true)) {
+            render(view: "companyNoticeEdit", model: [companyNoticeInstance: companyNoticeInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'companyNotice.label', default: 'CompanyNotice'), companyNoticeInstance.id])
+        redirect(action: "companyNoticeShow", id: companyNoticeInstance.id)
+    }
+
+    def companyNoticeDelete(Long id) {
+        def companyNoticeInstance = CompanyNotice.get(id)
+        if (!companyNoticeInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyNotice.label', default: 'CompanyNotice'), id])
+            redirect(action: "companyNoticeList")
+            return
+        }
+
+        try {
+            companyNoticeInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'companyNotice.label', default: 'CompanyNotice'), id])
+            redirect(action: "companyNoticeList")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'companyNotice.label', default: 'CompanyNotice'), id])
+            redirect(action: "companyNoticeShow", id: id)
+        }
+    }
+    //用户查看公告页面
+    def companyNoticeIndex(Integer max){
+        def cid = session.company.id
+        params.max = Math.min(max ?: 10, 100)
+        def companyNoticeInstanceList = CompanyNotice.findAllByCid(cid,params,[sort: "dateCreate",order: "desc"])
+        def companyNoticeInstanceTotal = CompanyNotice.countByCid(cid)
+        [companyNoticeInstanceList: companyNoticeInstanceList, companyNoticeInstanceTotal: companyNoticeInstanceTotal]
+    }
+    //公告ajaxshow
+    def companyNoticeAjaxShow(){
+        def companyNoticeInstance = CompanyNotice.findByIdAndCid(params.id,session.company.id)
+        def rs = [:]
+        if(companyNoticeInstance){
+            rs.msg = true
+         }else{
+            rs.msg = false
+        }
+
+
+
+        rs<<[companyNoticeInstance:companyNoticeInstance]
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
 }

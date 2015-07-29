@@ -89,17 +89,44 @@
                             <a class="f-r"><i class="fa fa-plus-circle"></i>新建任务</a>
                         </div>
                         <ul class="e-list">
-                            <li>
-                                <span class="mark mark-nomarl"><i></i></span>
-                                <span class="sn">1</span>
-                                <span class="title">任务标题</span>
-                                <div class="right">
-                                    <span class="hsfinish"><i class="fa fa-square-o"></i>标记完成</span>
-                                    <span class="del"><i class="fa fa-trash-o"></i>删除任务</span>
-                                    <span class="date f-r">2015-7-16</span>
-                                </div>
-                            </li>
-                            <li>2345</li>
+                            <g:if test="${todayTaskInstance}">
+                                <g:each in="${todayTaskInstance}" status="i" var="taskInfo">
+                                    <li>
+                                        <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
+                                        <span class="sn">${i+1}</span>
+                                        <span class="title" data-task-id="${taskInfo.id}">${taskInfo.title}</span>
+                                        <div class="right">
+                                            <span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
+                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
+                                            <span class="date f-r">${taskInfo.overtime}</span>
+                                        </div>
+                                    </li>
+                                </g:each>
+
+                            </g:if>
+                            <g:else>
+                                <li><span class="mark"></span>没有任务！</li>
+                            </g:else>
+                        </ul>
+                        <ul class="e-list" style="display: none;">
+                            <g:if test="${taskInstance}">
+                                <g:each in="${taskInstance}" status="i" var="taskInfo">
+                                    <li>
+                                        <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
+                                        <span class="sn">${i+1}</span>
+                                        <span class="title" data-task-id="${taskInfo.id}">${taskInfo.title}</span>
+                                        <div class="right">
+                                            <span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
+                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
+                                            <span class="date f-r">${taskInfo.overtime}</span>
+                                        </div>
+                                    </li>
+                                </g:each>
+
+                            </g:if>
+                            <g:else>
+                                <li><span class="mark"></span>没有任务！</li>
+                            </g:else>
                         </ul>
                     </div>
                     <div class="index-group">
@@ -130,33 +157,61 @@
                     <div class="index-group mt10">
                         <div class="index-head">
                             <ul>
-                                <li class="on"><i class="apply"></i><span>公司公告</span></li>
+                                <li class="on"><i class="notice"></i><span>公司公告</span></li>
                             </ul>
-                            <a class="f-r">查看更多</a>
+                            <g:link class="f-r" action="companyNoticeIndex">查看更多</g:link>
                         </div>
                         <ul class="e-list">
-                            <li>1234</li>
-                            <li>2345</li>
+                            <g:if test="${companyNoticeInstance}">
+                                <g:each in="${companyNoticeInstance}" status="i" var="companyNoticeInfo">
+                                    <li>
+                                        <span class="mark"></span>
+                                        <span class="sn">${i+1}</span>
+                                        <span class="title"><g:link action="companyNoticeIndex" id="${companyNoticeInstance.id}">${companyNoticeInfo.title}</g:link></span>
+                                        <div class="right">
+                                            <span class="date f-r">${companyNoticeInfo.dateCreate.format("yyyy-MM-dd")}</span>
+                                        </div>
+                                    </li>
+                                </g:each>
+
+                            </g:if>
+                            <g:else>
+                                <li><span class="mark"></span>没有周报！</li>
+                            </g:else>
                         </ul>
                     </div>
                     <div class="index-group">
                         <div class="index-head">
                             <ul>
-                                <li class="on"><i class="apply"></i><span>我的报告</span></li>
+                                <li class="on"><i class="report"></i><span>我的报告</span></li>
                             </ul>
                             <a class="f-r">查看更多</a>
                             <span class="f-r">|</span>
-                            <gLink class="f-r" action="myReport"><i class="fa fa-plus-circle"></i>撰写报告</gLink>
+                            <g:link class="f-r" action="myReport"><i class="fa fa-plus-circle"></i>撰写报告</g:link>
                         </div>
                         <ul class="e-list">
-                            <li>1234</li>
-                            <li>2345</li>
+                            <g:if test="${zhoubaoInstance}">
+                                <g:each in="${zhoubaoInstance}" status="i" var="zhoubaoInfo">
+                                    <li>
+                                        <span class="mark"></span>
+                                        <span class="sn">${i+1}</span>
+                                        <span class="title"><g:link action="reportShow" params="[year: zhoubaoInfo.year,month: zhoubaoInfo.month,week: zhoubaoInfo.week]">第${zhoubaoInfo.month.toInteger()+1}月第${zhoubaoInfo.week}周周报</g:link></span>
+                                        <div class="right">
+                                            <span class="date f-r">${zhoubaoInfo.dateCreate}</span>
+                                        </div>
+                                    </li>
+                                </g:each>
+
+                            </g:if>
+                            <g:else>
+                                <li><span class="mark"></span>没有周报！</li>
+                            </g:else>
                         </ul>
                     </div>
                     <div class="index-group">
                         <div class="index-head">
                             <ul>
-                                <li class="on"><i class="apply"></i><span>参与目标</span></li>
+                                <li class="on"><i class="target"></i><span>参与目标</span></li>
                             </ul>
                             <a class="f-r">查看更多</a>
                             <span class="f-r">|</span>
@@ -315,7 +370,14 @@
             var playstatus=$(this).attr("data-playstatus");
             $("#playstatus").val(playstatus);
         });
-
+        $(".index-group .index-head ul li").bind("click",function(){
+            var $this=$(this);
+            var x=$this.index();
+            $this.siblings().removeClass("on");
+            $this.addClass("on");
+            $this.parent().parent().siblings().css("display","none");
+            $this.parent().parent().siblings(".e-list:eq("+x+")").css("display","block");
+        })
         //详情滑动框
         $(".e-list-group .e-list .title").click(function(){
             var $this=$(this)

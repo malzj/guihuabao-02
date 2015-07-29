@@ -242,7 +242,7 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .col-tb>[class^="col-"],.col>[class*="col-"]{display:table-cell; vertical-align:top; padding-right:10px; }
 .col-cell{ position:relative;-webkit-transition:width .15s linear;-o-transition:width .15s linear;transition:width .15s linear; }
 .toolkit{ height:46px; font-size:16px; background-color:#FFF; border:1px solid #d2d2d2; }
-.toolkit span{ margin:0 18px; }
+.toolkit span{ margin:0 18px; line-height: 46px; }
 .toolkit .shaixuan{ display:inline-block; }
 .toolkit a{ display:inline-block; color:#797979; line-height:16px;padding:14px 18px;border-left:1px #d2d2d2 solid;border-right:1px #d2d2d2 solid;}
 .toolkit a i{color:#03a9f4;margin-right:5px;}
@@ -308,7 +308,7 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 #task{ position:absolute; width:1000px; border:1px solid #d2d2d2; background-color:#fff;-webkit-box-shadow:-5px 0px 4px 0px #D5D5D2;box-shadow:-5px 0px 4px 0px #D5D5D2; min-height:523px; right:0; top:109px; }
 #task .task_hearder{ height:40px; margin-bottom:10px; padding:0 30px; line-height:40px; border-bottom:1px solid #d2d2d2; background-color:#efefef;}
 #task .task_hearder .taskclose{ line-height:40px; float:right; margin-right:20px; margin-top:10px; }
-#task .task_line{ height:40px;line-height:40px;padding:0 30px;border-bottom:1px solid #d2d2d2; }
+#task .task_line{ min-height:40px;line-height:40px;padding:0 30px;border-bottom:1px solid #d2d2d2; }
 #task .task_line .title,#task .task_line .content{ font-size:16px; }
 #task .task_line .font_blue{ color:#27bdff; }
 
@@ -325,8 +325,11 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .index-group .index-head ul li{ position:relative; cursor:pointer; display:inline-block; height:46px; padding:0 15px; border-right:1px solid #d2d2d2; font-size:16px; letter-spacing:normal; word-spacing:normal; *display:inline; zoom:1 }
 .index-group .index-head ul li.on{ border-right:1px solid #d2d2d2; background-color:#f8f8f8; background-color:#FFF; border-bottom:1px solid #FFF; }
 .index-group .index-head ul li span{ padding-left:25px; }
-.index-group .index-head ul li i{ position:absolute; background:url("../img/index_icon.png") no-repeat; display:block; height:24px; width:24px; top:10px; left:10px; }
-.index-group .index-head ul li {}
+.index-group .index-head ul li i{ position:absolute; background:url("../img/index_icon.png") no-repeat; display:block; height:24px; width:24px; top:10px; left:10px; }.index-group .index-head ul li .task{ background-position:20% 0%;}
+.index-group .index-head ul li .apply{ background-position:40% 0%;}
+.index-group .index-head ul li .notice{ background-position:60% 0%;}
+.index-group .index-head ul li .report{ background-position:80% 0%;}
+.index-group .index-head ul li .target{ background-position:100% 0%;}
 .index-group .index-head ul{letter-spacing:-4px; word-spacing:-4px; font-size:0; margin:0; padding:0; display:inline;}
 .index-group .index-head a{ padding:0 10px; color:#a5a5a5; }
 .index-group .index-head a i{ margin-right:5px; color:#03a9f4; }

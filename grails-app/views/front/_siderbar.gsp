@@ -21,6 +21,11 @@
                     <span>权限管理</span>
                 </g:link>
             </li>
+        <li>
+            <g:link controller="front" action="companyNoticeList">
+                <span>公司公告</span>
+            </g:link>
+        </li>
         </ul>
         <!-- sidebar menu end-->
     </div>
