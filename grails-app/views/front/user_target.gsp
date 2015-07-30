@@ -57,16 +57,10 @@
                             <a class="task-order">排序<i class="fa fa-caret-down"></i></a>
                             <ul>
                                 <li>
-                                    <a href="#">默认</a>
+                                    <g:link action="user_target" params="[selected: 1]">按目标到期时间</g:link>
                                 </li>
                                 <li>
-                                    <a href="#">按任务到期时间</a>
-                                </li>
-                                <li>
-                                    <a href="#">按任务创建时间</a>
-                                </li>
-                                <li>
-                                    <a href="#">按任务更新时间</a>
+                                    <g:link action="user_target" params="[selected: 2]">按目标创建时间</g:link>
                                 </li>
                             </ul>
                         </div>
@@ -76,12 +70,13 @@
                         <div style="margin-top:20px;" class="clearfix">
 
 
+                            <g:each in="${targetInstanceList}" var="targetInstance">
                             <div class="tar_whole f-l">
                                 <div class="tar_title clearfix" >
                                     <img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="tar_img1"/>
                                     <div class="f-l" style="margin-left:10px;">
-                                        <h2 style="font-size:20px;margin:4px;color:#40bdf5;">目标名称</h2>
-                                        负责人：<span>艾瑞特</span>
+                                        <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${targetInstance.title}</h2>
+                                        负责人：<span>${com.guihuabao.CompanyUser.findByIdAndCid(targetInstance.fzuid,session.company.id).username}</span>
                                     </div>
                                     <div style="font-size:20px;" class="f-r">
 
@@ -95,10 +90,11 @@
                                     <div class="f-l"style="margin-left: 10px;">共<span>1</span>位同事参与</div>
                                 </div>
                                 <div class="clearfix" style="width:188px;margin:0 auto;">
-                                    <span class="btime f-l">2015-04-25</span><span class="etime f-l">2015-04-30</span>
+                                    <span class="btime f-l">${targetInstance.btime}</span><span class="etime f-l">${targetInstance.etime}</span>
                                 </div>
 
                             </div>
+                            </g:each>
 
                             <div class="tar_whole f-l">
                                 <div class="tar_title clearfix" >

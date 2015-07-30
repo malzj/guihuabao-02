@@ -84,7 +84,7 @@
                                 <li class="on"><i class="task"></i><span>今天任务</span></li>
                                 <li>即将到期任务</li>
                             </ul>
-                            <a class="f-r">查看更多</a>
+                            <g:link class="f-r" action="taskCreate">查看更多</g:link>
                             <span class="f-r">|</span>
                             <a class="f-r"><i class="fa fa-plus-circle"></i>新建任务</a>
                         </div>

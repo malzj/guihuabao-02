@@ -4,6 +4,7 @@ import grails.converters.JSON
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.multipart.MultipartFile
 
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.logging.Logger
 
@@ -509,11 +510,75 @@ class FrontController {
     }
     def reportShow(){
         Calendar c = Calendar.getInstance()
+        c.setMinimalDaysInFirstWeek(7)
         def year = c.get(Calendar.YEAR)
         def month =c.get(Calendar.MONTH)
-        def week = c.get(Calendar.WEEK_OF_MONTH)
+        def week = c.get(Calendar.DAY_OF_WEEK_IN_MONTH)
+        def we = c.getActualMaximum(Calendar.DAY_OF_WEEK_IN_MONTH)
+        Calendar q = Calendar.getInstance();
+        q.set(Calendar.YEAR,year); // 2010年
+        q.setMinimalDaysInFirstWeek(7)
+        def ddd=0
+        for(def s =0;s<12;s++){
+
+            q.set(Calendar.MONTH, s); // 6 月
+            c.set(Calendar.MONTH,s)
+            c.set(Calendar.DATE,29)
+            System.out.println("------------" + 2015 + "年" + (s + 1) + "月的天数和周数-------------");
+            System.out.println("天数：" + q.getActualMaximum(Calendar.DAY_OF_MONTH));
+            System.out.println("周数：" + c.get(Calendar.WEEK_OF_MONTH)+"第几周"+c.get(Calendar.DAY_OF_WEEK_IN_MONTH));
+            def x = q.getActualMaximum(Calendar.WEEK_OF_MONTH)
+            ddd=ddd+x
+        }
+        print(ddd+"-------------------")
+        def i=0
+        def n
+        def mon
+        def dateInfo = []
+
+//        for(i;i<12;i++){
+//            def weekInfo = []
+//            c.set(Calendar.MONTH,i)
+//            mon = c.getActualMaximum(Calendar.WEEK_OF_MONTH)
+//            n=1
+//            for(n;n<=mon;n++){
+//                weekInfo<<n
+//            }
+//            dateInfo<<weekInfo
+//        }
+
+//        q.setFirstDayOfWeek(Calendar.MONDAY);
+//      q.setMinimalDaysInFirstWeek(7);
+//        for(def s =0;s<12;s++){
+//
+//            q.set(Calendar.MONTH, s); // 6 月
+//            System.out.println("------------" + q.get(Calendar.YEAR,2015) + "年" + (s + 1) + "月的天数和周数-------------");
+//            System.out.println("天数：" + q.getActualMaximum(Calendar.DAY_OF_MONTH));
+//            System.out.println("周数：" + q.getActualMaximum(Calendar.WEEK_OF_MONTH));
+//        }
+//        def vv=[]
+//        def size=0
+//        Calendar q = Calendar.getInstance();
+//            q.setFirstDayOfWeek(Calendar.MONDAY);
+//        q.setMinimalDaysInFirstWeek(7);
+//        q.set(Calendar.YEAR,c.get(Calendar.YEAR)); // 2010年
+//        for(def s=0;s<12;s++){
+//        def cc=[]
+//
+//
+//            q.set(Calendar.MONTH,s); // 6 月
+//            def ll = q.getActualMaximum(Calendar.WEEK_OF_MONTH)
+//            System.out.println("周数：" + q.getActualMaximum(Calendar.WEEK_OF_MONTH));
+//            size=size+ll
+//
+//            for (def d=0;d<ll;d++){
+//
+//                   cc<<d
+//            }
+//            vv<<cc
+//        }
+//        print(size+"----------------")
         def month1=["一","二","三","四","五","六","七","八","九","十","十一","十二"]
-        def week1=[1,2,3,4]
         def n_year=params.year.toInteger()
         def n_month=params.month.toInteger()
         def n_week=params.week.toInteger()
@@ -523,7 +588,48 @@ class FrontController {
         }
 
         def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(session.user.id.toLong(),session.company.id.toLong(),n_year,n_month,n_week)
-        [myReportInfo: myReportInfo,year: n_year,month: n_month,week: n_week,month1:month1,week1:week1]
+        [myReportInfo: myReportInfo,year: n_year,month: n_month,week: n_week,month1:month1,dateInfo:dateInfo]
+    }
+
+    //判断时间是第几周(年月同时)
+    def weekJudge(){
+        Calendar c = Calendar.getInstance()
+        def year = c.get(Calendar.YEAR)
+        def date = new Date()
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+        Date date1 = dateFormat.parse(date);
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date1);
+        int days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        System.out.println("days:" + days);
+        int count = 0;
+        for (int i = 1; i <= days; i++) {
+            DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+            Date date2 = dateFormat1.parse(date + "-" + i);
+            calendar.clear();
+            calendar.setTime(date2);
+            int k = new Integer(calendar.get(Calendar.DAY_OF_WEEK));
+            if (k == 1) {// 若当天是周日
+                count++;
+                System.out.println("-----------------------------------");
+                System.out.println("第" + count + "周");
+                if (i - 6 <= 1) {
+                    System.out.println("本周开始日期:" + date + "-" + 1);
+                } else {
+                    System.out.println("本周开始日期:" + date + "-" + (i - 6));
+                }
+                System.out.println("本周结束日期:" + date + "-" + i);
+                System.out.println("-----------------------------------");
+            }
+            if (k != 1 && i == days) {// 若是本月最好一天，且不是周日
+                count++;
+                System.out.println("-----------------------------------");
+                System.out.println("第" + count + "周");
+                System.out.println("本周开始日期:" + date + "-" + (i - k + 2));
+                System.out.println("本周结束日期:" + date + "-" + i);
+                System.out.println("-----------------------------------");
+            }
+        }
     }
 
     def reportUpdate(Long id, Long cid, Long version){
@@ -1162,8 +1268,6 @@ class FrontController {
         }
         [xsTaskInstance: xsTaskInstance,xsTaskInstanceTotal: xsTaskInstanceTotal,selected: selected,infos: infos]
     }
-    def user_target(){}
-
     //公司公告
     def companyNoticeList(Integer max){
         def cid = session.company.id
@@ -1288,5 +1392,23 @@ class FrontController {
             render "${params.callback}(${rs as JSON})"
         } else
             render rs as JSON
+    }
+
+    //目标列表
+    def user_target(){
+        params.max = Math.min(max ?: 10, 100)
+        def cid = session.company.id
+        def selected = params.selected
+        def targetInstanceList
+        def targetInstanceTotal
+        if(selected=="1"){
+            targetInstanceList = Target.findAllByCid(cid,params,[sort: "etime",order: "asc"])
+            targetInstanceTotal = Target.countByCid(cid)
+        }else if(selected=="2"){
+            targetInstanceList = Target.findAllByCid(cid,params,[sort: "dateCreate",order:'desc'])
+            targetInstanceTotal = Target.countByCid(cid)
+        }
+
+        [targetInstanceList: targetInstanceList, targetInstanceTotal: targetInstanceTotal]
     }
 }
