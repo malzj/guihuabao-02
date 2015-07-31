@@ -1,14 +1,14 @@
 package com.guihuabao
 
 class User {
-    String name
+    String name  //真实姓名
     String city
     String phone
-    Integer cid
+    Integer cid     //公司id
     String address
     String username
     String password
-    Integer rid
+    Integer rid     //权限
     Date dateCreat
 
     static constraints = {

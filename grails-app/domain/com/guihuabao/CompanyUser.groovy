@@ -5,12 +5,12 @@ class CompanyUser {
     String password
     Integer cid
     Integer rid
-    Integer pid
+    Integer pid //角色 boss 经理  员工
     String name
     String img
     String sex
     String phone
-    Integer bid
+    Integer bid //部门
     Date dateCreat
 
     static constraints = {

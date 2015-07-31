@@ -3,13 +3,14 @@ package com.guihuabao
 class Target {
     String cid
     String fzuid
-    String btime
+    String begintime
     String etime
     String ctime
     String content
     String title
     String percent
     String img
+    String status
     static hasMany = [mission:Mission]
     static constraints = {
         cid(nullable: true)
@@ -21,6 +22,6 @@ class Target {
         title(nullable: true)
         percent(nullable: true)
         img(nullable: true)
-
+        status(nullable:true)
     }
 }

@@ -26,6 +26,11 @@
     <link href="${resource(dir: 'css', file: 'style-responsive.css')}" rel="stylesheet">
 
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="${resource(dir: 'assets/bootstrap-datepicker/css', file: 'datepicker.css')}" />
+    <link rel="stylesheet" type="text/css" href="${resource(dir: 'assets/bootstrap-datetimepicker/css', file: 'datetimepicker.css')}" />
+    <link rel="stylesheet" type="text/css" href="${resource(dir: 'assets/bootstrap-daterangepicker', file: 'daterangepicker-bs3.css')}" />
+    <link rel="stylesheet" type="text/css" href="${resource(dir: 'assets/bootstrap-timepicker/compiled', file: 'timepicker.css')}" />
     <style>
         body{-webkit-text-size-adjust:none;}
         .btime,.etime{width:87px;height:25px;display:block;border:1px solid #d2d2d2;text-align:center;line-height:25px;}
@@ -73,16 +78,15 @@
                     <div class="content">
                         <div style="margin-top:20px;" class="clearfix">
 
-
+                        <g:each in="${targetList}" var="tar">
                             <div class="tar_whole f-l">
                                 <div class="tar_title clearfix" >
                                     <img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="tar_img1"/>
                                     <div class="f-l" style="margin-left:10px;">
-                                        <h2 style="font-size:20px;margin:4px;color:#40bdf5;">目标名称</h2>
-                                        负责人：<span>艾瑞特</span>
+                                        <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${tar.title}</h2>
+                                        负责人：<span>${tar.fzuid}</span>
                                     </div>
                                     <div style="font-size:20px;" class="f-r">
-
                                         <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit" id="tar_edit"></i></a>
                                         <a href="#" style="color:#40bdf5"><i class="fa fa-trash-o"></i></a>
                                     </div>
@@ -227,7 +231,7 @@
             <span><i class="yh"></i>添加新目标</span>
             <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
         </header>
-
+        <g:form url="[controller:'front',action:'targetSave']">
         <ul>
             <li class="clearfix">
                 <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
@@ -249,7 +253,8 @@
                     <tr>
                         <th style="text-align:center;width:15%;background:#f8f8f8" >起止日</th>
                         <td>
-                            <input type="text" name="btime" style="width:88px;height:28px;"/>—<input type="text" name="etime" style="width:88px;height:28px;"/>
+                            %{--<input type="text" name="btime" style="width:88px;height:28px;"/>—<input type="text" name="etime" style="width:88px;height:28px;"/>--}%
+                            <input id="startdate" name="bigentime" value="" readonly="" class="default-date-picker" type="text" style="width:100px;">-<input id="enddate" name="overtime" value="" readonly="" class="form_datetime" type="text" style="width:133px;">
                         </td>
 
                     </tr>
@@ -262,6 +267,7 @@
                 </div>
             </li>
         </ul>
+        </g:form>
     </div>
 </div>
 <!--新建弹层 end-->
@@ -314,7 +320,7 @@
                 <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="percent-mission">40</span>%)</span></h2>
             </li>
             <li class="clearfix">
-                <input type="button" value="提交" class="f-r"  disabled/>
+                <input type="submit" value="提交" class="f-r"  disabled/>
             </li>
         </ul>
     </div>
@@ -401,8 +407,8 @@
 
                     </tr>
                     <tr>
-                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>
-                        <td width="75%"> <input type="text" name="btime" style="width:88px;height:28px;"/>—<input type="text" name="etime" style="width:88px;height:28px;"/></td>
+                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;line-height: 30px;">起止日</th>
+                        <td width="75%"> <input id="startdate" name="bigentime" value="" readonly="" class="default-date-picker" type="text" style="width:100px;">-<input id="enddate" name="overtime" value="" readonly="" class="form_datetime" type="text" style="width:133px;"></td>
 
                     </tr>
                     <tr>
@@ -561,8 +567,14 @@
     <script src="${resource(dir: 'js', file: 'owl.carousel.js')}" ></script>
     <script src="${resource(dir: 'js', file: 'jquery.customSelect.min.js')}" ></script>
     <script src="${resource(dir: 'js', file: 'respond.min.js')}" ></script>
-
-    <!--right slidebar-->
+    <script src="${resource(dir: 'js', file: 'advanced-form-components.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'assets/bootstrap-datepicker/js', file: 'bootstrap-datepicker.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'assets/bootstrap-datetimepicker/js', file: 'bootstrap-datetimepicker.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'assets/bootstrap-daterangepicker', file: 'moment.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'assets/bootstrap-daterangepicker', file: 'daterangepicker.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'assets/bootstrap-colorpicker/js', file: 'bootstrap-colorpicker.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'assets/bootstrap-timepicker/js', file: 'bootstrap-timepicker.js')}"></script>
+<!--right slidebar-->
     <script src="${resource(dir: 'js', file: 'slidebars.min.js')}"></script>
 
     <!--common script for all pages-->
@@ -572,6 +584,7 @@
     <script src="${resource(dir: 'js', file: 'sparkline-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
+
     <script>
         $(document).ready(function() {
             $("#tar_edit").click(function(){

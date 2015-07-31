@@ -1162,7 +1162,6 @@ class FrontController {
         }
         [xsTaskInstance: xsTaskInstance,xsTaskInstanceTotal: xsTaskInstanceTotal,selected: selected,infos: infos]
     }
-    def user_target(){}
 
     //公司公告
     def companyNoticeList(Integer max){
@@ -1288,5 +1287,140 @@ class FrontController {
             render "${params.callback}(${rs as JSON})"
         } else
             render rs as JSON
+    }
+    //目标
+    def user_target(){
+        def uid=session.user.id;
+        def cid=session.user.cid;
+        def targetInstance;
+
+    }
+    def targetCreate() {
+        [targetInstance: new Target(params)]
+    }
+    def targetSave(){
+        def targetInstance = new Target(params)
+        targetInstance.cid = session.company.id
+        targetInstance.fzuid = session.user.id
+        targetInstance.status = 0
+        targetInstance.percent=0
+        targetInstance.ctime = new Date()
+
+
+        if (!targetInstance.save(flush: true)) {
+            render(view: "targetCreate", model: [targetInstance: targetInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
+        redirect(action: "targetShow", id: targetInstance.id)
+    }
+    def targetShow(Long id) {
+        def targetInstance = Target.get(id)
+        if (!targetInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
+            redirect(action: "targetList")
+            return
+        }
+
+        [targetInstance: targetInstance]
+    }
+
+    def targEtedit(Long id) {
+        def targetInstance = Target.get(id)
+        if (!targetInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
+            redirect(action: "targetList")
+            return
+        }
+
+        [targetInstance: targetInstance]
+    }
+
+    def targetupdate(Long id, Long version) {
+        def targetInstance = Target.get(id)
+        if (!targetInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
+            redirect(action: "targetList")
+            return
+        }
+
+        if (version != null) {
+            if (targetInstance.version > version) {
+                targetInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'target.label', default: 'Target')] as Object[],
+                        "Another user has updated this Target while you were editing")
+                render(view: "targetEdit", model: [targetInstance: targetInstance])
+                return
+            }
+        }
+
+        targetInstance.properties = params
+
+        if (!targetInstance.save(flush: true)) {
+            render(view: "targetEdit", model: [targetInstance: targetInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
+        redirect(action: "targetShow", id: targetInstance.id)
+    }
+
+    def targetdelete(Long id) {
+        def targetInstance = Target.get(id)
+        if (!targetInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
+            redirect(action: "targetEdit")
+            return
+        }
+
+        try {
+            targetInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'target.label', default: 'Target'), id])
+            redirect(action: "targetEdit")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'target.label', default: 'Target'), id])
+            redirect(action: "targetEdit", id: id)
+        }
+    }
+    def targetList(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def cid =session.user.cid
+        def fzuid = session.user.id
+        def selected = params.selected
+        def order = [sort:"dateCreate",order: "desc"]
+        def targetInstance
+        def targetInstanceTotal
+        def infos=[:]
+        infos.uid = uid
+        infos.cid = cid
+        infos.yq = Target.findByCidAndFzuidAndStatus(cid,fzuid,0)
+        if(selected=="1"){
+            targetInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,1,params,order)
+            targetInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,1,order)
+        }else if(selected=="2"){
+            xsTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,0,params,order)
+            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,0,order)
+        }
+        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected,infos: infos]
+    }
+    def missionSave(Long id){
+        def missionInstance=new Mission(params)
+        missionInstance.target=Target.get(id)
+        missionInstance.bid=
+        missionInstance.dateCreate=new Date()
+        missionInstance.
+                status(nullable: true)
+        tid(nullable:true)
+        title(nullable: true)
+        content(nullable: true)
+        playuid(nullable: true)
+        cid(nullable: true)
+        bid(nullable: true)
+        begintime(nullable: true)
+        overtime(nullable: true)
+        overhour(nullable: true)
+        dateCreate(nullable: true)
     }
 }
