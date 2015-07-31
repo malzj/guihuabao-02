@@ -5,7 +5,7 @@ class Target {
     String fzuid
     String begintime
     String etime
-    String ctime
+    Date dateCreate
     String content
     String title
     String percent
@@ -17,7 +17,7 @@ class Target {
         fzuid(nullable: true)
         btime(nullable: true)
         etime(nullable: true)
-        ctime(nullable: true)
+        dateCreate(nullable: true)
         content(nullable: true)
         title(nullable: true)
         percent(nullable: true)

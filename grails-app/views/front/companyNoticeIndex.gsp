@@ -41,7 +41,7 @@
     <aside>
         <div id="sidebar"  class="nav-collapse ">
             <div class="sidebar_object">
-                <i class="page"></i>
+                <i class="fa fa-calendar-o"></i>
                 公司公告
             </div>
         </div>

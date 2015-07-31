@@ -65,10 +65,11 @@
                             <ul>
 
                                 <li>
-                                    <a href="#">按目标到期时间</a>
+                                    <g:link action="user_target" params="[selected: 1]">按目标到期时间</g:link>
                                 </li>
                                 <li>
-                                    <a href="#">按目标创建时间</a>
+                                    <g:link action="user_target" params="[selected: 2]">按目标创建时间</g:link>
+
                                 </li>
 
                             </ul>
@@ -78,13 +79,17 @@
                     <div class="content">
                         <div style="margin-top:20px;" class="clearfix">
 
-                        <g:each in="${targetList}" var="tar">
+
+
+                            <g:each in="${targetInstanceList}" var="targetInstance">
+
                             <div class="tar_whole f-l">
                                 <div class="tar_title clearfix" >
                                     <img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="tar_img1"/>
                                     <div class="f-l" style="margin-left:10px;">
-                                        <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${tar.title}</h2>
-                                        负责人：<span>${tar.fzuid}</span>
+
+                                        <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${targetInstance.title}</h2>
+                                        负责人：<span>${com.guihuabao.CompanyUser.findByIdAndCid(targetInstance.fzuid,session.company.id).username}</span>
                                     </div>
                                     <div style="font-size:20px;" class="f-r">
                                         <a href="#" style="margin-left: 10px;color:#40bdf5"><i class="fa fa-edit" id="tar_edit"></i></a>
@@ -97,10 +102,11 @@
                                     <div class="f-l"style="margin-left: 10px;">共<span>1</span>位同事参与</div>
                                 </div>
                                 <div class="clearfix" style="width:188px;margin:0 auto;">
-                                    <span class="btime f-l">2015-04-25</span><span class="etime f-l">2015-04-30</span>
+                                    <span class="btime f-l">${targetInstance.btime}</span><span class="etime f-l">${targetInstance.etime}</span>
                                 </div>
 
                             </div>
+                            </g:each>
 
                             <div class="tar_whole f-l">
                                 <div class="tar_title clearfix" >

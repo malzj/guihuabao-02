@@ -50,19 +50,17 @@
                     </h2>
                     <div class="menu_side">
                         <ul class="menu">
-                        %{--<g:while test="${i<12}">--}%
-                        %{--<%i++%>--}%
-                            <g:each status="k" in="${month1}" var="s" >
+
+                            <g:each status="k" in="${dateInfo}" var="s" >
                                 <li>
-                                    <span>${s}月</span>
-                                    <ul class="weeks <g:if test="${s==month1[month]}">on</g:if>">
-                                        <g:each in="${week1}" var="i">
-                                            <li <g:if test="${i==week&&s==month1[month]}">class="active"</g:if> ><a href="javascript:;" data-month="${k}" data-week="${i}"><span>第${i}周</span></a></li>
+                                    <span>${month1[k]}月</span>
+                                    <ul class="weeks <g:if test="${k==month}">on</g:if>">
+                                        <g:each in="${s}" var="i">
+                                            <li <g:if test="${i==week&&k==month}">class="active"</g:if> ><a href="javascript:;" data-month="${k}" data-week="${i}"><span>第${i}周</span></a></li>
                                         </g:each>
                                     </ul>
                                 </li>
                             </g:each>
-                        %{--</g:while>--}%
                         %{--<li>--}%
                         %{--<span>2月</span>--}%
                         %{--<ul class="weeks">--}%
