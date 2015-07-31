@@ -591,12 +591,12 @@ class FrontController {
         [myReportInfo: myReportInfo,year: n_year,month: n_month,week: n_week,month1:month1,dateInfo:dateInfo]
     }
 
-    //判断时间是第几周(年月同时)
-    def weekJudge(){
-        Calendar c = Calendar.getInstance()
-        def year = c.get(Calendar.YEAR)
-        def date = new Date()
+    //每月周数(年月同时)
+    def weekOfMonth(){
+        def dateInfo = []
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+        DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+        def date = dateFormat.format(new Date())
         Date date1 = dateFormat.parse(date);
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date1);
@@ -608,30 +608,55 @@ class FrontController {
             Date date2 = dateFormat1.parse(date + "-" + i);
             calendar.clear();
             calendar.setTime(date2);
+            def weekbegin
+            def weekend
             int k = new Integer(calendar.get(Calendar.DAY_OF_WEEK));
             if (k == 1) {// 若当天是周日
-                count++;
+
                 System.out.println("-----------------------------------");
-                System.out.println("第" + count + "周");
-                if (i - 6 <= 1) {
-                    System.out.println("本周开始日期:" + date + "-" + 1);
-                } else {
-                    System.out.println("本周开始日期:" + date + "-" + (i - 6));
+                if (i - 6 == 1) {
+                    weekbegin = date + "-" + 1
+                    System.out.println("本周开始日期:" + weekbegin);
+                    count++;
+                } else if(i - 6 > 1) {
+                    weekbegin = date + "-" + (i - 6)
+                    System.out.println("本周开始日期:" + weekbegin);
+                    count++;
                 }
-                System.out.println("本周结束日期:" + date + "-" + i);
+
+                weekend = date + "-" + i
+                System.out.println("本周结束日期:" + weekend);
+                System.out.println("第" + count + "周");
                 System.out.println("-----------------------------------");
+                dateInfo<<[count: count,weekbegin: weekbegin,weekend: weekend]
             }
-            if (k != 1 && i == days) {// 若是本月最好一天，且不是周日
+            if (k != 1 && i == days) {// 若是本月后一天，且不是周日
                 count++;
                 System.out.println("-----------------------------------");
+                def day = dayFormat.parse(date + "-" + (i - k + 2))
+                calendar.clear();
+                calendar.setTime(day);
+                calendar.add(Calendar.DATE,6)
+                weekbegin = date + "-" + (i - k + 2)
+                weekend = dayFormat.format(calendar.getTime()) //开始日期加6天
+                System.out.println("本周开始日期:" + weekbegin);
+                System.out.println("本周结束日期:" + weekend);
                 System.out.println("第" + count + "周");
-                System.out.println("本周开始日期:" + date + "-" + (i - k + 2));
-                System.out.println("本周结束日期:" + date + "-" + i);
                 System.out.println("-----------------------------------");
+                dateInfo<<[weekbegin: weekbegin,weekend: weekend]
             }
         }
+        return dateInfo
     }
-
+    //判断是第几周
+    def weekJudge(){
+        DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+        def date = dayFormat.format(new Date())
+        Calendar calendar = new GregorianCalendar();
+        Date date1 = dayFormat.parse(date);
+        calendar.setTime(date1);
+        int k = new Integer(calendar.get(Calendar.DAY_OF_WEEK));
+    }
     def reportUpdate(Long id, Long cid, Long version){
         def myReportInfo = Zhoubao.findByIdAndCid(id,cid)
         def filePath
