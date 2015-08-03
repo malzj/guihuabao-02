@@ -1508,6 +1508,7 @@ class FrontController {
             redirect(action: "targetEdit")
             return
         }
+        
 
         try {
             targetInstance.delete(flush: true)
