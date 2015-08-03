@@ -869,8 +869,237 @@ class FrontController {
         flash.message = message(code: 'default.created.message', args: [message(code: 'companyRole.label', default: 'companyRole'), replyInstance.id])
         redirect(action: "replyReport",id: id)
     }
-    //任务
 
+    //申请
+    //申请列表
+    def apply(Integer max){
+//        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+        def userId= session.user.id
+        def companyId = session.company.id
+        def selected = params.selected
+        def applylist
+        def applyInstanceTotal
+        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
+        if(selected == "1"){//已通过
+            applylist= Apply.findAllByApplyuidAndCidAndApplystatussAndApplystatus(userId,companyId,1,1,params)
+            applyInstanceTotal= Apply.countByApplyuidAndCidAndApplystatus(userId,companyId,1)
+        }else if(selected == "2"){//未通过
+            applylist= Apply.findAllByApplyuidAndCidAndApplystatussAndApplystatus(userId,companyId,1,2,params)
+            applyInstanceTotal= Apply.countByApplyuidAndCidAndApplystatus(userId,companyId,2)
+        }else if(selected == "0"){//未审核
+            applylist= Apply.findAllByApplyuidAndCidAndApplystatussAndApplystatus(userId,companyId,1,0,params)
+            applyInstanceTotal= Apply.countByApplyuidAndCidAndApplystatus(userId,companyId,0)
+        }else{//全部
+            applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,1,params)
+            applyInstanceTotal= Apply.countByApplyuidAndCid(userId,companyId)
+        }
+
+        [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]
+    }
+
+    //申请保存
+    def applySave(){
+
+        def applyInstance  = new Apply(params)
+        applyInstance.applyuid= session.user.id
+        applyInstance.applyusername = session.user.name
+        applyInstance.cid= session.company.id
+        applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+        applyInstance.status="未审核"
+        Date currentTime = new Date();
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//        String dateString = formatter.format(currentTime);
+        applyInstance.dateCreate=currentTime
+        applyInstance.applystatus=0
+        applyInstance.applystatuss=1
+        if (!applyInstance.save(flush: true)) {
+            return
+        }
+
+        def rs=[:]
+        rs<<[msg:true]
+
+        try {
+            taskInstnstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "allTask")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "allTask", id: id)
+        }
+    }
+
+    //申请ajax保存
+    def applySave1(){
+
+        yanzheng()
+        def applyInstance  = new Apply(params)
+        applyInstance.applyuid= session.user.id
+        applyInstance.applyusername = session.user.name
+        applyInstance.cid= session.company.id
+        applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+        applyInstance.status="未审核"
+        Date currentTime = new Date();
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//        String dateString = formatter.format(currentTime);
+        applyInstance.dateCreate=currentTime
+        applyInstance.applystatus=0
+        applyInstance.applystatuss=0
+        if (!applyInstance.save(flush: true)) {
+            return
+        }
+        def rs=[:]
+        rs<<[msg:true]
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //申请更新（草稿0、提交1）
+    def applyUpdate(Long id, Long version){
+        def rs=[:]
+        def applyInstance  = Apply.get(id)
+        def a = params.applysub
+        if(applyInstance){//判断信息是否为空
+            rs.msg=true
+            if(params.applysub=="1"){//判断是存草稿还是提交
+                applyInstance.applystatuss=1
+            }else{
+                applyInstance.applystatuss=0
+            }
+            applyInstance.properties = params
+            if(version != null){
+                if (applyInstance.version > version) {
+                    rs.msg=false
+                }else{
+                    if (!applyInstance.save(flush: true)) {
+                        rs.msg=false
+                    }
+                }
+            }
+        }else{
+            rs.msg=false
+        }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //草稿箱
+    def user_draft(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+        def userId= session.user.id
+        def companyId = session.company.id
+        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
+        def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,0,params)
+        def applyInstanceTotal= Apply.countByApplyuidAndCidAndApplystatuss(userId,companyId,0)
+        [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]
+
+    }
+    //草稿删除
+    def applyDelete(Long id){
+        def applyInstance = Apply.get(id)
+        if (!applyInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'apply.label', default: 'Apply'), id])
+            redirect(action: "user_draft")
+            return
+        }
+
+        try {
+            applyInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'apply.label', default: 'Apply'), id])
+            redirect(action: "user_draft")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'apply.label', default: 'Apply'), id])
+            redirect(action: "user_draft", id: id)
+        }
+    }
+    //我的审核
+    def user_approve(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?:10, 100)
+        def userId= session.user.id
+        def companyId = session.company.id
+        def selected = params.selected
+        def applylist
+        def applyInstanceTotal
+
+        if(selected == "1"){//已通过
+            applylist= Apply.findAllByApprovaluidAndCidAndApplystatussAndApplystatus(userId,companyId,1,1,params)
+            applyInstanceTotal= Apply.countByApprovaluidAndCidAndApplystatus(userId,companyId,1)
+        }else if(selected == "2"){//未通过
+            applylist= Apply.findAllByApprovaluidAndCidAndApplystatussAndApplystatus(userId,companyId,1,2,params)
+            applyInstanceTotal= Apply.countByApprovaluidAndCidAndApplystatus(userId,companyId,2)
+        }else if(selected == "0"){//未审核
+            applylist= Apply.findAllByApprovaluidAndCidAndApplystatussAndApplystatus(userId,companyId,1,0,params)
+            applyInstanceTotal= Apply.countByApprovaluidAndCidAndApplystatus(userId,companyId,0)
+        }else{//全部
+            applylist= Apply.findAllByApprovaluidAndCidAndApplystatuss(userId,companyId,1,params)
+            applyInstanceTotal= Apply.countByApprovaluidAndCid(userId,companyId)
+        }
+        [applylist:applylist,applyInstanceTotal:applyInstanceTotal]
+    }
+    //审核状态修改ajax
+    def approveStatus(){
+        def rs = [:]
+        def id = params.id
+        def companyId = session.company.id
+        def version = params.version
+        def applystatus = params.applystatus
+        def applyInstance = Apply.findByIdAndCid(id,companyId)
+        if(!applyInstance){
+            rs.msg=true
+        }else{
+            rs.msg=true
+            if(applystatus=="1"){
+                applyInstance.applystatus = 1
+                applyInstance.status = "已通过"
+            } else if(applystatus=="2"){
+                applyInstance.applystatus = 2
+                applyInstance.status = "未通过"
+            }
+        }
+
+        if (version != null) {
+            if (applyInstance.version > version) {
+                rs.msg=false
+            }else{
+                if(!applyInstance.save(flush: true)){
+                    rs.msg=false
+                }else{
+                    rs.msg=true
+                }
+            }
+        }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+
+    //任务
     def taskCreate(){
         def pid= session.user.pid
         def current = new Date()
@@ -885,7 +1114,6 @@ class FrontController {
         def taskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,now,[sort:"overtime",order:"asc"])
         [taskInstance: taskInstance,todayTaskInstance: todayTaskInstance,todayFinishedTaskInstance: todayFinishedTaskInstance,tomorrowTaskInstance: tomorrowTaskInstance,bumenInstance: bumenInstance]
     }
-
 
     def taskSave(){
         def taskInstance = new Task(params)
@@ -959,23 +1187,7 @@ class FrontController {
         }
     }
 
-    def apply(Integer max){
-//        yanzheng()
-        def user = session.user
-        def company = session.company
-        if(!user&&!company){
-            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
-            return
-        }
-        params.max = Math.min(max ?: 10, 100)
-        def userId= session.user.id
-        def companyId = session.company.id
-        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
 
-        def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,1,params)
-       def applyInstanceTotal= Apply.countByApplyuidAndCid(userId,companyId)
-        [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]
-    }
     def finishedTaskDelete(Long id){
         def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
         if (!taskInstnstance) {
@@ -1005,39 +1217,7 @@ class FrontController {
         }
     }
 
-    def applySave(){
 
-
-
-        def applyInstance  = new Apply(params)
-        applyInstance.applyuid= session.user.id
-        applyInstance.applyusername = session.user.name
-        applyInstance.cid= session.company.id
-        applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
-        applyInstance.status="未审核"
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = formatter.format(currentTime);
-        applyInstance.dateCreate=dateString
-        applyInstance.applystatus=0
-        applyInstance.applystatuss=1
-        if (!applyInstance.save(flush: true)) {
-            return
-        }
-
-        def rs=[:]
-        rs<<[msg:true]
-
-        try {
-            taskInstnstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "allTask")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "allTask", id: id)
-        }
-    }
     //任务详情ajax
     def taskShow(){
         def taskInfo = Task.findByIdAndCid(params.id,session.company.id)
@@ -1072,31 +1252,7 @@ class FrontController {
             render rs as JSON
     }
 
-    def applySave1(){
 
-        yanzheng()
-        def applyInstance  = new Apply(params)
-        applyInstance.applyuid= session.user.id
-        applyInstance.applyusername = session.user.name
-        applyInstance.cid= session.company.id
-        applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
-        applyInstance.status="未审核"
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = formatter.format(currentTime);
-        applyInstance.dateCreate=dateString
-        applyInstance.applystatus=0
-        applyInstance.applystatuss=0
-        if (!applyInstance.save(flush: true)) {
-            return
-        }
-        def rs=[:]
-        rs<<[msg:true]
-        if (params.callback) {
-            render "${params.callback}(${rs as JSON})"
-        } else
-            render rs as JSON
-    }
 //    负责任务
     def fzTask(Integer max){
         params.max = Math.min(max ?: 10, 100)
@@ -1238,30 +1394,6 @@ class FrontController {
         def companyUserInstance = CompanyUser.findAllByBidAndCid(params.bid,params.cid)
         [companyUserInstance: companyUserInstance]
     }
-    def user_draft(Integer max){
-        def user = session.user
-        def company = session.company
-        if(!user&&!company){
-            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
-            return
-        }
-        params.max = Math.min(max ?: 10, 100)
-        def userId= session.user.id
-        def companyId = session.company.id
-        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
-        def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,0,params)
-        def applyInstanceTotal= Apply.countByApplyuidAndCid(userId,companyId)
-        [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]
-
-    }
-    def user_approve(){
-        def user = session.user
-        def company = session.company
-        if(!user&&!company){
-            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
-            return
-        }
-    }
 
     //下属任务列表
     def xsTaskList(Integer max){
@@ -1293,10 +1425,7 @@ class FrontController {
         }
         [xsTaskInstance: xsTaskInstance,xsTaskInstanceTotal: xsTaskInstanceTotal,selected: selected,infos: infos]
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> 0b535667704c176b2f327badcc4296b32200eb06
     //公司公告
     def companyNoticeList(Integer max){
         def cid = session.company.id
@@ -1439,7 +1568,7 @@ class FrontController {
         targetInstance.fzuid = session.user.id
         targetInstance.status = 0
         targetInstance.percent=0
-        targetInstance.ctime = new Date()
+        targetInstance.dateCreate = new Date()
 
 
         if (!targetInstance.save(flush: true)) {
@@ -1520,45 +1649,45 @@ class FrontController {
             redirect(action: "targetEdit", id: id)
         }
     }
-    def targetList(Integer max){
-        params.max = Math.min(max ?: 10, 100)
-        def cid =session.user.cid
-        def fzuid = session.user.id
-        def selected = params.selected
-        def order = [sort:"dateCreate",order: "desc"]
-        def targetInstance
-        def targetInstanceTotal
-        def infos=[:]
-        infos.uid = uid
-        infos.cid = cid
-        infos.yq = Target.findByCidAndFzuidAndStatus(cid,fzuid,0)
-        if(selected=="1"){
-            targetInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,1,params,order)
-            targetInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,1,order)
-        }else if(selected=="2"){
-            xsTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,0,params,order)
-            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,0,order)
-        }
-        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected,infos: infos]
-    }
-    def missionSave(Long id) {
-        def missionInstance = new Mission(params)
-        missionInstance.target = Target.get(id)
-        missionInstance.bid =
-                missionInstance.dateCreate = new Date()
-        missionInstance.
-                status(nullable: true)
-        tid(nullable: true)
-        title(nullable: true)
-        content(nullable: true)
-        playuid(nullable: true)
-        cid(nullable: true)
-        bid(nullable: true)
-        begintime(nullable: true)
-        overtime(nullable: true)
-        overhour(nullable: true)
-        dateCreate(nullable: true)
-    }
+//    def targetList(Integer max){
+//        params.max = Math.min(max ?: 10, 100)
+//        def cid =session.user.cid
+//        def fzuid = session.user.id
+//        def selected = params.selected
+//        def order = [sort:"dateCreate",order: "desc"]
+//        def targetInstance
+//        def targetInstanceTotal
+//        def infos=[:]
+//        infos.uid = uid
+//        infos.cid = cid
+//        infos.yq = Target.findByCidAndFzuidAndStatus(cid,fzuid,0)
+//        if(selected=="1"){
+//            targetInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,1,params,order)
+//            targetInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,1,order)
+//        }else if(selected=="2"){
+//            xsTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,0,params,order)
+//            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,0,order)
+//        }
+//        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected,infos: infos]
+//    }
+//    def missionSave(Long id) {
+//        def missionInstance = new Mission(params)
+//        missionInstance.target = Target.get(id)
+//        missionInstance.bid =
+//                missionInstance.dateCreate = new Date()
+//        missionInstance.
+//                status(nullable: true)
+//        tid(nullable: true)
+//        title(nullable: true)
+//        content(nullable: true)
+//        playuid(nullable: true)
+//        cid(nullable: true)
+//        bid(nullable: true)
+//        begintime(nullable: true)
+//        overtime(nullable: true)
+//        overhour(nullable: true)
+//        dateCreate(nullable: true)
+//    }
 
     //目标列表
 //    def user_target(){
