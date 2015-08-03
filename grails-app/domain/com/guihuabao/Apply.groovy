@@ -7,11 +7,11 @@ class Apply {
     String content
     String approvaluid
     String approvalusername
-    String status
+    String status//中文审核状态
     String cid
-    String dateCreate
-    Integer applystatus
-    Integer applystatuss
+    Date dateCreate
+    Integer applystatus//审核状态
+    Integer applystatuss//提交状态(草稿0，提交1)
     static constraints = {
         type(nullable: true)
         applyuid(nullable: true)

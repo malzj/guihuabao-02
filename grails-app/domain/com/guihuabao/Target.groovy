@@ -15,7 +15,7 @@ class Target {
     static constraints = {
         cid(nullable: true)
         fzuid(nullable: true)
-        btime(nullable: true)
+        begintime(nullable: true)
         etime(nullable: true)
         dateCreate(nullable: true)
         content(nullable: true)

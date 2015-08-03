@@ -33,7 +33,7 @@
     <style>
     .info_content{border:none;padding:0;}
     #text{padding:0;background:none;}
-    #apply_top{width:100% height:50px;text-align:center;background:#fff;border:1px solid #d2d2d2;margin-right:-1px;}
+    #apply_top{width:100%; height:50px;text-align:center;background:#fff;border:1px solid #d2d2d2;margin-right:-1px;}
     #apply_top td{border-right:1px solid #d2d2d2;border-bottom:1px solid #d2d2d2;}
     #myfilter{border:none;width:100%;text-align:center;width:96px;border-bottom:#ff0000;}
     #filter {text-align:left;text-indent:20px; position:absolute;top:49px;left:-1px;border:1px solid #d2d2d2;border-top:none;width:160px;margin:0;background:#fff;z-index:2; display:none;padding-top:20px;}
@@ -61,7 +61,6 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
-    </header>
     <!--header end-->
     <!--sidebar start-->
     <g:render template="spaside"/>
@@ -104,16 +103,16 @@
                             </td>
                         </tr>
                         <g:each in="${applylist}" status="i" var="applyInstance">
-                            <tr>
+                            <tr data-id="${applyInstance.id}" data-version="${applyInstance.version}" data-spuid="${applyInstance.approvaluid}" data-applyType="${applyInstance.type}">
                                 <td>${applyInstance.type}</td>
                                 <td>${applyInstance.content}</td>
                                 <td>${applyInstance.approvalusername}</td>
                                 <td>${applyInstance.status}</td>
-                                <td>${applyInstance.dateCreate}</td>
+                                <td>${applyInstance.dateCreate.format("yyyy-MM-dd")}</td>
                                 <td>
-                                    <a href="#" class="draft_pre"><img src="${resource(dir:'img',file:'pre.png')}" alt="pre" title="pre"/></a>
-                                    <a href="#" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="edit"/></a>
-                                    <a href="#" class="draft_delete"><img src="${resource(dir:'img',file:'delete.png')}" alt="delete" title="delete"/></a>
+                                    <a href="javascript:;" class="draft_pre"><img src="${resource(dir:'img',file:'pre.png')}" alt="pre" title="pre"/></a>
+                                    <a href="javascript:;" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="edit"/></a>
+                                    <g:link action="applyDelete" id="${applyInstance.id}" class="draft_delete" onclick="return confirm('确定删除？');"><img src="${resource(dir:'img',file:'delete.png')}" alt="delete" title="delete"/></g:link>
                                 </td>
                             </tr>
                         </g:each>
@@ -152,11 +151,11 @@
         </header>
         <div class="panel-content">
             <ul>
-                <li>申请类型：<span>出差申请单</span></li>
-                <li>审批人：<span>营销部经理-法拉利</span></li>
-                <li>申请内容：<span>新项目调研，需出差五天！</span></li>
-                <li>申请时间：<span>2015-7-15</span></li>
-                <li>申请结果：<span>已通过</span></li>
+                <li>申请类型：<span></span></li>
+                <li>审批人：<span></span></li>
+                <li>申请内容：<span></span></li>
+                <li>申请时间：<span></span></li>
+                <li>申请结果：<span></span></li>
             </ul>
         </div>
 
@@ -167,54 +166,43 @@
 <div class="passwordedit" id="draftedit">
     <div class="m_box" style="width:804px;height:466px;">
         <header class="panel-heading">
-            <span><i class="yh"></i>新建申请</span>
+            <span><i class="yh"></i>编辑申请</span>
             <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
         </header>
-        <form>
             <table>
                 <tr>
                     <td align="right">申请类型</td>
                     <td width="300">
-                        <select name="kind" class="select">
-                            <option></option>
-                            <option value="1">营销部经理-法拉利</option>
-                            <option value="2">品牌部经理-艾瑞克</option>
-                            <option value="3">财务部副经理-休斯顿</option>
-                            <option value="4">董事长-詹姆斯</option>
-                            <option value="5">市场部经理-休斯顿</option>
-                        </select>
+                        <g:select id="type" name="type" from="${['出差', '报销', '请假','外勤','借款','公文','其他']}"/>
                     </td>
 
                 </tr>
                 <tr>
                     <td align="right">审批人</td>
                     <td><!--<input class="form-control form-control-inline input-medium default-date-picker" data-toggle="dropdown" name="newapply" />-->
-                        <select name="shenpiren" class="select">
-                            <option></option>
-                            <option value="1">营销部经理-法拉利</option>
-                            <option value="2">品牌部经理-艾瑞克</option>
-                            <option value="3">财务部副经理-休斯顿</option>
-                            <option value="4">董事长-詹姆斯</option>
-                            <option value="2">市场部经理-休斯顿</option>
+                        <select id="approvaluid" name="approvaluid" class="select">
+                            <g:each in="${companyuserList}" var="user">
+                                <option value="${user.id}">${com.guihuabao.Bumen.get(user.bid).name}${com.guihuabao.Persona.get(user.pid).name}-${user.name}</option>
+                            </g:each>
                         </select>
 
                     </td>
                 </tr>
                 <tr>
                     <td align="right">申请内容</td>
-                    <td><textarea class=" form-control form-control-inline input-medium default-date-picker"  name="applycontent" cols="60" rows="8"></textarea></td>
-
+                    <td><textarea id="applyContent" class=" form-control form-control-inline input-medium default-date-picker"  name="applycontent" cols="60" rows="8"></textarea></td>
+                    <g:hiddenField name="applyId" id="applyId" ></g:hiddenField>
+                    <g:hiddenField name="version" id="version" ></g:hiddenField>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
-                        <button type="button" class="btn btn-info">存草稿</button>
-                        <button type="submit" class="btn btn-info">提交</button>
+                        <button id="button" type="button" class="applysub btn btn-info"  data-sub="0">存草稿</button>
+                        <button id="button1" type="submit" class="applysub btn btn-info" data-sub="1">提交</button>
                     </td>
                     <td></td>
                 </tr>
             </table>
-        </form>
     </div>
 </div>
 <!--草稿编辑弹层 end-->
@@ -250,10 +238,33 @@
             $("#draftedit").css("display","none");
         });
         $(".draft_pre").click(function(){
+            var applyId = $(this).parent().parent().attr("data-id");
+            var version = $(this).parent().parent().attr("data-version");
+            var spuid = $(this).parent().parent().attr("data-spuid");
+            var applyType = $(this).parent().siblings("td:eq(0)").html();
+            var applyContent = $(this).parent().siblings("td:eq(1)").html();
+            var approvalusername = $(this).parent().siblings("td:eq(2)").html();
+            var applyStauts = $(this).parent().siblings("td:eq(3)").html();
+            var applyDate = $(this).parent().siblings("td:eq(4)").html();
+            $(".panel-content ul li:eq(0) span").html(applyType)
+            $(".panel-content ul li:eq(1) span").html(approvalusername)
+            $(".panel-content ul li:eq(2) span").html(applyContent)
+            $(".panel-content ul li:eq(3) span").html(applyStauts)
+            $(".panel-content ul li:eq(4) span").html(applyDate)
             $("#draftdetails").css("display","block");
         })
         $(".draft_edit").click(function(){
             $("#draftedit").css("display","block");
+            var applyId = $(this).parent().parent().attr("data-id");
+            var version = $(this).parent().parent().attr("data-version");
+            var spuid = $(this).parent().parent().attr("data-spuid");
+            var applyType = $(this).parent().parent().attr("data-applyType");
+            var applyContent = $(this).parent().siblings("td:eq(1)").html();
+            $("#applyId").val(applyId)
+            $("#version").val(version)
+            $("#type").find("option[value='"+applyType+"']").attr("selected",true)
+            $("#shenpiren").find("option[value='"+spuid+"']").attr("selected",true)
+            $("#applyContent").val(applyContent)
         })
         $("#myfilter").click(function(){
             $("#myfilter").parent().css("border-bottom","1px solid #fff");
@@ -266,6 +277,38 @@
                 $("#myfilter").parent().css("border-bottom","1px solid #d2d2d2");
             })
         })
+    })
+</script>
+<script type="text/javascript">
+    $('.applysub').click(function(){
+        var content = $('#applyContent').val();
+        var type=$('#type').val();
+        var id = $("#applyId").val();
+        var version = $("#version").val();
+        var approvaluid=$('#approvaluid').val();
+        var applysub=$(this).attr("data-sub");
+        var dumpto
+        if(applysub=="1"){
+            dumpto="apply"
+        }else{
+            dumpto="user_draft"
+        }
+        console.log(content+type+approvaluid)
+        $.ajax({
+            url:'${webRequest.baseUrl}/front/applyUpdate?id='+encodeURI(id)+'&version='+encodeURI(version)+'&content='+encodeURI(content)+'&type='+encodeURI(type)+'&approvaluid='+encodeURI(approvaluid)+'&applysub='+encodeURI(applysub),
+            dataType: "jsonp",
+            jsonp: "callback",
+            success: function (data) {
+                // 去渲染界面
+                if(data.msg){
+                    alert("修改成功！")
+                    window.location.href='${webRequest.baseUrl}/front/'+dumpto
+                }else{
+                    alert("修改失败！");
+                }
+            }
+        })
+
     })
 </script>
 </body>

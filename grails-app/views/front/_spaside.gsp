@@ -9,21 +9,19 @@
             <li class="sub-menu dcjq-parent-li">
                 <g:link action="apply" >
                     <span>我的申请</span>
-                    <em class="f-r">7</em>
                 </g:link>
 
             </li>
             <li class="sub-menu dcjq-parent-li">
                 <g:link action="user_approve" class="dcjq-parent" >
                     <span>我的审批</span>
-                    <em class="f-r">7</em>
                 </g:link>
 
             </li>
             <li class="sub-menu dcjq-parent-li">
                 <g:link action="user_draft" class="dcjq-parent">
                     <span>草稿箱</span>
-                    <em class="f-r">7</em>
+                    <em class="f-r">${com.guihuabao.Apply.countByApplyuidAndCidAndApplystatuss(session.user.id,session.company.id,0)}</em>
                 </g:link>
 
             </li>

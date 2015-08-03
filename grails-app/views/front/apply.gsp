@@ -32,7 +32,7 @@
     <style>
     .info_content{border:none;padding:0;}
     #text{padding:0;background:none;}
-    #apply_top{width:100% height:50px;text-align:center;background:#fff;border:1px solid #d2d2d2;margin-right:-1px;}
+    #apply_top{width:100%; height:50px;text-align:center;background:#fff;border:1px solid #d2d2d2;margin-right:-1px;}
     #apply_top td{border-right:1px solid #d2d2d2;border-bottom:1px solid #d2d2d2;}
 
 
@@ -72,12 +72,12 @@
                     <tr>
                         <td width="106px">我的申请</td>
                         <td style=" position:relative;width:96px;">
-                            <div id="myfilter" ><span id="filter-content">排序</span><span style="margin-left:20px;"><i class="fa fa-sort-down"></i></span></div>
+                            <div id="myfilter" ><span id="filter-content">筛选</span><span style="margin-left:20px;"><i class="fa fa-sort-down"></i></span></div>
                             <ul id="filter">
-                                <li>默认</li>
-                                <li>已通过</li>
-                                <li>未通过</li>
-                                <li>待处理</li>
+                                <li><g:link action="apply">默认</g:link></li>
+                                <li><g:link action="apply" params="[selected: 1]">已通过</g:link></li>
+                                <li><g:link action="apply" params="[selected: 2]">未通过</g:link></li>
+                                <li><g:link action="apply" params="[selected: 0]">未审核</g:link></li>
                             </ul>
                         </td>
                         <td width="1308px"></td>
@@ -100,7 +100,7 @@
                                 <td>${applyInstance.content}</td>
                                 <td>${applyInstance.approvalusername}</td>
                                 <td>${applyInstance.status}</td>
-                                <td>${applyInstance.dateCreate}</td>
+                                <td>${applyInstance.dateCreate.format("yyyy-MM-dd")}</td>
                             </tr>
                         </g:each>
                     </table>
@@ -121,7 +121,6 @@
             <span><i class="yh"></i>新建申请</span>
             <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
         </header>
-
             <table>
                 <tr>
                     <td align="right">申请类型</td>
@@ -156,7 +155,6 @@
                     <td></td>
                 </tr>
             </table>
-
     </div>
 </div>
 <!--新建弹层 end-->
@@ -214,6 +212,18 @@
         });
 
         $("#apply_tab tr").click(function(){
+            var applyId = $(this).attr("data-id");
+            var version = $(this).attr("data-version");
+            var applyType = $(this).children("td:eq(0)").html();
+            var applyContent = $(this).children("td:eq(1)").html();
+            var approvalusername = $(this).children("td:eq(2)").html();
+            var applyStauts = $(this).children("td:eq(3)").html();
+            var applyDate = $(this).children("td:eq(4)").html();
+            $(".panel-content ul li:eq(0) span").html(applyType)
+            $(".panel-content ul li:eq(1) span").html(approvalusername)
+            $(".panel-content ul li:eq(2) span").html(applyContent)
+            $(".panel-content ul li:eq(3) span").html(applyStauts)
+            $(".panel-content ul li:eq(4) span").html(applyDate)
             $("#applydetails").css("display","block");
         })
         $(".close").click(function(){
@@ -246,6 +256,7 @@
             success: function (data) {
                 // 去渲染界面
                 if(data.msg){
+                    alert("保存成功！")
                     window.location.href='${webRequest.baseUrl}/front/user_draft'
                 }else{
                     alert("保存失败！");

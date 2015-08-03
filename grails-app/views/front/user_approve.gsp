@@ -32,7 +32,7 @@
     <style>
     .info_content{border:none;padding:0;}
     #text{padding:0;background:none;}
-    #apply_top{width:100% height:50px;text-align:center;background:#fff;border:1px solid #d2d2d2;margin-right:-1px;}
+    #apply_top{width:100%; height:50px;text-align:center;background:#fff;border:1px solid #d2d2d2;margin-right:-1px;}
     #apply_top td{border-right:1px solid #d2d2d2;border-bottom:1px solid #d2d2d2;}
     #myfilter{border:none;text-align:center;width:96px;border-bottom:#ff0000;}
     #filter {text-align:left;text-indent:20px; position:absolute;top:49px;left:-1px;border:1px solid #d2d2d2;border-top:none;width:160px;margin:0;background:#fff;z-index:2; display:none;}
@@ -77,10 +77,10 @@
                         <td style=" position:relative;width:96px;">
                             <div id="myfilter" href="#"><span id="filter-content">筛选</span><span style="margin-left:20px;"><i class="fa fa-sort-down"></i></span></div>
                             <ul id="filter">
-                                <li>默认</li>
-                                <li>已通过</li>
-                                <li>未通过</li>
-                                <li>待处理</li>
+                                <li><g:link action="user_approve">默认</g:link></li>
+                                <li><g:link action="user_approve" params="[selected: 1]">已通过</g:link></li>
+                                <li><g:link action="user_approve" params="[selected: 2]">未通过</g:link></li>
+                                <li><g:link action="user_approve" params="[selected: 0]">未审核</g:link></li>
                             </ul>
                         </td>
                         <td width="1442px"></td>
@@ -97,35 +97,17 @@
                             <td>审批结果</td>
                             <td>申请时间</td>
                         </tr>
-                        <tr>
-                            <td>出差申请单</td>
-                            <td>新项目调研，需出差五天！</td>
-                            <td>营销部经理-法拉利</td>
-                            <td>已通过</td>
-                            <td>2015-7-15</td>
-                        </tr>
-                        <tr>
-                            <td>出差申请单</td>
-                            <td>新项目调研，需出差五天！</td>
-                            <td>营销部经理-法拉利</td>
-                            <td>已通过</td>
-                            <td>2015-7-15</td>
-                        </tr>
-                        <tr>
-                            <td>出差申请单</td>
-                            <td>新项目调研，需出差五天！</td>
-                            <td>营销部经理-法拉利</td>
-                            <td>已通过</td>
-                            <td>2015-7-15</td>
-                        </tr>
-                        <tr>
-                            <td>出差申请单</td>
-                            <td>新项目调研，需出差五天！</td>
-                            <td>营销部经理-法拉利</td>
-                            <td>已通过</td>
-                            <td>2015-7-15</td>
-                        </tr>
-
+                        <g:each in="${applylist}" status="i" var="applyInstance">
+                            <tr data-id="${applyInstance.id}" data-version="${applyInstance.version}">
+                                <td>${applyInstance.type}申请单</td>
+                                <td>${applyInstance.content}</td>
+                                <td>${applyInstance.approvalusername}</td>
+                                <td>${applyInstance.status}</td>
+                                <td>${applyInstance.dateCreate.format("yyyy-MM-dd")}</td>
+                            </tr>
+                        </g:each>
+                        <g:hiddenField name="applyId" id="applyId" ></g:hiddenField>
+                        <g:hiddenField name="version" id="version" ></g:hiddenField>
                     </table>
                 </div>
             </div>
@@ -140,18 +122,18 @@
     <div class="m_box" style="width:804px;">
         <header class="panel-heading">
             <span><i class="yh"></i>申请详情</span>
-            <div class="close"><g:link action="" class="fa fa-times"></g:link></div>
+            <div class="close"><a class="fa fa-times"></a></div>
         </header>
         <div class="panel-content">
             <ul>
-                <li>申请类型：<span>出差申请单</span></li>
-                <li>审批人：<span>营销部经理-法拉利</span></li>
-                <li>申请内容：<span>新项目调研，需出差五天！</span></li>
-                <li>申请时间：<span>2015-7-15</span></li>
-                <li>申请结果：<span>已通过</span></li>
+                <li>申请类型：<span></span></li>
+                <li>审批人：<span></span></li>
+                <li>申请内容：<span></span></li>
+                <li>申请时间：<span></span></li>
+                <li>申请结果：<span></span></li>
             </ul>
-            <input type="button" value="通过" id="pass"/>
-            <input type="button" value="未通过" id="nopass"/>
+            <input type="button" value="通过" id="pass" class="ispass" data-status="1" />
+            <input type="button" value="未通过" id="nopass" class="ispass" data-status="2"/>
         </div>
 
     </div>
@@ -185,11 +167,47 @@
     $(document).ready(function(){
 
         $("#apply_tab tr").click(function(){
+            var applyId = $(this).attr("data-id");
+            var version = $(this).attr("data-version");
+            var applyType = $(this).children("td:eq(0)").html();
+            var applyContent = $(this).children("td:eq(1)").html();
+            var approvalusername = $(this).children("td:eq(2)").html();
+            var applyStauts = $(this).children("td:eq(3)").html();
+            var applyDate = $(this).children("td:eq(4)").html();
+            $("#applyId").val(applyId)
+            $("#version").val(version)
+            $(".panel-content ul li:eq(0) span").html(applyType)
+            $(".panel-content ul li:eq(1) span").html(approvalusername)
+            $(".panel-content ul li:eq(2) span").html(applyContent)
+            $(".panel-content ul li:eq(3) span").html(applyStauts)
+            $(".panel-content ul li:eq(4) span").html(applyDate)
             $("#applydetails").css("display","block");
         })
         $(".close").click(function(){
             $("#applydetails").css("display","none");
         });
+        $(".ispass").click(function(){
+            var applyStauts = $(this).attr("data-status");
+            var id = $("#applyId").val();
+            var version = $("#version").val();
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/approveStatus?applystatus='+applyStauts+'&id='+id+'&version='+version,
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (data) {
+                    // 去渲染界面
+                    if(data.msg){
+                        $("#applydetails").hide();
+                        alert("审核完成！");
+                        window.location.reload();
+                    }else{
+                        $("#applydetails").hide();
+                        alert("审核失败！");
+                        window.location.reload();
+                    }
+                }
+            })
+        })
         $("#myfilter").click(function(){
             $("#myfilter").parent().css("border-bottom","1px solid #fff");
             $("#filter").css("display","block");
