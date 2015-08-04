@@ -7,8 +7,9 @@ import org.springframework.web.multipart.MultipartFile
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.logging.Logger
-
 class FrontController {
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST",missionSave: "POST"]
+
     private  Logger logger
     def yanzheng(){
         def user = session.user
@@ -1552,45 +1553,38 @@ class FrontController {
             render rs as JSON
     }
 
-    //目标
-    def user_target(){
-        def uid=session.user.id;
-        def cid=session.user.cid;
-        def targetInstance;
 
-    }
     def targetCreate() {
         [targetInstance: new Target(params)]
     }
     def targetSave(){
         def targetInstance = new Target(params)
         targetInstance.cid = session.company.id
-        targetInstance.fzuid = session.user.id
-        targetInstance.status = 0
+        targetInstance.img='0'
+        targetInstance.status ='0'
         targetInstance.percent=0
         targetInstance.dateCreate = new Date()
 
 
         if (!targetInstance.save(flush: true)) {
-            render(view: "targetCreate", model: [targetInstance: targetInstance])
+            render(model: [targetInstance: targetInstance])
             return
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
-        redirect(action: "targetShow", id: targetInstance.id)
+        redirect(action: "user_target", id: targetInstance.id)
     }
     def targetShow(Long id) {
         def targetInstance = Target.get(id)
         if (!targetInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "targetList")
             return
         }
 
         [targetInstance: targetInstance]
     }
 
-    def targEtedit(Long id) {
+    def targetEdit(Long id) {
         def targetInstance = Target.get(id)
         if (!targetInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
@@ -1601,7 +1595,7 @@ class FrontController {
         [targetInstance: targetInstance]
     }
 
-    def targetupdate(Long id, Long version) {
+    def targetUpdate(Long id, Long version) {
         def targetInstance = Target.get(id)
         if (!targetInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
@@ -1630,81 +1624,79 @@ class FrontController {
         redirect(action: "targetShow", id: targetInstance.id)
     }
 
-    def targetdelete(Long id) {
+    def targetDelete(Long id) {
         def targetInstance = Target.get(id)
         if (!targetInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
             redirect(action: "targetEdit")
             return
         }
-        
 
         try {
             targetInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "targetEdit")
+            redirect(action: "user_target")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "targetEdit", id: id)
+            redirect(action: "user_target", id: id)
         }
     }
-//    def targetList(Integer max){
-//        params.max = Math.min(max ?: 10, 100)
-//        def cid =session.user.cid
-//        def fzuid = session.user.id
-//        def selected = params.selected
-//        def order = [sort:"dateCreate",order: "desc"]
-//        def targetInstance
-//        def targetInstanceTotal
-//        def infos=[:]
-//        infos.uid = uid
-//        infos.cid = cid
-//        infos.yq = Target.findByCidAndFzuidAndStatus(cid,fzuid,0)
-//        if(selected=="1"){
-//            targetInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,1,params,order)
-//            targetInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,1,order)
-//        }else if(selected=="2"){
-//            xsTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,0,params,order)
-//            xsTaskInstanceTotal = Task.countByCidAndPlayuidAndStatus(cid,uid,0,order)
-//        }
-//        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected,infos: infos]
-//    }
-//    def missionSave(Long id) {
-//        def missionInstance = new Mission(params)
-//        missionInstance.target = Target.get(id)
-//        missionInstance.bid =
-//                missionInstance.dateCreate = new Date()
-//        missionInstance.
-//                status(nullable: true)
-//        tid(nullable: true)
-//        title(nullable: true)
-//        content(nullable: true)
-//        playuid(nullable: true)
-//        cid(nullable: true)
-//        bid(nullable: true)
-//        begintime(nullable: true)
-//        overtime(nullable: true)
-//        overhour(nullable: true)
-//        dateCreate(nullable: true)
-//    }
+    def user_target(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def cid =session.user.cid
+        def fzuid = session.user.id
+        def selected = params.selected
+        def order1 = [sort:"begintime",order: "desc"]
+        def order2 = [sort:"dateCreate",order: "desc"]
+        def targetInstance
+        def targetInstanceTotal
+        if(selected=="1"){
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params,order1)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0,order1)
+        }else if(selected=="2"){
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params,order2)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0,order2)
+        }else{
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0)
+        }
+        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
+    }
+    def missionSave() {
+        def rs =[:]
+        def mission=new Mission(params)
+        def targetInstance=Target.get(params.target_id)
+        mission.target=targetInstance
+        mission.dateCreate = new Date()
 
-    //目标列表
-//    def user_target(){
-//        params.max = Math.min(max ?: 10, 100)
-//        def cid = session.company.id
-//        def selected = params.selected
-//        def targetInstanceList
-//        def targetInstanceTotal
-//        if(selected=="1"){
-//            targetInstanceList = Target.findAllByCid(cid,params,[sort: "etime",order: "asc"])
-//            targetInstanceTotal = Target.countByCid(cid)
-//        }else if(selected=="2"){
-//            targetInstanceList = Target.findAllByCid(cid,params,[sort: "dateCreate",order:'desc'])
-//            targetInstanceTotal = Target.countByCid(cid)
-//        }
-//
-//        [targetInstanceList: targetInstanceList, targetInstanceTotal: targetInstanceTotal]
-//
-//    }
+        if (! mission.save(flush: true)){
+            rs.msg=false
+        }else {
+            rs.msg=true
+            rs.target=targetInstance
+            rs.mission=targetInstance.mission
+        }
+
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+
+
+
+    }
+
+    def tshow(){
+        def rs=[:]
+        def tid= params.target_id
+        def targetInstance = Target.get(tid)
+        rs.target=targetInstance
+        rs.mission=targetInstance.mission
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
 }

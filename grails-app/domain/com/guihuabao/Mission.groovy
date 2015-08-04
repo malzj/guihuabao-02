@@ -4,7 +4,7 @@ import org.apache.tools.ant.taskdefs.Tar
 
 class Mission {
     String status    //执行状态
-    String tid      //目标id
+    Integer percent //权重
     String title    //概述
     String content  //详情
     String playuid  //执行人id
@@ -16,7 +16,7 @@ class Mission {
     static belongsTo = [target:Target]
     static constraints = {
         status(nullable: true)
-        tid(nullable:true)
+        percent(nullable:true)
         title(nullable: true)
         content(nullable: true)
         playuid(nullable: true)
