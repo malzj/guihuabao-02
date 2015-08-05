@@ -134,22 +134,27 @@
                             <ul>
                                 <li class="on"><i class="apply"></i><span>我的申请</span></li>
                             </ul>
-                            <a class="f-r">查看更多</a>
+                            <g:link class="f-r" action="apply">查看更多</g:link>
                             <span class="f-r">|</span>
                             <a class="f-r"><i class="fa fa-plus-circle"></i>新建申请</a>
                         </div>
                         <ul class="e-list">
-                            <li>
-                                <span class="mark mark-nomarl"><i></i></span>
-                                <span class="sn">1</span>
-                                <span class="title">任务标题</span>
-                                <div class="right">
-                                    <span class="hsfinish"><i class="fa fa-square-o"></i>标记完成</span>
-                                    <span class="del"><i class="fa fa-trash-o"></i>删除任务</span>
-                                    <span class="date f-r">2015-7-16</span>
-                                </div>
-                            </li>
-                            <li>2345</li>
+                            <g:if test="${applyInstance}">
+                                <g:each in="${applyInstance}" status="i" var="applyInfo">
+                                    <li>
+                                        <span class="mark"></span>
+                                        <span class="sn">${i+1}</span>
+                                        <span class="title"><g:link action="apply" id="${applyInfo.id}">${applyInfo.type}申请</g:link></span>
+                                        <div class="right">
+                                            <span class="date f-r">${applyInfo.dateCreate.format("yyyy-MM-dd")}</span>
+                                        </div>
+                                    </li>
+                                </g:each>
+
+                            </g:if>
+                            <g:else>
+                                <li><span class="mark"></span>没有申请！</li>
+                            </g:else>
                         </ul>
                     </div>
                 </div>
@@ -176,7 +181,7 @@
 
                             </g:if>
                             <g:else>
-                                <li><span class="mark"></span>没有周报！</li>
+                                <li><span class="mark"></span>没有公告！</li>
                             </g:else>
                         </ul>
                     </div>
@@ -195,9 +200,9 @@
                                     <li>
                                         <span class="mark"></span>
                                         <span class="sn">${i+1}</span>
-                                        <span class="title"><g:link action="reportShow" params="[year: zhoubaoInfo.year,month: zhoubaoInfo.month,week: zhoubaoInfo.week]">第${zhoubaoInfo.month.toInteger()+1}月第${zhoubaoInfo.week}周周报</g:link></span>
+                                        <span class="title"><g:link action="reportShow" params="[year: zhoubaoInfo.year,month: zhoubaoInfo.month,week: zhoubaoInfo.week]">第${zhoubaoInfo.month.toInteger()}月第${zhoubaoInfo.week}周周报</g:link></span>
                                         <div class="right">
-                                            <span class="date f-r">${zhoubaoInfo.dateCreate}</span>
+                                            <span class="date f-r">${zhoubaoInfo.dateCreate.format("yyyy-MM-dd")}</span>
                                         </div>
                                     </li>
                                 </g:each>

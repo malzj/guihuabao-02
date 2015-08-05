@@ -59,7 +59,7 @@
                                     <span class="sn">${i+1}</span>
                                     <span class="title">${finishedTaskInfo.title}</span>
                                     <div class="right">
-                                        <span class="del"><g:link action="finishedTaskDelete"  id="${finishedTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span>
+                                        <span class="del"><a href="javascript:;" class="taskdelete" data-id="${finishedTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</a></span>
                                         <span class="date f-r">${finishedTaskInfo.overtime}</span>
                                     </div>
                                 </li>
@@ -121,6 +121,23 @@
         $(".popup_box .r-jinji-down a").click(function(){
             var playstatus=$(this).attr("data-playstatus");
             $("#playstatus").val(playstatus);
+        })
+        $(".taskdelete").click(function(){
+            var id=$(this).attr("data-id");
+            var version=$(this).attr("data-version");
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/taskDelete?id='+id,
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function(data){
+                    if(data.msg){
+                        alert("删除成功!")
+                        window.location.reload()
+                    }else{
+                        alert("删除失败!")
+                    }
+                }
+            })
         })
     })
 </script>

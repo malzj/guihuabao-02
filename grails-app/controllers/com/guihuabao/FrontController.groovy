@@ -59,10 +59,11 @@ class FrontController {
         def order = [sort:"dateCreate",order: "desc"]
         def todayTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(cid,uid,0,now,now,order)//今天任务
         def taskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeGreaterThanEquals(cid,uid,0,now,[sort:"overtime",order:"asc"])//即将到期
+        def applyInstance = Apply.findAllByApplyuidAndCidAndApplystatuss(uid,cid,1,[max: 3,sort:"dateCreate",order: "desc"])
         def zhoubaoInstance = Zhoubao.findAllByCidAndUid(cid,uid,order)
         //公司公告
         def companyNoticeInstance = CompanyNotice.findAllByCid(cid,order)
-        [todayTaskInstance: todayTaskInstance,taskInstance: taskInstance,zhoubaoInstance: zhoubaoInstance,companyNoticeInstance: companyNoticeInstance]
+        [todayTaskInstance: todayTaskInstance,taskInstance: taskInstance,zhoubaoInstance: zhoubaoInstance,applyInstance: applyInstance,companyNoticeInstance: companyNoticeInstance]
     }
     def companyUserCreate() {
         def bumenList = Bumen.findAllByCid(session.company.id)
@@ -546,7 +547,7 @@ class FrontController {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date1);
         int days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        System.out.println("days:" + days);
+//        System.out.println("days:" + days);
         int count = 0;
         for (int i = 1; i <= days; i++) {
             Date date2 = dayFormat.parse(date + "-" + i);
@@ -1162,83 +1163,51 @@ class FrontController {
 
     def taskUpdate(Long id, Long version){
         def taskInstance = Task.findByIdAndCid(id,session.company.id)
+        def rs = [:]
         if (!taskInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "taskCreate")
-            return
-        }
+            rs.msg=false
+        }else{
+            if (version != null) {
+                if (taskInstance.version > version) {
+                    rs.msg = false
+                }else{
+                    rs.msg = true
+                    taskInstance.properties = params
+                    taskInstance.status = 1
 
-        if (version != null) {
-            if (taskInstance.version > version) {
-                taskInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                        [message(code: 'task.label', default: 'task')] as Object[],
-                        "Another user has updated this User while you were editing")
-                render(view: "taskCreate", model: [taskInstance: taskInstance])
-                return
+                    if (!taskInstance.save(flush: true)) {
+                        rs.msg = false
+                    }
+                }
             }
         }
 
-        taskInstance.properties = params
-        taskInstance.status = 1
-
-        if (!taskInstance.save(flush: true)) {
-            render(view: "taskCreate", model: [companyUserInstance: taskInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'task.label', default: 'Task'), taskInstance.id])
-        redirect(action: "taskCreate", id: taskInstance.id)
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
 
     def taskDelete(Long id){
         def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
+        def rs = [:]
         if (!taskInstnstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "taskCreate")
-            return
+            rs.msg = false
         }
 
         try {
             taskInstnstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "taskCreate")
+            rs.msg = true
         }
         catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "taskCreate", id: id)
+            rs.msg = false
         }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
-
-
-    def finishedTaskDelete(Long id){
-        def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
-        if (!taskInstnstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "finishedTask")
-            return
-        }
-
-        try {
-            taskInstnstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "finishedTask")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "finishedTask", id: id)
-        }
-    }
-
-
-    def allTaskDelete(Long id){
-        def taskInstnstance = Task.findByIdAndCid(id,session.company.id)
-        if (!taskInstnstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "allTask")
-            return
-        }
-    }
-
 
     //任务详情ajax
     def taskShow(){
