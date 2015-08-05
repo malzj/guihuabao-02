@@ -42,11 +42,12 @@
     #apply_tab tr{border-bottom:1px solid #d2d2d2;display:block;}
     #apply_tab .th{background:#f8f8f8;}
     #apply_tab td{padding:10px;margin:0;}
-    #apply_tab td:nth-of-type(1){width:140px;}
-    #apply_tab td:nth-of-type(2){width:1000px;}
-    #apply_tab td:nth-of-type(3){width:200px;}
-    #apply_tab td:nth-of-type(4){width:140px;}
-    #apply_tab td:nth-of-type(5){width:140px;}
+    #apply_tab tr td:nth-of-type(1){width:140px;}
+    #apply_tab tr td:nth-of-type(2){width:800px;}
+    #apply_tab tr td:nth-of-type(3){width:200px;}
+    #apply_tab tr td:nth-of-type(4){width:140px;}
+    #apply_tab tr td:nth-of-type(5){width:140px;}
+    #apply_tab tr td:nth-of-type(6){width:200px;}
     .select{width:300px;height:35px;border:1px solid #d0d0d0;}
     textarea{border:1px solid #d0d0d0;width:500px;height:400px;resize:none;}
     .panel-content{margin:15px;}
@@ -96,6 +97,9 @@
                             <td>审批人</td>
                             <td>审批结果</td>
                             <td>申请时间</td>
+                            <td>
+                                操作
+                            </td>
                         </tr>
                         <g:each in="${applylist}" status="i" var="applyInstance">
                             <tr data-id="${applyInstance.id}" data-version="${applyInstance.version}">
@@ -104,6 +108,11 @@
                                 <td>${applyInstance.approvalusername}</td>
                                 <td>${applyInstance.status}</td>
                                 <td>${applyInstance.dateCreate.format("yyyy-MM-dd")}</td>
+                                <td>
+
+                                    <a href="javascript:;" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="edit"/></a>
+
+                                </td>
                             </tr>
                         </g:each>
                         <g:hiddenField name="applyId" id="applyId" ></g:hiddenField>
@@ -166,14 +175,15 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-        $("#apply_tab tr").click(function(){
-            var applyId = $(this).attr("data-id");
-            var version = $(this).attr("data-version");
-            var applyType = $(this).children("td:eq(0)").html();
-            var applyContent = $(this).children("td:eq(1)").html();
-            var approvalusername = $(this).children("td:eq(2)").html();
-            var applyStauts = $(this).children("td:eq(3)").html();
-            var applyDate = $(this).children("td:eq(4)").html();
+        $(".draft_edit").click(function(){
+            var applyId = $(this).parent().parent().attr("data-id");
+            var version = $(this).parent().parent().attr("data-version");
+            var applyType = $(this).parent().siblings("td:eq(0)").html();
+            var applyContent = $(this).parent().siblings("td:eq(1)").html();
+            var approvalusername = $(this).parent().siblings("td:eq(2)").html();
+            var applyStauts = $(this).parent().siblings("td:eq(3)").html();
+            var applyDate = $(this).parent().siblings("td:eq(4)").html();
+
             $("#applyId").val(applyId)
             $("#version").val(version)
             $(".panel-content ul li:eq(0) span").html(applyType)
@@ -192,6 +202,7 @@
             var version = $("#version").val();
             $.ajax({
                 url:'${webRequest.baseUrl}/front/approveStatus?applystatus='+applyStauts+'&id='+id+'&version='+version,
+                async: false,
                 dataType: "jsonp",
                 jsonp: "callback",
                 success: function (data) {

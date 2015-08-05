@@ -494,109 +494,53 @@ class FrontController {
     //周报
     //我的报告
     def myReport(){
-        Calendar c = Calendar.getInstance()
-        def year = c.get(Calendar.YEAR)
-        def month =c.get(Calendar.MONTH)
-        def week = c.get(Calendar.WEEK_OF_MONTH)
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+        def dateyear = dateFormat.format(new Date())
+        def date = dayFormat.format(new Date())
+        def dateInfo = xuanran(dateyear)
+        def month_week = weekJudge(date)
+        def year = month_week.year
+        def month = month_week.month
+        def week = month_week.nowweek
         def month1=["一","二","三","四","五","六","七","八","九","十","十一","十二"]
-        def week1=[1,2,3,4]
         def userId= session.user.id
         def companyId= session.company.id
 
 
 //        def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(userId,companyId,year,month,week)
         def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(userId,companyId,year.toString(),month.toString(),week.toString())
-        [myReportInfo: myReportInfo,year: year,month: month,week: week,month1:month1,week1:week1]
+        [myReportInfo: myReportInfo,year: year,month: month,week: week,month1:month1,dateInfo: dateInfo]
     }
     def reportShow(){
-        Calendar c = Calendar.getInstance()
-        c.setMinimalDaysInFirstWeek(7)
-        def year = c.get(Calendar.YEAR)
-        def month =c.get(Calendar.MONTH)
-        def week = c.get(Calendar.DAY_OF_WEEK_IN_MONTH)
-        def we = c.getActualMaximum(Calendar.DAY_OF_WEEK_IN_MONTH)
-        Calendar q = Calendar.getInstance();
-        q.set(Calendar.YEAR,year); // 2010年
-        q.setMinimalDaysInFirstWeek(7)
-        def ddd=0
-        for(def s =0;s<12;s++){
-
-            q.set(Calendar.MONTH, s); // 6 月
-            c.set(Calendar.MONTH,s)
-            c.set(Calendar.DATE,29)
-            System.out.println("------------" + 2015 + "年" + (s + 1) + "月的天数和周数-------------");
-            System.out.println("天数：" + q.getActualMaximum(Calendar.DAY_OF_MONTH));
-            System.out.println("周数：" + c.get(Calendar.WEEK_OF_MONTH)+"第几周"+c.get(Calendar.DAY_OF_WEEK_IN_MONTH));
-            def x = q.getActualMaximum(Calendar.WEEK_OF_MONTH)
-            ddd=ddd+x
-        }
-        print(ddd+"-------------------")
-        def i=0
-        def n
-        def mon
-        def dateInfo = []
-
-//        for(i;i<12;i++){
-//            def weekInfo = []
-//            c.set(Calendar.MONTH,i)
-//            mon = c.getActualMaximum(Calendar.WEEK_OF_MONTH)
-//            n=1
-//            for(n;n<=mon;n++){
-//                weekInfo<<n
-//            }
-//            dateInfo<<weekInfo
-//        }
-
-//        q.setFirstDayOfWeek(Calendar.MONDAY);
-//      q.setMinimalDaysInFirstWeek(7);
-//        for(def s =0;s<12;s++){
-//
-//            q.set(Calendar.MONTH, s); // 6 月
-//            System.out.println("------------" + q.get(Calendar.YEAR,2015) + "年" + (s + 1) + "月的天数和周数-------------");
-//            System.out.println("天数：" + q.getActualMaximum(Calendar.DAY_OF_MONTH));
-//            System.out.println("周数：" + q.getActualMaximum(Calendar.WEEK_OF_MONTH));
-//        }
-//        def vv=[]
-//        def size=0
-//        Calendar q = Calendar.getInstance();
-//            q.setFirstDayOfWeek(Calendar.MONDAY);
-//        q.setMinimalDaysInFirstWeek(7);
-//        q.set(Calendar.YEAR,c.get(Calendar.YEAR)); // 2010年
-//        for(def s=0;s<12;s++){
-//        def cc=[]
-//
-//
-//            q.set(Calendar.MONTH,s); // 6 月
-//            def ll = q.getActualMaximum(Calendar.WEEK_OF_MONTH)
-//            System.out.println("周数：" + q.getActualMaximum(Calendar.WEEK_OF_MONTH));
-//            size=size+ll
-//
-//            for (def d=0;d<ll;d++){
-//
-//                   cc<<d
-//            }
-//            vv<<cc
-//        }
-//        print(size+"----------------")
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+        def year = dateFormat.format(new Date())
+        def date = dayFormat.format(new Date())
+        def dateInfo = xuanran(year)
+        def month_week = weekJudge(date)
         def month1=["一","二","三","四","五","六","七","八","九","十","十一","十二"]
         def n_year=params.year.toInteger()
         def n_month=params.month.toInteger()
         def n_week=params.week.toInteger()
-        if(n_year==year&&n_month==month&&n_week==week){
+        def uid = session.user.id.toLong()
+        def cid = session.company.id.toLong()
+        if(n_year==month_week.year&&n_month==month_week.month&&n_week==month_week.nowweek){
             redirect(action: "myReport")
             return
         }
 
-        def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(session.user.id.toLong(),session.company.id.toLong(),n_year,n_month,n_week)
+        def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(uid,cid,n_year,n_month,n_week)
         [myReportInfo: myReportInfo,year: n_year,month: n_month,week: n_week,month1:month1,dateInfo:dateInfo]
     }
 
-    //每月周数(年月同时)
-    def weekOfMonth(){
+    //每月周数(年月同时)传入形式（yyyy-MM）
+    def weekOfMonth(String date){
         def dateInfo = []
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
         DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-        def date = dateFormat.format(new Date())
+//        def date = dateFormat.format(new Date())
+        def time = date
         Date date1 = dateFormat.parse(date);
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date1);
@@ -604,8 +548,7 @@ class FrontController {
         System.out.println("days:" + days);
         int count = 0;
         for (int i = 1; i <= days; i++) {
-            DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-            Date date2 = dateFormat1.parse(date + "-" + i);
+            Date date2 = dayFormat.parse(date + "-" + i);
             calendar.clear();
             calendar.setTime(date2);
             def weekbegin
@@ -613,50 +556,122 @@ class FrontController {
             int k = new Integer(calendar.get(Calendar.DAY_OF_WEEK));
             if (k == 1) {// 若当天是周日
 
-                System.out.println("-----------------------------------");
+//                System.out.println("-----------------------------------");
                 if (i - 6 == 1) {
-                    weekbegin = date + "-" + 1
-                    System.out.println("本周开始日期:" + weekbegin);
+                    weekbegin =dayFormat.format(dayFormat.parse(date + "-" + 1))
+//                    System.out.println("本周开始日期:" + weekbegin);
                     count++;
                 } else if(i - 6 > 1) {
-                    weekbegin = date + "-" + (i - 6)
-                    System.out.println("本周开始日期:" + weekbegin);
+                    weekbegin = dayFormat.format(dayFormat.parse(date + "-" + (i - 6)))
+//                    System.out.println("本周开始日期:" + weekbegin);
                     count++;
                 }
-
-                weekend = date + "-" + i
-                System.out.println("本周结束日期:" + weekend);
-                System.out.println("第" + count + "周");
-                System.out.println("-----------------------------------");
-                dateInfo<<[count: count,weekbegin: weekbegin,weekend: weekend]
+                if(count!=0){
+                    weekend = dayFormat.format(dayFormat.parse(date + "-" + i))
+//                    System.out.println("本周结束日期:" + weekend);
+//                    System.out.println("第" + count + "周");
+//                    System.out.println("-----------------------------------");
+                    dateInfo<<[count: count,weekbegin: weekbegin,weekend: weekend]
+                }
             }
             if (k != 1 && i == days) {// 若是本月后一天，且不是周日
                 count++;
-                System.out.println("-----------------------------------");
+//                System.out.println("-----------------------------------");
                 def day = dayFormat.parse(date + "-" + (i - k + 2))
                 calendar.clear();
                 calendar.setTime(day);
-                calendar.add(Calendar.DATE,6)
-                weekbegin = date + "-" + (i - k + 2)
-                weekend = dayFormat.format(calendar.getTime()) //开始日期加6天
-                System.out.println("本周开始日期:" + weekbegin);
-                System.out.println("本周结束日期:" + weekend);
-                System.out.println("第" + count + "周");
-                System.out.println("-----------------------------------");
-                dateInfo<<[weekbegin: weekbegin,weekend: weekend]
+                calendar.add(Calendar.DATE,6)//开始日期加6天
+                weekbegin = dayFormat.format(dayFormat.parse(date + "-" + (i - k + 2)))
+                weekend = dayFormat.format(calendar.getTime())
+//                System.out.println("本周开始日期:" + weekbegin);
+//                System.out.println("本周结束日期:" + weekend);
+//                System.out.println("第" + count + "周");
+//                System.out.println("-----------------------------------");
+                dateInfo<<[count: count,weekbegin: weekbegin,weekend: weekend]
             }
         }
         return dateInfo
     }
-    //判断是第几周
-    def weekJudge(){
+    //传入日期（yyyy-MM-dd）判断是哪一年第几月第几周第几周[year: year,month: month,nowweek: nowweek]
+    def weekJudge(String time){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
         DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-        def date = dayFormat.format(new Date())
+
+        def date3 = time
         Calendar calendar = new GregorianCalendar();
-        Date date1 = dayFormat.parse(date);
+        Date date1 = dayFormat.parse(date3);
+        def date = dateFormat.format(date1)
+        def sdate = dayFormat.format(date1);
         calendar.setTime(date1);
-        int k = new Integer(calendar.get(Calendar.DAY_OF_WEEK));
+        int n = new Integer(calendar.get(Calendar.DAY_OF_MONTH));
+        int a = new Integer(calendar.get(Calendar.MONTH));
+        def month_week = [:]
+        def judeDay
+        if(n<7){
+            for(def i=1;i<7;i++){
+                def date2 = dayFormat.parse(date+"-"+i)
+                calendar.clear();
+                calendar.setTime(date2);
+                int k = new Integer(calendar.get(Calendar.DAY_OF_WEEK));
+                def f=k-1
+                if(k-1==i){//判断如果一号为星期一跳出循环
+                    month_week.year=new Integer(calendar.get(Calendar.YEAR))
+                    month_week.month=new Integer(calendar.get(Calendar.MONTH))+1
+                    judeDay = dateFormat.format(calendar.getTime())
+                    break
+                }
+                if(k==1){
+                    if(n<=i){
+                        calendar.add(Calendar.MONTH,-1)
+                        month_week.year=new Integer(calendar.get(Calendar.YEAR))
+                        month_week.month=new Integer(calendar.get(Calendar.MONTH))+1
+                    }else{
+                        month_week.year=new Integer(calendar.get(Calendar.YEAR))
+                        month_week.month=new Integer(calendar.get(Calendar.MONTH))+1
+                    }
+                    judeDay = dateFormat.format(calendar.getTime())
+                }
+            }
+        }else{
+            month_week.year=new Integer(calendar.get(Calendar.YEAR))
+            month_week.month=new Integer(calendar.get(Calendar.MONTH))+1
+            judeDay = dateFormat.format(calendar.getTime())
+        }
+
+        def weekInfo = weekOfMonth(judeDay)
+        for(def j=0;j<weekInfo.size();j++){
+            if(sdate>=weekInfo[j].weekbegin&&sdate<=weekInfo[j].weekend){
+                month_week.nowweek=weekInfo[j].count
+            }
+        }
+        return month_week
     }
+
+    //周报渲染日期函数（传入年份）返回形式[[week,n],[week,n].....]
+    def xuanran(String year){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        def date
+        def i
+        def week=1
+        def dateInfo
+        def datearr = []
+        if(!year){
+            date = dateFormat.format(new Date())
+        }else{
+            date=year
+        }
+        for(i=1;i<=12;i++){
+            dateInfo = weekOfMonth(date+"-"+i)
+            def weekInfo = []
+            for(def n=0;n<dateInfo.size();n++){
+                weekInfo<<[week++,n+1]
+            }
+            datearr<<weekInfo
+        }
+
+        return datearr
+    }
+
     def reportUpdate(Long id, Long cid, Long version){
         def myReportInfo = Zhoubao.findByIdAndCid(id,cid)
         def filePath
@@ -763,12 +778,18 @@ class FrontController {
         [companyUserInstance: companyUserInstance]
     }
     def xsReportShow(){
-        Calendar c = Calendar.getInstance()
-        def year = c.get(Calendar.YEAR)
-        def month =c.get(Calendar.MONTH)
-        def week = c.get(Calendar.WEEK_OF_MONTH)
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+        def dateyear = dateFormat.format(new Date())
+        def date = dayFormat.format(new Date())
+        def dateInfo = xuanran(dateyear)
+        def month_week = weekJudge(date)
+        def year = month_week.year
+        def month = month_week.month
+        def week = month_week.nowweek
+        def uid = params.uid
+        def cid = params.cid
         def month1=["一","二","三","四","五","六","七","八","九","十","十一","十二"]
-        def week1=[1,2,3,4]
         def n_year
         def n_month
         def n_week
@@ -782,8 +803,8 @@ class FrontController {
             n_week=params.week.toInteger()
         }
 
-        def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeekAndSubmit(params.uid,params.cid,n_year,n_month,n_week,1)
-        [myReportInfo: myReportInfo,uid: params.uid,cid: params.cid,year: n_year,month: n_month,week: n_week,month1:month1,week1:week1]
+        def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeekAndSubmit(uid,cid,n_year,n_month,n_week,1)
+        [myReportInfo: myReportInfo,uid: uid,cid: cid,year: n_year,month: n_month,week: n_week,month1:month1,dateInfo: dateInfo]
     }
     //周报回复保存
     def replySave(Long id){
@@ -831,10 +852,13 @@ class FrontController {
     def allReplyReport(Long id){
         def uid = session.user.id
         def cid = session.company.id
-        Calendar c = Calendar.getInstance()
-        def year = c.get(Calendar.YEAR)
-        def month =c.get(Calendar.MONTH)
-        def week = c.get(Calendar.WEEK_OF_MONTH)
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+        def date = dayFormat.format(new Date())
+        def month_week = weekJudge(date)
+        def year = month_week.year
+        def month = month_week.month
+        def week = month_week.nowweek
         def n_year
         def n_month
         def n_week
@@ -881,6 +905,7 @@ class FrontController {
             return
         }
         params.max = Math.min(max ?: 10, 100)
+        params<<[sort: "dateCreate",order: "desc"]
         def userId= session.user.id
         def companyId = session.company.id
         def selected = params.selected
@@ -925,16 +950,10 @@ class FrontController {
 
         def rs=[:]
         rs<<[msg:true]
-
-        try {
-            taskInstnstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "allTask")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'task.label', default: 'Task'), id])
-            redirect(action: "allTask", id: id)
-        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
 
     //申请ajax保存
@@ -1005,6 +1024,7 @@ class FrontController {
         params.max = Math.min(max ?: 10, 100)
         def userId= session.user.id
         def companyId = session.company.id
+        params<<[sort: "dateCreate",order: "desc"]
         def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
         def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,0,params)
         def applyInstanceTotal= Apply.countByApplyuidAndCidAndApplystatuss(userId,companyId,0)
@@ -1044,6 +1064,7 @@ class FrontController {
         def selected = params.selected
         def applylist
         def applyInstanceTotal
+        params<<[sort: "dateCreate",order: "desc"]
 
         if(selected == "1"){//已通过
             applylist= Apply.findAllByApprovaluidAndCidAndApplystatussAndApplystatus(userId,companyId,1,1,params)
@@ -1262,7 +1283,7 @@ class FrontController {
         def cid = session.company.id
         def uid = session.user.id
         def selected = params.selected
-        def order = [sort:"dateCreate",order: "desc"]
+        params<<[sort:"dateCreate",order: "desc"]
         def fzTaskInstance
         def fzTaskInstanceTotal
         def infos=[:]
@@ -1271,16 +1292,16 @@ class FrontController {
         infos.unfinished = Task.countByCidAndFzuidAndStatus(cid,uid,0)
 
         if(selected=="1"){//已完成
-            fzTaskInstance = Task.findAllByCidAndFzuidAndStatus(cid,uid,1,params,order)
+            fzTaskInstance = Task.findAllByCidAndFzuidAndStatus(cid,uid,1,params)
             fzTaskInstanceTotal = infos.finished
         }else if(selected=="2"){//未完成
-            fzTaskInstance = Task.findAllByCidAndFzuidAndStatus(cid,uid,0,params,order)
+            fzTaskInstance = Task.findAllByCidAndFzuidAndStatus(cid,uid,0,params)
             fzTaskInstanceTotal = infos.unfinished
         }else if(selected=="3"){//延期任务
-            fzTaskInstance = Task.findAllByCidAndFzuidAndStatusAndOvertimeLessThan(cid,uid,0,now,params,order)
+            fzTaskInstance = Task.findAllByCidAndFzuidAndStatusAndOvertimeLessThan(cid,uid,0,now,params)
             fzTaskInstanceTotal = infos.yq
         }else{//全部负责任务
-            fzTaskInstance = Task.findAllByCidAndFzuid(cid,uid,params,order)
+            fzTaskInstance = Task.findAllByCidAndFzuid(cid,uid,params)
             fzTaskInstanceTotal = Task.countByCidAndFzuid(cid,uid)
         }
         [fzTaskInstance: fzTaskInstance,fzTaskInstanceTotal: fzTaskInstanceTotal,selected: selected,infos: infos]
@@ -1294,7 +1315,7 @@ class FrontController {
         def cid = session.company.id
         def uid = session.user.id
         def selected = params.selected
-        def order = [sort:"dateCreate",order: "desc"]
+        params<<[sort:"dateCreate",order: "desc"]
         def cyTaskInstance
         def cyTaskInstanceTotal
         def infos=[:]
@@ -1302,16 +1323,16 @@ class FrontController {
         infos.finished = Task.countByCidAndPlayuidAndStatus(cid,uid,1)
         infos.unfinished = Task.countByCidAndPlayuidAndStatus(cid,uid,0)
         if(selected=="1"){//已完成
-            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,1,params,order)
+            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,1,params)
             cyTaskInstanceTotal = infos.finished
         }else if(selected=="2"){//未完成
-            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,0,params,order)
+            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,0,params)
             cyTaskInstanceTotal = infos.unfinished
         }else if(selected=="3"){//延期任务
-            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeLessThan(cid,uid,0,now,params,order)
+            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeLessThan(cid,uid,0,now,params)
             cyTaskInstanceTotal = infos.yq
         }else{//全部负责任务
-            cyTaskInstance = Task.findAllByCidAndPlayuid(cid,uid,params,order)
+            cyTaskInstance = Task.findAllByCidAndPlayuid(cid,uid,params)
             cyTaskInstanceTotal = Task.countByCidAndPlayuid(cid,uid)
         }
         [cyTaskInstance: cyTaskInstance,cyTaskInstanceTotal: cyTaskInstanceTotal,selected: selected,infos: infos]
@@ -1328,7 +1349,7 @@ class FrontController {
         def cid = session.company.id
         def uid = session.user.id
         def selected = params.selected
-        def order = [sort:"dateCreate",order: "desc"]
+        params<<[sort:"dateCreate",order: "desc"]
         def allTaskInstance
         def allTaskInstanceTotal
         def infos=[:]
@@ -1338,20 +1359,20 @@ class FrontController {
         infos.finished = Task.countByCidAndPlayuidAndStatus(cid,uid,1)
         infos.unfinished = Task.countByCidAndPlayuidAndStatus(cid,uid,0)
         if(selected=="1"){
-            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,1,params,order)
-            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,1,order)
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,1,params)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,1)
         }else if(selected=="2"){
-            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,2,params,order)
-            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,2,order)
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,2,params)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,2)
         }else if(selected=="3"){
-            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,3,params,order)
-            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,3,order)
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,3,params)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,3)
         }else if(selected=="4"){
-            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,4,params,order)
-            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,4,order)
+            allTaskInstance = Task.findAllByCidAndPlayuidAndPlaystatus(cid,uid,4,params)
+            allTaskInstanceTotal = Task.countByCidAndPlayuidAndPlaystatus(cid,uid,4)
         }else{
-            allTaskInstance = Task.findAllByCidAndPlayuid(cid,uid,params,order)
-            allTaskInstanceTotal = Task.countByCidAndPlayuid(cid,uid,order)
+            allTaskInstance = Task.findAllByCidAndPlayuid(cid,uid,params)
+            allTaskInstanceTotal = Task.countByCidAndPlayuid(cid,uid)
         }
         [allTaskInstance: allTaskInstance,allTaskInstanceTotal: allTaskInstanceTotal,selected: selected,infos: infos]
     }

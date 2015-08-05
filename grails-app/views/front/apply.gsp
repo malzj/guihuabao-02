@@ -269,6 +269,7 @@
         var content = $('#content').val();
         var type=$('#type').val();
         var approvaluid=$('#approvaluid').val()
+        $(this).attr("disabled","disabled")
         console.log(content+type+approvaluid)
         $.ajax({
             url:'${webRequest.baseUrl}/front/applySave?content='+encodeURI(content)+'&type='+encodeURI(type)+'&approvaluid='+encodeURI(approvaluid),
@@ -277,7 +278,7 @@
             success: function (data) {
                 // 去渲染界面
                 if(data.msg){
-                    window.location.href='${webRequest.baseUrl}/front/apply'
+                    window.location.reload();
                 }else{
                     alert("保存失败！");
                 }
