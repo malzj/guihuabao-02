@@ -8,6 +8,7 @@ class Mission {
     String title    //概述
     String content  //详情
     String playuid  //执行人id
+    String playname //执行人
     String bid  //部门id
     String begintime    //开始时间
     String overtime     //截止时间日
@@ -20,6 +21,7 @@ class Mission {
         title(nullable: true)
         content(nullable: true)
         playuid(nullable: true)
+        playname(nullable:true)
         bid(nullable: true)
         begintime(nullable: true)
         overtime(nullable: true)
