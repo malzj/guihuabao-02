@@ -359,36 +359,36 @@
         });
         context.init({preventDoubleContext: false});
 
-        context.attach('#playman', [
-            <g:if test=" ${session.user.pid==1}">
-            {header: '部门'},
-            <g:each in="${bumenInstance}" var="bumenInfo">
-            {text: '${bumenInfo.name}', subMenu: [
-                {header: '员工'},
-                <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
-                {text: '${userInfo.name}', href: '#', action: function(e){
-                    $("#playuid").val(${userInfo.id});
-                    $("#playbid").val(${userInfo.bid});
-                    $("#playname").val("${userInfo.name}");
-                    $(this).hide();
-                    $(".zhxr").html("${userInfo.name}");
-                }},
-                </g:each>
-            ]},
+    context.attach('#playman', [
+        <g:if test=" ${session.user.pid==1}">
+        {header: '部门'},
+        <g:each in="${bumenInstance}" var="bumenInfo">
+        {text: '${bumenInfo.name}', subMenu: [
+            {header: '员工'},
+            <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
+            {text: '${userInfo.name}', href: '#', action: function(e){
+                $("#playuid").val(${userInfo.id});
+                $("#playbid").val(${userInfo.bid});
+                $("#playname").val("${userInfo.name}");
+                $(this).hide();
+                $(".zhxr").html("${userInfo.name}");
+            }},
             </g:each>
-            </g:if>
-            <g:else>
-                <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
-                {text: '${userInfo.name}', href: '#', action: function(e){
-                    $("#playuid").val(${userInfo.id});
-                    $("#playbid").val(${userInfo.bid});
-                    $("#playname").val("${userInfo.name}");
-                    $(this).hide();
-                    $(".zhxr").html("${userInfo.name}");
-                }}
-                </g:each>
-            </g:else>
-        ]);
+        ]},
+        </g:each>
+        </g:if>
+        <g:else>
+        <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
+        {text: '${userInfo.name}', href: '#', action: function(e){
+            $("#playuid").val(${userInfo.id});
+            $("#playbid").val(${userInfo.bid});
+            $("#playname").val("${userInfo.name}");
+            $(this).hide();
+            $(".zhxr").html("${userInfo.name}");
+        }}
+        </g:each>
+        </g:else>
+    ]);
     })
 </script>
 </body>

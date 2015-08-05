@@ -51,7 +51,7 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
-    <g:render template="spaside" />
+    <g:render template="target_sider" />
     <!--sidebar end-->
     <!--main content start-->
     <section id="main-content">
@@ -173,8 +173,8 @@
             </li>
             <li class="clearfix">
                 <div class="f-r">
-                    <g:actionSubmit  value="保存" style="margin-right: 10px;" class="button"/>
-                    <g:actionSubmit class="tar_edit button" value="保存并分解目标" style="width:160px;"/>
+                    <button type="submit"  style="margin-right: 10px;" class="button">保存</button>
+                    <button type="submit" class="tar_edit button"  style="width:160px;" id="saf">保存并分解目标</button>
                 </div>
             </li>
         </ul>
@@ -191,13 +191,14 @@
         </header>
 
         <ul>
-            <li>
-                <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="">40</span>%)</span></h2>
-            </li>
-            <li class="clearfix">
-                <input type="submit" value="提交" class="f-r button"  disabled />
-            </li>
+
         </ul>
+
+            <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;margin:30px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="">40</span>%)</span></h2>
+
+        <div class="clearfix" style="margin:40px;">
+            <input type="submit" value="提交" class="f-r button"  disabled />
+        </div>
     </div>
 </div>
 <!--目标分解 end-->
@@ -267,7 +268,7 @@
         </header>
 
         <ul>
-            <form action="">
+
                 <input type="hidden" name="target_id" id="target_id" />
             <li >
                 <input type="text" name="title" placeholder="一句话描述任务" id="newmission_title"/>
@@ -279,7 +280,9 @@
                 <table class="table table-bordered" style="border-spacing: 0;margin-right: 20px;">
                     <tr>
                         <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>
-                        <td width="75%"><input type="hidden"  name="playuid" value=""  id="newmission_playname"/>
+                        <td width="75%">
+
+                            <input type="hidden"  name="playuid" value=""  id="newmission_playname"/>
                             <input type="hidden" id="playbid" name="playbid" value="" />
                             <input type="hidden" id="playname" name="playname" value="" />
                             <div class="zhxr">
@@ -310,13 +313,13 @@
             <li class="clearfix">
                 <button type="submit" class="f-r" style="width:82px;height:34px;border:none;background:#03a9f4;color:#fff;" id="save_mission">确认</button>
             </li>
-            </form>
+
         </ul>
     </div>
 </div>
 <!--新建任务 end-->
 <!--编辑任务 start-->
-<div class="passwordedit" id="mission_edit">
+<div class="passwordedit" id="mission_edit_detail">
     <div class="m_box" style="width:804px;">
         <header class="panel-heading" style="padding:10px 28px;">
             <span><i class="yh"></i>编辑任务</span>
@@ -324,7 +327,7 @@
         </header>
 
         <ul>
-            <form action="">
+
                 <input type="hidden" name="target_id" id="target_id_edit" />
                 <li >
                     <input type="text" name="title" placeholder="一句话描述任务" id="mission_title_edit"/>
@@ -336,7 +339,8 @@
                     <table class="table table-bordered" style="border-spacing: 0;margin-right: 20px;">
                         <tr>
                             <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>
-                            <td width="75%"><input type="hidden" id="playuid_edit" name="playuid" value="" />
+                            <td width="75%">
+                                <input type="hidden"  name="playuid" value="" />
                                 <input type="hidden" id="playbid_edit" name="playbid" value="" />
                                 <input type="hidden" id="playname_edit" name="playname" value="" />
                                 <div class="zhxr">
@@ -357,7 +361,10 @@
                         <tr>
                             <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
                             <td>
-                                <input name="status" value="进行中" readonly style="border:none;" id="mission_status_edit"/>
+                                <select name="status" style="border:none;" id="mission_status_edit">
+                                    <option value="0">进行中</option>
+                                    <option value="1">完成</option>
+                                </select>
 
                             </td>
                         </tr>
@@ -365,9 +372,10 @@
                 </li>
 
                 <li class="clearfix">
+                    <input type="hidden" id="mid"/>
                     <button type="submit" class="f-r" style="width:82px;height:34px;border:none;background:#03a9f4;color:#fff;" id="save_mission_edit">确认</button>
                 </li>
-            </form>
+
         </ul>
     </div>
 </div>
@@ -384,7 +392,7 @@
 
             <li class="clearfix">
                 <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
-                <h2 class="f-l" style="padding:0;margin: 0 20px 0 0;font-size: 20px;line-height:48px;" id="detail.title"></h2>
+                <h2 class="f-l" style="padding:0;margin: 0 20px 0 0;font-size: 20px;line-height:48px;" id="detail_title"></h2>
             </li>
             <li>
                 详情：<span id="detail_content"></span>
@@ -477,9 +485,11 @@
 
     <script>
         $(document).ready(function() {
-            $(".tar_edit").click(function(){
+            $(".tar_edit,#saf").click(function(){
 
+                event.preventDefault();
                 event.stopPropagation();
+                event.cancelBubble=true;
 
                 var tid=$(this).parent().next().val();
                 $('#var_all').html(tid);
@@ -500,8 +510,9 @@
                             html+=' <li class="clearfix">'+
                             '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
                             '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
-                                    '<a href="#" id="mission_edit" style="font-size:20px;margin-right:5px;"><i class="fa fa-edit"></i></a>'+
-                            '<a href="#" style="font-size:20px;" id="mission_delete"><i class="fa fa-trash-o"></i></a>'+
+                                    '<a href="javascript:;"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit" ></i></a>'+
+                                    '<span style="display:none;">'+missionlist[i].id+'</span>'+
+                                     '<a href="#" style="font-size:20px;" ><i class="fa fa-trash-o mission_delete"></i></a>'+
                             '</div>'+
                             '</li>'+
                             '<li class="clearfix">'+
@@ -524,34 +535,158 @@
                            ' <tr>'+
                            ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>'+
                            ' <td>'+
-                            '<span>'+(missionlist[i].status=='1')?"完成":"进行中"+'</span>'+
+                            '<span>'+missionlist[i].status+'</span>'+
                             '</td>'+
                             '</tr>'+
                             '</table>'+
                             '</li>';
-                            $('#mission_edit').click(function(){
-                                $('#target_id_edit').val(tid);
-                                $('#mission_title_edit').val(missionlist[i].title);
-                                $('#mission_content_edit').val(missionlist[i].content);
-                                $('#playuid_edit').val(mission[i].playuid);
-                                $('#startdate_edit').val(missionlist[i].begintime);
-                                $('#enddate_edit').val(missionlist[i].overtime);
-                                $('#mission_percent_edit').val(missionlist[i].percent);
-                                $('#mission_status_edit').val(missionlist[i].status);
 
-                                $('#mission_edit').css('display','block');
-                            })
                         }
                         $("#tar_fj ul").prepend(html);
+
+                        editclick();
                     },error:function(){alert("获取数据失败");}});
 
 
                 $("#tar_fj").css('display','block');
-
+                return false;
                 } )
+
+
+            function editclick() {
+                $(".mission_edit").click(function () {
+
+                    var mid = $(this).parent().next().html();
+
+                    $.ajax({
+                        url: '${webRequest.baseUrl}/front/mshow',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {mid: mid},
+                        success: function (data) {
+                            var mission = data.mission;
+                            var target = data.target;
+                            $('#target_id_edit').val(target.id);
+                            $('#mission_title_edit').val(mission.title);
+                            $('#mission_content_edit').val(mission.content);
+                            $('#playname_edit').val(mission.playname);
+                            $('#startdate_edit').val(mission.begintime);
+                            $('#enddate_edit').val(mission.overtime);
+                            $('#mission_percent_edit').val(mission.percent);
+                            $('#mission_status_edit').val(mission.status);
+                            $('#mid').val(mission.id);
+                            $('#mission_edit_detail').css('display', 'block');
+                        },
+                        error: function () {
+                            alert("获取数据失败");
+                        }
+                    })
+
+                })
+                $('#save_mission_edit').click(function(){
+                    var mid=$(this).prev().val();
+                    var title=$('#mission_title_edit').val();
+                    var content=$('#mission_content_edit').val();
+                    var playname=$('#playname_edit').val();
+                    var begintime=$('#startdate_edit').val();
+                    var overtime=$('#enddate_edit').val();
+                    var percent=$('#mission_percent_edit').val();
+                    var status=$('#mission_status_edit').val();
+                    var html="";
+
+                    $.ajax({
+                        url:'${webRequest.baseUrl}/front/mupdate',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {mid: mid,title:title,content:content,playname:playname,begintime:begintime,overtime:overtime,percent:percent,status:status},
+                        success: function (data) {
+                             $('#tar_fj ul').empty();
+
+                            var target=data.target;
+
+                            var missionlist=data.mission;
+                            var size= data.missionSize
+                            console.log(size);
+                            console.log(data);
+                            for(var i=0;i<missionlist.length;i++){
+                                html+=' <li class="clearfix">'+
+                                        '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
+                                        '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
+                                        '<a href="javascript:;"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit" ></i></a>'+
+                                        '<span style="display:none;">'+missionlist[i].id+'</span>'+
+                                        '<a href="#" style="font-size:20px;" ><i class="fa fa-trash-o mission_delete"></i></a>'+
+                                        '</div>'+
+                                        '</li>'+
+                                        '<li class="clearfix">'+
+                                        '<table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">'+
+                                        '<tr>'+
+                                        '<th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>'+
+                                        ' <td width="75%">'+missionlist[i].playname+'</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                        ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>'+
+                                        '<td><input  name="fzuid" style="border:none;width:75%" value="'+missionlist[i].percent+'"%/></td>'+
+                                        '</tr>'+
+                                        '</table>'+
+                                        '<table class="table table-bordered f-l" style="border-spacing: 0;width:48%;">'+
+                                        ' <tr>'+
+                                        '<th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>'+
+                                        ' <td width="75%"><span>'+missionlist[i].begintime+'</span>—<span>'+missionlist[i].overtime +'</span></td>'+
+
+                                        ' </tr>'+
+                                        ' <tr>'+
+                                        ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>'+
+                                        ' <td>'+
+                                        '<span>'+missionlist[i].status+'</span>'+
+                                        '</td>'+
+                                        '</tr>'+
+                                        '</table>'+
+                                        '</li>';
+
+                            }
+                            $("#tar_fj ul").append(html);
+                            alert(html);
+                            $('#mission_edit_detail').hide();
+
+                        },
+                        error:function(){
+                            alert("获取数据失败");
+                        }
+                    })
+                })
+                $(".mission_delete").click(function () {
+
+                    var mid = $(this).parent().prev().html();
+                    var This=$(this)
+                    $.ajax({
+                        url: '${webRequest.baseUrl}/front/mdelete',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {mid: mid},
+                        success: function (data) {
+                            if(data.msg=="删除任务成功！"){
+                                alert("删除成功！");
+                                alert(This.parent().html());
+                                var rm1=This.parent().parent().parent();
+                                var rm2=This.parent().parent().parent().next();
+                                rm1.remove();
+                              rm2.remove();
+                        }
+
+                        },
+                        error: function () {
+                            alert("获取数据失败");
+                        }
+
+
+                    })
+                })
+            }
+
 
             $(".tar_delete").click(function(){
                 event.stopPropagation();
+                event.preventDefault();
             })
 
 
@@ -579,9 +714,6 @@
 
             var all_tars=$(".tar_whole");
 
-
-//           $.each(all_tars,function() {
-
             $(".tar_whole").click(function () {
                 var tar_mission='';
                 var tid=$(this).find('input:first').val();
@@ -608,7 +740,7 @@
                             '<table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">'+
                             '<tr>'+
                             ' <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>'+
-                            %{--'<td width="75%"><span>'+ ${com.guihuabao.CompanyUser.findByCidAndId(session.user.cid,mission[i].playuid).name}+'</span></td>'+--}%
+                            '<td width="75%"><span>'+ mission[i].playname+'</span></td>'+
                             '</tr>'+
                             ' <tr>'+
                             ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>'+
@@ -620,7 +752,7 @@
                             ' <table class="table table-bordered f-l" style="border-spacing: 0;width:48%;">'+
                             ' <tr>'+
                             '<th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>'+
-                            ' <td width="75%"><span>'+mission[i].begintime+'</span>—<span>'+mission[i].overtimeour+'</span></td>'+
+                            ' <td width="75%"><span>'+mission[i].begintime+'</span>—<span>'+mission[i].overtime+'</span></td>'+
                             '</tr>'+
                             ' <tr>'+
                             '<th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>'+
@@ -630,10 +762,10 @@
                             '</tr>'+
                             '</table>'+
                             '</li>';
-                            $("#tar_detail .rwfj").append(tar_mission);
+
 
                            }
-
+                            $("#tar_detail .rwfj").append(tar_mission);
                             }
                         ,error:function(){alert("获取数据失败")}})
                             $("#tar_detail").css("display","block");
@@ -642,6 +774,38 @@
 
 
 
+            %{--context.init({preventDoubleContext: false});--}%
+
+            %{--context.attach('#playman', [--}%
+                %{--<g:if test=" ${session.user.pid==1}">--}%
+                %{--{header: '部门'},--}%
+                %{--<g:each in="${bumenInstance}" var="bumenInfo">--}%
+                %{--{text: '${bumenInfo.name}', subMenu: [--}%
+                    %{--{header: '员工'},--}%
+                    %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">--}%
+                    %{--{text: '${userInfo.name}', href: '#', action: function(e){--}%
+                        %{--$("#newmission_playname").val(${userInfo.id});--}%
+                        %{--$("#playbid").val(${userInfo.bid});--}%
+                        %{--$("#playname").val("${userInfo.name}");--}%
+                        %{--$(this).hide();--}%
+                        %{--$(".zhxr").html("${userInfo.name}");--}%
+                    %{--}},--}%
+                    %{--</g:each>--}%
+                %{--]},--}%
+                %{--</g:each>--}%
+                %{--</g:if>--}%
+                %{--<g:else>--}%
+                %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">--}%
+                %{--{text: '${userInfo.name}', href: '#', action: function(e){--}%
+                    %{--$("#playuid").val(${userInfo.id});--}%
+                    %{--$("#playbid").val(${userInfo.bid});--}%
+                    %{--$("#playname").val("${userInfo.name}");--}%
+                    %{--$(this).hide();--}%
+                    %{--$(".zhxr").html("${userInfo.name}");--}%
+                %{--}}--}%
+                %{--</g:each>--}%
+                %{--</g:else>--}%
+            %{--]);--}%
             context.init({preventDoubleContext: false});
 
             context.attach('#playman', [
@@ -652,7 +816,7 @@
                     {header: '员工'},
                     <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
                     {text: '${userInfo.name}', href: '#', action: function(e){
-                        $("#playuid").val(${userInfo.id});
+                        $("#newmission_playname").val(${userInfo.id});
                         $("#playbid").val(${userInfo.bid});
                         $("#playname").val("${userInfo.name}");
                         $(this).hide();
@@ -665,7 +829,7 @@
                 <g:else>
                 <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
                 {text: '${userInfo.name}', href: '#', action: function(e){
-                    $("#playuid").val(${userInfo.id});
+                    $("#newmission_playname").val(${userInfo.id});
                     $("#playbid").val(${userInfo.bid});
                     $("#playname").val("${userInfo.name}");
                     $(this).hide();
@@ -698,7 +862,7 @@
                             var html=' <li class="clearfix">'+
                                     '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(data.target.mission.length)+'：<span style="color:#797979;">'+data.mission.title+'</span></h2>'+
                                     '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
-                                    '<a href="#" id="mission_edit" style="font-size:20px;margin-right:5px;"><i class="fa fa-edit"></i></a>'+
+                                    '<a href="#"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit"></i></a>'+
                                     '<a href="#" style="font-size:20px;"><i class="fa fa-trash-o"></i></a>'+
                                     '</div>'+
                                     '</li>'+

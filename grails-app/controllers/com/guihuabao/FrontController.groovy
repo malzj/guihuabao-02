@@ -1696,7 +1696,7 @@ class FrontController {
         }else {
             rs.msg=true
             rs.target=targetInstance
-            rs.mission=targetInstance.mission
+            rs.mission=mission
         }
 
 
@@ -1715,6 +1715,52 @@ class FrontController {
         def targetInstance = Target.get(tid)
         rs.target=targetInstance
         rs.mission=targetInstance.mission
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def mshow(){
+        def rs=[:]
+        def mid= params.mid
+        def mission = Mission.get(mid)
+        def target=mission.target
+        rs.mission=mission
+        rs.target=target
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def mdelete(){
+        def rs=[:]
+        def mid=params.mid
+        def missionInstance = Mission.get(mid)
+        try {
+            missionInstance.delete(flush: true)
+            rs.msg="删除任务成功！"
+        }
+        catch (DataIntegrityViolationException e) {
+           rs.msg="删除失败！"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def mupdate(){
+        def rs=[:]
+        def mid=params.mid
+        def mission=Mission.get(mid)
+        mission.properties = params
+        if (! mission.save(flush: true)){
+            rs.msg=false
+        }else {
+            rs.msg=true
+            rs.target=mission.target
+            rs.mission=mission.target.mission
+            rs.missionSize=mission.target.mission.size()
+        }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
