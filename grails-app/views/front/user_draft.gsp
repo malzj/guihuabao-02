@@ -293,9 +293,11 @@
         }else{
             dumpto="user_draft"
         }
+        $(this).attr("disabled","disabled")
         console.log(content+type+approvaluid)
         $.ajax({
             url:'${webRequest.baseUrl}/front/applyUpdate?id='+encodeURI(id)+'&version='+encodeURI(version)+'&content='+encodeURI(content)+'&type='+encodeURI(type)+'&approvaluid='+encodeURI(approvaluid)+'&applysub='+encodeURI(applysub),
+            async: false,
             dataType: "jsonp",
             jsonp: "callback",
             success: function (data) {

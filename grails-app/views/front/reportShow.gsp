@@ -51,12 +51,12 @@
                     <div class="menu_side">
                         <ul class="menu">
 
-                            <g:each status="k" in="${dateInfo}" var="s" >
+                            <g:each status="k" in="${dateInfo}" var="weeks" >
                                 <li>
                                     <span>${month1[k]}月</span>
-                                    <ul class="weeks <g:if test="${k==month}">on</g:if>">
-                                        <g:each in="${s}" var="i">
-                                            <li <g:if test="${i==week&&k==month}">class="active"</g:if> ><a href="javascript:;" data-month="${k}" data-week="${i}"><span>第${i}周</span></a></li>
+                                    <ul class="weeks <g:if test="${(k+1)==month}">on</g:if>">
+                                        <g:each in="${weeks}" var="i">
+                                            <li <g:if test="${i[1]==week&&(k+1)==month}">class="active"</g:if> ><a href="javascript:;" data-month="${k+1}" data-week="${i[1]}"><span>第${i[0]}周</span></a></li>
                                         </g:each>
                                     </ul>
                                 </li>
