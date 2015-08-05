@@ -74,7 +74,7 @@
 
                             </ul>
                         </div>
-                        <a href="#" id="newapply" class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
+                        <a href="#" id="newtarget" class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
                     </div>
                     <div class="content">
                         <div style="margin-top:20px;" class="clearfix">
@@ -136,7 +136,7 @@
         <!--footer end-->
     </section>
 <!--新建弹层 start-->
-<div class="passwordedit" id="newapplydetail" style="position:absolute;overflow: scroll;">
+<div class="passwordedit" id="newtargetdetail" style="position:absolute;overflow: scroll;">
     <div class="m_box" style="width:804px;">
         <header class="panel-heading" style="padding:10px 28px;">
             <span><i class="yh"></i>添加新目标</span>
@@ -173,8 +173,8 @@
             </li>
             <li class="clearfix">
                 <div class="f-r">
-                    <g:actionSubmit  value="保存" style="margin-right: 10px;" action="targetSave" class="button"/>
-                    <g:actionSubmit class="tar_edit button" value="保存并分解目标" style="width:160px;" action="targetSave"/>
+                    <g:actionSubmit  value="保存" style="margin-right: 10px;" class="button"/>
+                    <g:actionSubmit class="tar_edit button" value="保存并分解目标" style="width:160px;"/>
                 </div>
             </li>
         </ul>
@@ -192,7 +192,7 @@
 
         <ul>
             <li>
-                <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="percent-mission">40</span>%)</span></h2>
+                <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="">40</span>%)</span></h2>
             </li>
             <li class="clearfix">
                 <input type="submit" value="提交" class="f-r button"  disabled />
@@ -248,7 +248,7 @@
                 </table>
             </li>
             <li>
-                <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="percent-mission">40</span>%)</span></h2>
+                <h2  id="" style="padding:0;margin: 0 20px 0 0;font-size: 20px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="percent-mission">40</span>%)</span></h2>
             </li>
             <li class="clearfix">
                 <input type="button" value="提交" class="f-r"  disabled/>
@@ -279,7 +279,7 @@
                 <table class="table table-bordered" style="border-spacing: 0;margin-right: 20px;">
                     <tr>
                         <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>
-                        <td width="75%"><input type="hidden" id="playuid" name="playuid" value=""  id="newmission_playuid"/>
+                        <td width="75%"><input type="hidden"  name="playuid" value=""  id="newmission_playname"/>
                             <input type="hidden" id="playbid" name="playbid" value="" />
                             <input type="hidden" id="playname" name="playname" value="" />
                             <div class="zhxr">
@@ -289,7 +289,7 @@
                     </tr>
                     <tr>
                         <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;line-height: 30px;">起止日</th>
-                        <td width="75%"> <input id="startdate" name="begintime" value="" readonly="" class="default-date-picker" type="text" style="width:100px;" >-<input id="enddate" name="overtime" value="" readonly="" class="form_datetime" type="text" style="width:143px;"></td>
+                        <td width="75%"> <input id="startdate_mission" name="begintime" value="" readonly="" class="default-date-picker" type="text" style="width:100px;" >-<input id="enddate_mission" name="overtime" value="" readonly="" class="form_datetime" type="text" style="width:143px;"></td>
 
                     </tr>
                     <tr>
@@ -300,7 +300,7 @@
                     <tr>
                         <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
                         <td>
-                           <input name="status" value="进行中" readonly style="border:none;" id="newmission_status"/>
+                            进行中 <input name="status" value="0" readonly style="border:none;" id="newmission_status" type="hidden"/>
 
                         </td>
                     </tr>
@@ -486,9 +486,10 @@
 
                 var html='';
                 $.ajax( {
-                    url:'${webRequest.baseUrl}/front/tshow?target_id='+tid+'',
+                    url:'${webRequest.baseUrl}/front/tshow',
                     method:'post',
                     dataType:'json',
+                    data:{target_id:tid},
                     success:function(data){
 
                         var target=data.target;
@@ -506,8 +507,8 @@
                             '<li class="clearfix">'+
                                     '<table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">'+
                                     '<tr>'+
-                                    '<th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">负责人</th>'+
-                           ' <td width="75%">'+missionlist[i].fzuid+'</td>'+
+                                    '<th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>'+
+                           ' <td width="75%">'+missionlist[i].playname+'</td>'+
                             '</tr>'+
                             '<tr>'+
                            ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>'+
@@ -523,7 +524,7 @@
                            ' <tr>'+
                            ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>'+
                            ' <td>'+
-                            '<span>'+missionlist[i].status+'</span>'+
+                            '<span>'+(missionlist[i].status=='1')?"完成":"进行中"+'</span>'+
                             '</td>'+
                             '</tr>'+
                             '</table>'+
@@ -554,11 +555,11 @@
             })
 
 
-            $("#newapply").click(function(){
-                $("#newapplydetail").css("display","block");
+            $("#newtarget").click(function(){
+                $("#newtargetdetail").css("display","block");
             });
             $(".close").click(function(){
-//                $("#newapplydetail").css("display","none");
+//                $("#newtargetdetail").css("display","none");
 //                $("#tar_detail").css("display","none");
 //                $("#newmissiondetail").css('display','none');
 //                $("#tar_fj").css('display','none');
@@ -577,16 +578,18 @@
             });
 
             var all_tars=$(".tar_whole");
-            var tar_mission='';
+
 
 //           $.each(all_tars,function() {
 
             $(".tar_whole").click(function () {
+                var tar_mission='';
                 var tid=$(this).find('input:first').val();
                     $.ajax({
-                        url: '${webRequest.baseUrl}/front/tshow?target_id=' +tid  + '',
+                        url: '${webRequest.baseUrl}/front/tshow',
                         method: 'post',
                         dataType: 'json',
+                        data:{target_id:tid},
                         success: function (data) {
 
                             $('#detail_title').html(data.target.title);
@@ -674,26 +677,26 @@
             $("#newmission").click(function(){
                 $('#target_id').val($('#var_all').html());
 
-                $("#tar_whole").css('display','none');
+
                 $("#newmissiondetail").css('display','block');
                 $("#save_mission").click(function(){
                     var target_id=$('#target_id').val();
                     var title=$('#newmission_title').val();
                     var content=$('#newmission_content').val();
-                    var playuid=$('#newmission_playuid').val();
-                    var begintime=$('#startdate').val();
-                    var overtime=$('#enddate').val();
+                    var playname=$('#newmission_playname').val();
+                    var begintime=$('#startdate_mission').val();
+                    var overtime=$('#enddate_mission').val();
                     var percent=$('#newmission_percent').val();
                     var status=$('#newmission_status').val();
                     $.ajax({
                         url:'${webRequest.baseUrl}/front/missionSave',
                         type:'post',
                         dataType:'json',
-                        data:{target_id:target_id,title:title,content:content,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent,status:status},
+                        data:{target_id:target_id,title:title,content:content,playname:playname,begintime:begintime,overtime:overtime,percent:percent,status:status},
                         success:function(data){
 
                             var html=' <li class="clearfix">'+
-                                    '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(data.target.mission.length)+'：<span style="color:#797979;">'+data.title+'</span></h2>'+
+                                    '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(data.target.mission.length)+'：<span style="color:#797979;">'+data.mission.title+'</span></h2>'+
                                     '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
                                     '<a href="#" id="mission_edit" style="font-size:20px;margin-right:5px;"><i class="fa fa-edit"></i></a>'+
                                     '<a href="#" style="font-size:20px;"><i class="fa fa-trash-o"></i></a>'+
@@ -703,30 +706,30 @@
                                     '<table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">'+
                                     '<tr>'+
                                     '<th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">负责人</th>'+
-                                    ' <td width="75%">'+data.playuid+'</td>'+
+                                    ' <td width="75%">'+data.mission.playname+'</td>'+
                                     '</tr>'+
                                     '<tr>'+
                                     ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>'+
-                                    '<td><input  name="fzuid" style="border:none;width:75%" value="'+data.percent+'"%/></td>'+
+                                    '<td><input  name="fzuid" style="border:none;width:75%" value="'+data.mission.percent+'"%/></td>'+
                                     '</tr>'+
                                     '</table>'+
                                     '<table class="table table-bordered f-l" style="border-spacing: 0;width:48%;">'+
                                     ' <tr>'+
                                     '<th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>'+
-                                    ' <td width="75%"><span>'+data.begintime+'</span>—<span>'+data.overtime +'</span></td>'+
+                                    ' <td width="75%"><span>'+data.mission. begintime+'</span>—<span>'+data.mission.overtime +'</span></td>'+
 
                                     ' </tr>'+
                                     ' <tr>'+
                                     ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>'+
                                     ' <td>'+
-                                    '<span>'+data.status+'</span>'+
+                                    '<span>'+data.mission.status+'</span>'+
                                     '</td>'+
                                     '</tr>'+
                                     '</table>'+
                                     '</li>';
                             $("#tar_fj ul").prepend(html);
                             $("#newmissiondetail").css('display','none');
-                            $("#tar_whole").css('display','block');
+
                         },
                         error:function(){alert("获取数据失败")}
                     })
