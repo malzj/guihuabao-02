@@ -173,8 +173,8 @@
             </li>
             <li class="clearfix">
                 <div class="f-r">
-                    <g:actionSubmit  value="保存" style="margin-right: 10px;" class="button"/>
-                    <g:actionSubmit class="tar_edit button" value="保存并分解目标" style="width:160px;"/>
+                    <button  value="保存" style="margin-right: 10px;" class="button">保存</button>
+                    <button class="tar_edit button" value="保存并分解目标" style="width:160px;">保存并分解目标</button>
                 </div>
             </li>
         </ul>
