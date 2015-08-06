@@ -79,8 +79,10 @@
                                     <span class="sn">${i+1}</span>
                                     <span class="title" data-task-id="${taskInfo.id}"  data-task-version="${taskInfo.version}">${taskInfo.title}</span>
                                     <div class="right">
-                                        <span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
-                                        <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
+                                        %{--<span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
+                                        %{--<g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
+                                        <span class="hsfinish"><a href="javascript:;" class="taskedit" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
+                                        <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
                                         <span class="date f-r">${taskInfo.overtime}</span>
                                     </div>
                                 </li>
@@ -104,8 +106,10 @@
                                     <span class="sn">${i+1}</span>
                                     <span class="title"  data-task-id="${tomorrowTaskInfo.id}"  data-task-version="${tomorrowTaskInfo.version}">${tomorrowTaskInfo.title}</span>
                                     <div class="right">
-                                        <span class="hsfinish"><g:link action="taskUpdate" id="${tomorrowTaskInfo.id}" params="[version: tomorrowTaskInfo.version]"><i class="fa <g:if test="${tomorrowTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
-                                        <g:if test="${tomorrowTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${tomorrowTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
+                                        %{--<span class="hsfinish"><g:link action="taskUpdate" id="${tomorrowTaskInfo.id}" params="[version: tomorrowTaskInfo.version]"><i class="fa <g:if test="${tomorrowTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
+                                        %{--<g:if test="${tomorrowTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${tomorrowTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
+                                        <span class="hsfinish"><a href="javascript:;" class="taskedit" data-id="${tomorrowTaskInfo.id}" data-version="${tomorrowTaskInfo.version}"><i class="fa <g:if test="${tomorrowTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
+                                        <g:if test="${tomorrowTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${tomorrowTaskInfo.id}" data-version="${tomorrowTaskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
                                         <span class="date f-r">${tomorrowTaskInfo.overtime}</span>
                                     </div>
                                 </li>
@@ -130,8 +134,10 @@
                                         <span class="sn">${i+1}</span>
                                         <span class="title" data-task-id="${taskInfo.id}"  data-task-version="${taskInfo.version}">${taskInfo.title}</span>
                                         <div class="right">
-                                            <span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
-                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
+                                            %{--<span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
+                                            %{--<g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
+                                            <span class="hsfinish"><a href="javascript:;" class="taskedit" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
+                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
                                             <span class="date f-r">${taskInfo.overtime}</span>
                                         </div>
                                     </li>
@@ -342,6 +348,43 @@
                 }
             })
         });
+
+        $(".taskedit").click(function(){
+            var id=$(this).attr("data-id");
+            var version=$(this).attr("data-version");
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/taskUpdate?id='+id+'&version='+version,
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function(data){
+                    if(data.msg){
+                        alert("标记成功!")
+                        window.location.reload()
+                    }else{
+                        alert("标记失败!")
+                    }
+                }
+            })
+        })
+
+        $(".taskdelete").click(function(){
+            var id=$(this).attr("data-id");
+            var version=$(this).attr("data-version");
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/taskDelete?id='+id,
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function(data){
+                    if(data.msg){
+                        alert("删除成功!")
+                        window.location.reload()
+                    }else{
+                        alert("删除失败!")
+                    }
+                }
+            })
+        })
+
         $(".taskclose").click(function(){
             $("#task").slideLeftHide(400);
             $("#task .task_content").empty();
@@ -359,36 +402,36 @@
         });
         context.init({preventDoubleContext: false});
 
-        context.attach('#playman', [
-            <g:if test=" ${session.user.pid==1}">
-            {header: '部门'},
-            <g:each in="${bumenInstance}" var="bumenInfo">
-            {text: '${bumenInfo.name}', subMenu: [
-                {header: '员工'},
-                <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
-                {text: '${userInfo.name}', href: '#', action: function(e){
-                    $("#playuid").val(${userInfo.id});
-                    $("#playbid").val(${userInfo.bid});
-                    $("#playname").val("${userInfo.name}");
-                    $(this).hide();
-                    $(".zhxr").html("${userInfo.name}");
-                }},
-                </g:each>
-            ]},
+    context.attach('#playman', [
+        <g:if test=" ${session.user.pid==1}">
+        {header: '部门'},
+        <g:each in="${bumenInstance}" var="bumenInfo">
+        {text: '${bumenInfo.name}', subMenu: [
+            {header: '员工'},
+            <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
+            {text: '${userInfo.name}', href: '#', action: function(e){
+                $("#playuid").val(${userInfo.id});
+                $("#playbid").val(${userInfo.bid});
+                $("#playname").val("${userInfo.name}");
+                $(this).hide();
+                $(".zhxr").html("${userInfo.name}");
+            }},
             </g:each>
-            </g:if>
-            <g:else>
-                <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
-                {text: '${userInfo.name}', href: '#', action: function(e){
-                    $("#playuid").val(${userInfo.id});
-                    $("#playbid").val(${userInfo.bid});
-                    $("#playname").val("${userInfo.name}");
-                    $(this).hide();
-                    $(".zhxr").html("${userInfo.name}");
-                }}
-                </g:each>
-            </g:else>
-        ]);
+        ]},
+        </g:each>
+        </g:if>
+        <g:else>
+        <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
+        {text: '${userInfo.name}', href: '#', action: function(e){
+            $("#playuid").val(${userInfo.id});
+            $("#playbid").val(${userInfo.bid});
+            $("#playname").val("${userInfo.name}");
+            $(this).hide();
+            $(".zhxr").html("${userInfo.name}");
+        }}
+        </g:each>
+        </g:else>
+    ]);
     })
 </script>
 </body>
