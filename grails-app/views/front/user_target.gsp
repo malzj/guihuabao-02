@@ -173,8 +173,10 @@
             </li>
             <li class="clearfix">
                 <div class="f-r">
+
                     <button type="submit"  style="margin-right: 10px;" class="button">保存</button>
                     <button type="submit" class="tar_edit button"  style="width:160px;" id="saf">保存并分解目标</button>
+
                 </div>
             </li>
         </ul>
