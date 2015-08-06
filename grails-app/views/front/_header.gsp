@@ -1,7 +1,7 @@
 <!--header start-->
 <header class="header">
     <div class="top">
-        <div class="t_left"><img width="25" height="25" src="${resource(dir:"images",file: ''+session.user?.img+'')}" />你好${session.user.username}</div>
+        <div class="t_left"><img width="25" height="25" src="${resource(dir:"images",file: ''+com.guihuabao.CompanyUser.findByIdAndCid(session.user.id,session.company.id).img+'')}" />你好${session.user.username}</div>
         <div class="t_right">
             <ul>
                 <li><a href="javascript:;"><i class="fa fa-bell"></i>&nbsp;&nbsp;消息<span class="tsh bg-important">5</span></a></li>

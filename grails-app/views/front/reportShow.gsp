@@ -57,7 +57,7 @@
                                     <span>${month1[k]}月</span>
                                     <ul class="weeks <g:if test="${(k+1)==month}">on</g:if>">
                                         <g:each in="${weeks}" var="i">
-                                            <li <g:if test="${i[1]==week&&(k+1)==month}">class="active"</g:if> ><a href="javascript:;" data-month="${k+1}" data-week="${i[1]}"><span>第${i[0]}周</span></a></li>
+                                            <li <g:if test="${i==week&&(k+1)==month}">class="active"</g:if> ><a href="javascript:;" data-month="${k+1}" data-week="${i}"><span>第${i}周</span></a></li>
                                         </g:each>
                                     </ul>
                                 </li>
