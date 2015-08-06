@@ -39,7 +39,7 @@
     <!--header end-->
     <!--main content start-->
     <section id="main-content reset">
-        <section class="wrapper">
+        <section class="wrapper" style="padding:15px 15px;">
             <div class="col-tb">
                 <div class="col-cell reset" style="width:60%;">
                     <div class="index-group mt10">

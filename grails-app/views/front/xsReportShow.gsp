@@ -35,13 +35,14 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
+    <div class="row">
     <g:render template="zhoubao_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content "class="col-xs-10" style="padding-left:0;">
         <section class="wrapper">
-            <div class="hxzs_content clearfix">
-                <div class="book_list">
+            <div class="hxzs_content clearfix row">
+                <div class="book_list col-xs-3">
                     <h2>
                         <select id="year" name="year">
                             <option value="2014" <g:if test="${year==2014}">selected="selected"</g:if>>2014</option>
@@ -63,7 +64,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="zhoubao">
+                <div class="zhoubao col-xs-9">
                     <div class="top clearfix">
                         <div class="address f-l">
                             ${reportInfo?.username}第${week}周的工作报告

@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>规划宝后台管理系统</title>
-
+    %{--<meta name="viewport" content="width=device-width,inital-scal=1.0">--}%
     <!-- Bootstrap core CSS -->
     <link href="${resource(dir: 'css', file: 'bootstrap.min.css')}" rel="stylesheet">
     <link href="${resource(dir: 'css', file: 'bootstrap-reset.css')}" rel="stylesheet">
@@ -35,13 +35,14 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
+    <div class="row">
     <g:render template="zhoubao_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content" class="row col-xs-10">
         <section class="wrapper wrapper_reset">
-            <div class="hxzs_content clearfix">
-                <div class="book_list">
+            <div class="hxzs_content clearfix row">
+                <div class="book_list col-xs-3">`
                     <h2>
                         <select id="year" name="year">
                         <option value="2014" <g:if test="${year==2014}">selected="selected"</g:if>>2014</option>
@@ -75,7 +76,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="zhoubao">
+                <div class="zhoubao col-xs-9">
                     <div class="top clearfix">
                         <div class="address f-l">
                             ${session.user.username}第${week}周的工作报告
@@ -157,15 +158,15 @@
 <!--月份列表js-->
     <script type="text/javascript">
         $(function(){
-            $(window).bind('resize load', function(){
-
-                $(".wrapper_reset").css("zoom",$(window).width()/1920);
-                $(".wrapper_reset").find().css("zoom",$(window).width()/1920);
-                $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1920+")");
-                $(".wrapper_reset").find().css("-moz-transform-origin","top left");
-
-
-            });
+//            $(window).bind('resize load', function(){
+//
+//                $(".wrapper_reset").css("zoom",$(window).width()/1980);
+//                $(".wrapper_reset").find().css("zoom",$(window).width()/1980);
+//                $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1980+")");
+//                $(".wrapper_reset").find().css("-moz-transform-origin","top left");
+//
+//
+//            });
             $(".menu>li>span").click(function(){
                 $(this).next(".weeks").toggle();
             })

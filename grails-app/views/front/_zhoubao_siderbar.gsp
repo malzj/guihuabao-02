@@ -1,4 +1,4 @@
-<aside>
+<aside class="col-xs-2" >
     <div id="sidebar"  class="nav-collapse ">
         <div class="sidebar_object">
             <i class="page"></i>

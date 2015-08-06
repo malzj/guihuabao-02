@@ -38,7 +38,8 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
-    <aside>
+    <div class="row">
+    <aside class="col-xs-2">
         <div id="sidebar"  class="nav-collapse ">
             <div class="sidebar_object">
                 <i class="fa fa-calendar-o"></i>
@@ -48,7 +49,7 @@
     </aside>
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content" class="col-xs-10" style="padding-left: 0;">
         <section class="wrapper">
             <div class="col-tb">
                 <div class="col-cell">

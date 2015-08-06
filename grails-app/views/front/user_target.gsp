@@ -51,10 +51,11 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
+    <div class="row">
     <g:render template="target_sider" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content" class="col-xs-9" style="padding-left:0;">
         <section class="wrapper">
             <div class="col-tb">
                 <div class="col-cell">

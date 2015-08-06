@@ -35,10 +35,11 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
+    <div class="row">
     <g:render template="siderbar" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content" class="col-xs-10" style="padding-left: 0;">
         <section class="wrapper">
             <g:form class="form-horizontal tasi-form" url="[controller:'front',action:'companyNoticeUpdate']" method="post"  enctype= "multipart/form-data">
 

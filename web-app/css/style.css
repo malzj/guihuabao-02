@@ -37,6 +37,7 @@ a, a:hover, a:focus {
 #container {
     width: 100%;
     height: 100%;
+    overflow:scroll;
 }
 
 /*login page*/
@@ -164,7 +165,7 @@ a, a:hover, a:focus {
 /*sidebar navigation*/
 
 #sidebar {
-    width: 226px;
+    width: 100%;
     height: 100%;
     float:left;
     background: #2a3542;
@@ -325,9 +326,9 @@ ul.sidebar-menu li a.active i {
 
 /*main content*/
 
-#main-content {
-    margin-left: 226px;
-}
+/*#main-content {*/
+    /*margin-left: 226px;*/
+/*}*/
 
 .header, .footer {
     min-height: 70px;
@@ -349,7 +350,7 @@ ul.sidebar-menu li a.active i {
 .wrapper {
     display: inline-block;
 
-    padding: 15px;
+    padding: 15px 0;
     width: 100%;
 }
 
@@ -434,7 +435,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     /* Safari and Chrome */
     .dropdown-menu.extended  {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.176) !important;
-    };
+    }
     }
 
 .dropdown-menu.extended li p {
@@ -1397,7 +1398,7 @@ h3.timeline-title {
     /* Safari and Chrome */
     .panel-footer.revenue-foot {
         margin-bottom: -4px;
-    };
+    }
     }
 
 

@@ -35,10 +35,11 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
+    <div class="row">
     <g:render template="zhoubao_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content" class="col-xs-10" style="padding-left:0;">
         <section class="wrapper">
             <div class="middle_content">
                 <div class="m_box">
@@ -56,6 +57,7 @@
         <!--main content end-->
 
     </section>
+    </div>
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
     <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>

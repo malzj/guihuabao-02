@@ -1,5 +1,5 @@
-<aside>
-    <div id="sidebar"  class="nav-collapse ">
+<aside class="col-xs-2">
+    <div id="sidebar"  class="nav-collapse" >
         <div class="sidebar_object">
             <i class="page"></i>
             后台管理

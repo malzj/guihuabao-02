@@ -35,13 +35,14 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
+    <div class="row">
     <g:render template="zhoubao_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
-        <section class="wrapper wrapper_reset">
+    <section id="main-content col-xs-10">
+        <section class="wrapper wrapper_reset row">
             <div class="hxzs_content clearfix">
-                <div class="book_list">
+                <div class="book_list col-xs-3">
                     <h2>
                         <select id="year" name="year">
                             <option value="2014" <g:if test="${year==2014}">selected="selected"</g:if>>2014</option>
@@ -142,15 +143,15 @@
     <!--月份列表js-->
     <script type="text/javascript">
         $(function(){
-            $(window).bind('resize load', function(){
-
-                $(".wrapper_reset").css("zoom",$(window).width()/1920);
-                $(".wrapper_reset").find().css("zoom",$(window).width()/1920);
-                $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1920+")");
-                $(".wrapper_reset").find().css("-moz-transform-origin","top left");
-
-
-            });
+//            $(window).bind('resize load', function(){
+//
+//                $(".wrapper_reset").css("zoom",$(window).width()/1920);
+//                $(".wrapper_reset").find().css("zoom",$(window).width()/1920);
+//                $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1920+")");
+//                $(".wrapper_reset").find().css("-moz-transform-origin","top left");
+//
+//
+//            });
             $(".menu>li>span").click(function(){
                 $(this).next(".weeks").toggle();
             })
