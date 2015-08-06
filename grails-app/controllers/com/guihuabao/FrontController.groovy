@@ -1662,6 +1662,48 @@ class FrontController {
         }
         [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
     }
+    def hasfinished_target(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def cid =session.user.cid
+        def fzuid = session.user.id
+        def selected = params.selected
+        def order1 = [sort:"begintime",order: "desc"]
+        def order2 = [sort:"dateCreate",order: "desc"]
+        def targetInstance
+        def targetInstanceTotal
+        if(selected=="1"){
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order1)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order1)
+        }else if(selected=="2"){
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order2)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order2)
+        }else{
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
+        }
+        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
+    }
+    def all_user_target(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def cid =session.user.cid
+        def fzuid = session.user.id
+        def selected = params.selected
+        def order1 = [sort:"begintime",order: "desc"]
+        def order2 = [sort:"dateCreate",order: "desc"]
+        def targetInstance
+        def targetInstanceTotal
+        if(selected=="1"){
+            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params,order1)
+            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid,order1)
+        }else if(selected=="2"){
+            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params,order2)
+            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid,order2)
+        }else{
+            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params)
+            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid)
+        }
+        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
+    }
     def missionSave() {
         def rs =[:]
         def mission=new Mission(params)
@@ -1674,7 +1716,7 @@ class FrontController {
         }else {
             rs.msg=true
             rs.target=targetInstance
-            rs.mission=targetInstance.mission
+            rs.mission=mission
         }
 
 
@@ -1693,6 +1735,52 @@ class FrontController {
         def targetInstance = Target.get(tid)
         rs.target=targetInstance
         rs.mission=targetInstance.mission
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def mshow(){
+        def rs=[:]
+        def mid= params.mid
+        def mission = Mission.get(mid)
+        def target=mission.target
+        rs.mission=mission
+        rs.target=target
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def mdelete(){
+        def rs=[:]
+        def mid=params.mid
+        def missionInstance = Mission.get(mid)
+        try {
+            missionInstance.delete(flush: true)
+            rs.msg="删除任务成功！"
+        }
+        catch (DataIntegrityViolationException e) {
+           rs.msg="删除失败！"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def mupdate(){
+        def rs=[:]
+        def mid=params.mid
+        def mission=Mission.get(mid)
+        mission.properties = params
+        if (! mission.save(flush: true)){
+            rs.msg=false
+        }else {
+            rs.msg=true
+            rs.target=mission.target
+            rs.mission=mission.target.mission
+            rs.missionSize=mission.target.mission.size()
+        }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
