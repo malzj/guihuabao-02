@@ -594,7 +594,7 @@ class FrontController {
         }
         return dateInfo
     }
-    //传入日期（yyyy-MM-dd）判断是哪一年第几月第几周第几周[year: year,month: month,nowweek: nowweek]
+    //传入日期（yyyy-MM-dd）判断是哪一年第几月第几月第几周[year: year,month: month,nowweek: nowweek]
     def weekJudge(String time){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
         DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -608,6 +608,7 @@ class FrontController {
         int n = new Integer(calendar.get(Calendar.DAY_OF_MONTH));
         int a = new Integer(calendar.get(Calendar.MONTH));
         def month_week = [:]
+        def nowweek
         def judeDay
         if(n<7){
             for(def i=1;i<7;i++){
@@ -640,10 +641,18 @@ class FrontController {
             judeDay = dateFormat.format(calendar.getTime())
         }
 
+        def allweeks = xuanran(month_week.year.toString())
         def weekInfo = weekOfMonth(judeDay)
         for(def j=0;j<weekInfo.size();j++){
             if(sdate>=weekInfo[j].weekbegin&&sdate<=weekInfo[j].weekend){
-                month_week.nowweek=weekInfo[j].count
+                nowweek=weekInfo[j].count
+            }
+        }
+        def j=0
+        def omonth = month_week.month-1
+        for(j;j<=allweeks[omonth].size();j++){
+            if(j+1==nowweek){
+                month_week.nowweek = allweeks[omonth][j]
             }
         }
         return month_week
@@ -666,7 +675,7 @@ class FrontController {
             dateInfo = weekOfMonth(date+"-"+i)
             def weekInfo = []
             for(def n=0;n<dateInfo.size();n++){
-                weekInfo<<[week++,n+1]
+                weekInfo<<week++    //[week++,n+1]
             }
             datearr<<weekInfo
         }

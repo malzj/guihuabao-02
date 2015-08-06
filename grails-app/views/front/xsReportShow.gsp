@@ -50,12 +50,12 @@
                     </h2>
                     <div class="menu_side">
                         <ul class="menu">
-                            <g:each status="k" in="${month1}" var="s" >
+                            <g:each status="k" in="${dateInfo}" var="weeks" >
                                 <li>
-                                    <span>${s}月</span>
-                                    <ul class="weeks <g:if test="${s==month1[month]}">on</g:if>">
-                                        <g:each in="${week1}" var="i">
-                                            <li <g:if test="${i==week&&s==month1[month]}">class="active"</g:if> ><a href="javascript:;" data-month="${k}" data-week="${i}"><span>第${i}周</span></a></li>
+                                    <span>${month1[k]}月</span>
+                                    <ul class="weeks <g:if test="${(k+1)==month}">on</g:if>">
+                                        <g:each in="${weeks}" var="i">
+                                            <li <g:if test="${i==week&&(k+1)==month}">class="active"</g:if> ><a href="javascript:;" data-month="${k+1}" data-week="${i}"><span>第${i}周</span></a></li>
                                         </g:each>
                                     </ul>
                                 </li>
@@ -111,7 +111,7 @@
                         </g:form>
                     </div>
                     <div id="reply_container">
-                        <g:each in="${myReportInfo?.replyReport}" var="replyInfo">
+                        <g:each in="${myReportInfo?.replyReports}" var="replyInfo">
                         <div class="reply_box">
                             <div class="name">${replyInfo.puname}&nbsp;回复&nbsp;<g:if test="${replyInfo.bpuid==session.user.id}">我</g:if><g:else>${replyInfo.bpuname}</g:else></div>
                             <p>${replyInfo.content}</p>
