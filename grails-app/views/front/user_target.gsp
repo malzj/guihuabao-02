@@ -196,7 +196,7 @@
 
         </ul>
 
-            <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;margin:30px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="">40</span>%)</span></h2>
+           <a style="cursor: pointer"> <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;margin:30px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="r_per">40</span>%)</span></h2></a>
 
         <div class="clearfix" style="margin:40px;">
             <input type="submit" value="提交" class="f-r button"  disabled />
@@ -409,37 +409,6 @@
             <h2 style="padding:10px 0;font-size: 20px;border-bottom: 1px solid #d2d2d2;">目标分解</h2>
 
             <ul class="rwfj" style="padding:0;margin:0;">
-                %{--<li class="clearfix">--}%
-                    %{--<h2 style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务一：<span style="color:#797979;">企业数据报告分析</span></h2>--}%
-
-                    %{--<table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">--}%
-                        %{--<tr>--}%
-                            %{--<th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">负责人</th>--}%
-                            %{--<td width="75%"><span></span></td>--}%
-
-                        %{--</tr>--}%
-                        %{--<tr>--}%
-                            %{--<th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>--}%
-                            %{--<td>--}%
-                                %{--<span></span>--}%
-                            %{--</td>--}%
-                        %{--</tr>--}%
-                    %{--</table>--}%
-                    %{--<table class="table table-bordered f-l" style="border-spacing: 0;width:48%;">--}%
-                        %{--<tr>--}%
-                            %{--<th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>--}%
-                            %{--<td width="75%"><span>2015-06-09</span>—<span>2015-06-09</span></td>--}%
-
-                        %{--</tr>--}%
-                        %{--<tr>--}%
-                            %{--<th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>--}%
-                            %{--<td>--}%
-                                %{--<span>进行中</span>--}%
-                            %{--</td>--}%
-                        %{--</tr>--}%
-                    %{--</table>--}%
-                %{--</li>--}%
-
 
             </ul>
         </ul>
@@ -487,6 +456,7 @@
 
     <script>
         $(document).ready(function() {
+
             $(".tar_edit,#saf").click(function(){
 
                 event.preventDefault();
@@ -509,6 +479,7 @@
                         var missionlist=data.mission;
 
                         for(var i=0;i<missionlist.length;i++){
+                            var s=(missionlist[i].status=='1')?'完成':'进行中';
                             html+=' <li class="clearfix">'+
                             '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
                             '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
@@ -525,7 +496,7 @@
                             '</tr>'+
                             '<tr>'+
                            ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>'+
-                            '<td><input  name="fzuid" style="border:none;width:75%" value="'+missionlist[i].percent+'"%/></td>'+
+                            '<td><input  name="percent" style="border:none;width:75%" readonly value="'+missionlist[i].percent+'"/></td>'+
                             '</tr>'+
                             '</table>'+
                             '<table class="table table-bordered f-l" style="border-spacing: 0;width:48%;">'+
@@ -537,7 +508,7 @@
                            ' <tr>'+
                            ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>'+
                            ' <td>'+
-                            '<span>'+missionlist[i].status+'</span>'+
+                            '<span>'+s+'</span>'+
                             '</td>'+
                             '</tr>'+
                             '</table>'+
@@ -548,7 +519,14 @@
 
                         editclick();
                     },error:function(){alert("获取数据失败");}});
-
+                var percents=$('#tar_fj input[name="percent"]');
+                alert(percents.length);
+                var sum_per=0;
+                for(var i=0;i<percents.length;i++){
+                    sum_per+=percents[i].val();
+                    alert(sum_per);
+                }
+                $('#r_per').html(sum_per);
 
                 $("#tar_fj").css('display','block');
                 return false;
@@ -608,8 +586,7 @@
 
                             var missionlist=data.mission;
                             var size= data.missionSize
-                            console.log(size);
-                            console.log(data);
+
                             for(var i=0;i<missionlist.length;i++){
                                 html+=' <li class="clearfix">'+
                                         '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
@@ -647,7 +624,7 @@
 
                             }
                             $("#tar_fj ul").append(html);
-                            alert(html);
+
                             $('#mission_edit_detail').hide();
 
                         },
@@ -668,7 +645,7 @@
                         success: function (data) {
                             if(data.msg=="删除任务成功！"){
                                 alert("删除成功！");
-                                alert(This.parent().html());
+
                                 var rm1=This.parent().parent().parent();
                                 var rm2=This.parent().parent().parent().next();
                                 rm1.remove();
@@ -736,6 +713,7 @@
 
                             for(var i=0;i<mission.length;i++){
 
+                                var s=(mission[i].status=='1')?'完成':'进行中'
                             tar_mission+='     <li class="clearfix">'+
                             ' <h2 style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务'+(i+1)+'：<span style="color:#797979;">'+mission[i].title+'</span></h2>'+
 
@@ -759,7 +737,7 @@
                             ' <tr>'+
                             '<th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>'+
                             '<td>'+
-                            ' <span>'+mission[i].status+'</span>'+
+                            ' <span>'+s+'</span>'+
                             '</td>'+
                             '</tr>'+
                             '</table>'+

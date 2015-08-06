@@ -1653,6 +1653,48 @@ class FrontController {
         }
         [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
     }
+    def hasfinished_target(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def cid =session.user.cid
+        def fzuid = session.user.id
+        def selected = params.selected
+        def order1 = [sort:"begintime",order: "desc"]
+        def order2 = [sort:"dateCreate",order: "desc"]
+        def targetInstance
+        def targetInstanceTotal
+        if(selected=="1"){
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order1)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order1)
+        }else if(selected=="2"){
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order2)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order2)
+        }else{
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
+        }
+        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
+    }
+    def all_user_target(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def cid =session.user.cid
+        def fzuid = session.user.id
+        def selected = params.selected
+        def order1 = [sort:"begintime",order: "desc"]
+        def order2 = [sort:"dateCreate",order: "desc"]
+        def targetInstance
+        def targetInstanceTotal
+        if(selected=="1"){
+            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params,order1)
+            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid,order1)
+        }else if(selected=="2"){
+            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params,order2)
+            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid,order2)
+        }else{
+            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params)
+            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid)
+        }
+        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
+    }
     def missionSave() {
         def rs =[:]
         def mission=new Mission(params)
