@@ -49,9 +49,11 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
+<div style="height:110px;"></div>
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
+    <div class="col-xs-3" style="height:100%"></div>
     <g:render template="target_sider" />
     <!--sidebar end-->
     <!--main content start-->
@@ -136,6 +138,7 @@
         %{--</footer>--}%
         <!--footer end-->
     </section>
+</div>
 <!--新建弹层 start-->
 <div class="passwordedit" id="newtargetdetail" style="position:absolute;overflow: scroll;">
     <div class="m_box" style="width:804px;">

@@ -34,16 +34,18 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
+    <div style="height:110px;"></div>
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
-    <g:render template="siderbar" />
+    <div class="col-xs-2" style="height:100%"></div>
+    <g:render template="hx_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
     <section id="main-content" class="col-xs-10" style="padding-left: 0;">
         <section class="wrapper wrapper_reset">
-            <div class="hxzs_content clearfix">
-                <div class="book_list">
+            <div class="hxzs_content clearfix row">
+                <div class="book_list col-xs-3">
                     <h2><g:fieldValue bean="${bookInstance}" field="bookName"/></h2>
                     <dl>
                         <g:each in="${syllabusInstanceList}" status="i" var="syllabusInstance">
@@ -55,7 +57,7 @@
                     </dl>
                 </div>
 
-                <div class="book_show">
+                <div class="book_show col-xs-9">
                     <div class="top clearfix">
                         <div class="address f-l">
                             和许助手>${syllabusname}>${chaptername}
@@ -68,8 +70,9 @@
                             <g:if test="${offset.toInteger() < contentsize.toInteger()/2+1}"> <g:link action="chapterBook" id="${bookId}" params="[offset:offset.toInteger()+2]" class="next_page">下一页</g:link></g:if>
                         </div>
                     </div>
-                    <div class="page b-k">${content}</div>
-                    <div class="page b-k ml20">${content1}</div>
+                    <div class="row" style="padding:0 15px;">
+                    <div class="page b-k col-xs-6" style="width:48%">${content}</div>
+                    <div class="page b-k ml20 col-xs-6" style="width:48%">${content1}</div>
                 </div>
             </div>
         </section>
@@ -100,15 +103,15 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
     <script>
-        $(window).bind('resize load', function(){
-
-            $(".wrapper_reset").css("zoom",$(window).width()/1920);
-            $(".wrapper_reset").find().css("zoom",$(window).width()/1920);
-            $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1920+")");
-            $(".wrapper_reset").find().css("-moz-transform-origin","top left");
-
-
-        });
+//        $(window).bind('resize load', function(){
+//
+//            $(".wrapper_reset").css("zoom",$(window).width()/1920);
+//            $(".wrapper_reset").find().css("zoom",$(window).width()/1920);
+//            $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1920+")");
+//            $(".wrapper_reset").find().css("-moz-transform-origin","top left");
+//
+//
+//        });
     </script>
 </body>
 </html>

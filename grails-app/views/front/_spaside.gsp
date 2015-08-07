@@ -1,11 +1,11 @@
-<aside class="col-xs-2">
+<aside class="col-xs-2" style="position:fixed;height:100%;">
     <div id="sidebar"  class="nav-collapse ">
         <div class="sidebar_object">
             <i class="fa fa-edit"></i>
             审批
         </div>
         <!-- sidebar menu start-->
-        <ul class="sidebar-menu" id="nav-accordion">
+        <ul class="sidebar-menu" id="nav-accordion" >
             <li class="sub-menu dcjq-parent-li">
                 <g:link action="apply" >
                     <span>我的申请</span>

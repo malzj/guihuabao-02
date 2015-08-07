@@ -33,9 +33,11 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
+    <div style="height:110px;"></div>
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
+    <div class="col-xs-2" style="height:100%"></div>
     <g:render template="set_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
