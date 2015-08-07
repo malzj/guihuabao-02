@@ -35,10 +35,11 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
-    <g:render template="siderbar" />
+    <div class="row">
+    <g:render template="hx_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content" class="col-xs-10" style="padding-left: 0;">
         <section class="wrapper">
             <div class="hxzs_heading clearfix">
                 <h2>和许助手</h2>

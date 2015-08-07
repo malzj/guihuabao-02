@@ -35,13 +35,14 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
+    <div class="row">
     <g:render template="zhoubao_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content" class="col-xs-10" style="padding-left:0;">
         <section class="wrapper wrapper_reset">
-            <div class="hxzs_content clearfix">
-                <div class="book_list">
+            <div class="hxzs_content clearfix row">
+                <div class="book_list col-xs-3">
                     <ul class="zblist">
                         <g:each in="${zhoubaoInstance}" var="zhoubaoInfo">
                             <li>
@@ -56,7 +57,7 @@
                         </g:each>
                     </ul>
                 </div>
-                <div class="zhoubao">
+                <div class="zhoubao col-xs-9">
                     <div class="top clearfix">
                         <div class="address f-l">
                             oscar第1周的工作报告
@@ -125,15 +126,15 @@
     <!--月份列表js-->
     <script type="text/javascript">
         $(function(){
-            $(window).bind('resize load', function(){
-
-                $(".wrapper_reset").css("zoom",$(window).width()/1920);
-                $(".wrapper_reset").find().css("zoom",$(window).width()/1920);
-                $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1920+")");
-                $(".wrapper_reset").find().css("-moz-transform-origin","top left");
-
-
-            });
+//            $(window).bind('resize load', function(){
+//
+//                $(".wrapper_reset").css("zoom",$(window).width()/1920);
+//                $(".wrapper_reset").find().css("zoom",$(window).width()/1920);
+//                $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1920+")");
+//                $(".wrapper_reset").find().css("-moz-transform-origin","top left");
+//
+//
+//            });
             $(".menu>li>span").click(function(){
                 $(this).next(".weeks").toggle();
             })

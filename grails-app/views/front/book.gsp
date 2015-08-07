@@ -36,13 +36,14 @@
     <g:render template="header" />
     <!--header end-->
     <!--sidebar start-->
-    <g:render template="siderbar" />
+    <div class="row">
+    <g:render template="hx_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content" class="col-xs-10" style="padding-left: 0;">
         <section class="wrapper wrapper_reset">
-            <div class="hxzs_content clearfix">
-                <div class="book_list">
+            <div class="hxzs_content clearfix row">
+                <div class="book_list col-xs-3">
                     <h2><g:fieldValue bean="${bookInstance}" field="bookName"/></h2>
                     <dl>
                         <g:each in="${syllabusInstanceList}" status="i" var="syllabusInstance">
@@ -54,7 +55,7 @@
                     </dl>
                 </div>
 
-                <div class="book_show">
+                <div class="book_show col-xs-9 ">
                     <div class="top clearfix">
                         <div class="address f-l">
                             和许助手>${syllabusname}>${chaptername}
@@ -67,8 +68,10 @@
                            <g:if test="${offset.toInteger() < contentsize.toInteger()/2+1}"> <g:link action="book" id="${bookId}" params="[offset:offset.toInteger()+2]" class="next_page">下一页</g:link></g:if>
                         </div>
                     </div>
-                    <div class="page b-k">${content}</div>
-                    <div class="page b-k ml20">${content1}</div>
+                    <div class="row" style="padding:0 15px;">
+                    <div class="page b-k col-xs-6" style="width:49%">${content}</div>
+                    <div class="page b-k ml20 col-xs-6" style="width:49%">${content1}</div>
+                    </div>
                 </div>
             </div>
         </section>
