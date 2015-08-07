@@ -53,7 +53,7 @@
                             <input class="form-control" type="text" name="title" />
                         </div>
                     </div>
-                    <div class="textarea">
+                    <div class="textarea b-k">
                         <textarea id="editor_id" name="content" style="width:100%;height:300px;"></textarea>
                     </div>
                 </div>

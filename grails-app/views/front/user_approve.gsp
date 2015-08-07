@@ -94,7 +94,7 @@
                         <tr class="th">
                             <td >申请类型</td>
                             <td>申请内容</td>
-                            <td>审批人</td>
+                            <td>申请人</td>
                             <td>审批结果</td>
                             <td>申请时间</td>
                             <td>
@@ -105,7 +105,7 @@
                             <tr data-id="${applyInstance.id}" data-version="${applyInstance.version}">
                                 <td>${applyInstance.type}申请单</td>
                                 <td>${applyInstance.content}</td>
-                                <td>${applyInstance.approvalusername}</td>
+                                <td>${applyInstance.applyusername}</td>
                                 <td>${applyInstance.status}</td>
                                 <td>${applyInstance.dateCreate.format("yyyy-MM-dd")}</td>
                                 <td>
@@ -136,7 +136,7 @@
         <div class="panel-content">
             <ul>
                 <li>申请类型：<span></span></li>
-                <li>审批人：<span></span></li>
+                <li>申请人：<span></span></li>
                 <li>申请内容：<span></span></li>
                 <li>申请时间：<span></span></li>
                 <li>申请结果：<span></span></li>
