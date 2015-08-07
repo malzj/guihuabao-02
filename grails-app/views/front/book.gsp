@@ -45,20 +45,27 @@
             <div class="hxzs_content clearfix row">
                 <div class="book_list col-xs-3">
                     <h2><g:fieldValue bean="${bookInstance}" field="bookName"/></h2>
-                    <dl>
-                        <g:each in="${syllabusInstanceList}" status="i" var="syllabusInstance">
-                        <dt>${syllabusInstance.syllabusName}</dt>
-                            <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" status="a" var="chapterInstance">
-                            <g:link action="chapterBook" id="${chapterInstance.id}"><dd><span>${chapterInstance.chapterName}</span></dd></g:link>
+                    <div class="menu_side">
+                        <ul class="menu">
+
+                            <g:each status="i" in="${syllabusInstanceList}" var="syllabusInstance" >
+                                <li>
+                                    <span>${syllabusInstance.syllabusName}</span>
+                                    <ul class="weeks <g:if test="${syllabusInstance.id==syllabus.id}">on</g:if>">
+                                        <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" var="chapterInstance">
+                                            <li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link action="chapterBook" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>
+                                        </g:each>
+                                    </ul>
+                                </li>
                             </g:each>
-                        </g:each>
-                    </dl>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="book_show col-xs-9 ">
                     <div class="top clearfix">
                         <div class="address f-l">
-                            和许助手>${syllabusname}>${chaptername}
+                            和许助手>${syllabus.syllabusName}>${chapter.chapterName}
                         </div>
                         <div class="pick_page f-r">
                             %{--<a class="single_page"><i></i>单页</a>--}%
@@ -102,6 +109,11 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
     <script>
+        $(function(){
+            $(".menu>li>span").click(function(){
+                $(this).next(".weeks").toggle();
+            })
+        })
         $(window).bind('resize load', function(){
 
                 $(".wrapper_reset").css("zoom",$(window).width()/1920);

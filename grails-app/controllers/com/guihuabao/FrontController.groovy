@@ -296,7 +296,7 @@ class FrontController {
             return
         }
 
-        [bookInstance: bookInstance,syllabusInstanceList: syll,content:content,content1:content1,contentsize:contentsize,bookId:id,offset: offset,syllabusname:syllabus.syllabusName,chaptername:chapter.chapterName]
+        [bookInstance: bookInstance,syllabusInstanceList: syll,content:content,content1:content1,contentsize:contentsize,bookId:id,offset: offset,syllabus:syllabus,chapter:chapter]
     }
     def chapterBook(Integer max,Long id){
         params.max = Math.min(max ?: 2, 100)
@@ -322,7 +322,7 @@ class FrontController {
                 content1=contentlist.get(1).introduction
             }
         }
-        [bookInstance: bookInstance,content:content,content1:content1,contentsize:contentsize,syllabusInstanceList:syllabusInstanceList,bookId: chapter.id,offset: offset,syllabusname:syllabus.syllabusName,chaptername:chapter.chapterName]
+        [bookInstance: bookInstance,content:content,content1:content1,contentsize:contentsize,syllabusInstanceList:syllabusInstanceList,bookId: chapter.id,offset: offset,syllabus:syllabus,chapter:chapter]
     }
     //系统设置
 
