@@ -167,14 +167,14 @@
             <div class="popup_box">
                 <div class="m_box">
                     <header class="panel-heading">
-                        <span><i class="yh"></i>新建任务</span>
+                        <span>新建任务</span>
                         <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
                     </header>
                     <g:form url="[controller:'front',action:'taskSave']">
                         <div class="r-title">
                             <div class="r-title-con f-l">任务</div>
                             <div class="r-title-jinji f-l">
-                                <i class="clock-b"></i><span class="r-chd">紧急程度</span>
+                                <i></i><span class="r-chd">紧急程度</span>
                                 <input type="hidden" id="playstatus" name="playstatus" />
                                 <ul class="r-jinji-down">
                                     <li><a data-playstatus="1"><i class="clock-red"></i>紧急且重要</a></li>
@@ -206,7 +206,7 @@
                                         <input type="hidden" id="playbid" name="playbid" value="" />
                                         <input type="hidden" id="playname" name="playname" value="" />
                                         <div class="zhxr">
-                                            <a id="playman">选择</a>
+                                            <a id="playman"></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -307,9 +307,29 @@
         $(".close").click(function(){
             $(".popup_box").css("display","none");
         });
+        $(".popup_box .r-title-jinji").mouseenter(function(){
+            $(this).addClass("active");
+        }).mouseleave(function(){
+            $(this).removeClass("active");
+        })
         $(".popup_box .r-jinji-down a").click(function(){
             var playstatus=$(this).attr("data-playstatus");
+            var playstatuscn=$(this).html();
+            var status
             $("#playstatus").val(playstatus);
+            if(playstatus==1){
+                status="clock-red"
+            }else if(playstatus==2){
+                status="clock-yellow"
+            }else if(playstatus==3){
+                status="clock-green"
+            }else if(playstatus==4){
+                status="clock-blue"
+            }
+            $(".popup_box .r-title-jinji>i").removeClass();
+            $(".popup_box .r-title-jinji>i").addClass(status);
+            $(".popup_box .r-title-jinji span").html(playstatuscn);
+            $(".popup_box .r-title-jinji").removeClass("active");
         });
 
         //详情滑动框
@@ -419,7 +439,7 @@
                 $("#playbid").val(${userInfo.bid});
                 $("#playname").val("${userInfo.name}");
                 $(this).hide();
-                $(".zhxr").html("${userInfo.name}");
+                $(".zhxr").html('${userInfo.name}');
             }},
             </g:each>
         ]},

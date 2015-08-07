@@ -47,14 +47,21 @@
             <div class="hxzs_content clearfix row">
                 <div class="book_list col-xs-3">
                     <h2><g:fieldValue bean="${bookInstance}" field="bookName"/></h2>
-                    <dl>
-                        <g:each in="${syllabusInstanceList}" status="i" var="syllabusInstance">
-                        <dt>${syllabusInstance.syllabusName}</dt>
-                            <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" status="a" var="chapterInstance">
-                            <g:link action="chapterBook" id="${chapterInstance.id}"><dd><span>${chapterInstance.chapterName}</span></dd></g:link>
+                    <div class="menu_side">
+                        <ul class="menu">
+
+                            <g:each status="i" in="${syllabusInstanceList}" var="syllabusInstance" >
+                                <li>
+                                    <span>${syllabusInstance.syllabusName}</span>
+                                    <ul class="weeks <g:if test="${syllabusInstance.id==syllabus.id}">on</g:if>">
+                                        <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" var="chapterInstance">
+                                            <li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link action="chapterBook" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>
+                                        </g:each>
+                                    </ul>
+                                </li>
                             </g:each>
-                        </g:each>
-                    </dl>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="book_show col-xs-9">
@@ -75,11 +82,12 @@
                     <div class="page b-k ml20 col-xs-6" style="width:48%">${content1}</div>
                 </div>
             </div>
+            </div>
         </section>
         <!--main content end-->
 
     </section>
-
+</div>
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
     <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
@@ -103,15 +111,12 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
     <script>
-//        $(window).bind('resize load', function(){
-//
-//            $(".wrapper_reset").css("zoom",$(window).width()/1920);
-//            $(".wrapper_reset").find().css("zoom",$(window).width()/1920);
-//            $(".wrapper_reset").find().css("-moz-transform","scale("+$(window).width()/1920+")");
-//            $(".wrapper_reset").find().css("-moz-transform-origin","top left");
-//
-//
-//        });
+        $(function(){
+            $(".menu>li>span").click(function(){
+                $(this).next(".weeks").toggle();
+            })
+        })
+
     </script>
 </body>
 </html>

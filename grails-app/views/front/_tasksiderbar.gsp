@@ -37,11 +37,11 @@
                     <em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)}</em>
                 </g:link>
             </li>
-            <li>
-                <g:link action="allTask" >
-                    <span>全部任务</span>
-                </g:link>
-            </li>
+            %{--<li>--}%
+                %{--<g:link action="allTask" >--}%
+                    %{--<span>全部任务</span>--}%
+                %{--</g:link>--}%
+            %{--</li>--}%
         </ul>
         <!-- sidebar menu end-->
     </div>

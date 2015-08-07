@@ -50,9 +50,6 @@
                 <div class="col-cell">
                     <div class="toolkit">
                         <span>已完成任务</span>
-                        <div class="shaixuan">
-                            <a class="task-order">排序<i class="fa fa-caret-down"></i></a>
-                        </div>
                     </div>
                     <div class="e-list-group tomorrow">
                         <ul class="e-list">
