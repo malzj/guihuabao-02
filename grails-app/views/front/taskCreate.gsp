@@ -203,8 +203,9 @@
                                         <input type="hidden" id="playuid" name="playuid" value="" />
                                         <input type="hidden" id="playbid" name="playbid" value="" />
                                         <input type="hidden" id="playname" name="playname" value="" />
-                                        <div class="zhxr">
+                                        <div id="zhxr">
                                             <a id="playman"></a>
+                                            <span id="cnplayname"></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -436,8 +437,8 @@
                 $("#playuid").val(${userInfo.id});
                 $("#playbid").val(${userInfo.bid});
                 $("#playname").val("${userInfo.name}");
-                $(this).hide();
-                $(".zhxr").html('${userInfo.name}');
+                $(".dropdown-menu").hide();
+                $("#cnplayname").html('${userInfo.name}');
             }},
             </g:each>
         ]},

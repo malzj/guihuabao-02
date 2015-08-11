@@ -11,6 +11,17 @@ $(function() {
 //        cookie: 'dcjq-accordion-1',
         classExpand: 'dcjq-current-parent'
     });
+//自加头部js
+    $(".header .top .t_right .msg").mouseenter(function(){
+        $(this).addClass("active")
+    }).mouseleave(function(){
+        $(this).removeClass("active")
+    })
+    $(".header .top .t_right .set").mouseenter(function(){
+        $(this).addClass("active")
+    }).mouseleave(function(){
+        $(this).removeClass("active")
+    })
 });
 
 // right slidebar

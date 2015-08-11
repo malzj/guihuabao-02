@@ -50,7 +50,15 @@ class FrontController {
         }
 
     }
+
+    def logout(){
+        session.user = ""
+        session.company = ""
+        redirect(action: "index")
+    }
+
     def frontIndex(){
+        yanzheng()
         def uid = session.user.id
         def cid = session.company.id
         def current = new Date()
@@ -66,10 +74,12 @@ class FrontController {
         [todayTaskInstance: todayTaskInstance,taskInstance: taskInstance,zhoubaoInstance: zhoubaoInstance,applyInstance: applyInstance,companyNoticeInstance: companyNoticeInstance]
     }
     def companyUserCreate() {
+        yanzheng()
         def bumenList = Bumen.findAllByCid(session.company.id)
         [companyUserInstance: new CompanyUser(params), bumenList: bumenList]
     }
     def companyUserSave(){
+        yanzheng()
         def companyUserInstance = new CompanyUser(params)
         if(params.pid==1){
             companyUserInstance.pid = 2
@@ -91,6 +101,7 @@ class FrontController {
         [companyUserInstanceList: CompanyUser.list(params), companyUserInstanceTotal: CompanyUser.count()]
     }
     def companyUserShow(Long id) {
+        yanzheng()
         def companyUserInstance = CompanyUser.get(id)
         if (!companyUserInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
@@ -101,6 +112,7 @@ class FrontController {
         [companyUserInstance: companyUserInstance]
     }
     def companyUserEdit(Long id) {
+        yanzheng()
         def companyUserInstance = CompanyUser.get(id)
         def bumenList = Bumen.findAllByCid(session.company.id)
         if (!companyUserInstance) {
@@ -112,6 +124,7 @@ class FrontController {
         [companyUserInstance: companyUserInstance, bumenList: bumenList]
     }
     def companyUserUpdate(Long id, Long version) {
+        yanzheng()
         def companyUserInstance = CompanyUser.get(id)
 
         if (!companyUserInstance) {
@@ -141,6 +154,7 @@ class FrontController {
         redirect(action: "companyUserShow", id: companyUserInstance.id)
     }
     def companyUserDelete(Long id) {
+        yanzheng()
         def companyUserInstance = CompanyUser.get(id)
         if (!companyUserInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
@@ -161,13 +175,16 @@ class FrontController {
 
 
     def bumenList(Integer max){
+        yanzheng()
         params.max = Math.min(max ?: 10, 100)
         [bumenInstanceList:Bumen.list(params), bumenInstanceTotal: Bumen.count()]
     }
     def bumenCreate(){
+        yanzheng()
         [bumenInstance: new Bumen(params)]
     }
     def bumenSave(){
+        yanzheng()
         def bumenInstance = new Bumen(params)
         if (!bumenInstance.save(flush: true)) {
             render(view: "bumenCreate", model: [bumenInstance: bumenInstance])
@@ -178,6 +195,7 @@ class FrontController {
         redirect(action: "bumenShow", id: bumenInstance.id)
     }
     def bumenShow(Long id) {
+        yanzheng()
         def bumenInstance = Bumen.get(id)
         if (!bumenInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bumen.label', default: 'Bumen'), id])
@@ -1257,7 +1275,7 @@ class FrontController {
     def fzTask(Integer max){
         params.max = Math.min(max ?: 10, 100)
         def current = new Date()
-        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+            SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
         def now = time.format(current)
         def cid = session.company.id
         def uid = session.user.id
@@ -1785,5 +1803,52 @@ class FrontController {
             render "${params.callback}(${rs as JSON})"
         } else
             render rs as JSON
+    }
+
+    //消息未读任务
+    def messageTask(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+
+        def messageTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0,params)//未完成
+        def messageTaskInstanceTotal= Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0)
+        [messageTaskInstance: messageTaskInstance,messageTaskInstanceTotal:messageTaskInstanceTotal]
+    }
+    //消息任务到期
+    def messageTaskOver(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+        def date = time.format(new Date())
+        Calendar calendar = new GregorianCalendar();
+        Date date1 = time.parse(date)
+        calendar.setTime(date1);
+        calendar.add(Calendar.HOUR,6)
+        def etime = time.format(calendar.getTime())
+        def timearr = etime.split(" ")
+        def timearr1 = date.split(" ")
+        def enddate = timearr[0]
+        def endtime = timearr[1]
+        def nowdate = timearr1[0]
+        def nowtime = timearr1[1]
+
+        def messageTaskInstance = Task.findByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,0)
+        def messageTaskInstanceTotal = Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,0)
+        [messageTaskInstance: messageTaskInstance,messageTaskInstanceTotal:messageTaskInstanceTotal]
+    }
+
+    //消息目标到期
+    def messageTargetOver(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+        def date = time.format(new Date())
+        Calendar calendar = new GregorianCalendar();
+        Date date1 = time.parse(date)
+        calendar.setTime(date1);
+        calendar.add(Calendar.HOUR,6)
+        def etime = time.format(calendar.getTime())
+
+
+        def messageTargetInstance = Target.findByCidAndFzuidAndEtimeAndEtimeGreaterThanEqualsAndStatus(session.company.id,session.user.id,etime,date,0)
+        def messageTargetInstanceTotal = Target.countByCidAndFzuidAndEtimeAndEtimeGreaterThanEqualsAndStatus(session.company.id,session.user.id,etime,date,0)
+        [messageTargetInstance: messageTargetInstance,messageTargetInstanceTotal:messageTargetInstanceTotal]
     }
 }

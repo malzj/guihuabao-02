@@ -441,9 +441,7 @@
 <script type="text/javascript" src="${resource(dir: 'assets/bootstrap-timepicker/js', file: 'bootstrap-timepicker.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'assets/jquery-multi-select/js', file: 'jquery.multi-select.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'assets/jquery-multi-select/js', file: 'jquery.quicksearch.js')}"></script>
-<!--菜单js-->
-<script src="${resource(dir: 'js', file: 'advanced-form-components.js')}"></script>
-<script src="${resource(dir: 'js', file: 'context.js')}"></script>
+
 <!--right slidebar-->
     <script src="${resource(dir: 'js', file: 'slidebars.min.js')}"></script>
 
@@ -454,6 +452,10 @@
     <script src="${resource(dir: 'js', file: 'sparkline-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
+
+<!--菜单js-->
+<script src="${resource(dir: 'js', file: 'advanced-form-components.js')}"></script>
+<script src="${resource(dir: 'js', file: 'context.js')}"></script>
 
     <script>
         $(document).ready(function() {
@@ -755,38 +757,6 @@
 
 
 
-            %{--context.init({preventDoubleContext: false});--}%
-
-            %{--context.attach('#playman', [--}%
-                %{--<g:if test=" ${session.user.pid==1}">--}%
-                %{--{header: '部门'},--}%
-                %{--<g:each in="${bumenInstance}" var="bumenInfo">--}%
-                %{--{text: '${bumenInfo.name}', subMenu: [--}%
-                    %{--{header: '员工'},--}%
-                    %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">--}%
-                    %{--{text: '${userInfo.name}', href: '#', action: function(e){--}%
-                        %{--$("#newmission_playname").val(${userInfo.id});--}%
-                        %{--$("#playbid").val(${userInfo.bid});--}%
-                        %{--$("#playname").val("${userInfo.name}");--}%
-                        %{--$(this).hide();--}%
-                        %{--$(".zhxr").html("${userInfo.name}");--}%
-                    %{--}},--}%
-                    %{--</g:each>--}%
-                %{--]},--}%
-                %{--</g:each>--}%
-                %{--</g:if>--}%
-                %{--<g:else>--}%
-                %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">--}%
-                %{--{text: '${userInfo.name}', href: '#', action: function(e){--}%
-                    %{--$("#playuid").val(${userInfo.id});--}%
-                    %{--$("#playbid").val(${userInfo.bid});--}%
-                    %{--$("#playname").val("${userInfo.name}");--}%
-                    %{--$(this).hide();--}%
-                    %{--$(".zhxr").html("${userInfo.name}");--}%
-                %{--}}--}%
-                %{--</g:each>--}%
-                %{--</g:else>--}%
-            %{--]);--}%
             context.init({preventDoubleContext: false});
 
             context.attach('#playman', [
@@ -810,7 +780,7 @@
                 <g:else>
                 <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
                 {text: '${userInfo.name}', href: '#', action: function(e){
-                    $("#newmission_playname").val(${userInfo.id});
+                    $("#playuid").val(${userInfo.id});
                     $("#playbid").val(${userInfo.bid});
                     $("#playname").val("${userInfo.name}");
                     $(this).hide();
@@ -819,6 +789,38 @@
                 </g:each>
                 </g:else>
             ]);
+            %{--context.init({preventDoubleContext: false});--}%
+
+            %{--context.attach('#playman', [--}%
+                %{--<g:if test=" ${session.user.pid==1}">--}%
+                %{--{header: '部门'},--}%
+                %{--<g:each in="${bumenInstance}" var="bumenInfo">--}%
+                %{--{text: '${bumenInfo.name}', subMenu: [--}%
+                    %{--{header: '员工'},--}%
+                    %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">--}%
+                    %{--{text: '${userInfo.name}', href: '#', action: function(e){--}%
+                        %{--$("#newmission_playname").val(${userInfo.id});--}%
+                        %{--$("#playbid").val(${userInfo.bid});--}%
+                        %{--$("#playname").val("${userInfo.name}");--}%
+                        %{--$(this).hide();--}%
+                        %{--$(".zhxr").html("${userInfo.name}");--}%
+                    %{--}},--}%
+                    %{--</g:each>--}%
+                %{--]},--}%
+                %{--</g:each>--}%
+                %{--</g:if>--}%
+                %{--<g:else>--}%
+                %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">--}%
+                %{--{text: '${userInfo.name}', href: '#', action: function(e){--}%
+                    %{--$("#newmission_playname").val(${userInfo.id});--}%
+                    %{--$("#playbid").val(${userInfo.bid});--}%
+                    %{--$("#playname").val("${userInfo.name}");--}%
+                    %{--$(this).hide();--}%
+                    %{--$(".zhxr").html("${userInfo.name}");--}%
+                %{--}}--}%
+                %{--</g:each>--}%
+                %{--</g:else>--}%
+            %{--]);--}%
             $("#newmission").click(function(){
                 $('#target_id').val($('#var_all').html());
 

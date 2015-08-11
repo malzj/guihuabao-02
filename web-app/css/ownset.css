@@ -22,9 +22,23 @@ body{padding:0;margin:0;}
 .header .top .t_left{float:left;height:40px;line-height:40px;margin-left:45px;}
 .header .top .t_left img{ height:25px; width:25px; border-radius:50px; margin-right:5px; }
 .header .top .t_right{float:right;margin-right:20px;}
-.header .top .t_right li{float:left;line-height:40px;margin:0 8px; color:#9c9c9c; position:relative;}
+.header .top .t_right>ul>li{float:left; color:#9c9c9c; line-height:40px; text-align:center; position: relative;}
+.header .top .t_right .msg{ width:130px; }
+.header .top .t_right .msg .list{ width:132px; }
+.header .top .t_right .msg.active,.header .top .t_right .set.active{ background:#fff; }
+.header .top .t_right .set{ width:110px; }
+.header .top .t_right .set .list{ width:111px; }
+.header .top .t_right .exit{ width:123px; }
+.header .top .t_right .exit i{ display:inline-block; height:17px; width:17px; background:url("../img/exit.png") no-repeat; position: absolute; top: 11px; left: 15px;}
 .header .top .t_right li i{font-size:16px; margin-right:5px;}
-.header .top .t_right li .tsh{position:absolute; top:8px; left:8px;}
+.header .top .t_right li .fa-bell{ margin-right:15px;}
+.header .top .t_right li .tsh{position:absolute; top:8px; left:42px;}
+.header .top .t_right .list{ display:none; }
+.header .top .t_right .active .list{ display:block; position:absolute; padding-top:40px; text-align:left; top:0; left:-1; -webkit-box-shadow:0px 0px 3px 2px #9C9C9C;box-shadow:0px 0px 3px 2px #9C9C9C;/* border:2px solid #d2d2d2;*/ z-index: 1000;}
+.header .top .t_right .list>li{ background:#fff; padding-left:10px; }
+.header .top .t_right .list>li a{line-height:40px; display: block;}
+.header .top .t_right .list>li a em{padding: 3px 5px;line-height: 12px;font-size: 12px;font-style: normal;margin: 12px 6px 0 0;background-color: #22272A; border-radius: 50px;}
+.header .top .t_right .list>li:hover{ background: #F1F2F7}
 .header .navbox{overflow:hidden;height:70px;width:100%;background-color:#1d70f2;}
 .header .nav{margin-left:56px;float:left;}
 .header .nav li{float:left;}

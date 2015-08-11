@@ -52,16 +52,16 @@
                             <a class="task-order">筛选<i class="fa fa-caret-down"></i></a>
                             <ul>
                                 <li>
-                                    <g:link action="fzTask">全部</g:link>
+                                    <g:link action="cyTask">全部</g:link>
                                 </li>
                                 <li>
-                                    <g:link action="fzTask" params="[selected: 1]">已完成</g:link>
+                                    <g:link action="cyTask" params="[selected: 1]">已完成</g:link>
                                 </li>
                                 <li>
-                                    <g:link action="fzTask" params="[selected: 2]">未完成</g:link>
+                                    <g:link action="cyTask" params="[selected: 2]">未完成</g:link>
                                 </li>
                                 <li>
-                                    <g:link action="fzTask" params="[selected: 3]">延期任务</g:link>
+                                    <g:link action="cyTask" params="[selected: 3]">延期任务</g:link>
                                 </li>
                             </ul>
                         </div>
