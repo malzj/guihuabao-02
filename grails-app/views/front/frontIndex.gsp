@@ -36,6 +36,7 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
+<div style="height:110px;"></div>
     <!--header end-->
     <!--main content start-->
     <section id="main-content reset">

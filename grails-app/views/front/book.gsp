@@ -34,9 +34,11 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
+    <div style="height:110px;"></div>
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
+    <div class="col-xs-2" style="height:100%"></div>
     <g:render template="hx_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
@@ -76,8 +78,8 @@
                         </div>
                     </div>
                     <div class="row" style="padding:0 15px;">
-                    <div class="page b-k col-xs-6" style="width:49%">${content}</div>
-                    <div class="page b-k ml20 col-xs-6" style="width:49%">${content1}</div>
+                    <div class="page b-k col-xs-6" style="width:48%">${content}</div>
+                    <div class="page b-k ml20 col-xs-6" style="width:48%">${content1}</div>
                     </div>
                 </div>
             </div>
@@ -85,7 +87,7 @@
         <!--main content end-->
 
     </section>
-
+</div>
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
     <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
@@ -109,6 +111,7 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
     <script>
+
         $(function(){
             $(".menu>li>span").click(function(){
                 $(this).next(".weeks").toggle();
@@ -123,6 +126,7 @@
 
 
         });
+
     </script>
 </body>
 </html>

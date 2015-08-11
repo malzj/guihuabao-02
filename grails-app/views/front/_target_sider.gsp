@@ -1,5 +1,5 @@
-<aside class="col-xs-3">
-    <div id="sidebar"  class="nav-collapse ">
+<aside class="col-xs-3" style="position:fixed;height:100%;">
+    <div id="sidebar"  class="nav-collapse " >
         <div class="sidebar_object">
             <i class="page"></i>
             目标

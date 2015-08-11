@@ -1,4 +1,4 @@
-<aside class="col-xs-2">
+<aside class="col-xs-2" style="position:fixed;height:100%;">
     <div id="sidebar"  class="nav-collapse ">
         <div class="sidebar_object">
             <i class="fa fa-cog"></i>

@@ -36,10 +36,12 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
+    <div style="height:110px;"></div>
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
-    <aside class="col-xs-2">
+    <div class="col-xs-2" style="height:100%"></div>
+    <aside class="col-xs-2" style="position:fixed;height:100%;">
         <div id="sidebar"  class="nav-collapse ">
             <div class="sidebar_object">
                 <i class="fa fa-calendar-o"></i>

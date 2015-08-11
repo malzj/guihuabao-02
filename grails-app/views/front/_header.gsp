@@ -1,6 +1,6 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <!--header start-->
-<header class="header">
+<header class="header" style="position:fixed;">
     <div class="top">
         <div class="t_left"><img width="25" height="25" src="${resource(dir:"images",file: ''+com.guihuabao.CompanyUser.findByIdAndCid(session.user.id,session.company.id).img+'')}" />你好${session.user.username}</div>
         <div class="t_right">
