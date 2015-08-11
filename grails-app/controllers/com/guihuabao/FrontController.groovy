@@ -1804,7 +1804,6 @@ class FrontController {
         calendar.add(Calendar.HOUR,6)
         def etime = time.format(calendar.getTime())
 
-
         def messageTargetInstance = Target.findByCidAndFzuidAndEtimeAndEtimeGreaterThanEqualsAndStatus(session.company.id,session.user.id,etime,date,0)
         def messageTargetInstanceTotal = Target.countByCidAndFzuidAndEtimeAndEtimeGreaterThanEqualsAndStatus(session.company.id,session.user.id,etime,date,0)
         [messageTargetInstance: messageTargetInstance,messageTargetInstanceTotal:messageTargetInstanceTotal]
