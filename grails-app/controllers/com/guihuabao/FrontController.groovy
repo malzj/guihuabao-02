@@ -1552,10 +1552,6 @@ class FrontController {
             render rs as JSON
     }
 
-
-    def targetCreate() {
-        [targetInstance: new Target(params)]
-    }
     def targetSave(){
         def targetInstance = new Target(params)
         targetInstance.cid = session.company.id
@@ -1573,61 +1569,12 @@ class FrontController {
         flash.message = message(code: 'default.created.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
         redirect(action: "user_target", id: targetInstance.id)
     }
-    def targetShow(Long id) {
-        def targetInstance = Target.get(id)
-        if (!targetInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
-            return
-        }
-
-        [targetInstance: targetInstance]
-    }
-
-    def targetEdit(Long id) {
-        def targetInstance = Target.get(id)
-        if (!targetInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "targetList")
-            return
-        }
-
-        [targetInstance: targetInstance]
-    }
-
-    def targetUpdate(Long id, Long version) {
-        def targetInstance = Target.get(id)
-        if (!targetInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "targetList")
-            return
-        }
-
-        if (version != null) {
-            if (targetInstance.version > version) {
-                targetInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                        [message(code: 'target.label', default: 'Target')] as Object[],
-                        "Another user has updated this Target while you were editing")
-                render(view: "targetEdit", model: [targetInstance: targetInstance])
-                return
-            }
-        }
-
-        targetInstance.properties = params
-
-        if (!targetInstance.save(flush: true)) {
-            render(view: "targetEdit", model: [targetInstance: targetInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
-        redirect(action: "targetShow", id: targetInstance.id)
-    }
 
     def targetDelete(Long id) {
         def targetInstance = Target.get(id)
         if (!targetInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "targetEdit")
+//            redirect(action: "targetEdit")
             return
         }
 
@@ -1648,6 +1595,7 @@ class FrontController {
         def selected = params.selected
         def order1 = [sort:"begintime",order: "desc"]
         def order2 = [sort:"dateCreate",order: "desc"]
+        def bumenInstance = Bumen.findAllByCid(session.company.id)
         def targetInstance
         def targetInstanceTotal
         if(selected=="1"){
@@ -1660,7 +1608,7 @@ class FrontController {
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0)
         }
-        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
+        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,bumenInstance: bumenInstance,selected: selected]
     }
     def hasfinished_target(Integer max){
         params.max = Math.min(max ?: 10, 100)
@@ -1709,11 +1657,13 @@ class FrontController {
         def mission=new Mission(params)
         def targetInstance=Target.get(params.target_id)
         mission.target=targetInstance
-        mission.dateCreate = new Date()
+
 
         if (! mission.save(flush: true)){
             rs.msg=false
         }else {
+            mission.target.percent+=mission.percent
+            mission.dateCreate = new Date()
             rs.msg=true
             rs.target=targetInstance
             rs.mission=mission
@@ -1756,9 +1706,14 @@ class FrontController {
         def rs=[:]
         def mid=params.mid
         def missionInstance = Mission.get(mid)
+        def targetInstance=missionInstance.target
+
         try {
             missionInstance.delete(flush: true)
+           targetInstance.percent-=missionInstance.percent
             rs.msg="删除任务成功！"
+            rs.target=targetInstance
+            rs.mission=missionInstance
         }
         catch (DataIntegrityViolationException e) {
            rs.msg="删除失败！"
@@ -1772,10 +1727,13 @@ class FrontController {
         def rs=[:]
         def mid=params.mid
         def mission=Mission.get(mid)
+        def target=mission.target
+        target.percent-=mission.percent
         mission.properties = params
         if (! mission.save(flush: true)){
             rs.msg=false
         }else {
+            target.percent+=mission.percent
             rs.msg=true
             rs.target=mission.target
             rs.mission=mission.target.mission

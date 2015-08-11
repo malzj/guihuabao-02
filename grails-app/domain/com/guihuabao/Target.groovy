@@ -8,7 +8,7 @@ class Target {
     Date dateCreate
     String content
     String title
-    String percent
+    Integer percent
     String img
     String status
     static hasMany = [mission:Mission]
