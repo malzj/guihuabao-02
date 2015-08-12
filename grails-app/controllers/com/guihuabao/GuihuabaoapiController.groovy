@@ -49,4 +49,36 @@ class GuihuabaoapiController {
         } else
             render rs as JSON
     }
+    //获取部门
+    def bumenlist(){
+    def rs=[:]
+        def cid = params.cid
+        def bumenlist= Bumen.findAllByCid(cid)
+        if(bumenlist){
+            rs.result = true
+            rs.bumenlist = bumenlist
+        }else {
+            rs.result=false
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def bumenCompanyUserList(){
+        def rs=[:]
+        def bid = params.bid
+        def cid = params.cid
+        def companyUserList = CompanyUser.findAllByCidAndBid(cid,bid)
+        if(companyUserList){
+            rs.result =true
+            rs.companyUserList = companyUserList
+        }else {
+           rs.result = false
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
 }
