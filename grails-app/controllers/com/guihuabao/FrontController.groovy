@@ -1551,11 +1551,11 @@ class FrontController {
         } else
             render rs as JSON
     }
-
+//目标保存
     def targetSave(){
         def targetInstance = new Target(params)
         targetInstance.cid = session.company.id
-        targetInstance.img='0'
+        targetInstance.img='1.png'
         targetInstance.status ='0'
         targetInstance.percent=0
         targetInstance.dateCreate = new Date()
@@ -1569,7 +1569,29 @@ class FrontController {
         flash.message = message(code: 'default.created.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
         redirect(action: "user_target", id: targetInstance.id)
     }
+    //目标保存并分解
+    def targetSaveAndSplit(){
+        def rs=[:]
+        def targetInstance = new Target(params)
+        targetInstance.cid = session.company.id
+        targetInstance.img='1.png'
+        targetInstance.status ='0'
+        targetInstance.percent=0
+        targetInstance.dateCreate = new Date()
 
+
+        if (!targetInstance.save(flush: true)) {
+            render(model: [targetInstance: targetInstance])
+            return
+        }else{
+            rs.target=targetInstance
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //删除目标
     def targetDelete(Long id) {
         def targetInstance = Target.get(id)
         if (!targetInstance) {
@@ -1588,12 +1610,13 @@ class FrontController {
             redirect(action: "user_target", id: id)
         }
     }
+    //负责目标列表
     def user_target(Integer max){
         params.max = Math.min(max ?: 10, 100)
         def cid =session.user.cid
         def fzuid = session.user.id
         def selected = params.selected
-        def order1 = [sort:"begintime",order: "desc"]
+        def order1 = [sort:"etime",order: "desc"]
         def order2 = [sort:"dateCreate",order: "desc"]
         def bumenInstance = Bumen.findAllByCid(session.company.id)
         def targetInstance
@@ -1610,48 +1633,8 @@ class FrontController {
         }
         [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,bumenInstance: bumenInstance,selected: selected]
     }
-    def hasfinished_target(Integer max){
-        params.max = Math.min(max ?: 10, 100)
-        def cid =session.user.cid
-        def fzuid = session.user.id
-        def selected = params.selected
-        def order1 = [sort:"begintime",order: "desc"]
-        def order2 = [sort:"dateCreate",order: "desc"]
-        def targetInstance
-        def targetInstanceTotal
-        if(selected=="1"){
-            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order1)
-            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order1)
-        }else if(selected=="2"){
-            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order2)
-            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order2)
-        }else{
-            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
-            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
-        }
-        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
-    }
-    def all_user_target(Integer max){
-        params.max = Math.min(max ?: 10, 100)
-        def cid =session.user.cid
-        def fzuid = session.user.id
-        def selected = params.selected
-        def order1 = [sort:"begintime",order: "desc"]
-        def order2 = [sort:"dateCreate",order: "desc"]
-        def targetInstance
-        def targetInstanceTotal
-        if(selected=="1"){
-            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params,order1)
-            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid,order1)
-        }else if(selected=="2"){
-            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params,order2)
-            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid,order2)
-        }else{
-            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params)
-            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid)
-        }
-        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
-    }
+
+
     def missionSave() {
         def rs =[:]
         def mission=new Mission(params)
@@ -1683,8 +1666,10 @@ class FrontController {
         def rs=[:]
         def tid= params.target_id
         def targetInstance = Target.get(tid)
+        def fzname=com.guihuabao.CompanyUser.findById(targetInstance.fzuid).name
         rs.target=targetInstance
         rs.mission=targetInstance.mission
+        rs.fzname=fzname
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
@@ -1728,20 +1713,114 @@ class FrontController {
         def mid=params.mid
         def mission=Mission.get(mid)
         def target=mission.target
+        def missionlist=target.mission
         target.percent-=mission.percent
         mission.properties = params
         if (! mission.save(flush: true)){
             rs.msg=false
         }else {
             target.percent+=mission.percent
+            def sum=0
+            for(def i=0;i<missionlist.size();i++){
+                sum+=parseInt(missionlist[i].status)
+            }
+            if(target.percent==100&&sum==mission.size()){
+                target.status='1'
+            }
             rs.msg=true
-            rs.target=mission.target
-            rs.mission=mission.target.mission
+            rs.target=target
+            rs.mission=missionlist
             rs.missionSize=mission.target.mission.size()
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
             render rs as JSON
+    }
+    def selectImg(){
+        def rs=[:]
+        def target=Target.get(params.target_id)
+        if (! mission.save(flush: true)){
+            rs.msg=false
+        }else {
+            target.img = params.img
+            rs.target = target
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //参与的目标
+    def join_target(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def cid =session.user.cid
+        def playuid = session.user.id
+        def missionInstance=Mission.findByCidAndPlayuidAndStatus(cid,playuid,0,params)
+        def selected = params.selected
+        def order1 = [sort:"begintime",order: "desc"]
+        def order2 = [sort:"dateCreate",order: "desc"]
+        def targetInstance
+        def targetInstanceTotal
+        if(selected=="1"){
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order1)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order1)
+        }else if(selected=="2"){
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order2)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order2)
+        }else{
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
+        }
+        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
+    }
+    //负责的已完成目标列表
+    def hasfinished_target(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def cid =session.user.cid
+        def fzuid = session.user.id
+        def selected = params.selected
+        def order1 = [sort:"begintime",order: "desc"]
+        def order2 = [sort:"dateCreate",order: "desc"]
+        def targetInstance
+        def targetInstanceTotal
+        if(selected=="1"){
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order1)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order1)
+        }else if(selected=="2"){
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order2)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order2)
+        }else{
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
+        }
+        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
+    }
+
+    //参与的已完成的目标
+    def join_hasfinished_target(){
+
+    }
+    //全部目标
+    def all_user_target(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def cid =session.user.cid
+        def fzuid = session.user.id
+        def selected = params.selected
+        def order1 = [sort:"begintime",order: "desc"]
+        def order2 = [sort:"dateCreate",order: "desc"]
+        def targetInstance
+        def targetInstanceTotal
+        if(selected=="1"){
+            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params,order1)
+            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid,order1)
+        }else if(selected=="2"){
+            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params,order2)
+            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid,order2)
+        }else{
+            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params)
+            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid)
+        }
+        [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
     }
 }

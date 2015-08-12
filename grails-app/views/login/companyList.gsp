@@ -33,12 +33,15 @@
 <section id="container" >
 <!--header start-->
 <g:render template="header" />
+    <div style="height:110px;"></div>
 <!--header end-->
 <!--sidebar start-->
+    <div class="row">
+        <div class="col-xs-2" style="height:100%"></div>
 <g:render template="sidebar" />
 <!--sidebar end-->
 <!--main content start-->
-<section id="main-content">
+<section id="main-content"  class="col-xs-10" style="padding-left: 0;">
     <section class="wrapper mt80">
         <div class="row">
             <div class="col-lg-12">

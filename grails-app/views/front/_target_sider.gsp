@@ -8,32 +8,32 @@
         <ul class="sidebar-menu" id="nav-accordion">
             <li class="sub-menu dcjq-parent-li">
                 <div>
-                    <g:link controller="front" action="user_target"  class="dcjq-parent">
+                    <a >
                         <span>我的目标</span>
                         <span class="dcjq-icon"></span>
-                    </g:link>
+                    </a>
                 </div>
                 <ul class="sub db">
-                    <li><a href="">负责的目标<em class="f-r">14</em></a></li>
-                    <li><a href="">参与的目标<em class="f-r">14</em></a></li>
+                    <li> <g:link controller="front" action="user_target"  class="dcjq-parent">负责的目标<em class="f-r">14</em></g:link></li>
+                    <li> <g:link controller="front" action="join_target"  class="dcjq-parent">参与的目标<em class="f-r">14</em></g:link></li>
                 </ul>
             </li>
         <li>
-            <a href="">
+            <g:link controller="front" action="xsTask">
                 <span>下属目标</span>
                 <span class="dcjq-icon"></span>
-            </a>
+            </g:link>
         </li>
         <li class="sub-menu dcjq-parent-li">
             <div>
-                <a href="" class="dcjq-parent">
+                    <a>
                     <span>已完成目标</span>
                     <span class="dcjq-icon"></span>
-                </a>
+                    </a>
             </div>
             <ul class="sub db">
                 <li><g:link controller="front" action="hasfinished_target">负责已完成目标<em class="f-r">14</em></g:link></li>
-                <li><a href="">参与已完成目标<em class="f-r">14</em></a></li>
+                <li><g:link controller="front" action="join_hasfinished_target">参与已完成目标<em class="f-r">14</em></g:link></li>
             </ul>
         </li>
 
