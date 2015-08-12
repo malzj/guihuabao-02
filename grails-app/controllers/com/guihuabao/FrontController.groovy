@@ -101,7 +101,12 @@ class FrontController {
         [companyUserInstanceList: CompanyUser.list(params), companyUserInstanceTotal: CompanyUser.count()]
     }
     def companyUserShow(Long id) {
-        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def companyUserInstance = CompanyUser.get(id)
         if (!companyUserInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
@@ -112,7 +117,12 @@ class FrontController {
         [companyUserInstance: companyUserInstance]
     }
     def companyUserEdit(Long id) {
-        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def companyUserInstance = CompanyUser.get(id)
         def bumenList = Bumen.findAllByCid(session.company.id)
         if (!companyUserInstance) {
@@ -124,7 +134,12 @@ class FrontController {
         [companyUserInstance: companyUserInstance, bumenList: bumenList]
     }
     def companyUserUpdate(Long id, Long version) {
-        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def companyUserInstance = CompanyUser.get(id)
 
         if (!companyUserInstance) {
@@ -154,7 +169,12 @@ class FrontController {
         redirect(action: "companyUserShow", id: companyUserInstance.id)
     }
     def companyUserDelete(Long id) {
-        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def companyUserInstance = CompanyUser.get(id)
         if (!companyUserInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyUser.label', default: 'CompanyUser'), id])
@@ -175,16 +195,31 @@ class FrontController {
 
 
     def bumenList(Integer max){
-        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         [bumenInstanceList:Bumen.list(params), bumenInstanceTotal: Bumen.count()]
     }
     def bumenCreate(){
-        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         [bumenInstance: new Bumen(params)]
     }
     def bumenSave(){
-        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def bumenInstance = new Bumen(params)
         if (!bumenInstance.save(flush: true)) {
             render(view: "bumenCreate", model: [bumenInstance: bumenInstance])
@@ -195,7 +230,12 @@ class FrontController {
         redirect(action: "bumenShow", id: bumenInstance.id)
     }
     def bumenShow(Long id) {
-        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def bumenInstance = Bumen.get(id)
         if (!bumenInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bumen.label', default: 'Bumen'), id])
@@ -206,6 +246,12 @@ class FrontController {
         [bumenInstance: bumenInstance]
     }
     def bumenEdit(Long id) {
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def bumenInstance = Bumen.get(id)
         if (!bumenInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bumen.label', default: 'Bumen'), id])
@@ -216,6 +262,12 @@ class FrontController {
         [bumenInstance: bumenInstance]
     }
     def bumenUpdate(Long id, Long version) {
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def bumenInstance = Bumen.get(id)
         if (!bumenInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bumen.label', default: 'Bumen'), id])
@@ -244,6 +296,12 @@ class FrontController {
         redirect(action: "bumenShow", id: bumenInstance.id)
     }
     def bumenDelete(Long id) {
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def bumenInstance = Bumen.get(id)
         if (!bumenInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bumen.label', default: 'Bumen'), id])
@@ -264,13 +322,31 @@ class FrontController {
 
 
     def companyRoleList(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         [companyRoleInstanceList: CompanyRole.list(params), companyRoleInstanceTotal: CompanyRole.count()]
     }
     def companyRoleCreate(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         [companyRoleInstance: new CompanyRole(params)]
     }
     def companyRoleSave(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def companyRoleInstance = new CompanyRole(params)
         if(!companyRoleInstance.save(flush: true)){
             render(view: "companyRoleCreate", model: [companyRoleInstance: companyRoleInstance])
@@ -282,10 +358,22 @@ class FrontController {
     }
     //和许助手
     def hxhelper(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         [bookInstanceList: Book.list(params), bookInstanceTotal: Book.count()]
     }
     def book(Integer max,Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 2, 100)
         params<<[sort: "id",order: "asc"]
         def offset = 0;
@@ -317,6 +405,12 @@ class FrontController {
         [bookInstance: bookInstance,syllabusInstanceList: syll,content:content,content1:content1,contentsize:contentsize,bookId:id,offset: offset,syllabus:syllabus,chapter:chapter]
     }
     def chapterBook(Integer max,Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 2, 100)
         params<<[sort: "id",order: "asc"]
         def offset = 0;
@@ -346,6 +440,12 @@ class FrontController {
 
     //功能介绍
     def funIntroduction(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def funIntroduction = FunIntroduction.get(id)
         if (!funIntroduction) {
 //            flash.message = message(code: 'default.not.found.message', args: [message(code: 'company.label', default: 'Company'), id])
@@ -356,6 +456,12 @@ class FrontController {
     }
     //系统通知
     def inform(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def informInstance = Inform.get(id)
         if (!informInstance) {
 //            flash.message = message(code: 'default.not.found.message', args: [message(code: 'company.label', default: 'Company'), id])
@@ -366,6 +472,12 @@ class FrontController {
     }
     //检查版本
     def banben(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def banbenInstance = Banben.get(id)
         if (!banbenInstance) {
 //            flash.message = message(code: 'default.not.found.message', args: [message(code: 'company.label', default: 'Company'), id])
@@ -376,6 +488,12 @@ class FrontController {
     }
     //使用条款
     def clause(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def clauseInstance = Banben.get(id)
         if (!clauseInstance) {
 //            flash.message = message(code: 'default.not.found.message', args: [message(code: 'company.label', default: 'Company'), id])
@@ -394,7 +512,12 @@ class FrontController {
       }
     }
     def feedbackSave(){
-
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def feedbackInstance = new Feedback(params)
         feedbackInstance.userId=session.user.id
         feedbackInstance.username=session.user.username
@@ -408,6 +531,12 @@ class FrontController {
     }
     //个人设置
     def personalSet(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def userInstance = CompanyUser.get(session.user.id)
         def bumen = Bumen.findByCidAndId(session.company.id,session.user.bid)
         def role = Role.findById(session.user.pid)
@@ -417,6 +546,12 @@ class FrontController {
         [userInstance: userInstance,bumen: bumen,role: role]
     }
     def personalUpdate(Long id, Long version){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def companyUserInstance = CompanyUser.get(id)
         def filePath
         def fileName
@@ -514,6 +649,12 @@ class FrontController {
     //周报
     //我的报告
     def myReport(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
         DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
         def dateyear = dateFormat.format(new Date())
@@ -533,6 +674,12 @@ class FrontController {
         [myReportInfo: myReportInfo,year: year,month: month,week: week,month1:month1,dateInfo: dateInfo]
     }
     def reportShow(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
         DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
         def year = dateFormat.format(new Date())
@@ -702,6 +849,12 @@ class FrontController {
     }
 
     def reportUpdate(Long id, Long cid, Long version){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def myReportInfo = Zhoubao.findByIdAndCid(id,cid)
         def filePath
         def fileName
@@ -790,6 +943,12 @@ class FrontController {
     }
     //下属报告
     def xsReport(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def upid = session.user.pid
         def ubid = session.user.bid
         def ucid = session.user.cid
@@ -807,6 +966,12 @@ class FrontController {
         [companyUserInstance: companyUserInstance]
     }
     def xsReportShow(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
         DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
         def dateyear = dateFormat.format(new Date())
@@ -837,6 +1002,12 @@ class FrontController {
     }
     //周报回复保存
     def replySave(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def replyInstance = new ReplyReport(params)
         def zhoubao = Zhoubao.get(id)
         zhoubao.reply = 1
@@ -855,6 +1026,12 @@ class FrontController {
     }
     //回复我的
     def replyReport(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def uid = session.user.id
         def cid = session.company.id
         def zhoubao
@@ -879,6 +1056,12 @@ class FrontController {
 
     //回复我的
     def allReplyReport(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def uid = session.user.id
         def cid = session.company.id
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
@@ -906,6 +1089,12 @@ class FrontController {
     }
 
     def myReplySave(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def replyInstance = new ReplyReport(params)
         def zhoubao = Zhoubao.get(id)
         zhoubao.reply = 1
@@ -1062,6 +1251,12 @@ class FrontController {
     }
     //草稿删除
     def applyDelete(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def applyInstance = Apply.get(id)
         if (!applyInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'apply.label', default: 'Apply'), id])
@@ -1151,6 +1346,12 @@ class FrontController {
 
     //任务
     def taskCreate(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def pid= session.user.pid
         def current = new Date()
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
@@ -1166,6 +1367,12 @@ class FrontController {
     }
 
     def taskSave(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def taskInstance = new Task(params)
         def overdate = params.overtime.split(" ")
         taskInstance.cid = session.company.id
@@ -1273,6 +1480,12 @@ class FrontController {
 
 //    负责任务
     def fzTask(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         def current = new Date()
             SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
@@ -1305,6 +1518,12 @@ class FrontController {
     }
     //参与任务
     def cyTask(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         def current = new Date()
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
@@ -1335,10 +1554,22 @@ class FrontController {
         [cyTaskInstance: cyTaskInstance,cyTaskInstanceTotal: cyTaskInstanceTotal,selected: selected,infos: infos]
     }
     def finishedTask(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def finishedTaskInstance = Task.findAllByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)
         [finishedTaskInstance: finishedTaskInstance]
     }
     def allTask(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         def current = new Date()
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
@@ -1376,6 +1607,12 @@ class FrontController {
 
     //未读任务
     def unreadTask(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         def unreadTaskInstance
         def unreadTaskInstanceTotal
@@ -1394,6 +1631,12 @@ class FrontController {
     }
     //下属任务
     def xsTask(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def upid = session.user.pid
         def ubid = session.user.bid
         def ucid = session.user.cid
@@ -1409,12 +1652,24 @@ class FrontController {
 
 
     def taskUserList(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def companyUserInstance = CompanyUser.findAllByBidAndCid(params.bid,params.cid)
         [companyUserInstance: companyUserInstance]
     }
 
     //下属任务列表
     def xsTaskList(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         def current = new Date()
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
@@ -1446,6 +1701,12 @@ class FrontController {
 
     //公司公告
     def companyNoticeList(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def cid = session.company.id
         params.max = Math.min(max ?: 10, 100)
         def companyNoticeInstanceList = CompanyNotice.findAllByCid(cid,params,[sort: "dateCreate",order: "desc"])
@@ -1454,10 +1715,22 @@ class FrontController {
     }
 
     def companyNoticeCreate(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         [companyNoticeInstance: new CompanyNotice(params)]
     }
 
     def companyNoticeSave() {
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.cid = session.company.id
         params.dateCreate = new Date()
         def companyNoticeInstance = new CompanyNotice(params)
@@ -1471,6 +1744,12 @@ class FrontController {
     }
 
     def companyNoticeShow(Long id,Long version){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def cid = session.company.id
         def companyNoticeInstance = CompanyNotice.findByIdAndCid(id,cid)
         if (!companyNoticeInstance) {
@@ -1483,6 +1762,12 @@ class FrontController {
     }
 
     def companyNoticeEdit(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def cid = session.company.id
         def companyNoticeInstance = CompanyNotice.findByIdAndCid(id,cid)
         if (!companyNoticeInstance) {
@@ -1495,6 +1780,12 @@ class FrontController {
     }
 
     def companyNoticeUpdate(Long id, Long version) {
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def cid = session.company.id
         def companyNoticeInstance = CompanyNotice.findByIdAndCid(id,cid)
         if (!companyNoticeInstance) {
@@ -1525,6 +1816,12 @@ class FrontController {
     }
 
     def companyNoticeDelete(Long id) {
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def companyNoticeInstance = CompanyNotice.get(id)
         if (!companyNoticeInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'companyNotice.label', default: 'CompanyNotice'), id])
@@ -1544,6 +1841,12 @@ class FrontController {
     }
     //用户查看公告页面
     def companyNoticeIndex(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def cid = session.company.id
         params.max = Math.min(max ?: 10, 100)
         def companyNoticeInstanceList = CompanyNotice.findAllByCid(cid,params,[sort: "dateCreate",order: "desc"])
@@ -1571,6 +1874,12 @@ class FrontController {
     }
 
     def targetSave(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def targetInstance = new Target(params)
         targetInstance.cid = session.company.id
         targetInstance.img='0'
@@ -1589,6 +1898,12 @@ class FrontController {
     }
 
     def targetDelete(Long id) {
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def targetInstance = Target.get(id)
         if (!targetInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
@@ -1607,6 +1922,12 @@ class FrontController {
         }
     }
     def user_target(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         def cid =session.user.cid
         def fzuid = session.user.id
@@ -1629,6 +1950,12 @@ class FrontController {
         [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,bumenInstance: bumenInstance,selected: selected]
     }
     def hasfinished_target(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         def cid =session.user.cid
         def fzuid = session.user.id
@@ -1650,6 +1977,12 @@ class FrontController {
         [targetInstance: targetInstance,targetInstanceTotal: targetInstanceTotal,selected: selected]
     }
     def all_user_target(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         def cid =session.user.cid
         def fzuid = session.user.id
@@ -1765,6 +2098,12 @@ class FrontController {
 
     //消息未读任务
     def messageTask(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
 
         def messageTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0,params)//未完成
@@ -1773,6 +2112,12 @@ class FrontController {
     }
     //消息任务到期
     def messageTaskOver(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm")
         def date = time.format(new Date())
@@ -1795,6 +2140,12 @@ class FrontController {
 
     //消息目标到期
     def messageTargetOver(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm")
         def date = time.format(new Date())
