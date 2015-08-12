@@ -22,7 +22,7 @@
     <link href="${resource(dir: 'css', file: 'slidebars.css')}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="${resource(dir: 'css', file: 'style.css')}" rel="stylesheet">
+    <link href="${resource(dir: 'css', file: 'styleone.css')}" rel="stylesheet">
     <link href="${resource(dir: 'css', file: 'style-responsive.css')}" rel="stylesheet">
 
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">

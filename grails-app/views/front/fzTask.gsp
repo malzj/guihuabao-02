@@ -76,7 +76,7 @@
                                         <span class="mark <g:if test="${fzAllTaskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${fzAllTaskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${fzAllTaskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${fzAllTaskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                         <span class="sn">${i+1}</span>
                                         <span class="title" data-task-id="${fzAllTaskInfo.id}">${fzAllTaskInfo.title}</span>
-                                        <span class="status"><g:if test="${fzAllTaskInfo.status=="1"}">未完成</g:if><g:else>已完成</g:else></span>
+                                        <span class="status"><g:if test="${fzAllTaskInfo.status=="1"}">已完成</g:if><g:else>未完成</g:else></span>
                                         <div class="right">
                                             %{--<span class="hsfinish"><g:link action="taskUpdate" id="${fzAllTaskInfo.id}" params="[version: fzAllTaskInfo.version]"><i class="fa <g:if test="${fzAllTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
                                             %{--<g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${fzAllTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%

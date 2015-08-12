@@ -36,93 +36,64 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
-    <div style="height:110px;"></div>
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
-    <div class="col-xs-2" style="height:100%"></div>
-    <g:render template="tasksiderbar" />
-    <!--sidebar end-->
-    <!--main content start-->
-    <section id="main-content" class="col-xs-10" style="padding-left: 0;">
-        <section class="wrapper">
-            <div class="col-tb">
-                <div class="col-cell">
-                    <div class="toolkit">
-                        <span>参与的任务</span>
-                        <div class="shaixuan">
-                            <a class="task-order">筛选<i class="fa fa-caret-down"></i></a>
-                            <ul>
-                                <li>
-                                    <g:link action="cyTask">全部</g:link>
-                                </li>
-                                <li>
-                                    <g:link action="cyTask" params="[selected: 1]">已完成</g:link>
-                                </li>
-                                <li>
-                                    <g:link action="cyTask" params="[selected: 2]">未完成</g:link>
-                                </li>
-                                <li>
-                                    <g:link action="cyTask" params="[selected: 3]">延期任务</g:link>
-                                </li>
-                            </ul>
+        <g:render template="messagesiderbar" />
+        <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content" class="col-xs-10" style="padding-left: 0;">
+            <section class="wrapper">
+                <div class="col-tb">
+                    <div class="col-cell">
+                        <div class="toolkit">
+                            <span>即将到期目标</span>
                         </div>
-                    </div>
-                    <div class="e-list-group">
-                        <ul class="e-list">
-                            <g:if test="${cyTaskInstance}">
-                                <g:each in="${cyTaskInstance}" status="i" var="fzAllTaskInfo">
-                                    <li>
-                                        <span class="mark <g:if test="${fzAllTaskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${fzAllTaskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${fzAllTaskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${fzAllTaskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
-                                        <span class="sn">${i+1}</span>
-                                        <span class="title" data-task-id="${fzAllTaskInfo.id}">${fzAllTaskInfo.title}</span>
-                                        <div class="right">
-                                            %{--<span class="hsfinish"><g:link action="taskUpdate" id="${fzAllTaskInfo.id}" params="[version: fzAllTaskInfo.version]"><i class="fa <g:if test="${fzAllTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
-                                            %{--<g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${fzAllTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
-                                            <span class="hsfinish"><a href="javascript:;" class="taskedit" data-id="${fzAllTaskInfo.id}" data-version="${fzAllTaskInfo.version}"><i class="fa <g:if test="${fzAllTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
-                                            <g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${fzAllTaskInfo.id}" data-version="${fzAllTaskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
-                                            <span class="date f-r">${fzAllTaskInfo.overtime}</span>
-                                        </div>
-                                    </li>
-                                </g:each>
+                        <div class="e-list-group">
+                            <ul class="e-list fzalltasklist">
+                                <g:if test="${messageTargetInstance}">
+                                    <g:each in="${messageTargetInstance}" status="i" var="messageTargetInfo">
+                                        <li>
+                                            <span class="mark"></span>
+                                            <span class="sn">${i+1}</span>
+                                            <span class="title" data-task-id="${messageTargetInfo.id}">${messageTargetInfo.title}</span>
+                                            <div class="right">
+                                                <span class="date f-r">${messageTargetInfo.dateCreate.format("yyyy-MM-dd")}</span>
+                                            </div>
+                                        </li>
+                                    </g:each>
 
-                            </g:if>
-                            <g:else>
-                                <li><span class="mark"></span>没有任务！</li>
-                            </g:else>
-                        </ul>
-                    </div>
-                    <div class="pagination">
-                        <g:paginate total="${cyTaskInstanceTotal}" params="[selected: selected]" />
-                    </div>
-                </div>
-                <div class="col-cell bfb" style="width:340px;">
-                    <div class="count">
-                        <div class="bfb_hearder">
-                            参与任务统计
+                                </g:if>
+                                <g:else>
+                                    <li><span class="mark"></span>没有目标！</li>
+                                </g:else>
+                            </ul>
+
                         </div>
-                        <canvas style="width: 340px; height: 255px;" id="doughnut" height="255" width="340"></canvas>
-                        <div class="bfb_fl"></div>
+                        <div class="pagination">
+                            <g:paginate total="${messageTargetInstanceTotal}" />
+                        </div>
+                    </div>
+                    <div class="col-cell bfb" style="width:340px;">
                     </div>
                 </div>
-            </div>
-            <!--任务详情 start-->
-            <div id="task" style="display: none">
-                <div class="task_hearder">
-                    <div class="task_hearder_title">
-                        <span><i class="yh"></i>任务详情</span>
-                        <div class="taskclose"><a href="javascript:;" class="fa fa-times"></a></div>
+                <!--任务详情 start-->
+                <div id="task" style="display: none">
+                    <div class="task_hearder">
+                        <div class="task_hearder_title">
+                            <span><i class="yh"></i>任务详情</span>
+                            <div class="taskclose"><a href="javascript:;" class="fa fa-times"></a></div>
+                        </div>
+                        <a class="print_icon"></a>
+                        <a class="copy_icon"></a>
                     </div>
-                    <a class="print_icon"></a>
-                    <a class="copy_icon"></a>
+                    <div class="task_content">
+                    </div>
                 </div>
-                <div class="task_content">
-                </div>
-            </div>
-            <!--任务详情 end-->
+                <!--任务详情 end-->
+            </section>
         </section>
-    </section>
-    <!--main content end-->
+        <!--main content end-->
 
 </section>
 
@@ -167,24 +138,6 @@
 <script src="${resource(dir: 'js', file: 'slidelefthideshow.js')}"></script>
 
 <script type="text/javascript">
-    var Script = function () {
-        var doughnutData = [
-            {
-                value: ${infos.yq},//延期任务
-                color:"#FF7F50"
-            },
-            {
-                value: ${infos.unfinished},//未完成数
-                color:"#87CEFA"
-            },
-            {
-                value : ${infos.finished},//已完成数
-                color : "#32CD32"
-            }
-        ];
-        new Chart(document.getElementById("doughnut").getContext("2d")).Doughnut(doughnutData);
-    }();
-
     $(function(){
         $("#addrenwu").click(function(){
             $(".popup_box").css("display","block");
@@ -247,45 +200,23 @@
                 }
             })
         });
-
-        $(".taskedit").click(function(){
-            var id=$(this).attr("data-id");
-            var version=$(this).attr("data-version");
-            $.ajax({
-                url:'${webRequest.baseUrl}/front/taskUpdate?id='+id+'&version='+version,
-                dataType: "jsonp",
-                jsonp: "callback",
-                success: function(data){
-                    if(data.msg){
-                        alert("标记成功!")
-                        window.location.reload()
-                    }else{
-                        alert("标记失败!")
-                    }
-                }
-            })
-        })
-
-        $(".taskdelete").click(function(){
-            var id=$(this).attr("data-id");
-            var version=$(this).attr("data-version");
-            $.ajax({
-                url:'${webRequest.baseUrl}/front/taskDelete?id='+id,
-                dataType: "jsonp",
-                jsonp: "callback",
-                success: function(data){
-                    if(data.msg){
-                        alert("删除成功!")
-                        window.location.reload()
-                    }else{
-                        alert("删除失败!")
-                    }
-                }
-            })
-        })
         $(".taskclose").click(function(){
             $("#task").slideLeftHide(400);
             $("#task .task_content").empty();
+        });
+
+        //筛选
+        $(".toolkit .shaixuan .finished").bind("click",function(){
+            $(this).parent().parent(). slideUp("fast");
+            $(".toolkit .task-order").css("border-bottom","none");
+            $(".e-list-group .finishedlist").siblings().hide();
+            $(".e-list-group .finishedlist").show();
+        });
+        $(".toolkit .shaixuan .unfinished").bind("click",function(){
+            $(this).parent().parent(). slideUp("fast");
+            $(".toolkit .task-order").css("border-bottom","none");
+            $(".e-list-group .unfinishedlist").siblings().hide();
+            $(".e-list-group .unfinishedlist").show();
         });
     })
 </script>
