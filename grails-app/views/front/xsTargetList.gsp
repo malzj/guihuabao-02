@@ -47,136 +47,136 @@
 <body>
 
 <section id="container" >
-<!--header start-->
-<g:render template="header" />
-<div style="height:110px;"></div>
-<!--header end-->
-<!--sidebar start-->
-<div class="row">
-    <div class="col-xs-3" style="height:100%"></div>
-    <g:render template="target_sider" />
-    <!--sidebar end-->
-    <!--main content start-->
-    <section id="main-content" class="col-xs-9" style="padding-left:0;">
-        <section class="wrapper">
-            <div class="col-tb">
-                <div class="col-cell">
-                    <div class="toolkit">
-                        <span>我的目标</span>
-                        <div class="shaixuan">
-                            <a class="task-order">排序<i class="fa fa-caret-down"></i></a>
-                            <ul>
+    <!--header start-->
+    <g:render template="header" />
+    <div style="height:110px;"></div>
+    <!--header end-->
+    <!--sidebar start-->
+    <div class="row">
+        <div class="col-xs-3" style="height:100%"></div>
+        <g:render template="target_sider" />
+        <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content" class="col-xs-9" style="padding-left:0;">
+            <section class="wrapper">
+                <div class="col-tb">
+                    <div class="col-cell">
+                        <div class="toolkit">
+                            <span>我的目标</span>
+                            <div class="shaixuan">
+                                <a class="task-order">排序<i class="fa fa-caret-down"></i></a>
+                                <ul>
 
-                                <li>
-                                    <g:link action="user_target" params="[selected: 1]">按目标到期时间</g:link>
-                                </li>
-                                <li>
-                                    <g:link action="user_target" params="[selected: 2]">按目标创建时间</g:link>
+                                    <li>
+                                        <g:link action="user_target" params="[selected: 1]">按目标到期时间</g:link>
+                                    </li>
+                                    <li>
+                                        <g:link action="user_target" params="[selected: 2]">按目标创建时间</g:link>
 
-                                </li>
+                                    </li>
 
-                            </ul>
+                                </ul>
+                            </div>
+                            <a href="#" id="newtarget" class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
                         </div>
-                        <a href="#" id="newtarget" class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
-                    </div>
-                    <div class="content">
-                        <div style="margin-top:20px;" class="clearfix">
+                        <div class="content">
+                            <div style="margin-top:20px;" class="clearfix">
 
-                            <g:each in="${targetInstance}" var="targetInfo">
+                                <g:each in="${targetInstance}" var="targetInfo">
 
-                                <div class="tar_whole f-l">
-                                    <input type="hidden" value="${targetInfo.id}"  />
-                                    <div class="tar_title clearfix" >
-                                        <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
-                                        <div class="f-l" style="margin-left:10px;">
+                                    <div class="tar_whole f-l">
+                                        <input type="hidden" value="${targetInfo.id}"  />
+                                        <div class="tar_title clearfix" >
+                                            <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
+                                            <div class="f-l" style="margin-left:10px;">
 
-                                            <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${targetInfo.title}</h2>
-                                            负责人：<span>${com.guihuabao.CompanyUser.findByIdAndCid(targetInfo.fzuid,session.company.id).name}</span>
+                                                <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${targetInfo.title}</h2>
+                                                负责人：<span>${com.guihuabao.CompanyUser.findByIdAndCid(targetInfo.fzuid,session.company.id).name}</span>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="tar_content clearfix">
+                                            <div class="f-l percent">${targetInfo.percent}%</div>
+                                            <div class="f-l"style="margin-left: 10px;">共<span>${targetInfo.mission.size()}</span>位同事参与</div>
+                                        </div>
+                                        <div class="clearfix" style="width:235px;margin:0 auto;">
+                                            <span class="btime f-l">${targetInfo.begintime}</span><span class="etime f-l" style="width:133px;">${targetInfo.etime}</span>
                                         </div>
 
                                     </div>
+                                </g:each>
 
-                                    <div class="tar_content clearfix">
-                                        <div class="f-l percent">${targetInfo.percent}%</div>
-                                        <div class="f-l"style="margin-left: 10px;">共<span>${targetInfo.mission.size()}</span>位同事参与</div>
-                                    </div>
-                                    <div class="clearfix" style="width:235px;margin:0 auto;">
-                                        <span class="btime f-l">${targetInfo.begintime}</span><span class="etime f-l" style="width:133px;">${targetInfo.etime}</span>
-                                    </div>
+                                <span style="display: none;" id="var_all"></span>
 
-                                </div>
-                            </g:each>
 
-                            <span style="display: none;" id="var_all"></span>
+                            </div>
+
 
 
                         </div>
 
 
-
                     </div>
-
-
                 </div>
-            </div>
 
+            </section>
+            <!--main content end-->
+
+            <!--footer start-->
+            %{--<footer class="site-footer">--}%
+            %{--<div class="text-center">--}%
+            %{--2013 &copy; FlatLab by VectorLab.--}%
+            %{--<a href="index.html#" class="go-top">--}%
+            %{--<i class="fa fa-angle-up"></i>--}%
+            %{--</a>--}%
+            %{--</div>--}%
+            %{--</footer>--}%
+            <!--footer end-->
         </section>
-        <!--main content end-->
-
-        <!--footer start-->
-        %{--<footer class="site-footer">--}%
-        %{--<div class="text-center">--}%
-        %{--2013 &copy; FlatLab by VectorLab.--}%
-        %{--<a href="index.html#" class="go-top">--}%
-        %{--<i class="fa fa-angle-up"></i>--}%
-        %{--</a>--}%
-        %{--</div>--}%
-        %{--</footer>--}%
-        <!--footer end-->
-    </section>
-</div>
-<!--目标详情 start-->
-<div class="passwordedit" id="tar_detail" style="position:absolute;overflow: scroll;">
-    <div class="m_box" style="width:804px;overflow: scroll;">
-        <header class="panel-heading" style="padding:10px 28px;">
-            <span>目标详情<i class="fa fa-print" style="margin:0 10px;color:#03a9f4;"></i><i class="fa fa-file-text" style="color:#03a9f4;"></i></span>
-            <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
-        </header>
-
-        <ul>
-
-            <li class="clearfix">
-                <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
-                <h2 class="f-l" style="padding:0;margin: 0 20px 0 0;font-size: 20px;line-height:48px;" id="detail_title"></h2>
-            </li>
-            <li>
-                详情：<span id="detail_content"></span>
-            </li>
-            <li>
-                负责人：<span id="detail_fz"></span>
-            </li>
-            <li>
-                起止日：<span id="detail_btime"></span>—<span id="detail_etime"></span>
-            </li>
-
-            <h2 style="padding:10px 0;font-size: 20px;border-bottom: 1px solid #d2d2d2;">目标分解</h2>
-
-            <ul class="rwfj" style="padding:0;margin:0;">
-
-            </ul>
-        </ul>
-
     </div>
-</div>
-<!--目标详情 end-->
+    <!--目标详情 start-->
+    <div class="passwordedit" id="tar_detail" style="position:absolute;overflow: scroll;">
+        <div class="m_box" style="width:804px;overflow: scroll;">
+            <header class="panel-heading" style="padding:10px 28px;">
+                <span>目标详情<i class="fa fa-print" style="margin:0 10px;color:#03a9f4;"></i><i class="fa fa-file-text" style="color:#03a9f4;"></i></span>
+                <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
+            </header>
 
-<!-- js placed at the end of the document so the pages load faster -->
-<script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
-<script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
+            <ul>
+
+                <li class="clearfix">
+                    <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
+                    <h2 class="f-l" style="padding:0;margin: 0 20px 0 0;font-size: 20px;line-height:48px;" id="detail_title"></h2>
+                </li>
+                <li>
+                    详情：<span id="detail_content"></span>
+                </li>
+                <li>
+                    负责人：<span id="detail_fz"></span>
+                </li>
+                <li>
+                    起止日：<span id="detail_btime"></span>—<span id="detail_etime"></span>
+                </li>
+
+                <h2 style="padding:10px 0;font-size: 20px;border-bottom: 1px solid #d2d2d2;">目标分解</h2>
+
+                <ul class="rwfj" style="padding:0;margin:0;">
+
+                </ul>
+            </ul>
+
+        </div>
+    </div>
+    <!--目标详情 end-->
+
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
 
 
 
-<script>
+    <script>
     $(document).ready(function() {
 
         //目标详情
@@ -232,7 +232,7 @@
                                 '</tr>' +
                                 '</table>' +
                                 '</li>';
-                                '<textarea name="content" rows="4" placeholder="这里可以添加目标总结" style="width:100%;height:68px;resize: none;" ></textarea> ';
+
 
                     }
                     $("#tar_detail .rwfj").append(tar_mission);
@@ -247,6 +247,6 @@
             $("#tar_detail").css("display","none");
         })
     })
-</script>
+    </script>
 </body>
 </html>

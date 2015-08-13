@@ -1912,6 +1912,7 @@ class FrontController {
         targetInstance.img = '1.png'
         targetInstance.status = '0'
         targetInstance.percent = 0
+        targetInstance.issubmit='0'
         targetInstance.dateCreate = new Date()
 
 
@@ -2011,7 +2012,7 @@ class FrontController {
         def cid = session.user.cid
         def fzuid = session.user.id
         def selected = params.selected
-        def order1 = [sort: "begintime", order: "desc"]
+        def order1 = [sort: "etime", order: "desc"]
         def order2 = [sort: "dateCreate", order: "desc"]
         def targetInstance
         def targetInstanceTotal
@@ -2059,13 +2060,16 @@ class FrontController {
     def missionSave() {
         def rs = [:]
         def mission = new Mission(params)
+        mission.hasvisited='0'
         def targetInstance = Target.get(params.target_id)
         mission.target = targetInstance
 
 
         if (!mission.save(flush: true)) {
+
             rs.msg = false
         } else {
+            mission.dateCreate=new Date();
             mission.target.percent += mission.percent
             mission.dateCreate = new Date()
             rs.msg = true
@@ -2081,7 +2085,19 @@ class FrontController {
 
 
     }
-
+   def  issubmit(){
+       def rs = [:]
+       def target=Target.get(params.target_id)
+       if(!target){
+           rs.msg=false
+       }else{
+           target.issubmit='1'
+       }
+       if (params.callback) {
+           render "${params.callback}(${rs as JSON})"
+       } else
+           render rs as JSON
+   }
     def tshow() {
         def rs = [:]
         def tid = params.target_id
@@ -2101,8 +2117,10 @@ class FrontController {
         def mid = params.mid
         def mission = Mission.get(mid)
         def target = mission.target
+        def fzname=com.guihuabao.CompanyUser.findById(target.fzuid).name
         rs.mission = mission
         rs.target = target
+        rs.fzname=fzname
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
@@ -2134,27 +2152,29 @@ class FrontController {
     def mupdate() {
         def rs = [:]
         def mid = params.mid
+
         def mission = Mission.get(mid)
-        def target = mission.target
-        def missionlist = target.mission
-        target.percent -= mission.percent
-        mission.properties = params
-        if (!mission.save(flush: true)) {
-            rs.msg = false
-        } else {
+
+            def target = mission.target
+            def missionlist = target.mission
+            target.percent -= mission.percent
+            mission.properties = params
+
+
             target.percent += mission.percent
             def sum = 0
-            for (def i = 0; i < missionlist.size(); i++) {
-                sum += parseInt(missionlist[i].status)
+            for (def missionInstance in missionlist) {
+                sum += missionInstance.status.toInteger()
+
             }
-            if (target.percent == 100 && sum == mission.size()) {
+            if (target.percent == 100 && sum == missionlist.size()) {
                 target.status = '1'
             }
             rs.msg = true
             rs.target = target
             rs.mission = missionlist
             rs.missionSize = mission.target.mission.size()
-        }
+
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
@@ -2175,30 +2195,142 @@ class FrontController {
         } else
             render rs as JSON
     }
-    //参与的目标
-    def join_target(Integer max) {
+    //参与的任务
+    def join_mission(Integer max) {
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
-        def cid = session.user.cid
-        def playuid = session.user.id
-        def missionInstance = Mission.findByCidAndPlayuidAndStatus(cid, playuid, 0, params)
+//        def cid=company.id
+        def playname = session.user.name
+
         def selected = params.selected
-        def order1 = [sort: "begintime", order: "desc"]
+        def order1 = [sort: "overtime", order: "desc"]
         def order2 = [sort: "dateCreate", order: "desc"]
+        def missionInstance
+        def missionInstanceTotal
+        if (selected == "1") {
+            missionInstance = Mission.findAllByPlaynameAndStatus(playname,'0' , params, order1)
+            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, 0, order1)
+        } else if (selected == "2") {
+            missionInstance = Mission.findAllByPlaynameAndStatus(playname, 0, params, order2)
+            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, 0, order2)
+        } else {
+            missionInstance = Mission.findAllByPlaynameAndStatus( playname, '0', params)
+            missionInstanceTotal = Mission.countByPlaynameAndStatus( playname, 0)
+      }
+        [missionInstance:missionInstance,missionInstanceTotal:missionInstanceTotal, selected: selected]
+    }
+    def mhasvisited() {
+        def rs = [:]
+        def mid = params.mid
+        def mission = Mission.get(mid)
+        if(!mission){
+            rs.msg=false
+        }else {
+            def target = mission.target
+            mission.hasvisited='1'
+            def fzname = com.guihuabao.CompanyUser.findById(target.fzuid).name
+            rs.mission = mission
+            rs.target = target
+            rs.fzname = fzname
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //下属目标
+    def xsTarget() {
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def upid = session.user.pid
+        def ubid = session.user.bid
+        def ucid = session.user.cid
+        def bumenInfo
+        if (upid == 1) {
+            bumenInfo = Bumen.findAllByCid(ucid)
+            render(view: "targetBumenList", model: [bumenInfo: bumenInfo])
+        } else if (upid == 2) {
+            redirect(action: "targetUserList", params: [bid: ubid, cid: ucid])
+            return
+        }
+    }
+    def xsTargetList(Integer max) {
+        def user = User.findById(params.uid)
+        def company = Company.findById(params.cid)
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+        def cid = params.cid
+        def fzuid = params.uid
+        def selected = params.selected
+        def order1 = [sort: "etime", order: "desc"]
+        def order2 = [sort: "dateCreate", order: "desc"]
+        def bumenInstance = Bumen.findAllByCid(session.company.id)
         def targetInstance
         def targetInstanceTotal
         if (selected == "1") {
-            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid, fzuid, 1, params, order1)
-            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid, fzuid, 1, order1)
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid, fzuid, 0, params, order1)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid, fzuid, 0, order1)
         } else if (selected == "2") {
-            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid, fzuid, 1, params, order2)
-            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid, fzuid, 1, order2)
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid, fzuid, 0, params, order2)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid, fzuid, 0, order2)
         } else {
-            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid, fzuid, 1, params)
-            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid, fzuid, 1)
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid, fzuid, 0, params)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid, fzuid, 0)
         }
-        [targetInstance: targetInstance, targetInstanceTotal: targetInstanceTotal, selected: selected]
+        [targetInstance: targetInstance, targetInstanceTotal: targetInstanceTotal, bumenInstance: bumenInstance, selected: selected]
     }
-   
+
+    def TargetUserList() {
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def companyUserInstance = CompanyUser.findAllByBidAndCid(params.bid, params.cid)
+        [companyUserInstance: companyUserInstance]
+    }
+    //参与的已完成任务
+    def join_hasfinished_mission(Integer max) {
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+//        def cid=company.id
+        def playname = session.user.name
+
+        def selected = params.selected
+        def order1 = [sort: "overtime", order: "desc"]
+        def order2 = [sort: "dateCreate", order: "desc"]
+        def missionInstance
+        def missionInstanceTotal
+        if (selected == "1") {
+            missionInstance = Mission.findAllByPlaynameAndStatus(playname,'1' , params, order1)
+            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, '1', order1)
+        } else if (selected == "2") {
+            missionInstance = Mission.findAllByPlaynameAndStatus(playname, '1', params, order2)
+            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, '1', order2)
+        } else {
+            missionInstance = Mission.findAllByPlaynameAndStatus( playname, '1', params)
+            missionInstanceTotal = Mission.countByPlaynameAndStatus( playname, '1')
+        }
+        [missionInstance:missionInstance,missionInstanceTotal:missionInstanceTotal, selected: selected]
+    }
         //消息未读任务
         def messageTask(Integer max) {
             def user = session.user
