@@ -1359,10 +1359,10 @@ class FrontController {
         def tomorrow = time.format(new Date(current.getTime()+1*24*60*60*1000))
         def bumenInstance = Bumen.findAllByCid(session.company.id)
         def order = [sort:"dateCreate",order: "desc"]
-        def todayTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,now,now,order)
-        def todayFinishedTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,1,now,now,order)
-        def tomorrowTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,tomorrow,tomorrow,order)
-        def taskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeGreaterThanEquals(session.company.id,session.user.id,0,now,[sort:"overtime",order:"asc"])
+        def todayTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,2,0,now,now,order)
+        def todayFinishedTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,2,1,now,now,order)
+        def tomorrowTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(session.company.id,session.user.id,2,0,tomorrow,tomorrow,order)
+        def taskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndOvertimeGreaterThanEquals(session.company.id,session.user.id,2,0,now,[sort:"overtime",order:"asc"])
         [taskInstance: taskInstance,todayTaskInstance: todayTaskInstance,todayFinishedTaskInstance: todayFinishedTaskInstance,tomorrowTaskInstance: tomorrowTaskInstance,bumenInstance: bumenInstance]
     }
 
@@ -1375,13 +1375,20 @@ class FrontController {
         }
         def taskInstance = new Task(params)
         def overdate = params.overtime.split(" ")
+        def uid = session.user.id
         taskInstance.cid = session.company.id
-        taskInstance.fzuid = session.user.id
+        taskInstance.fzuid = uid
         taskInstance.fzname = session.user.name
         taskInstance.overtime = overdate[0]
         taskInstance.overhour = overdate[1]
         taskInstance.status = 0
-        taskInstance.lookstatus = 0
+        if(params.playuid==uid.toString()){
+            taskInstance.lookstatus = 2
+        }else{
+            taskInstance.lookstatus = 0
+        }
+        taskInstance.remindstatus = 0
+
         taskInstance.dateCreate = new Date()
 
 
@@ -1408,6 +1415,7 @@ class FrontController {
                     rs.msg = true
                     taskInstance.properties = params
                     taskInstance.status = 1
+                    taskInstance.remindstatus = 1
 
                     if (!taskInstance.save(flush: true)) {
                         rs.msg = false
@@ -1448,10 +1456,19 @@ class FrontController {
         def taskInfo = Task.findByIdAndCid(params.id,session.company.id)
         def rs = [:]
         def version = params.version
+        if(version){
+            version = version.toLong()
+        }
         if(taskInfo){
             rs.msg = true
-            if(taskInfo.lookstatus.toInteger()==0){
-                taskInfo.lookstatus = 1
+
+            if(taskInfo.lookstatus.toInteger()!=2){
+                if(params.accept=='1'){//更改接受状态
+                    taskInfo.lookstatus = 2
+                }else{
+                    taskInfo.lookstatus = 1
+                }
+
                 if (version != null) {
                     if (taskInfo.version > version) {
                         rs.msg = false
@@ -1466,9 +1483,9 @@ class FrontController {
         }else{
             rs.msg = false
         }
+        def replyTask = taskInfo.replaytasks
 
-
-
+        rs<<[replyTask:replyTask]
         rs<<[taskInfo:taskInfo]
 
         if (params.callback) {
@@ -1477,6 +1494,29 @@ class FrontController {
             render rs as JSON
     }
 
+    //任务评论反馈
+    def replyTaskSave(){
+        def rs = [:]
+        def replyTaskInstance = new ReplyTask(params)
+        def taskInstance = Task.get(params.id)
+        taskInstance.reply = 1
+        replyTaskInstance.tasks = taskInstance
+        replyTaskInstance.date = new Date()
+        replyTaskInstance.cid = session.company.id
+        replyTaskInstance.status = 0
+
+        if(!replyTaskInstance.save(flush: true)){
+            rs.msg = false
+        }else {
+            rs.msg = true
+        }
+
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
 
 //    负责任务
     def fzTask(Integer max){
@@ -1535,21 +1575,21 @@ class FrontController {
         def cyTaskInstance
         def cyTaskInstanceTotal
         def infos=[:]
-        infos.yq = Task.countByCidAndPlayuidAndStatusAndOvertimeLessThan(cid,uid,0,now)
-        infos.finished = Task.countByCidAndPlayuidAndStatus(cid,uid,1)
-        infos.unfinished = Task.countByCidAndPlayuidAndStatus(cid,uid,0)
+        infos.yq = Task.countByCidAndPlayuidAndLookstatusAndStatusAndOvertimeLessThan(cid,uid,2,0,now)
+        infos.finished = Task.countByCidAndPlayuidAndLookstatusAndStatus(cid,uid,2,1)
+        infos.unfinished = Task.countByCidAndPlayuidAndLookstatusAndStatus(cid,uid,2,0)
         if(selected=="1"){//已完成
-            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,1,params)
+            cyTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatus(cid,uid,2,1,params)
             cyTaskInstanceTotal = infos.finished
         }else if(selected=="2"){//未完成
-            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatus(cid,uid,0,params)
+            cyTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatus(cid,uid,2,0,params)
             cyTaskInstanceTotal = infos.unfinished
         }else if(selected=="3"){//延期任务
-            cyTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeLessThan(cid,uid,0,now,params)
+            cyTaskInstance = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndOvertimeLessThan(cid,uid,2,0,now,params)
             cyTaskInstanceTotal = infos.yq
-        }else{//全部负责任务
-            cyTaskInstance = Task.findAllByCidAndPlayuid(cid,uid,params)
-            cyTaskInstanceTotal = Task.countByCidAndPlayuid(cid,uid)
+        }else{//全部参与任务
+            cyTaskInstance = Task.findAllByCidAndPlayuidAndLookstatus(cid,uid,2,params)
+            cyTaskInstanceTotal = Task.countByCidAndPlayuidAndLookstatus(cid,uid,2)
         }
         [cyTaskInstance: cyTaskInstance,cyTaskInstanceTotal: cyTaskInstanceTotal,selected: selected,infos: infos]
     }
@@ -1629,6 +1669,22 @@ class FrontController {
         }
         [unreadTaskInstance: unreadTaskInstance,unreadTaskInstanceTotal:unreadTaskInstanceTotal,selected: selected]
     }
+
+    //未接受任务
+    def unacceptTask(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+        def unacceptTaskInstance = Task.findAllByCidAndPlayuidAndLookstatus(session.company.id,session.user.id,1,params)
+        def unacceptTaskInstanceTotal = Task.countByCidAndPlayuidAndLookstatus(session.company.id,session.user.id,1)
+
+        [unacceptTaskInstance: unacceptTaskInstance,unacceptTaskInstanceTotal:unacceptTaskInstanceTotal]
+    }
+
     //下属任务
     def xsTask(){
         def user = session.user
@@ -1938,8 +1994,9 @@ class FrontController {
         def targetInstance
         def targetInstanceTotal
         if(selected=="1"){
-            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params,order1)
-            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0,order1)
+            params<<[sort:"etime",order: "desc"]
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0)
         }else if(selected=="2"){
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params,order2)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0,order2)
@@ -2133,8 +2190,8 @@ class FrontController {
         def nowdate = timearr1[0]
         def nowtime = timearr1[1]
 
-        def messageTaskInstance = Task.findByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,0)
-        def messageTaskInstanceTotal = Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,0)
+        def messageTaskInstance = Task.findByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,2,0)
+        def messageTaskInstanceTotal = Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,2,0)
         [messageTaskInstance: messageTaskInstance,messageTaskInstanceTotal:messageTaskInstanceTotal]
     }
 
@@ -2158,5 +2215,50 @@ class FrontController {
         def messageTargetInstance = Target.findByCidAndFzuidAndEtimeAndEtimeGreaterThanEqualsAndStatus(session.company.id,session.user.id,etime,date,0)
         def messageTargetInstanceTotal = Target.countByCidAndFzuidAndEtimeAndEtimeGreaterThanEqualsAndStatus(session.company.id,session.user.id,etime,date,0)
         [messageTargetInstance: messageTargetInstance,messageTargetInstanceTotal:messageTargetInstanceTotal]
+    }
+    def messageTaskF(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def messageTaskFInstance = Task.findAllByCidAndFzuidAndLookstatusAndStatusAndRemindstatus(session.company.id,session.user.id,2,1,1,params)//已完成
+        def messageTaskFInstanceTotal = Task.countByCidAndFzuidAndLookstatusAndStatusAndRemindstatus(session.company.id,session.user.id,2,1,1)
+        [messageTaskFInstance: messageTaskFInstance,messageTaskFInstanceTotal:messageTaskFInstanceTotal]
+    }
+
+    //下属完成任务消息ajax
+    def messageTaskShow(){
+        def taskInfo = Task.findByIdAndCid(params.id,session.company.id)
+        def rs = [:]
+        def version = params.version
+        if(version){
+            version = version.toLong()
+        }
+        if(taskInfo){
+            rs.msg = true
+
+            if(taskInfo.remindstatus.toInteger()!=2){
+
+                taskInfo.remindstatus = 2
+                if (version != null) {
+                    if (taskInfo.version > version) {
+                        rs.msg = false
+                    }else{
+                        if (taskInfo.save(flush: true)) {
+                            rs.msg=true
+                        }
+                    }
+                }
+            }
+
+        }else{
+            rs.msg = false
+        }
+
+
+
+        rs<<[taskInfo:taskInfo]
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
 }
