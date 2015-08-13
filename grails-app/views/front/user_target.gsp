@@ -42,6 +42,11 @@
         .percent{clear: both;width:56px;height:56px;margin-left:10px;text-align:center;line-height:56px;border:3px solid #d2d2d2;border-radius: 50px;}
         .passwordedit input[type='text']{width:100%;height:38px;border:1px solid #d2d2d2;text-indent: 10px;}
         .passwordedit .button{width:82px;height:34px;border:none;background:#03a9f4;color:#fff;}
+        #select_img h2{font-size:20px;margin:15px 30px;}
+        #select_img .ori{margin-left:120px;}
+        #select_img img{margin-right:40px;margin-bottom:40px;}
+        #select_img a{cursor:pointer;}
+        #select_img .upload{margin-left:20px;line-height:44px;}
     </style>
 </head>
 
@@ -88,7 +93,7 @@
                             <div class="tar_whole f-l">
                                 <input type="hidden" value="${targetInfo.id}"  />
                                 <div class="tar_title clearfix" >
-                                    <img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/>
+                                    <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
                                     <div class="f-l" style="margin-left:10px;">
 
                                         <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${targetInfo.title}</h2>
@@ -97,7 +102,7 @@
                                     <div class="f-r">
                                         <a href="#" style="color:#40bdf5;font-size:20px;"  onclick="stop_Pro(event)"><i class="fa fa-edit tar_edit" title="目标分解"></i></a>
                                         <input type="hidden" value="${targetInfo.id}"  />
-                                        <g:link controller="front" action="targetDelete" id="${targetInfo.id}" style="color:#40bdf5;font-size:20px;" onclick="stop_Pro(event)"><i class="fa fa-trash-o tar_delete" title="删除目标"></i></g:link>
+                                        <g:link controller="front" action="targetDelete" id="${targetInfo.id}" style="color:#40bdf5;font-size:20px;" onclick="del();stop_Pro(event)"><i class="fa fa-trash-o tar_delete" title="删除目标"></i></g:link>
                                     </div>
                                 </div>
 
@@ -152,18 +157,18 @@
             <li class="clearfix">
                 <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
                 <div class="f-l">
-                    <input type="text" name="title" placeholder="添加目标名称" style="margin-top: 5px;width:690px;" class="nr" title="该字段不能为空！"/>
+                    <input type="text" name="title" placeholder="添加目标名称" style="margin-top: 5px;width:690px;" class="nr" title="该字段不能为空！" id="tar_title"/>
                 </div>
 
             </li>
             <li>
-                <textarea name="content" rows="4" placeholder="这里可以添加目标详情" style="width:100%;height:68px;resize: none;" class="nr" title="该字段不能为空！"></textarea>
+                <textarea name="content" rows="4" placeholder="这里可以添加目标详情" style="width:100%;height:68px;resize: none;" class="nr" title="该字段不能为空！" id="tar_con"></textarea>
             </li>
             <li>
                 <table width="100%" class="table table-bordered" style="border-spacing: 0;">
                     <tr>
                         <th style="text-align: center;width:15%;background:#f8f8f8">负责人</th>
-                        <td width="85%" class="nr">${session.user.name}<input  name="fzuid" value="${session.user.id}" type="hidden" class="nr"/></td>
+                        <td width="85%" class="nr">${session.user.name}<input  name="fzuid" value="${session.user.id}" type="hidden" class="nr" id="tar_fzuid"/></td>
 
                     </tr>
                     <tr>
@@ -179,8 +184,8 @@
             <li class="clearfix">
                 <div class="f-r">
 
-                    <button type="submit"  style="margin-right: 10px;" class="button">保存</button>
-                    <button type="submit" class="tar_edit button"  style="width:160px;" id="saf">保存并分解目标</button>
+                    <button type="submit"  style="margin-right: 10px;" class="button" id="save_target">保存</button>
+                    <a class="button"  style="width:160px;line-height:32px;display:inline-block;text-align: center;" id="saf"  >保存并分解目标</a>
 
                 </div>
             </li>
@@ -191,6 +196,7 @@
 <!--新建弹层 end-->
 <!--目标分解 start-->
 <div class="passwordedit" id="tar_fj" style="position:absolute;overflow: scroll;">
+
     <div class="m_box" style="width:804px;">
         <header class="panel-heading" style="padding:10px 28px;">
             <span>目标分解</span>
@@ -211,57 +217,38 @@
 <!--目标分解 end-->
 
 <!--选择图片 start-->
-<div class="passwordedit" id="select_img">
-    <div class="m_box" style="width:804px;">
+<div class="passwordedit" id="select_img" style="position:absolute;overflow: scroll;">
+    <div class="m_box clearfix" style="width:804px;margin:200px auto;">
         <header class="panel-heading" style="padding:10px 28px;">
             <span>选择图片</span>
             <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
         </header>
-
-        <ul>
-
-            <li class="clearfix">
-                <h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;" class="f-l">任务一：<span>企业数据报告分析</span></h2>
-                <div class="f-l" style="font-size: 20px;">
-                    <a href="#" style="font-size:20px;"><i class="fa fa-edit"></i></a>
-                    <a href="#" style="font-size:20px;"><i class="fa fa-trash-o"></i></a>
-                </div>
-            </li>
-            <li class="clearfix">
-                <table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">
-                    <tr>
-                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">负责人</th>
-                        <td width="75%"><input  name="fzuid" style="border:none;width:100%"/></td>
-
-                    </tr>
-                    <tr>
-                        <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>
-                        <td>
-                            <input  name="fzuid" style="border:none;width:75%"/>
-                        </td>
-                    </tr>
-                </table>
-                <table class="table table-bordered f-l" style="border-spacing: 0;width:48%;">
-                    <tr>
-                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>
-                        <td width="75%"><span>2015-06-09</span>—<span>2015-06-09</span></td>
-
-                    </tr>
-                    <tr>
-                        <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
-                        <td>
-                            <span>进行中</span>
-                        </td>
-                    </tr>
-                </table>
-            </li>
-            <li>
-                <h2  id="" style="padding:0;margin: 0 20px 0 0;font-size: 20px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="percent-mission">40</span>%)</span></h2>
-            </li>
-            <li class="clearfix">
-                <input type="button" value="提交" class="f-r"  disabled/>
-            </li>
-        </ul>
+        <h2>已选图标</h2>
+        <div class="clearfix ori">
+            <a class="f-l"><img  src="${resource(dir:'img/target-img',file:'1.png')}" id="img"/></a>
+            <div class="f-l upload">
+                <a>
+                    <i class="fa fa-plus-circle"></i>
+                    <input type="file" id="up_img"  style="display:inline-block"/>
+                </a>
+            </div>
+        </div>
+        <h2>备选图标</h2>
+        <div class="ori">
+            <a><img  src="${resource(dir:'img/target-img',file:'1.png')}"/></a>
+            <a><img  src="${resource(dir:'img/target-img',file:'2.png')}"/></a>
+            <a><img  src="${resource(dir:'img/target-img',file:'3.png')}"/></a>
+            <a><img  src="${resource(dir:'img/target-img',file:'4.png')}"/></a>
+            <a><img  src="${resource(dir:'img/target-img',file:'5.png')}"/></a>
+            <a><img  src="${resource(dir:'img/target-img',file:'6.png')}"/></a>
+            <a><img  src="${resource(dir:'img/target-img',file:'7.png')}"/></a>
+            <a><img  src="${resource(dir:'img/target-img',file:'8.png')}"/></a>
+            <a><img  src="${resource(dir:'img/target-img',file:'9.png')}"/></a>
+            <a><img  src="${resource(dir:'img/target-img',file:'10.png')}"/></a>
+            <a><img  src="${resource(dir:'img/target-img',file:'11.png')}"/></a>
+            <a><img  src="${resource(dir:'img/target-img',file:'12.png')}"/></a>
+        </div>
+        <div class="f-r" style="margin-right: 30px;"><input type="button" class="btn" value="确认" style="width:80px;height:30px;background:#03a9f4;color:#fff;"/></div>
     </div>
 </div>
 <!--选择图片 end-->
@@ -351,7 +338,7 @@
                                 <input type="hidden" id="playbid_edit" name="playbid" value="" title="该字段不能为空！"/>
                                 <input type="hidden" id="playname_edit" name="playname" value="" title="该字段不能为空！"/>
                                 <div ><span class="zhxr con"></span>
-                                    <a  id="playman_edit" style="cursor:pointer;"><i class="fa fa-plus-square-o" ></i></a>
+                                    <a  id="playman_edit" style="cursor:pointer;"><i class="fa fa-plus-square-o" style="line-height:26px;"></i></a>
                                 </div></td>
 
                         </tr>
@@ -362,7 +349,7 @@
                         </tr>
                         <tr>
                             <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">任务权重</th>
-                            <td width="75%"><input  name="percent" style="border:none;width:100%" id="mission_percent_edit" title="该字段不能为空！" type="number" /></td>
+                            <td width="75%"><input  name="percent" style="border:none;width:100%" id="mission_percent_edit" title="该字段不能为空且只能为数字！" type="number" /></td>
 
                         </tr>
                         <tr>
@@ -459,7 +446,21 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
 
+    <!--上传图片预览 js-->
+    <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
+        }
+    </script>
     <script>
+        function del(){
+            if(confirm('确定删除？')){
+                alert('删除成功！');
+            }else{
+                return false;
+            }
+        }
         //阻止冒泡
         function stop_Pro(e){
             var e=e || window.event;
@@ -473,7 +474,7 @@
         }
         $(document).ready(function() {
             //目标分解
-            $(".tar_edit,#saf").click(function(ev){
+            $(".tar_edit").click(function(){
                 var tid=$(this).parent().next().val();
                 $('#var_all').html(tid);
 
@@ -539,7 +540,7 @@
                         var r_per=100-sum_per;
                         $('#r_per').html(r_per);
                         editclick();
-                    },error:function(){alert("获取数据失败");}});
+                    },error:function(){alert("获取数据失败1");}});
 
 
                 $("#tar_fj").css('display','block');
@@ -566,7 +567,7 @@
                             $('#target_id_edit').val(target.id);
                             $('#mission_title_edit').val(mission.title);
                             $('#mission_content_edit').val(mission.content);
-                            $('#playname_edit').val(mission.playname);
+                            $('.zhxr').html(mission.playname);
                             $('#startdate_edit').val(mission.begintime);
                             $('#enddate_edit').val(mission.overtime);
                             $('#mission_percent_edit').val(mission.percent);
@@ -575,7 +576,7 @@
                             $('#mission_edit_detail').css('display', 'block');
                         },
                         error: function () {
-                            alert("获取数据失败");
+                            alert("获取数据失败2");
                         }
                     })
 
@@ -584,6 +585,7 @@
 
                 //提交任务更新
                 $('#save_mission_edit').click(function(){
+                    var z= /^[0-9]*$/;
                     if($('#mission_title_edit').val()==''){
                         $('#mission_title_edit').css('border-color','red');
                         return false;
@@ -621,13 +623,17 @@
                         $('#enddate_edit').css('border-color','#d2d2d2');
                     }
                     if($('#mission_percent_edit').val()==''){
-                        alert(1);
+
                         $('#mission_percent_edit').css('border','1px solid red');
                         return false;
+                    }else if(!z.test($('#newmission_percent_edit').val())){
+                        $('#newmission_percent_edit').css('border','1px solid red');
+
+                        return false
                     }else{
                         $('#mission_percent_edit').css('border','none');
                     }
-                    alert(2);
+
                     var mid=$(this).prev().val();
                     var title=$('#mission_title_edit').val();
                     var content=$('#mission_content_edit').val();
@@ -698,48 +704,54 @@
 
                         },
                         error:function(){
-                            alert("获取数据失败");
+                            alert("获取数据失败3");
                         }
                     })
+                    editclick();
                 })
 
 
                 //删除任务
                 $(".mission_delete").click(function () {
+                    if (confirm('确定删除？')) {
+
 
                     var mid = $(this).parent().prev().html();
-                    var This=$(this)
+                    var This = $(this)
                     $.ajax({
                         url: '${webRequest.baseUrl}/front/mdelete',
                         type: 'post',
                         dataType: 'json',
                         data: {mid: mid},
                         success: function (data) {
-                            if(data.msg=="删除任务成功！"){
+                            if (data.msg == "删除任务成功！") {
                                 alert("删除成功！");
 //                                data.target.percent-=data.mission.percent;
-                                var rm1=This.parent().parent().parent();
-                                var rm2=This.parent().parent().parent().next();
+                                var rm1 = This.parent().parent().parent();
+                                var rm2 = This.parent().parent().parent().next();
                                 rm1.remove();
-                              rm2.remove();
-                        }
-                            var percents=$('#tar_fj input[name="percent"]');
+                                rm2.remove();
+                            }
+                            var percents = $('#tar_fj input[name="percent"]');
 
-                            var sum_per=0;
-                            for(var i=0;i<percents.length;i++){
-                                sum_per+=parseInt(percents[i].value);
+                            var sum_per = 0;
+                            for (var i = 0; i < percents.length; i++) {
+                                sum_per += parseInt(percents[i].value);
 
                             }
 
-                            var r_per=100-sum_per;
+                            var r_per = 100 - sum_per;
                             $('#r_per').html(r_per);
                         },
                         error: function () {
-                            alert("获取数据失败");
+                            alert("获取数据失败4");
                         }
 
 
                     })
+                }else{
+                        return false;
+                    }
                 })
             }
 
@@ -808,7 +820,7 @@
 
                             $('#detail_title').html(data.target.title);
                             $('#detail_content').html (data.target.content);
-                            $('#detail_fz').html(data.target.fzuid )
+                            $('#detail_fz').html(data.fzname )
                             $('#detail_btime').html ( data.target.begintime);
                             $('#detail_etime').html (data.target.etime);
 
@@ -850,7 +862,7 @@
                            }
                             $("#tar_detail .rwfj").append(tar_mission);
                             }
-                        ,error:function(){alert("获取数据失败")}})
+                        ,error:function(){alert("获取数据失败5")}})
                             $("#tar_detail").css("display","block");
                             })
 
@@ -1048,11 +1060,120 @@
                             $("#newmissiondetail").css('display','none');
 
                         },
-                        error:function(){alert("获取数据失败")}
+                        error:function(){alert("获取数据失败6")}
                     })
-
+                    editclick();
                 });
+            $('.select_img').click(function() {
+                $('#select_img').css('display', 'block');
+                $('#select_img .ori img').click(function () {
+                    var thisimg = $(this).attr('src');
+                    $('#img').attr('src', thisimg);
+                });
+                $('#up_img').click(function(){
+                    $('#up_img').val('');
+                    if ($('#up_img').val() != '') {
+
+                        var img = $('#up_img').val();
+                        var html='<a><img  src="${resource(dir:'img/target-img',file:'1.png')}"/></a>';
+                        $('#select_img .ori').append(html);
+
+                    }
+                })
+
+            });
+
+            $('.select_img .btn').click(function(){
+                var target_id=$(this).parent().prev().val();
+                var img=$('#img').attr('src').split('/').last();
+                alert(img);
+                $.ajax({
+                    url:'${webRequest.baseUrl}/front/selectImg',
+                    type:'post',
+                    dataType:'json',
+                    data:{target_id:target_id,img:img},
+                    success:function(data){
+                        alert('ok');
+                    },
+                    error:function(){alert('获取数据失败7！')}
+                })
             })
+            $('#saf').click(function(){
+                if($('#tar_title').val()==''){
+                    $('#tar_title').css('border-color','red');
+                    return false;
+                }else{
+                    $('#tar_title').css('border-color','#d2d2d2');
+                }
+                if($('#tar_con').val()==''){
+                    $('#tar_con').css('border-color','red');
+                    return false;
+                }else{
+                    $('#tar_con').css('border-color','#d2d2d2');
+                }
+
+                if($('#startdate').val()==''){
+                    $('#startdate').css('border-color','red');
+                    return false;
+                }else{
+                    $('#startdate').css('border-color','#d2d2d2');
+                }
+                if($('#enddate').val()==''){
+                    $('#enddate').css('border-color','red');
+                    return false;
+                }else{
+                    $('#enddate').css('border-color','#d2d2d2');
+                }
+                var title=$('#tar_con').val();
+                var content=$('#tar_title').val();
+                var fzuid=$('#tar_fzuid').val();
+                var begintime=$('#startdate').val();
+                var etime=$('#enddate').val();
+                $.ajax({
+                    url:'${webRequest.baseUrl}/front/targetSaveAndSplit',
+                    type:'post',
+                    dataType:'json',
+                    data:{title:title,contnet:content,fzuid:fzuid,begintime:begintime,etime:etime},
+                    success:function(data){
+
+                        $("#tar_fj").css('display','block');
+                        $('#newtargetdetail').css('display','none');
+                        $('#var_all').html(data.target.id);
+
+                        $('#r_per').html(100);
+                    },
+                    error:function(){alert('获取数据失败8！')}
+                })
+            })
+            $('#save_target').click(function(){
+                if($('#tar_title').val()==''){
+                    $('#tar_title').css('border-color','red');
+                    return false;
+                }else{
+                    $('#tar_title').css('border-color','#d2d2d2');
+                }
+                if($('#tar_con').val()==''){
+                    $('#tar_con').css('border-color','red');
+                    return false;
+                }else{
+                    $('#tar_con').css('border-color','#d2d2d2');
+                }
+
+                if($('#startdate').val()==''){
+                    $('#startdate').css('border-color','red');
+                    return false;
+                }else{
+                    $('#startdate').css('border-color','#d2d2d2');
+                }
+                if($('#enddate').val()==''){
+                    $('#enddate').css('border-color','red');
+                    return false;
+                }else{
+                    $('#enddate').css('border-color','#d2d2d2');
+                }
+            })
+            })
+
 
     </script>
 
