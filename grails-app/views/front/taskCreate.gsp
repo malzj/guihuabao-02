@@ -347,7 +347,7 @@
                     if(data.msg){
                         var html="";
                         var playstatus
-                        var status = (data.taskInfo.status)?"已完成":"未完成";
+                        var status = (data.taskInfo.status=="1")?"已完成":"未完成";
                         if(data.taskInfo.playstatus==1){
                             playstatus="紧急且重要";
                         }else if(data.taskInfo.playstatus==2){

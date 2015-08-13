@@ -69,12 +69,12 @@
                                     <li>
                                         <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                         <span class="sn">${i+1}</span>
-                                        <span class="title" data-task-id="${taskInfo.id}">${taskInfo.title}</span>
+                                        <span class="title" data-task-id="${taskInfo.id}" data-task-version="${taskInfo.version}">${taskInfo.title}</span>
                                         <div class="right">
                                             %{--<span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
                                             %{--<g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
-                                            <span class="hsfinish"><a href="javascript:;" class="taskedit" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
-                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
+                                            %{--<span class="hsfinish"><a href="javascript:;" class="taskedit" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>--}%
+                                            %{--<g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>--}%
                                             <span class="date f-r">${taskInfo.overtime}</span>
                                         </div>
                                     </li>
@@ -103,6 +103,9 @@
                 </div>
                 <div class="task_content">
                 </div>
+                <g:hiddenField name="taskid" id="taskid" ></g:hiddenField>
+                <g:hiddenField name="version" id="version" ></g:hiddenField>
+                <button id="taskaccept" class="rbtn btn-blue ml25 mt10">接受</button>
             </div>
             <!--任务详情 end-->
         </section>
@@ -178,8 +181,11 @@
         //详情滑动框
         $(".e-list-group .e-list .title").click(function(){
             var taskid = $(this).attr("data-task-id");
+            var taskversion = $(this).attr("data-task-version");
+            $("#taskid").val(taskid);
+            $("#version").val(taskversion);
             $.ajax({
-                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid,
+                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid+'&version='+taskversion,
                 dataType: "jsonp",
                 jsonp: "callback",
                 success: function (data) {
@@ -215,6 +221,24 @@
             })
         });
 
+        $("#taskaccept").click(function(){
+            var taskid = $("#taskid").val();
+            var version = $("#version").val();
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid+'&version='+version+'&accept=1',
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (data) {
+                    if(data.msg){
+                        alert("您已接受任务!")
+                        window.location.reload()
+                    }else{
+                        alert("接受任务失败!")
+                    }
+                }
+            })
+        })
+        
         $(".taskedit").click(function(){
             var id=$(this).attr("data-id");
             var version=$(this).attr("data-version");
