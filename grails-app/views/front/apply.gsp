@@ -98,7 +98,7 @@
                             <td>申请时间</td>
                         </tr>
                         <g:each in="${applylist}" status="i" var="applyInstance">
-                            <tr>
+                            <tr data-id="${applyInstance.id}" data-version="${applyInstance.version}">
                                 <td>${applyInstance.type}</td>
                                 <td>${applyInstance.content}</td>
                                 <td>${applyInstance.approvalusername}</td>
@@ -227,6 +227,19 @@
             $(".panel-content ul li:eq(2) span").html(applyContent)
             $(".panel-content ul li:eq(3) span").html(applyStauts)
             $(".panel-content ul li:eq(4) span").html(applyDate)
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/applyRemindUpdate?id='+encodeURI(applyId)+'&version='+encodeURI(version)+'&applyremind=1',
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (data) {
+//                    // 去渲染界面
+//                    if(data.msg){
+//                        alert("保存成功！")
+//                    }else{
+//                        alert("保存失败！");
+//                    }
+                }
+            })
             $("#applydetails").css("display","block");
         })
         $(".close").click(function(){

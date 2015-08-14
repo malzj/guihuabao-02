@@ -1162,6 +1162,7 @@ class FrontController {
         applyInstance.dateCreate=currentTime
         applyInstance.applystatus=0
         applyInstance.applystatuss=1
+        applyInstance.remindstatus = 0
         if (!applyInstance.save(flush: true)) {
             return
         }
@@ -1190,6 +1191,7 @@ class FrontController {
         applyInstance.dateCreate=currentTime
         applyInstance.applystatus=0
         applyInstance.applystatuss=0
+        applyInstance.remindstatus = 0
         if (!applyInstance.save(flush: true)) {
             return
         }
@@ -1212,6 +1214,9 @@ class FrontController {
             }else{
                 applyInstance.applystatuss=0
             }
+            if(params.applyremind=="1"){
+                applyInstance.remindstatus=0
+            }
             applyInstance.properties = params
             if(version != null){
                 if (applyInstance.version > version) {
@@ -1231,6 +1236,36 @@ class FrontController {
         } else
             render rs as JSON
     }
+
+    //申请提醒状态更新
+    def applyRemindUpdate(Long id, Long version){
+        def rs=[:]
+        def applyInstance  = Apply.get(id)
+        if(applyInstance){//判断信息是否为空
+            rs.msg = true
+            if(params.applyremind=="1"){
+                applyInstance.remindstatus=0
+            }
+            applyInstance.properties = params
+            if(version != null){
+                if (applyInstance.version > version) {
+                    rs.msg=false
+                }else{
+                    if (!applyInstance.save(flush: true)) {
+                        rs.msg=false
+                    }
+                }
+            }
+        }else{
+            rs.msg=false
+        }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+
     //草稿箱
     def user_draft(Integer max){
         def user = session.user
@@ -1320,9 +1355,11 @@ class FrontController {
             if(applystatus=="1"){
                 applyInstance.applystatus = 1
                 applyInstance.status = "已通过"
+                applyInstance.remindstatus = 1
             } else if(applystatus=="2"){
                 applyInstance.applystatus = 2
                 applyInstance.status = "未通过"
+                applyInstance.remindstatus = 1
             }
         }
 

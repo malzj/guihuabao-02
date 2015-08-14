@@ -42,7 +42,7 @@
             </li>
             <li class="sub-menu dcjq-parent-li">
                 <g:link action="messageTaskF" >
-                    <span>下属完成任务</span>
+                    <span>完成任务</span>
                     <em class="f-r">${com.guihuabao.Task.countByCidAndFzuidAndLookstatusAndStatusAndRemindstatus(session.company.id,session.user.id,2,1,1)}</em>
                 </g:link>
             </li>

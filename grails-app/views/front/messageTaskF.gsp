@@ -48,7 +48,7 @@
                 <div class="col-tb">
                     <div class="col-cell">
                         <div class="toolkit">
-                            <span>下属完成任务</span>
+                            <span>完成任务</span>
                         </div>
                         <div class="e-list-group">
                             <ul class="e-list fzalltasklist">
