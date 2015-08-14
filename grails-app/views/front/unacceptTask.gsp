@@ -117,7 +117,7 @@
                             <div>
                                 <textarea id="content" name="content"></textarea>
                             </div>
-                            <a href="javascript:;" id="submit" class="rbtn btn-blue f-r mt25">提交</a>
+                            <a href="javascript:;" id="submit" class="rbtn btn-blue mt25">提交</a>
                         </form>
                     </div>
                     <div id="reply_container">
@@ -237,22 +237,16 @@
                         $.each(data.replyTask,function(i,val){
                             html2+='<div class="reply_box"><div class="name">'+val.puname+'&nbsp;回复&nbsp;'+val.bpuname+'</div>'
                             html2+='<p>'+val.content+'</p>'
-                            html2+='<span>'+val.date+'</span><a href="javascript:;" class="reply">回复</a>'
+                            html2+='<span>'+val.date+'</span><a href="javascript:;" class="reply" data-info="'+taskid+','+val.puid+','+val.puname+'">回复</a>'
                             html2+='<div class="shuru"><span>回复&nbsp;'+val.puname+'</span>'
-                            html2+='<form>'
-                            html2+='<input type="hidden" name="id" value="'+val.id+'" />'
-                            html2+='<input type="hidden" name="bpuid" value="'+val.bpuid+'" />'
-                            html2+='<input type="hidden" name="bpuname" value="'+val.bpuname+'" />'
-                            html2+='<input type="hidden" name="puid" value="'+val.puid+'" />'
-                            html2+='<input type="hidden" name="puname" value="'+val.puname+'" />'
-                            html2+='<div class="mt10"><textarea name="content"></textarea></div>'
-                            html2+='<button class="fbtn btn-white mt10">回复</button><button class="fbtn btn-white mt10 ml20">取消</button>'
-                            html2+='</form>'
+                            html2+='<div class="rcontainer"></div>'
                             html2+='</div></div>'
                         })
                         $("#task .task_content").empty();
+                        $("#reply_container").empty();
                         $("#task .task_content").append(html);
                         $("#reply_container").append(html2);
+                        replyclick();
 
                         $("#task").slideLeftShow(400);
                     }else{
@@ -262,6 +256,52 @@
             })
         });
 
+        function replyclick() {
+
+            $(".reply").on("click", function () {
+                var info = $(this).attr("data-info")
+                var arr = info.split(",")
+                $(".shuru .rcontainer").empty()
+                $(".shuru").hide()
+                var html2 = ""
+                html2+='<form id="form2">'
+                html2+='<input type="hidden" name="id" value="'+arr[0]+'" />'
+                html2+='<input type="hidden" name="bpuid" value="'+arr[1]+'" />'
+                html2+='<input type="hidden" name="bpuname" value="'+arr[2]+'" />'
+                html2+='<input type="hidden" name="puid" value="${session.user.id}" />'
+                html2+='<input type="hidden" name="puname" value="${session.user.name}" />'
+                html2+='<div class="mt10"><textarea name="content"></textarea></div>'
+                html2+='<a class="huifu fbtn btn-white mt10">回复</a><a class="quxiao fbtn btn-white mt10 ml20">取消</a>'
+                html2+='</form>'
+                $(this).next().find('.rcontainer').html(html2)
+                $(this).next().slideDown()
+                replysubmit();
+            })
+
+        }
+
+        function replysubmit(){
+            $(".quxiao").on("click",function(){
+                $(this).parent().parent().parent().slideUp();
+                $(".shuru .rcontainer").empty()
+            })
+            $(".huifu").click(function(){
+                $.ajax({
+                    url: '${webRequest.baseUrl}/front/replyTaskSave',
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    type: "POST",
+                    data: $("#form2").serialize(),
+                    success: function(data) {
+                        if(data.msg){
+                            alert("回复成功！")
+                        }else{
+                            alert("回复失败！")
+                        }
+                    }
+                })
+            })
+        }
 
         $("#submit").click(function(){
             $.ajax({
@@ -272,9 +312,9 @@
                 data: $("#form1").serialize(),
                 success: function(data) {
                     if(data.msg){
-                        alert("评论成功！")
+                        alert("回复成功！")
                     }else{
-                        alert("评论失败！")
+                        alert("回复失败！")
                     }
                 }
             })
@@ -336,6 +376,7 @@
         $(".taskclose").click(function(){
             $("#task").slideLeftHide(400);
             $("#task .task_content").empty();
+            $("#reply_container").empty();
         });
 
         //筛选

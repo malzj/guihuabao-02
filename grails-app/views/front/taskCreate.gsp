@@ -223,24 +223,42 @@
                     </g:form>
                 </div>
             </div>
+        <!--任务详情 start-->
+        <div id="task" style="display: none;">
+            <div class="task_hearder">
+                <div class="task_hearder_title">
+                    <span><i class="yh"></i>任务详情</span>
+                    <div class="taskclose"><a href="javascript:;" class="fa fa-times"></a></div>
+                </div>
+                <a class="print_icon"></a>
+                <a class="copy_icon"></a>
+            </div>
+            <div class="task_content">
+            </div>
+            <g:hiddenField name="taskid" id="taskid" ></g:hiddenField>
+            <g:hiddenField name="version" id="version" ></g:hiddenField>
+            <div class="discuss clearfix">
+                <h4>反馈及评论</h4>
+                <form id="form1">
+                    <g:hiddenField name="id" id="id"></g:hiddenField>
+                    <g:hiddenField name="bpuid" id="bpuid"></g:hiddenField>
+                    <g:hiddenField name="bpuname" id="bpuname"></g:hiddenField>
+                    <g:hiddenField name="puid" id="puid" value="${session.user.id}"></g:hiddenField>
+                    <g:hiddenField name="puname" id="puname" value="${session.user.name}"></g:hiddenField>
+                    <div>
+                        <textarea id="content" name="content"></textarea>
+                    </div>
+                    <a href="javascript:;" id="submit1" class="rbtn btn-blue mt25">提交</a>
+                </form>
+            </div>
+            <div id="reply_container">
+            </div>
+        </div>
+        <!--任务详情 end-->
         </section>
 </section>
 </div>
-            <!--弹层 end-->
-            <!--任务详情 start-->
-            <div id="task" style="display: none">
-                <div class="task_hearder">
-                    <div class="task_hearder_title">
-                        <span><i class="yh"></i>任务详情</span>
-                        <div class="taskclose"><a href="javascript:;" class="fa fa-times"></a></div>
-                    </div>
-                    <a class="print_icon"></a>
-                    <a class="copy_icon"></a>
-                </div>
-                <div class="task_content">
-                </div>
-            </div>
-            <!--任务详情 end-->
+
 
     <!--main content end-->
 
@@ -335,17 +353,24 @@
 
         //详情滑动框
         $(".e-list-group .e-list .title").click(function(){
-            var $this=$(this)
-            var taskid =$this.attr("data-task-id");
-            var taskversion = $this.attr("data-task-version");
+            var taskid = $(this).attr("data-task-id");
+            var version = $(this).attr("data-task-version");
+            var fzuid = $(this).attr("data-task-fzuid");
+            var fzname = $(this).attr("data-task-fzname");
+            $("#taskid").val(taskid);
+            $("#version").val(version);
+            $("#id").val(taskid);
+            $("#bpuid").val(fzuid);
+            $("#bpuname").val(fzname);
             $.ajax({
-                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid+'&version='+taskversion,
+                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid+'&version='+version,
                 dataType: "jsonp",
                 jsonp: "callback",
                 success: function (data) {
                     // 去渲染界面
                     if(data.msg){
                         var html="";
+                        var html2="";
                         var playstatus
                         var status = (data.taskInfo.status=="1")?"已完成":"未完成";
                         if(data.taskInfo.playstatus==1){
@@ -365,8 +390,21 @@
                         html+='<div class="task_line"><span>起始日：</span><span>'+data.taskInfo.overtime+'</span></div>';
                         html+='<div class="task_line"><span>紧急程度：</span><span class="font_blue">'+playstatus+'</span></div>';
                         html+='<div class="task_line"><span>任务状态：</span><span class="font_blue">'+status+'</span></div>';
+
+                        $.each(data.replyTask,function(i,val){
+                            html2+='<div class="reply_box"><div class="name">'+val.puname+'&nbsp;回复&nbsp;'+val.bpuname+'</div>'
+                            html2+='<p>'+val.content+'</p>'
+                            html2+='<span>'+val.date+'</span><a href="javascript:;" class="reply" data-info="'+taskid+','+val.puid+','+val.puname+'">回复</a>'
+                            html2+='<div class="shuru"><span>回复&nbsp;'+val.puname+'</span>'
+                            html2+='<div class="rcontainer"></div>'
+                            html2+='</div></div>'
+                        })
                         $("#task .task_content").empty();
+                        $("#reply_container").empty();
                         $("#task .task_content").append(html);
+                        $("#reply_container").append(html2);
+                        replyclick();
+
                         $("#task").slideLeftShow(400);
                     }else{
                         alert("信息读取失败！");
@@ -374,6 +412,70 @@
                 }
             })
         });
+
+        function replyclick() {
+
+            $(".reply").on("click", function () {
+                var info = $(this).attr("data-info")
+                var arr = info.split(",")
+                $(".shuru .rcontainer").empty()
+                $(".shuru").hide()
+                var html2 = ""
+                html2+='<form id="form2">'
+                html2+='<input type="hidden" name="id" value="'+arr[0]+'" />'
+                html2+='<input type="hidden" name="bpuid" value="'+arr[1]+'" />'
+                html2+='<input type="hidden" name="bpuname" value="'+arr[2]+'" />'
+                html2+='<input type="hidden" name="puid" value="${session.user.id}" />'
+                html2+='<input type="hidden" name="puname" value="${session.user.name}" />'
+                html2+='<div class="mt10"><textarea name="content"></textarea></div>'
+                html2+='<a class="huifu fbtn btn-white mt10">回复</a><a class="quxiao fbtn btn-white mt10 ml20">取消</a>'
+                html2+='</form>'
+                $(this).next().find('.rcontainer').html(html2)
+                $(this).next().slideDown()
+                replysubmit();
+            })
+
+        }
+
+        function replysubmit(){
+            $(".quxiao").on("click",function(){
+                $(this).parent().parent().parent().slideUp();
+                $(".shuru .rcontainer").empty()
+            })
+            $(".huifu").click(function(){
+                $.ajax({
+                    url: '${webRequest.baseUrl}/front/replyTaskSave',
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    type: "POST",
+                    data: $("#form2").serialize(),
+                    success: function(data) {
+                        if(data.msg){
+                            alert("回复成功！")
+                        }else{
+                            alert("回复失败！")
+                        }
+                    }
+                })
+            })
+        }
+
+        $("#submit").click(function(){
+            $.ajax({
+                url: '${webRequest.baseUrl}/front/replyTaskSave',
+                dataType: "jsonp",
+                jsonp: "callback",
+                type: "POST",
+                data: $("#form1").serialize(),
+                success: function(data) {
+                    if(data.msg){
+                        alert("回复成功！")
+                    }else{
+                        alert("回复失败！")
+                    }
+                }
+            })
+        })
 
         $(".taskedit").click(function(){
             var id=$(this).attr("data-id");
