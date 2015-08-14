@@ -15,11 +15,11 @@
                 </div>
                 <ul class="sub db">
                     <li> <g:link controller="front" action="user_target"  class="dcjq-parent">负责的目标<em class="f-r">14</em></g:link></li>
-                    <li> <g:link controller="front" action="join_target"  class="dcjq-parent">参与的目标<em class="f-r">14</em></g:link></li>
+                    <li> <g:link controller="front" action="join_mission"  class="dcjq-parent">参与的任务<em class="f-r">14</em></g:link></li>
                 </ul>
             </li>
         <li>
-            <g:link controller="front" action="xsTask">
+            <g:link controller="front" action="xsTarget">
                 <span>下属目标</span>
                 <span class="dcjq-icon"></span>
             </g:link>
@@ -33,7 +33,7 @@
             </div>
             <ul class="sub db">
                 <li><g:link controller="front" action="hasfinished_target">负责已完成目标<em class="f-r">14</em></g:link></li>
-                <li><g:link controller="front" action="join_hasfinished_target">参与已完成目标<em class="f-r">14</em></g:link></li>
+                <li><g:link controller="front" action="join_hasfinished_mission">参与已完成任务<em class="f-r">14</em></g:link></li>
             </ul>
         </li>
 
