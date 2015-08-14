@@ -15,6 +15,7 @@ class Mission {
     String overhour     //截止时间时分
     Date dateCreate     //创建时间
     String hasvisited   //是否已阅读
+    String issubmit     //是否下发
     static belongsTo = [target:Target]
     static constraints = {
         status(nullable: true)
@@ -29,5 +30,6 @@ class Mission {
         overhour(nullable: true)
         dateCreate(nullable: true)
         hasvisited(nullable:true)
+        issubmit(nullable:true)
     }
 }

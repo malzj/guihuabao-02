@@ -93,7 +93,7 @@
                             <div class="tar_whole f-l">
                                 <input type="hidden" value="${targetInfo.id}"  />
                                 <div class="tar_title clearfix" >
-                                    <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
+                                    <a class="select_img" ><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
                                     <div class="f-l" style="margin-left:10px;">
 
                                         <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${targetInfo.title}</h2>
@@ -497,7 +497,7 @@
                             '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
                             '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
                                     '<a href="javascript:;"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit" ></i></a>'+
-                                    '<span style="display:none;">'+missionlist[i].id+'</span>'+
+                                    '<span style="display:none;" class="mis_id">'+missionlist[i].id+'</span>'+
                                      '<a href="#" style="font-size:20px;" ><i class="fa fa-trash-o mission_delete"></i></a>'+
                             '</div>'+
                             '</li>'+
@@ -561,7 +561,7 @@
 
 
             //编辑任务
-            function editclick() {
+           function editclick() {
                 $(".mission_edit").click(function () {
 
                     var mid = $(this).parent().next().html();
@@ -585,6 +585,7 @@
                             $('#mission_status_edit').find('option[value='+mission.status+']').attr('selected',true);
                             $('#mid').val(mission.id);
                             $('#mission_edit_detail').css('display', 'block');
+                            editclick();
                         },
                         error: function () {
                             alert("获取数据失败2");
@@ -653,7 +654,7 @@
                     var playbid=$('#playbid_edit').val();
                     var playuid=$('#playuid_edit').val();
                     var playname=$('.zhxr').html();
-                    alert(playname);
+
                     var begintime=$('#startdate_edit').val();
                     var overtime=$('#enddate_edit').val();
                     var percent=$('#mission_percent_edit').val();
@@ -678,7 +679,7 @@
                                 var status=(missionlist[i].status=='1')?'已完成':'进行中';
                                 html+=' <li class="clearfix">'+
                                         '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
-                                        '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
+                                        '<div class="f-l on" style="font-size: 20px;margin-top:7px;">'+
                                         '<a href="javascript:;"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit" ></i></a>'+
                                         '<span style="display:none;">'+missionlist[i].id+'</span>'+
                                         '<a href="#" style="font-size:20px;" ><i class="fa fa-trash-o mission_delete"></i></a>'+
@@ -721,22 +722,21 @@
                             if(target.issubmit=='1'){
                                 $('#submit').attr('disabled',true);
                             }
-//                            $('#mission_edit_detail').hide();
-
+                            $('#mission_edit_detail').hide();
+                            editclick();
                         },
                         error:function(){
                             alert("获取数据失败3");
                         }
                     })
-                    editclick();
+
                 })
 
 
                 //删除任务
                 $(".mission_delete").click(function () {
+
                     if (confirm('确定删除？')) {
-
-
                     var mid = $(this).parent().prev().html();
                     var This = $(this)
                     $.ajax({
@@ -766,7 +766,7 @@
                             if(r_per==0){
                                 $('#submit').attr('disabled',false);
                             }
-
+                            editclick();
                         },
                         error: function () {
                             alert("获取数据失败4");
@@ -777,6 +777,7 @@
                 }else{
                         return false;
                     }
+
                 })
             }
 
@@ -934,7 +935,7 @@
             );
 
 
-            context.init({preventDoubleContext: false});
+//            context.init({preventDoubleContext: false});
 
             context.attach('#playman_edit', [
                 <g:if test=" ${session.user.pid==1}">
@@ -1022,6 +1023,7 @@
                     }
 
                     $('#target_id').val($('#var_all').html());
+
                     var target_id=$('#target_id').val();
                     var title=$('#newmission_title').val();
                     var content=$('#newmission_content').val();
@@ -1032,7 +1034,7 @@
                     var overtime=$('#enddate_mission').val();
                     var percent=$('#newmission_percent').val();
                     var status=$('#newmission_status').val();
-                    alert(status);
+
 
                     $.ajax({
                         url:'${webRequest.baseUrl}/front/missionSave',
@@ -1045,8 +1047,9 @@
                             var html=' <li class="clearfix">'+
                                     '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(data.target.mission.length)+'：<span style="color:#797979;">'+data.mission.title+'</span></h2>'+
                                     '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
-                                    '<a href="#"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit"></i></a>'+
-                                    '<a href="#" style="font-size:20px;"><i class="fa fa-trash-o"></i></a>'+
+                                    '<a href="#"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit"></i></a>'+
+                                    '<span style="display:none;">'+data.mission.id+'</span>'+
+                                    '<a href="#" style="font-size:20px;"><i class="fa fa-trash-o mission_delete"></i></a>'+
                                     '</div>'+
                                     '</li>'+
                                     '<li class="clearfix">'+
@@ -1094,28 +1097,32 @@
                                 $('#submit').attr('disabled',true);
                             }
                             $("#newmissiondetail").css('display','none');
-
+                            editclick();
                         },
                         error:function(){alert("获取数据失败6")}
                     })
-                    editclick();
+
                 });
 
             $('#submit').click(function(){
-                var target_id=$('#var_all').html();
+
+                var tid= $('#var_all').html();
+
+
                 $.ajax({
                     url:'${webRequest.baseUrl}/front/issubmit',
                     type:'post',
                     dataType:'json',
-                    data:{target_id:target_id},
+                    data:{target_id:tid},
                     success:function(data){
-                        alert("下发任务成功！")
+                        alert("下发任务成功！");
                         $('#tar_fj').css('display','none');
 
                     },
                     error:function(){alert('获取数据失败9！')}
                 })
             })
+
             $('.select_img').click(function() {
                 $('#select_img').css('display', 'block');
                 $('#select_img .ori img').click(function () {

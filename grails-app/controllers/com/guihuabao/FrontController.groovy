@@ -2061,6 +2061,7 @@ class FrontController {
         def rs = [:]
         def mission = new Mission(params)
         mission.hasvisited='0'
+        mission.issubmit='0'
         def targetInstance = Target.get(params.target_id)
         mission.target = targetInstance
 
@@ -2090,8 +2091,12 @@ class FrontController {
        def target=Target.get(params.target_id)
        if(!target){
            rs.msg=false
-       }else{
-           target.issubmit='1'
+       }else {
+           target.issubmit = '1'
+           def missionlist = target.mission
+           for (def mission in missionlist) {
+               mission.issubmit = '1'
+           }
        }
        if (params.callback) {
            render "${params.callback}(${rs as JSON})"
@@ -2224,6 +2229,16 @@ class FrontController {
       }
         [missionInstance:missionInstance,missionInstanceTotal:missionInstanceTotal, selected: selected]
     }
+   def targetzjSave(){
+       def rs = [:]
+       def tid = params.target_id
+       def targetInstance = Target.get(tid)
+       targetInstance.targetzj=params.targetzj
+       if (params.callback) {
+           render "${params.callback}(${rs as JSON})"
+       } else
+           render rs as JSON
+   }
     def mhasvisited() {
         def rs = [:]
         def mid = params.mid
