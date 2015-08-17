@@ -1345,11 +1345,11 @@ class FrontController {
         def rs = [:]
         def id = params.id
         def companyId = session.company.id
-        def version = params.version
+        def version = params.version.toInteger()
         def applystatus = params.applystatus
         def applyInstance = Apply.findByIdAndCid(id,companyId)
         if(!applyInstance){
-            rs.msg=true
+            rs.msg=false
         }else{
             rs.msg=true
             if(applystatus=="1"){
@@ -1361,6 +1361,7 @@ class FrontController {
                 applyInstance.status = "未通过"
                 applyInstance.remindstatus = 1
             }
+            applyInstance.properties = params
         }
 
         if (version != null) {
@@ -1520,7 +1521,7 @@ class FrontController {
         }else{
             rs.msg = false
         }
-        def replyTask = taskInfo.replaytasks
+        def replyTask = ReplyTask.findAllByTasksAndCid(taskInfo,session.company.id,[sort: "date",order: "desc"])
 
         rs<<[replyTask:replyTask]
         rs<<[taskInfo:taskInfo]
@@ -1532,13 +1533,38 @@ class FrontController {
     }
 
     //任务评论反馈
+    def tReplyTaskSave(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def replyTaskInstance = new ReplyTask(params)
+        def taskInstance = Task.get(id)
+        taskInstance.reply = 1
+        replyTaskInstance.tasks = taskInstance
+        replyTaskInstance.date = new Date()
+        replyTaskInstance.status = 0
+        if (!replyTaskInstance.save(flush: true)) {
+            render(view: "unreadTaskReply", model: [id: params.id])
+            return
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: 'task.label', default: 'Task'), taskInstance.id])
+        redirect(action: "unreadTaskReply", id: params.id)
+    }
+
+    //任务评论反馈ajax
     def replyTaskSave(){
         def rs = [:]
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        def now = new Date()
         def replyTaskInstance = new ReplyTask(params)
         def taskInstance = Task.get(params.id)
         taskInstance.reply = 1
         replyTaskInstance.tasks = taskInstance
-        replyTaskInstance.date = new Date()
+        replyTaskInstance.date = time.format(now)
         replyTaskInstance.cid = session.company.id
         replyTaskInstance.status = 0
         if(!params.content){
@@ -1723,6 +1749,36 @@ class FrontController {
         def unacceptTaskInstanceTotal = Task.countByCidAndPlayuidAndLookstatus(session.company.id,session.user.id,1)
 
         [unacceptTaskInstance: unacceptTaskInstance,unacceptTaskInstanceTotal:unacceptTaskInstanceTotal]
+    }
+
+    //未读任务回复
+    def unreadTaskReply(Long id) {
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def uid = session.user.id
+        def cid = session.company.id
+        def task
+        def i
+        def replyInstance = ReplyTask.findAllByBpuidAndCidAndStatus(uid, cid, 0, [sort: "date", order: "desc"])
+        def count = replyInstance?.size()
+        if (!id && count != 0) {
+            task = replyInstance[0].tasks
+        } else if (!id && count == 0) {
+
+        } else {
+            task = Task.get(id)
+        }
+        def allReplyInfo = ReplyTask.findAllByTasksAndCid(task, cid, [sort: "date", order: "desc"])
+        def myReplyInfo = ReplyTask.findAllByTasksAndCidAndBpuid(task, cid, uid, [sort: "date", order: "desc"])
+        for (i = 0; i < myReplyInfo.size(); i++) {
+            myReplyInfo[i].status = 1
+        }
+
+        [replyInstance: replyInstance, allReplyInfo: allReplyInfo, count: count]
     }
 
     //下属任务

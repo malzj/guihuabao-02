@@ -48,7 +48,7 @@
                     <ul class="zblist">
                         <g:each in="${zhoubaoInstance}" var="zhoubaoInfo">
                             <li>
-                                <g:link action="replyReport" params="[year: zhoubaoInfo.year,month: zhoubaoInfo.month,week: zhoubaoInfo.week]">
+                                <g:link action="allReplyReport" params="[year: zhoubaoInfo.year,month: zhoubaoInfo.month,week: zhoubaoInfo.week]">
                                     <img src="" height="35" width="35" />
                                     <div class="text">
                                         <h4>第${zhoubaoInfo.week}周工作报告</h4>
@@ -62,7 +62,7 @@
                 <div class="zhoubao col-xs-9">
                     <div class="top clearfix">
                         <div class="address f-l">
-                            oscar第1周的工作报告
+                            ${zhoubaoReportInfo.username}第${zhoubaoReportInfo.week}周的工作报告
                         </div>
                     </div>
                     <div class="discuss clearfix">
@@ -73,7 +73,7 @@
                             <div class="reply_box">
                                 <div class="name"><g:if test="${replyInfo.puid==session.user.id}">我</g:if><g:else>${replyInfo.puname}</g:else>&nbsp;回复&nbsp;<g:if test="${replyInfo.bpuid==session.user.id}">我</g:if><g:else>${replyInfo.bpuname}</g:else></div>
                                 <p>${replyInfo.content}</p>
-                                <span>${replyInfo.date}</span><g:if test="${replyInfo.puid==session.user.id}"><a href="javascript:;" class="reply">回复</a></g:if>
+                                <span>${replyInfo.date}</span><g:if test="${replyInfo.bpuid==session.user.id}"><a href="javascript:;" class="reply">回复</a></g:if>
                                 <div class="shuru">
                                     <span>回复&nbsp;${replyInfo.puname}</span>
                                     <g:form url="[controller:'front',action:'myReplySave']">
