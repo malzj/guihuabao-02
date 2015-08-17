@@ -67,9 +67,10 @@
                             <ul class="e-list">
                                 <g:if test="${missionInstance}">
                                     <g:each in="${missionInstance}" status="i" var="missionInfo">
+                                        <g:if test="${missionInfo.issubmit=='1'}">
                                         <li class="m_all">
                                             <span style="display:none">${missionInfo.id}</span>
-                                            <span class="sn">${i+1}</span>
+                                            <span class="sn">${i}</span>
                                             <span class="title" data-task-id="${missionInfo.id}">${missionInfo.title}</span>
                                             <span class="status"><g:if test="${missionInfo.status=="1"}">已完成</g:if><g:else>未完成</g:else></span>
                                             <div class="right">
@@ -80,6 +81,7 @@
                                                 <span class="date f-r">${missionInfo.overtime}</span>
                                             </div>
                                         </li>
+                                        </g:if>
                                     </g:each>
 
                                 </g:if>

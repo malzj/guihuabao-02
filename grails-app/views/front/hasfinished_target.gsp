@@ -143,7 +143,7 @@
             <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
         </header>
 
-        <ul>
+        <ul id="all">
 
             <li class="clearfix">
                 <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
@@ -161,9 +161,11 @@
 
             <h2 style="padding:10px 0;font-size: 20px;border-bottom: 1px solid #d2d2d2;">目标分解</h2>
 
-            <ul class="rwfj" style="padding:0;margin:0;">
+            <ul class="rwfj" style="padding:0;margin:0;border-bottom:1px solid #d2d2d2;margin-bottom:20px;">
 
             </ul>
+            <textarea name="content" rows="4" placeholder="这里可以填写目标总结"  style="width:100%;height:68px;resize: none;"  id="target_zj"></textarea>
+            <button   style="margin-top:20px;" class="button f-r" id="save_target_zj">保存</button>
         </ul>
 
     </div>
@@ -186,6 +188,7 @@
 
             var tar_mission = '';
             var tid = $(this).find('input:first').val();
+            $('#var_all').html(tid);
             $.ajax({
                 url: '${webRequest.baseUrl}/front/tshow',
                 method: 'post',
@@ -198,7 +201,7 @@
                     $('#detail_fz').html(data.fzname)
                     $('#detail_btime').html(data.target.begintime);
                     $('#detail_etime').html(data.target.etime);
-
+                    $('#target_zj').html(data.target.targetzj);
                     var mission = data.mission;
 
                     for (var i = 0; i < mission.length; i++) {
@@ -232,10 +235,11 @@
                                 '</tr>' +
                                 '</table>' +
                                 '</li>';
-                                '<textarea name="content" rows="4" placeholder="这里可以添加目标总结" style="width:100%;height:68px;resize: none;" ></textarea> ';
 
                     }
                     $("#tar_detail .rwfj").append(tar_mission);
+
+
                 }, error: function () {
                     alert("获取数据失败5")
                 }
@@ -245,6 +249,24 @@
         $('#tar_detail .close').click(function(){
             $("#tar_detail .rwfj").empty();
             $("#tar_detail").css("display","none");
+        })
+        $('#save_target_zj').click(function(){
+            var targetzj=$('#target_zj').val()
+
+            var tid=$('#var_all').html();
+
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/targetzjSave',
+                method: 'post',
+                dataType: 'json',
+                data: {target_id: tid,targetzj:targetzj},
+                success: function (data) {
+                    alert('目标总结保存成功！');
+                },
+                error:function() {
+                    alert('获取数据失败10！');
+                }
+            })
         })
     })
 </script>

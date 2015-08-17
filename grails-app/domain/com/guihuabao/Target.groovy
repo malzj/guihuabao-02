@@ -11,9 +11,8 @@ class Target {
     Integer percent         //权重
     String img              //图片
     String status           //状态
-
-    String issubmit         //是否下发
     String targetzj         //目标总结
+    String issubmit         //是否下发
     static hasMany = [mission:Mission]
     static constraints = {
         cid(nullable: true)
@@ -26,8 +25,7 @@ class Target {
         percent(nullable: true)
         img(nullable: true)
         status(nullable:true)
-
-        issubmit(nullable:true)
         targetzj(nullable:true)
+        issubmit(nullable:true)
     }
 }
