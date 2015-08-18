@@ -54,10 +54,10 @@
                             <ul class="e-list fzalltasklist">
                                 <g:if test="${messageTaskFInstance}">
                                     <g:each in="${messageTaskFInstance}" status="i" var="messageTaskInfo">
-                                        <li>
+                                        <li data-task-id="${messageTaskInfo.id}" data-task-version="${messageTaskInfo.version}">
                                             <span class="mark"></span>
                                             <span class="sn">${i+1}</span>
-                                            <span class="title" data-task-id="${messageTaskInfo.id}" data-task-version="${messageTaskInfo.version}">${messageTaskInfo.title}</span>
+                                            <span class="title">${messageTaskInfo.title}</span>
                                             <div class="right">
                                                 <span class="date f-r">${messageTaskInfo.dateCreate.format("yyyy-MM-dd")}</span>
                                             </div>
@@ -163,7 +163,7 @@
         });
 
         //详情滑动框
-        $(".e-list-group .e-list .title").click(function(){
+        $(".e-list-group .e-list li").click(function(){
             var taskid = $(this).attr("data-task-id");
             var version = $(this).attr("data-task-version");
             $.ajax({

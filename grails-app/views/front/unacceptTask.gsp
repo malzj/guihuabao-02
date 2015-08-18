@@ -66,10 +66,10 @@
                             <ul class="e-list fzalltasklist">
                                 <g:if test="${unacceptTaskInstance}">
                                     <g:each in="${unacceptTaskInstance}" status="i" var="taskInfo">
-                                        <li>
+                                        <li data-task-id="${taskInfo.id}" data-task-version="${taskInfo.version}" data-task-fzuid="${taskInfo.fzuid}" data-task-fzname="${taskInfo.fzname}">
                                             <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                             <span class="sn">${i+1}</span>
-                                            <span class="title" data-task-id="${taskInfo.id}" data-task-version="${taskInfo.version}" data-task-fzuid="${taskInfo.fzuid}" data-task-fzname="${taskInfo.fzname}">${taskInfo.title}</span>
+                                            <span class="title">${taskInfo.title}</span>
                                             <div class="right">
                                                 %{--<span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
                                                 %{--<g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
@@ -195,7 +195,7 @@
         });
 
         //详情滑动框
-        $(".e-list-group .e-list .title").click(function(){
+        $(".e-list-group .e-list li").click(function(){
             var taskid = $(this).attr("data-task-id");
             var version = $(this).attr("data-task-version");
             var fzuid = $(this).attr("data-task-fzuid");

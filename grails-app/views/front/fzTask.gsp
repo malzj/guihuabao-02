@@ -72,22 +72,24 @@
                         <ul class="e-list">
                             <g:if test="${fzTaskInstance}">
                                 <g:each in="${fzTaskInstance}" status="i" var="fzAllTaskInfo">
-                                    <li>
+                                    <li data-task-id="${fzAllTaskInfo.id}" data-task-version="${fzAllTaskInfo.version}" data-task-fzuid="${fzAllTaskInfo.fzuid}" data-task-fzname="${fzAllTaskInfo.fzname}"  onclick="stop_Pro(event)">
                                         <span class="mark <g:if test="${fzAllTaskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${fzAllTaskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${fzAllTaskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${fzAllTaskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                         <span class="sn">${i+1}</span>
-                                        <span class="title" data-task-id="${fzAllTaskInfo.id}" data-task-version="${fzAllTaskInfo.version}" data-task-fzuid="${fzAllTaskInfo.fzuid}" data-task-fzname="${fzAllTaskInfo.fzname}">${fzAllTaskInfo.title}</span>
+                                        <span class="title">${fzAllTaskInfo.title}</span>
                                         <span class="status">
+                                            下属任务状态：
                                             <g:if test="${fzAllTaskInfo.lookstatus=="0"}">未查看</g:if>
                                             <g:elseif test="${fzAllTaskInfo.lookstatus=="1"}">已查看</g:elseif>
-                                            <g:else>
-                                                <g:if test="${fzAllTaskInfo.status=="1"}">已完成</g:if><g:else>未完成</g:else>
-                                            </g:else>
+                                            <g:elseif test="${fzAllTaskInfo.lookstatus=="2"}">
+                                                <g:if test="${fzAllTaskInfo.status=="0"}">未完成</g:if>
+                                                <g:elseif test="${fzAllTaskInfo.status=="1"}">已完成</g:elseif>
+                                            </g:elseif>
                                         </span>
                                         <div class="right">
                                             %{--<span class="hsfinish"><g:link action="taskUpdate" id="${fzAllTaskInfo.id}" params="[version: fzAllTaskInfo.version]"><i class="fa <g:if test="${fzAllTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
                                             %{--<g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${fzAllTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
 
-                                            <g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${fzAllTaskInfo.id}" data-version="${fzAllTaskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
+                                            <g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" onclick="confirm('确定删除？');stop_Pro(event)" class="taskdelete" data-id="${fzAllTaskInfo.id}" data-version="${fzAllTaskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
                                             <span class="date f-r">${fzAllTaskInfo.overtime}</span>
                                         </div>
                                     </li>
@@ -209,7 +211,17 @@
         ];
         new Chart(document.getElementById("doughnut").getContext("2d")).Doughnut(doughnutData);
     }();
-
+    //阻止冒泡
+    function stop_Pro(e){
+        var e=e || window.event;
+        if (e && e.stopPropagation) {
+            //W3C取消冒泡事件
+            e.stopPropagation();
+        } else {
+            //IE取消冒泡事件
+            window.event.cancelBubble = true;
+        }
+    }
     $(function(){
         $("#addrenwu").click(function(){
             $(".popup_box").css("display","block");
@@ -234,7 +246,7 @@
         });
 
         //详情滑动框
-        $(".e-list-group .e-list .title").click(function(){
+        $(".e-list-group .e-list li").click(function(){
             var taskid = $(this).attr("data-task-id");
             var version = $(this).attr("data-task-version");
             var fzuid = $(this).attr("data-task-fzuid");

@@ -1492,6 +1492,7 @@ class FrontController {
     //任务详情ajax
     def taskShow(){
         def taskInfo = Task.findByIdAndCid(params.id,session.company.id)
+        def uid = session.user.id
         def rs = [:]
         def version = params.version
         if(version){
@@ -1501,9 +1502,10 @@ class FrontController {
             rs.msg = true
 
             if(taskInfo.lookstatus.toInteger()!=2){
+
                 if(params.accept=='1'){//更改接受状态
                     taskInfo.lookstatus = 2
-                }else{
+                }else if(uid==taskInfo.playuid.toLong()){
                     taskInfo.lookstatus = 1
                 }
 
@@ -1669,6 +1671,7 @@ class FrontController {
         def finishedTaskInstance = Task.findAllByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)
         [finishedTaskInstance: finishedTaskInstance]
     }
+
     def allTask(Integer max){
         def user = session.user
         def company = session.company

@@ -54,12 +54,12 @@
                     <div class="e-list-group tomorrow">
                         <ul class="e-list">
                             <g:each in="${finishedTaskInstance}" status="i" var="finishedTaskInfo">
-                                <li>
+                                <li data-task-id="${finishedTaskInfo.id}" data-task-version="${finishedTaskInfo.version}" data-task-fzuid="${finishedTaskInfo.fzuid}" data-task-fzname="${finishedTaskInfo.fzname}">
                                     <span class="mark <g:if test="${finishedTaskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${finishedTaskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${finishedTaskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${finishedTaskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                     <span class="sn">${i+1}</span>
-                                    <span class="title" data-task-id="${finishedTaskInfo.id}" data-task-version="${finishedTaskInfo.version}" data-task-fzuid="${finishedTaskInfo.fzuid}" data-task-fzname="${finishedTaskInfo.fzname}">${finishedTaskInfo.title}</span>
+                                    <span class="title">${finishedTaskInfo.title}</span>
                                     <div class="right">
-                                        <span class="del"><a href="javascript:;" class="taskdelete" data-id="${finishedTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</a></span>
+                                        <span class="del"><a href="javascript:;" class="taskdelete" onclick="confirm('确定删除？');stop_Pro(event)" data-id="${finishedTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</a></span>
                                         <span class="date f-r">${finishedTaskInfo.overtime}</span>
                                     </div>
                                 </li>
@@ -158,7 +158,7 @@
             $("#playstatus").val(playstatus);
         })
         //详情滑动框
-        $(".e-list-group .e-list .title").click(function(){
+        $(".e-list-group .e-list li").click(function(){
             var taskid = $(this).attr("data-task-id");
             var version = $(this).attr("data-task-version");
             var fzuid = $(this).attr("data-task-fzuid");

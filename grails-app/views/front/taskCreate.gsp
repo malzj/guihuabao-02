@@ -77,15 +77,15 @@
                         <ul class="e-list">
                         <g:if test="${todayTaskInstance}">
                             <g:each in="${todayTaskInstance}" status="i" var="taskInfo">
-                                <li>
+                                <li data-task-id="${taskInfo.id}"  data-task-version="${taskInfo.version}">
                                     <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                     <span class="sn">${i+1}</span>
-                                    <span class="title" data-task-id="${taskInfo.id}"  data-task-version="${taskInfo.version}">${taskInfo.title}</span>
+                                    <span class="title">${taskInfo.title}</span>
                                     <div class="right">
                                         %{--<span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
                                         %{--<g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
-                                        <span class="hsfinish"><a href="javascript:;" class="taskedit" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
-                                        <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
+                                        <span class="hsfinish"><a href="javascript:;" class="taskedit" onclick="stop_Pro(event)" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
+                                        <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" onclick="confirm('确定删除？');stop_Pro(event)" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
                                         <span class="date f-r">${taskInfo.overtime}</span>
                                     </div>
                                 </li>
@@ -104,15 +104,15 @@
                         <ul class="e-list">
                         <g:if test="${tomorrowTaskInstance}">
                             <g:each in="${tomorrowTaskInstance}" status="i" var="tomorrowTaskInfo">
-                                <li>
+                                <li data-task-id="${tomorrowTaskInfo.id}"  data-task-version="${tomorrowTaskInfo.version}">
                                     <span class="mark <g:if test="${tomorrowTaskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${tomorrowTaskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${tomorrowTaskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${tomorrowTaskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                     <span class="sn">${i+1}</span>
-                                    <span class="title"  data-task-id="${tomorrowTaskInfo.id}"  data-task-version="${tomorrowTaskInfo.version}">${tomorrowTaskInfo.title}</span>
+                                    <span class="title">${tomorrowTaskInfo.title}</span>
                                     <div class="right">
                                         %{--<span class="hsfinish"><g:link action="taskUpdate" id="${tomorrowTaskInfo.id}" params="[version: tomorrowTaskInfo.version]"><i class="fa <g:if test="${tomorrowTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
                                         %{--<g:if test="${tomorrowTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${tomorrowTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
-                                        <span class="hsfinish"><a href="javascript:;" class="taskedit" data-id="${tomorrowTaskInfo.id}" data-version="${tomorrowTaskInfo.version}"><i class="fa <g:if test="${tomorrowTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
-                                        <g:if test="${tomorrowTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${tomorrowTaskInfo.id}" data-version="${tomorrowTaskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
+                                        <span class="hsfinish"><a href="javascript:;" class="taskedit" onclick="stop_Pro(event)" data-id="${tomorrowTaskInfo.id}" data-version="${tomorrowTaskInfo.version}"><i class="fa <g:if test="${tomorrowTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
+                                        <g:if test="${tomorrowTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" onclick="confirm('确定删除？');stop_Pro(event)" data-id="${tomorrowTaskInfo.id}" data-version="${tomorrowTaskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
                                         <span class="date f-r">${tomorrowTaskInfo.overtime}</span>
                                     </div>
                                 </li>
@@ -132,15 +132,15 @@
                         <ul class="e-list">
                             <g:if test="${taskInstance}">
                                 <g:each in="${taskInstance}" status="i" var="taskInfo">
-                                    <li>
+                                    <li data-task-id="${taskInfo.id}"  data-task-version="${taskInfo.version}">
                                         <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                         <span class="sn">${i+1}</span>
-                                        <span class="title" data-task-id="${taskInfo.id}"  data-task-version="${taskInfo.version}">${taskInfo.title}</span>
+                                        <span class="title">${taskInfo.title}</span>
                                         <div class="right">
                                             %{--<span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
                                             %{--<g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
-                                            <span class="hsfinish"><a href="javascript:;" class="taskedit" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
-                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
+                                            <span class="hsfinish"><a href="javascript:;" class="taskedit" onclick="stop_Pro(event)" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
+                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" onclick="confirm('确定删除？');stop_Pro(event)" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
                                             <span class="date f-r">${taskInfo.overtime}</span>
                                         </div>
                                     </li>
@@ -352,7 +352,7 @@
         });
 
         //详情滑动框
-        $(".e-list-group .e-list .title").click(function(){
+        $(".e-list-group .e-list li").click(function(){
             var taskid = $(this).attr("data-task-id");
             var version = $(this).attr("data-task-version");
             var fzuid = $(this).attr("data-task-fzuid");
