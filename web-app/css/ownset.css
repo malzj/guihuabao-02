@@ -261,7 +261,7 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .toolkit a{ display:inline-block; color:#797979; line-height:16px;padding:14px 18px;border-left:1px #d2d2d2 solid;border-right:1px #d2d2d2 solid;}
 .toolkit a i{color:#03a9f4;margin-right:5px;}
 .toolkit .task-order i{ color:#797979; margin:0 0 0 5px; }
-.toolkit .task-order{ position:relative; z-index:1001;  cursor:pointer; }
+.toolkit .task-order{ position:relative; z-index:1000;  cursor:pointer; }
 .toolkit .shaixuan ul{ position:absolute; background-color:#fff;border:1px #d2d2d2 solid; margin-top:-1px; z-index:1000; display: none }
 .toolkit .shaixuan ul a{ display:inline-block; width:100%; color:#797979; line-height:16px;padding:14px 18px; border:none; }
 .toolkit .shaixuan ul a:hover{ background-color:#f5f5f5; }

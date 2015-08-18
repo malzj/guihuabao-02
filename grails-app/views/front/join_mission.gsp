@@ -29,6 +29,9 @@
 
     <link href="${resource(dir: 'css', file: 'context.standalone.css')}" rel="stylesheet">
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">
+    <style>
+    .sub li { background: none;}
+    </style>
 </head>
 
 <body>
@@ -51,13 +54,13 @@
                         <div class="toolkit">
                             <span>参与的任务</span>
                             <div class="shaixuan">
-                                <a class="task-order">筛选<i class="fa fa-caret-down"></i></a>
+                                <a class="task-order">排序<i class="fa fa-caret-down"></i></a>
                                 <ul>
 
-                                        <g:link action="fzTask" params="[selected: 1]">按任务到期时间</g:link>
+                                        <g:link action="join_mission" params="[selected: 1]">按任务到期时间</g:link>
                                     </li>
                                     <li>
-                                        <g:link action="fzTask" params="[selected: 2]">按任务创建时间</g:link>
+                                        <g:link action="join_mission" params="[selected: 2]">按任务创建时间</g:link>
                                     </li>
 
                                 </ul>
@@ -70,7 +73,7 @@
                                         <g:if test="${missionInfo.issubmit=='1'}">
                                         <li class="m_all">
                                             <span style="display:none">${missionInfo.id}</span>
-                                            <span class="sn">${i}</span>
+                                            <span class="sn">${i+1}</span>
                                             <span class="title" data-task-id="${missionInfo.id}">${missionInfo.title}</span>
                                             <span class="status"><g:if test="${missionInfo.status=="1"}">已完成</g:if><g:else>未完成</g:else></span>
                                             <div class="right">
@@ -89,6 +92,7 @@
                                     <li><span class="mark"></span>没有任务！</li>
                                 </g:else>
                             </ul>
+                            <span style="display:none" id="var_all"></span>
                         </div>
                         <div class="pagination">
                             <g:paginate total="${missionInstanceTotal}" params="[selected: selected]" />
@@ -107,6 +111,25 @@
                         <a class="copy_icon"></a>
                     </div>
                     <div class="task_content">
+                    </div>
+                    %{--<g:hiddenField name="taskid" id="taskid" ></g:hiddenField>--}%
+                    %{--<g:hiddenField name="version" id="version" ></g:hiddenField>--}%
+                    <button id="taskaccept" class="rbtn btn-blue ml25 mt10">接受</button>
+                    <div class="discuss clearfix">
+                        <h4>反馈及评论</h4>
+                        <form id="form1" method="post">
+                            %{--<g:hiddenField name="id" id="id"></g:hiddenField>--}%
+                            <g:hiddenField name="bpuid" id="bpuid"></g:hiddenField>
+                            <g:hiddenField name="bpuname" id="bpuname"></g:hiddenField>
+                            <g:hiddenField name="puid" id="puid" value="${session.user.id}"></g:hiddenField>
+                            <g:hiddenField name="puname" id="puname" value="${session.user.name}"></g:hiddenField>
+                            <div>
+                                <textarea id="content1" name="content"></textarea>
+                            </div>
+                            <a href="javascript:;" id="submit" class="rbtn btn-blue mt25">提交</a>
+                        </form>
+                    </div>
+                    <div id="reply_container">
                     </div>
                 </div>
                 <!--任务详情 end-->
@@ -176,9 +199,6 @@
     %{--}();--}%
 
     $(function(){
-//        $("#addrenwu").click(function(){
-//            $(".popup_box").css("display","block");
-//        });
         $(".close").click(function(){
             $(".popup_box").css("display","none");
         });
@@ -201,7 +221,7 @@
         //详情滑动框
         $(".m_all").click(function(){
             var mid = $(this).find('span:first').html();
-
+            $('#var_all').html(mid);
             $.ajax({
                 url:'${webRequest.baseUrl}/front/mhasvisited?mid='+mid,
                 dataType: "json",
@@ -210,6 +230,7 @@
                     // 去渲染界面
 
                         var html="";
+                        var html2="";
                         var status = (data.mission.status=='1')?"已完成":"进行中";
                         var fzuid=data.target.fzuid;
                         html+='<div class="task_line"><span class="title">'+data.mission.title+'</span></div>';
@@ -218,10 +239,22 @@
                         html+='<div class="task_line"><span>执行人：</span><span class="font_blue">'+data.mission.playname+'</span></div>';
                         html+='<div class="task_line"><span>起始日：</span><span>'+data.mission.begintime+'</span></div>';
                         html+='<div class="task_line"><span>终止日：</span><span>'+data.mission.overtime+'</span></div>';
-
                         html+='<div class="task_line"><span>任务状态：</span><span class="font_blue">'+status+'</span></div>';
-                        $("#task .task_content").empty();
-                        $("#task .task_content").append(html);
+                        $('#bpuid').val(data.target.fzuid);
+                        $('#bpuname').val(data.fzname);
+                    $.each(data.replymission,function(i,val){
+                        html2+='<div class="reply_box"><div class="name">'+val.puname+'&nbsp;回复&nbsp;'+val.bpuname+'</div>'
+                        html2+='<p>'+val.content+'</p>'
+                        html2+='<span>'+val.date+'</span><a href="javascript:;" class="reply" data-info="'+val.puid+','+val.puname+'">回复</a>'
+                        html2+='<div class="shuru"><span>回复&nbsp;'+val.puname+'</span>'
+                        html2+='<div class="rcontainer"></div>'
+                        html2+='</div></div>'
+                    })
+                    $("#task .task_content").empty();
+                    $("#reply_container").empty();
+                    $("#task .task_content").append(html);
+                    $("#reply_container").append(html2);
+                    replyclick();
                         $("#task").slideLeftShow(400);
                     },
                 error:function() {
@@ -232,41 +265,106 @@
 
             })
         });
-        %{--$(".taskedit").click(function(){--}%
-            %{--var id=$(this).attr("data-id");--}%
-            %{--var version=$(this).attr("data-version");--}%
-            %{--$.ajax({--}%
-                %{--url:'${webRequest.baseUrl}/front/taskUpdate?id='+id+'&version='+version,--}%
-                %{--dataType: "jsonp",--}%
-                %{--jsonp: "callback",--}%
-                %{--success: function(data){--}%
-                    %{--if(data.msg){--}%
-                        %{--alert("标记成功!")--}%
-                        %{--window.location.reload()--}%
-                    %{--}else{--}%
-                        %{--alert("标记失败!")--}%
-                    %{--}--}%
-                %{--}--}%
-            %{--})--}%
-        %{--})--}%
+        $('#taskaccept').click(function(){
+            var mid=$('#var_all').html();
 
-        %{--$(".taskdelete").click(function(){--}%
-            %{--var id=$(this).attr("data-id");--}%
-            %{--var version=$(this).attr("data-version");--}%
-            %{--$.ajax({--}%
-                %{--url:'${webRequest.baseUrl}/front/taskDelete?id='+id,--}%
-                %{--dataType: "jsonp",--}%
-                %{--jsonp: "callback",--}%
-                %{--success: function(data){--}%
-                    %{--if(data.msg){--}%
-                        %{--alert("删除成功!")--}%
-                        %{--window.location.reload()--}%
-                    %{--}else{--}%
-                        %{--alert("删除失败!")--}%
-                    %{--}--}%
-                %{--}--}%
-            %{--})--}%
-        %{--})--}%
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/maccept?mid='+mid,
+                dataType: "json",
+                type:'post',
+                success: function (data) {
+                    alert('接受任务成功！');
+
+                },
+                error:function(){alert('获取信息失败1！');}
+            });
+        })
+        function replyclick() {
+
+            $(".reply").on("click", function () {
+                var info = $(this).attr("data-info")
+                var arr = info.split(",")
+                $(".shuru .rcontainer").empty()
+                $(".shuru").hide()
+                var html2 = ""
+                html2+='<form id="form2">'
+//                html2+='<input type="hidden" name="id" value="'+arr[0]+'" />'
+                html2+='<input type="hidden" name="bpuid" value="'+arr[0]+'" />'
+                html2+='<input type="hidden" name="bpuname" value="'+arr[1]+'" />'
+                html2+='<input type="hidden" name="puid" value="${session.user.id}" />'
+                html2+='<input type="hidden" name="puname" value="${session.user.name}" />'
+                html2+='<div class="mt10"><textarea name="content"></textarea></div>'
+                html2+='<a class="huifu fbtn btn-white mt10">回复</a><a class="quxiao fbtn btn-white mt10 ml20">取消</a>'
+                html2+='</form>'
+                $(this).next().find('.rcontainer').html(html2)
+                $(this).next().slideDown()
+                replysubmit();
+            })
+
+        }
+
+        function replysubmit() {
+            $(".quxiao").on("click", function () {
+                $(this).parent().parent().parent().slideUp();
+                $(".shuru .rcontainer").empty()
+            })
+            $(".huifu").click(function () {
+
+                var mid = $('#var_all').html();
+                var html2 = '';
+                $.ajax({
+                    url: '${webRequest.baseUrl}/front/replyMissionSave?mid=' + mid + '',
+                    dataType: "json",
+                    type: "POST",
+                    data: $("#form2").serialize(),
+                    success: function (data) {
+                        if (data.msg) {
+                            var re = data.replymission;
+                            alert("回复成功！");
+                            html2 += '<div class="reply_box"><div class="name">' + re.puname + '&nbsp;回复&nbsp;' + re.bpuname + '</div>'
+                            html2 += '<p>' + re.content + '</p>'
+                            html2 += '<span>' + re.date + '</span><a href="javascript:;" class="reply" data-info="' + re.puid + ',' + re.puname + '">回复</a>'
+                            html2 += '<div class="shuru"><span>回复&nbsp;' + re.puname + '</span>'
+                            html2 += '<div class="rcontainer"></div>'
+                            html2 += '</div></div>'
+                            $("#reply_container").prepend(html2);
+                            $('.shuru').slideUp()
+                        } else {
+                            alert("回复失败！")
+                        }
+                        replyclick();
+                    }
+                })
+            })
+        }
+
+        $("#submit").click(function(){
+            var mid=$('#var_all').html();
+            var html2='';
+            $.ajax({
+                url: '${webRequest.baseUrl}/front/replyMissionSave?mid='+mid+'',
+                dataType: "json",
+                type: "POST",
+                data: $("#form1").serialize(),
+                success: function(data) {
+                    if(data.msg){
+                        var re=data.replymission;
+                        alert("回复成功！");
+                        html2+='<div class="reply_box"><div class="name">'+re.puname+'&nbsp;回复&nbsp;'+re.bpuname+'</div>'
+                        html2+='<p>'+re.content+'</p>'
+                        html2+='<span>'+re.date+'</span><a href="javascript:;" class="reply" data-info="'+re.puid+','+re.puname+'">回复</a>'
+                        html2+='<div class="shuru"><span>回复&nbsp;'+re.puname+'</span>'
+                        html2+='<div class="rcontainer"></div>'
+                        html2+='</div></div>'
+                        $('#content1').val('');
+                        $("#reply_container").prepend(html2);
+                    }else{
+                        alert("回复失败！")
+                    }
+                    replyclick();
+                }
+            })
+        })
         $(".taskclose").click(function(){
             $("#task").slideLeftHide(400);
             $("#task .task_content").empty();

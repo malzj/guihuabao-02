@@ -68,10 +68,10 @@
                             <ul>
 
                                 <li>
-                                    <g:link action="user_target" params="[selected: 1]">按目标到期时间</g:link>
+                                    <g:link action="all_user_target" params="[selected: 1]">按目标到期时间</g:link>
                                 </li>
                                 <li>
-                                    <g:link action="user_target" params="[selected: 2]">按目标创建时间</g:link>
+                                    <g:link action="all_user_target" params="[selected: 2]">按目标创建时间</g:link>
 
                                 </li>
 
@@ -247,6 +247,17 @@
             $("#tar_detail .rwfj").empty();
             $("#tar_detail").css("display","none");
         })
+        $(".toolkit .task-order").click(function () {
+            var ul = $(".toolkit .shaixuan ul");
+
+            if (ul.css("display") == "none") {
+                ul.slideDown("fast");
+                $(".toolkit .task-order").css("border-bottom", "1px solid #fff");
+            } else {
+                ul.slideUp("fast");
+                $(".toolkit .task-order").css("border-bottom", "none");
+            }
+        });
     })
 </script>
 </body>

@@ -54,10 +54,10 @@
                                 <a class="task-order">筛选<i class="fa fa-caret-down"></i></a>
                                 <ul>
 
-                                    <g:link action="fzTask" params="[selected: 1]">按任务到期时间</g:link>
+                                    <g:link action="join_hasfinished_mission" params="[selected: 1]">按任务到期时间</g:link>
                                 </li>
                                     <li>
-                                        <g:link action="fzTask" params="[selected: 2]">按任务创建时间</g:link>
+                                        <g:link action="join_hasfinished_mission" params="[selected: 2]">按任务创建时间</g:link>
                                     </li>
 
                                 </ul>

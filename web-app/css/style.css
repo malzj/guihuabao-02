@@ -229,7 +229,7 @@ ul.sidebar-menu , ul.sidebar-menu li ul.sub{
 }
 
 ul.sidebar-menu li ul.sub li{
-    background: #35404D;
+    /*background: #35404D;*/
     margin-bottom: 0;
     margin-left: 0;
     margin-right: 0;

@@ -2030,8 +2030,8 @@ class FrontController {
         def cid =session.user.cid
         def fzuid = session.user.id
         def selected = params.selected
-        def order1 = [sort:"begintime",order: "desc"]
-        def order2 = [sort:"dateCreate",order: "desc"]
+//        def order1 = [sort:"begintime",order: "desc"]
+//        def order2 = [sort:"dateCreate",order: "desc"]
         def bumenInstance = Bumen.findAllByCid(session.company.id)
         def targetInstance
         def targetInstanceTotal
@@ -2040,8 +2040,9 @@ class FrontController {
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0)
         }else if(selected=="2"){
-            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params,order2)
-            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0,order2)
+            params<<[sort:"dateCreate",order: "desc"]
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0)
         }else{
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0)
@@ -2059,16 +2060,18 @@ class FrontController {
         def cid =session.user.cid
         def fzuid = session.user.id
         def selected = params.selected
-        def order1 = [sort: "etime", order: "desc"]
-        def order2 = [sort: "dateCreate", order: "desc"]
+//        def order1 = [sort: "etime", order: "desc"]
+//        def order2 = [sort: "dateCreate", order: "desc"]
         def targetInstance
         def targetInstanceTotal
         if(selected=="1"){
-            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order1)
-            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order1)
+            params<<[sort:"etime",order: "desc"]
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
         }else if(selected=="2"){
-            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params,order2)
-            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1,order2)
+            params<<[sort:"dateCreate",order: "desc"]
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
+            targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
         }else{
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
@@ -2086,16 +2089,17 @@ class FrontController {
         def cid =session.user.cid
         def fzuid = session.user.id
         def selected = params.selected
-        def order1 = [sort:"begintime",order: "desc"]
-        def order2 = [sort:"dateCreate",order: "desc"]
+
         def targetInstance
         def targetInstanceTotal
         if(selected=="1"){
-            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params,order1)
-            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid,order1)
+            params<<[sort:"etime",order: "desc"]
+            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params)
+            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid)
         }else if(selected=="2"){
-            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params,order2)
-            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid,order2)
+            params<<[sort:"dateCreate",order: "desc"]
+            targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params)
+            targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid)
         }else{
             targetInstance = Target.findAllByCidAndFzuid(cid,fzuid,params)
             targetInstanceTotal = Target.countByCidAndFzuid(cid,fzuid)
@@ -2116,7 +2120,7 @@ class FrontController {
             rs.msg = false
         } else {
             mission.dateCreate=new Date();
-            mission.target.percent += mission.percent
+
             mission.dateCreate = new Date()
             rs.msg=true
             rs.target=targetInstance
@@ -2129,10 +2133,21 @@ class FrontController {
         } else
             render rs as JSON
 
-
-
     }
+   def maccept(){
+       def rs = [:]
+       def mission=Mission.get(params.mid)
+       if(!mission){
+           rs.msg=false
+       }else{
+           mission.hasvisited='2'
+       }
+       if (params.callback) {
+           render "${params.callback}(${rs as JSON})"
+       } else
+           render rs as JSON
 
+   }
    def  issubmit(){
        def rs = [:]
        def target=Target.get(params.target_id)
@@ -2154,8 +2169,10 @@ class FrontController {
         def rs = [:]
         def tid = params.target_id
         def targetInstance = Target.get(tid)
+        def fzname=com.guihuabao.CompanyUser.findById(targetInstance.fzuid).name
         rs.target=targetInstance
         rs.mission=targetInstance.mission
+        rs.fzname=fzname
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
@@ -2205,18 +2222,23 @@ class FrontController {
 
         def target = mission.target
         def missionlist = target.mission
-        target.percent -= mission.percent
-        mission.properties = params
-
-
-        target.percent += mission.percent
-        def sum = 0
-        for (def missionInstance in missionlist) {
-            sum += missionInstance.status.toInteger()
-
+        if(mission.status=='0') {
+            mission.properties = params
+            if(mission.status=='1'){
+                target.percent+=mission.percent
+            }
+        }else{
+            target.percent-=mission.percent
+            mission.properties = params
+            if(mission.status=='1'){
+                target.percent+=mission.percent
+            }
         }
-        if (target.percent == 100 && sum == missionlist.size()) {
+
+        if (target.percent == 100) {
             target.status = '1'
+        }else{
+            target.status = '0'
         }
         rs.msg = true
         rs.target = target
@@ -2351,16 +2373,18 @@ class FrontController {
         def playname = session.user.name
 
         def selected = params.selected
-        def order1 = [sort: "overtime", order: "desc"]
-        def order2 = [sort: "dateCreate", order: "desc"]
+//        def order1 = [sort: "overtime", order: "desc"]
+//        def order2 = [sort: "dateCreate", order: "desc"]
         def missionInstance
         def missionInstanceTotal
         if (selected == "1") {
-            missionInstance = Mission.findAllByPlaynameAndStatus(playname,'0' , params, order1)
-            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, 0, order1)
+            params<<[sort:"overtime",order: "desc"]
+            missionInstance = Mission.findAllByPlaynameAndStatus(playname,'0' , params)
+            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, 0)
         } else if (selected == "2") {
-            missionInstance = Mission.findAllByPlaynameAndStatus(playname, 0, params, order2)
-            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, 0, order2)
+            params<<[sort:"dateCreate",order: "desc"]
+            missionInstance = Mission.findAllByPlaynameAndStatus(playname, 0, params)
+            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, 0)
         } else {
             missionInstance = Mission.findAllByPlaynameAndStatus( playname, '0', params)
             missionInstanceTotal = Mission.countByPlaynameAndStatus( playname, 0)
@@ -2385,11 +2409,20 @@ class FrontController {
             rs.msg=false
         }else {
             def target = mission.target
+            def replymission=mission.replymission
             mission.hasvisited='1'
             def fzname = com.guihuabao.CompanyUser.findById(target.fzuid).name
+
+            for(def r in replymission){
+                if(r.bpuname==fzname) {
+                    r.status = 1
+                }
+            }
             rs.mission = mission
             rs.target = target
             rs.fzname = fzname
+            rs.replymission=replymission
+
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
@@ -2468,22 +2501,65 @@ class FrontController {
         def playname = session.user.name
 
         def selected = params.selected
-        def order1 = [sort: "overtime", order: "desc"]
-        def order2 = [sort: "dateCreate", order: "desc"]
+//        def order1 = [sort: "overtime", order: "desc"]
+//        def order2 = [sort: "dateCreate", order: "desc"]
         def missionInstance
         def missionInstanceTotal
         if (selected == "1") {
-            missionInstance = Mission.findAllByPlaynameAndStatus(playname,'1' , params, order1)
-            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, '1', order1)
+            params<<[sort:"overtime",order: "desc"]
+            missionInstance = Mission.findAllByPlaynameAndStatus(playname,'1' , params)
+            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, '1')
         } else if (selected == "2") {
-            missionInstance = Mission.findAllByPlaynameAndStatus(playname, '1', params, order2)
-            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, '1', order2)
+            params<<[sort:"dateCreate",order: "desc"]
+            missionInstance = Mission.findAllByPlaynameAndStatus(playname, '1', params)
+            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, '1')
         } else {
             missionInstance = Mission.findAllByPlaynameAndStatus( playname, '1', params)
             missionInstanceTotal = Mission.countByPlaynameAndStatus( playname, '1')
         }
         [missionInstance:missionInstance,missionInstanceTotal:missionInstanceTotal, selected: selected]
     }
+    def replyMissionSave(){
+        def rs = [:]
+        def replyMissionInstance = new ReplyMission(params)
+        def missionInstance = Mission.get(params.mid)
+        missionInstance.reply ='1'
+        replyMissionInstance.mission = missionInstance
+        replyMissionInstance.date = new Date()
+        replyMissionInstance.cid = session.company.id
+        replyMissionInstance.status =0
+        if(!params.content){
+            rs.msg = false
+        }else {
+            if (!replyMissionInstance.save(flush: true)) {
+                rs.msg = false
+            } else {
+                rs.msg = true
+                rs.replymission=replyMissionInstance
+            }
+        }
 
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def unread_comment(Integer max){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+        def bpuname=user.name
+        def replymission
+        def replymissionTotal
+        params<<[sort:"date",order: "desc"]
+        replymission=ReplyMission.findAllByBpunameAndStatus(bpuname,0,params)
+        replymissionTotal=ReplyMission.countByBpunameAndStatus(bpuname,0)
+        [replymissionlist:replymission,replymissionTotal:replymissionTotal]
+    }
 }
 

@@ -1,15 +1,16 @@
 package com.guihuabao
 
-class ReplyTask {
+class ReplyMission {
+
     Integer cid
     Integer puid    //评论人id
     String puname   //评论人姓名
     Integer bpuid   //被评人id
-    String bpuname
+    String bpuname  //被评人姓名
     Integer status
     String content
     Date date
-    static belongsTo = [tasks: Task]
+    static belongsTo = [mission: Mission]
     static constraints = {
         cid(nullable: true)
         puid(nullable: true)
