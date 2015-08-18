@@ -54,10 +54,10 @@
                             <ul class="e-list fzalltasklist">
                                 <g:if test="${messageTaskInstance}">
                                     <g:each in="${messageTaskInstance}" status="i" var="messageTaskInfo">
-                                        <li>
+                                        <li data-task-id="${messageTaskInfo.id}">
                                             <span class="mark"></span>
                                             <span class="sn">${i+1}</span>
-                                            <span class="title" data-task-id="${messageTaskInfo.id}">${messageTaskInfo.title}</span>
+                                            <span class="title">${messageTaskInfo.title}</span>
                                             <div class="right">
                                                 <span class="date f-r">${messageTaskInfo.dateCreate.format("yyyy-MM-dd")}</span>
                                             </div>
@@ -163,7 +163,7 @@
         });
 
         //详情滑动框
-        $(".e-list-group .e-list .title").click(function(){
+        $(".e-list-group .e-list li").click(function(){
             var taskid = $(this).attr("data-task-id");
             $.ajax({
                 url:'${webRequest.baseUrl}/front/taskShow?id='+taskid,

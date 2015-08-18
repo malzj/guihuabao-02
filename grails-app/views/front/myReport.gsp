@@ -91,7 +91,7 @@
 
                         <div class="hang">
                             <h4 class="chx">本周工作成效</h4>
-                            <textarea id="performance" name="performance">${myReportInfo?.performance}</textarea>
+                            <textarea id="performance" name="performance" placeholder="1......2......3......4......5......">${myReportInfo?.performance}</textarea>
                         </div>
                         <div class="hang">
                             <h4 class="xd">总结心得</h4>
@@ -99,7 +99,7 @@
                         </div>
                         <div class="hang">
                             <h4 class="jh">下周工作计划</h4>
-                            <textarea id="plan" name="plan">${myReportInfo?.plan}</textarea>
+                            <textarea id="plan" name="plan" placeholder="1......2......3......4......5......">${myReportInfo?.plan}</textarea>
                         </div>
                         <div class="hang">
                             <h4 class="hz">部门协同合作</h4>

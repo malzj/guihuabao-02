@@ -26,7 +26,7 @@
             <%def nowtime = timearr1[1]%>
             <%def utaskcount = com.guihuabao.Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0)%>
             <%def otargetcount = com.guihuabao.Target.countByCidAndFzuidAndEtimeAndEtimeGreaterThanEqualsAndStatus(session.company.id,session.user.id,etime,date,0)%>
-            <%def otaskcount = com.guihuabao.Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,0)%>
+            <%def otaskcount = com.guihuabao.Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,2,0)%>
             <%def messageTaskFcount = com.guihuabao.Task.countByCidAndFzuidAndLookstatusAndStatusAndRemindstatus(session.company.id,session.user.id,2,1,1)%>
             <%def newapplycount = com.guihuabao.Apply.countByApprovaluidAndCidAndApplystatus(session.user.id,session.company.id,0)%>
             <%def applycount = com.guihuabao.Apply.countByApplyuidAndCidAndRemindstatus(session.user.id,session.company.id,1)%>

@@ -43,11 +43,12 @@
     #apply_tab .th{background:#f8f8f8;}
     #apply_tab td{padding:10px;margin:0;}
     #apply_tab tr td:nth-of-type(1){width:140px;}
-    #apply_tab tr td:nth-of-type(2){width:800px;}
+    #apply_tab tr td:nth-of-type(2){width:500px;}
     #apply_tab tr td:nth-of-type(3){width:200px;}
     #apply_tab tr td:nth-of-type(4){width:140px;}
-    #apply_tab tr td:nth-of-type(5){width:140px;}
-    #apply_tab tr td:nth-of-type(6){width:200px;}
+    #apply_tab tr td:nth-of-type(5){width:350px;}
+    #apply_tab tr td:nth-of-type(6){width:140px;}
+    #apply_tab tr td:nth-of-type(7){width:150px;}
     .select{width:300px;height:35px;border:1px solid #d0d0d0;}
     textarea{border:1px solid #d0d0d0;width:500px;height:400px;resize:none;}
     .panel-content{margin:15px;}
@@ -55,6 +56,7 @@
     #pass,#nopass{width:80px; height:32px;border-radius:3px;border:none;color:#fff;}
     #pass{background:#03a9f4;}
     #nopass{background:#ff0000;}
+    #approvetext{width:100%; height:130px; padding:10px; -webkit-box-shadow:0px 5px 5px -3px #D5D5D2 inset;box-shadow:0px 6px 5px -3px #D5D5D2 inset; background-color:#fff; border:1px solid #d0d0d0;}
     </style>
 </head>
 <body>
@@ -99,6 +101,7 @@
                             <td>申请内容</td>
                             <td>申请人</td>
                             <td>审批结果</td>
+                            <td>备注</td>
                             <td>申请时间</td>
                             <td>
                                 操作
@@ -110,6 +113,7 @@
                                 <td>${applyInstance.content}</td>
                                 <td>${applyInstance.applyusername}</td>
                                 <td>${applyInstance.status}</td>
+                                <td>${applyInstance.approvetext}</td>
                                 <td>${applyInstance.dateCreate.format("yyyy-MM-dd")}</td>
                                 <td>
 
@@ -143,6 +147,7 @@
                 <li>申请内容：<span></span></li>
                 <li>申请时间：<span></span></li>
                 <li>申请结果：<span></span></li>
+                <li>审核批注：<span><textarea id="approvetext" name="approvetext"></textarea></span></li>
             </ul>
             <input type="button" value="通过" id="pass" class="ispass" data-status="1" />
             <input type="button" value="未通过" id="nopass" class="ispass" data-status="2"/>
@@ -185,7 +190,8 @@
             var applyContent = $(this).parent().siblings("td:eq(1)").html();
             var approvalusername = $(this).parent().siblings("td:eq(2)").html();
             var applyStauts = $(this).parent().siblings("td:eq(3)").html();
-            var applyDate = $(this).parent().siblings("td:eq(4)").html();
+            var approvetext = $(this).parent().siblings("td:eq(4)").html();
+            var applyDate = $(this).parent().siblings("td:eq(5)").html();
 
             $("#applyId").val(applyId)
             $("#version").val(version)
@@ -194,6 +200,7 @@
             $(".panel-content ul li:eq(2) span").html(applyContent)
             $(".panel-content ul li:eq(3) span").html(applyStauts)
             $(".panel-content ul li:eq(4) span").html(applyDate)
+            $("#approvetext").val(approvetext)
             $("#applydetails").css("display","block");
         })
         $(".close").click(function(){
@@ -203,8 +210,9 @@
             var applyStauts = $(this).attr("data-status");
             var id = $("#applyId").val();
             var version = $("#version").val();
+            var approvetext = $("#approvetext").val();
             $.ajax({
-                url:'${webRequest.baseUrl}/front/approveStatus?applystatus='+applyStauts+'&id='+id+'&version='+version,
+                url:'${webRequest.baseUrl}/front/approveStatus?applystatus='+encodeURI(applyStauts)+'&id='+encodeURI(id)+'&version='+encodeURI(version)+'&approvetext='+encodeURI(approvetext),
                 async: false,
                 dataType: "jsonp",
                 jsonp: "callback",

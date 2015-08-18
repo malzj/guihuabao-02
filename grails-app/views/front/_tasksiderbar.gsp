@@ -30,6 +30,12 @@
                     <em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndLookstatus(session.company.id,session.user.id,1)}</em>
                 </g:link>
             </li>
+            <li>
+                <g:link action="unreadTaskReply" >
+                    <span>未读回复</span>
+                    <em class="f-r">${com.guihuabao.ReplyTask.countByBpuidAndCidAndStatus(session.user.id,session.company.id,0)}</em>
+                </g:link>
+            </li>
             <g:if test="${session.user.pid==1||session.user.pid==2}">
             <li>
                 <g:link action="xsTask" >

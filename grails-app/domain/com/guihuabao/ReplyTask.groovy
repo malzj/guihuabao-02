@@ -8,7 +8,7 @@ class ReplyTask {
     String bpuname
     Integer status
     String content
-    Date date
+    String date
     static belongsTo = [tasks: Task]
     static constraints = {
         cid(nullable: true)
