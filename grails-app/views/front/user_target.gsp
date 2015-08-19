@@ -110,7 +110,7 @@
                             <div class="tar_whole f-l">
                                 <input type="hidden" value="${targetInfo.id}"  />
                                 <div class="tar_title clearfix" >
-                                    <a class="select_img" ><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
+                                    <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
                                     <div class="f-l" style="margin-left:10px;">
 
                                         <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${targetInfo.title}</h2>
@@ -1251,8 +1251,8 @@
                 }else{
                     $('#enddate').css('border-color','#d2d2d2');
                 }
-                var title=$('#tar_con').val();
-                var content=$('#tar_title').val();
+                var title=$('#tar_title').val();
+                var content=$('#tar_con').val();
                 var fzuid=$('#tar_fzuid').val();
                 var begintime=$('#startdate').val();
                 var etime=$('#enddate').val();
@@ -1311,7 +1311,7 @@
                     var mid=$(this).find('span:first-child').html();
                     $('#all_var').html(mid);
                     $.ajax({
-                        url:'${webRequest.baseUrl}/front/mhasvisited?mid='+mid,
+                        url:'${webRequest.baseUrl}/front/mcomment?mid='+mid,
                         dataType: "json",
                         type:'post',
                         success: function (data) {
