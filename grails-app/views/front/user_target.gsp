@@ -44,7 +44,7 @@
         .passwordedit .button{width:82px;height:34px;border:none;background:#03a9f4;color:#fff;}
         #select_img h2{font-size:20px;margin:15px 30px;}
         #select_img .ori{margin-left:120px;}
-        #select_img img{margin-right:40px;margin-bottom:40px;}
+        #select_img .bx img{margin-right:40px;margin-bottom:40px;}
         #select_img a{cursor:pointer;}
         #select_img .upload{margin-left:20px;line-height:44px;}
         .discuss{padding:10px 30px;}
@@ -110,7 +110,7 @@
                             <div class="tar_whole f-l">
                                 <input type="hidden" value="${targetInfo.id}"  />
                                 <div class="tar_title clearfix" >
-                                    <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
+                                    <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'img/target-img',file:''+targetInfo.img+'')}" title="更换图片" width="48px" height="48px"/></a>
                                     <div class="f-l" style="margin-left:10px;">
 
                                         <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${targetInfo.title}</h2>
@@ -240,19 +240,21 @@
         <header class="panel-heading" style="padding:10px 28px;">
             <span>选择图片</span>
             <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
+
         </header>
         <h2>已选图标</h2>
         <div class="clearfix ori">
-            <a class="f-l"><img  src="${resource(dir:'img/target-img',file:'1.png')}" id="img"/></a>
+            <a class="f-l"><div id="imgDefault"><img  src="${resource(dir:'img/target-img',file:'1.png')}" id="img" width="48px" height="48px"/></div></a>
             <div class="f-l upload">
-                <a>
+                <a><form method="post" id="uploadForm" enctype="multipart/form-data">
                     <i class="fa fa-plus-circle"></i>
-                    <input type="file" id="up_img"  style="display:inline-block"/>
-                </a>
+                    <input type="file" id="up_img" name="file1" style="display:inline-block" class="nr"/>
+                    <input type="button" class="btn" id="upload" value="上传" style="width:80px;height:30px;line-height:16px;background:#03a9f4;color:#fff;"/>
+               </form></a>
             </div>
         </div>
         <h2>备选图标</h2>
-        <div class="ori">
+        <div class="ori bx">
             <a><img  src="${resource(dir:'img/target-img',file:'1.png')}"/></a>
             <a><img  src="${resource(dir:'img/target-img',file:'2.png')}"/></a>
             <a><img  src="${resource(dir:'img/target-img',file:'3.png')}"/></a>
@@ -266,7 +268,7 @@
             <a><img  src="${resource(dir:'img/target-img',file:'11.png')}"/></a>
             <a><img  src="${resource(dir:'img/target-img',file:'12.png')}"/></a>
         </div>
-        <div class="f-r" style="margin-right: 30px;"><input type="button" class="btn" value="确认" style="width:80px;height:30px;background:#03a9f4;color:#fff;"/></div>
+        <div class="f-r" style="margin-right: 30px;"><input type="button" class="btn" id="upimg" value="确认" style="width:80px;height:30px;line-height:16px;background:#03a9f4;color:#fff;"/></div>
     </div>
 </div>
 <!--选择图片 end-->
@@ -466,7 +468,7 @@
     <script src="${resource(dir: 'js', file: 'owl.carousel.js')}" ></script>
     <script src="${resource(dir: 'js', file: 'jquery.customSelect.min.js')}" ></script>
     <script src="${resource(dir: 'js', file: 'respond.min.js')}" ></script>
-
+    <script src="${resource(dir: 'js', file: 'jquery.form.js')}" ></script>
 <script type="text/javascript" src="${resource(dir: 'assets/fuelux/js', file: 'spinner.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'assets/bootstrap-fileupload', file: 'bootstrap-fileupload.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'wysihtml5-0.3.0.js')}"></script>
@@ -479,6 +481,8 @@
 <script type="text/javascript" src="${resource(dir: 'assets/bootstrap-timepicker/js', file: 'bootstrap-timepicker.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'assets/jquery-multi-select/js', file: 'jquery.multi-select.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'assets/jquery-multi-select/js', file: 'jquery.quicksearch.js')}"></script>
+
+
 <!--菜单js-->
 <script src="${resource(dir: 'js', file: 'advanced-form-components.js')}"></script>
 <script src="${resource(dir: 'js', file: 'context.js')}"></script>
@@ -497,7 +501,7 @@
     <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
     <script type="text/javascript">
         window.onload = function () {
-            new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
+            new uploadPreview({ UpBtn: "up_img", DivShow: "imgDefault", ImgShow: "img" });
         }
     </script>
     <script>
@@ -863,7 +867,7 @@
                 $("#tar_detail .rwfj").empty();
                 $("#tar_detail").css("display","none");
             })
-            $("#newtargetdetail .close ,#select_img .close").click(function(){
+            $("#newtargetdetail .close").click(function(){
                 $('.nr').val("");
                 $('.con').empty();
                 $("#newtargetdetail").css("display","none");
@@ -871,6 +875,9 @@
 
                 $("#select_img").css("display","none");
             });
+            $('#select_img .close').click(function(){
+                location.reload();
+            })
             $('#tar_fj .close').click(function(){
                 $("#tar_fj").css('display','none');
                 location.reload();
@@ -1192,39 +1199,63 @@
             })
 
             $('.select_img').click(function() {
+                var tid=$(this).parent().prev().val();
+                $('#all_var').html(tid);
+                
                 $('#select_img').css('display', 'block');
                 $('#select_img .ori img').click(function () {
                     var thisimg = $(this).attr('src');
+
                     $('#img').attr('src', thisimg);
                 });
-                $('#up_img').click(function(){
-                    $('#up_img').val('');
-                    if ($('#up_img').val() != '') {
 
-                        var img = $('#up_img').val();
-                        var html='<a><img  src="${resource(dir:'img/target-img',file:'1.png')}"/></a>';
-                        $('#select_img .ori').append(html);
-
-                    }
-                })
 
             });
 
-            $('.select_img .btn').click(function(){
-                var target_id=$(this).parent().prev().val();
-                var img=$('#img').attr('src').split('/').last();
-                alert(img);
+            $('#upimg').click(function(){
+                var target_id=$('#all_var').html();
+
+                var imgs=$('#img').attr('src').split('/');
+                var img=imgs[imgs.length-1];
+
                 $.ajax({
                     url:'${webRequest.baseUrl}/front/selectImg',
                     type:'post',
                     dataType:'json',
                     data:{target_id:target_id,img:img},
                     success:function(data){
-                        alert('ok');
+                        location.reload();
+
                     },
                     error:function(){alert('获取数据失败7！')}
                 })
             })
+
+           $('#upload').click(function() {
+               if($("#up_img").val()==""){
+                   alert("请选择一个图片文件,再点击");
+                   return;
+               }
+               $("#uploadForm").ajaxSubmit({
+                   url: '${webRequest.baseUrl}/front/uploadImg',
+                   type: 'POST',
+                   dataType: 'json',
+                   data: $('#uploadForm').serialize(),
+                   beforeSubmit : function() {
+                       alert("正在上传");
+                   },
+                   success: function (data) {
+                       alert('成功上传！');
+
+                       $('#img').attr('src', data.filePath);
+
+
+                   },
+                   error: function () {
+                       alert('获取数据失败12！');
+                   }
+               })
+           })
             $('#saf').click(function(){
                 if($('#tar_title').val()==''){
                     $('#tar_title').css('border-color','red');

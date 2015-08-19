@@ -4,6 +4,7 @@ import grails.converters.JSON
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.multipart.MultipartFile
 
+
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.logging.Logger
@@ -2672,5 +2673,55 @@ class FrontController {
         replymissionTotal=ReplyMission.countByBpunameAndStatus(bpuname,0)
         [replymissionlist:replymission,replymissionTotal:replymissionTotal]
     }
+    def uploadImg(){
+        def rs=[:]
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+//        def companyUserInstance = CompanyUser.get(id)
+        def filePath
+        def fileName
+        def a = params
+        MultipartFile f = request.getFile('file1')
+
+        if(!f.empty) {
+            def date= new Date().getTime()
+            Random random =new Random()
+            def x = random.nextInt(100)
+            def str =f.originalFilename
+            String [] strs = str.split("[.]")
+            fileName=date.toString()+x.toString()+"."+strs[1]
+            def webRootDir = servletContext.getRealPath("/")
+            println webRootDir
+            def userDir = new File(webRootDir, "img/target-img/")
+            userDir.mkdirs()
+            f.transferTo( new File( userDir, fileName))
+            filePath=webRootDir+"img/target-img/"+fileName
+
+            println(filePath)
+            rs.filePath=filePath
+
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+
+        }
+    def selectImg(){
+        def rs = [:]
+        def tid = params.target_id
+        def targetInstance = Target.get(tid)
+        targetInstance.img=params.img
+        rs.target=targetInstance
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+
 }
 
