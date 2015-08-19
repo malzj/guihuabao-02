@@ -586,16 +586,29 @@ class LoginController {
         def bookInstance = new Book(params)
         def  filePath
         def  fileName
-
         MultipartFile f = request.getFile('bookImg')
         if(!f.empty) {
-            fileName=f.getOriginalFilename()
-            filePath="web-app/images/"
-            f.transferTo(new File(filePath+fileName))
-        }
+//            fileName=f.getOriginalFilename()
+//            filePath="web-app/images/"
+//            f.transferTo(new File(filePath+fileName))
+            def date= new Date().getTime()
+            Random random =new Random()
+            def x = random.nextInt(100)
+            def str =f.originalFilename
+            String [] strs = str.split("[.]")
 
 
+            fileName=date.toString()+x.toString()+"."+strs[1]
+//            fileName=f.getOriginalFilename()
+
+            def webRootDir = servletContext.getRealPath("/")
+            println webRootDir
+            def userDir = new File(webRootDir, "/images/")
+            userDir.mkdirs()
+            f.transferTo( new File( userDir, fileName))
+    
         bookInstance.bookImg=fileName
+        }
         if(!bookInstance.save(flush: true)){
             render(view: "bookCreate",model: [bookInstance: bookInstance])
         }

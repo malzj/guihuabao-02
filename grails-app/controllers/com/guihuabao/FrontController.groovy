@@ -4,6 +4,7 @@ import grails.converters.JSON
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.multipart.MultipartFile
 
+
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.logging.Logger
@@ -2053,7 +2054,28 @@ class FrontController {
         flash.message = message(code: 'default.created.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
         redirect(action: "user_target", id: targetInstance.id)
     }
+    //目标保存并分解
+    def targetSaveAndSplit() {
+        def rs = [:]
+        def targetInstance = new Target(params)
+        targetInstance.cid = session.company.id
+        targetInstance.img = '1.png'
+        targetInstance.status = '0'
+        targetInstance.percent = 0
+        targetInstance.dateCreate = new Date()
 
+
+        if (!targetInstance.save(flush: true)) {
+            render(model: [targetInstance: targetInstance])
+            return
+        } else {
+            rs.target = targetInstance
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
     def targetDelete(Long id) {
         def user = session.user
         def company = session.company
@@ -2488,6 +2510,34 @@ class FrontController {
         } else
             render rs as JSON
     }
+    def mcomment(){
+        def rs = [:]
+        def mid = params.mid
+        def mission = Mission.get(mid)
+        if(!mission){
+            rs.msg=false
+        }else {
+            def target = mission.target
+            def replymission=mission.replymission
+//            mission.hasvisited='1'
+            def fzname = com.guihuabao.CompanyUser.findById(target.fzuid).name
+
+            for(def r in replymission){
+                if(r.bpuname==fzname) {
+                    r.status = 1
+                }
+            }
+            rs.mission = mission
+            rs.target = target
+            rs.fzname = fzname
+            rs.replymission=replymission
+
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
     //下属目标
     def xsTarget() {
         def user = session.user
@@ -2617,8 +2667,61 @@ class FrontController {
         def replymissionTotal
         params<<[sort:"date",order: "desc"]
         replymission=ReplyMission.findAllByBpunameAndStatus(bpuname,0,params)
+        for(def r in replymission){
+            r.status=1
+        }
         replymissionTotal=ReplyMission.countByBpunameAndStatus(bpuname,0)
         [replymissionlist:replymission,replymissionTotal:replymissionTotal]
     }
+    def uploadImg(){
+        def rs=[:]
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+//        def companyUserInstance = CompanyUser.get(id)
+        def filePath
+        def fileName
+        def a = params
+        MultipartFile f = request.getFile('file1')
+
+        if(!f.empty) {
+            def date= new Date().getTime()
+            Random random =new Random()
+            def x = random.nextInt(100)
+            def str =f.originalFilename
+            String [] strs = str.split("[.]")
+            fileName=date.toString()+x.toString()+"."+strs[1]
+            def webRootDir = servletContext.getRealPath("/")
+            println webRootDir
+            def userDir = new File(webRootDir, "img/target-img/")
+            userDir.mkdirs()
+            f.transferTo( new File( userDir, fileName))
+            filePath=webRootDir+"img/target-img/"+fileName
+
+            println(filePath)
+            rs.filePath=filePath
+
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+
+        }
+    def selectImg(){
+        def rs = [:]
+        def tid = params.target_id
+        def targetInstance = Target.get(tid)
+        targetInstance.img=params.img
+        rs.target=targetInstance
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+
 }
 
