@@ -14,7 +14,11 @@ class Mission {
     String overtime     //截止时间日
     String overhour     //截止时间时分
     Date dateCreate     //创建时间
+    String hasvisited   //是否已阅读
+    String issubmit     //是否下发
+    String reply        //是否有回复
     static belongsTo = [target:Target]
+    static hasMany = [replymission: ReplyMission]
     static constraints = {
         status(nullable: true)
         percent(nullable:true)
@@ -27,5 +31,8 @@ class Mission {
         overtime(nullable: true)
         overhour(nullable: true)
         dateCreate(nullable: true)
+        hasvisited(nullable:true)
+        issubmit(nullable:true)
+        reply(nullable: true)
     }
 }

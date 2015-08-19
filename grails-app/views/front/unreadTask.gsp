@@ -66,15 +66,15 @@
                         <ul class="e-list fzalltasklist">
                             <g:if test="${unreadTaskInstance}">
                                 <g:each in="${unreadTaskInstance}" status="i" var="taskInfo">
-                                    <li>
+                                    <li data-task-id="${taskInfo.id}" data-task-version="${taskInfo.version}">
                                         <span class="mark <g:if test="${taskInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${taskInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${taskInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${taskInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                         <span class="sn">${i+1}</span>
-                                        <span class="title" data-task-id="${taskInfo.id}">${taskInfo.title}</span>
+                                        <span class="title">${taskInfo.title}</span>
                                         <div class="right">
                                             %{--<span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
                                             %{--<g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
-                                            <span class="hsfinish"><a href="javascript:;" class="taskedit" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
-                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
+                                            %{--<span class="hsfinish"><a href="javascript:;" class="taskedit" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>--}%
+                                            %{--<g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>--}%
                                             <span class="date f-r">${taskInfo.overtime}</span>
                                         </div>
                                     </li>
@@ -102,6 +102,25 @@
                     <a class="copy_icon"></a>
                 </div>
                 <div class="task_content">
+                </div>
+                <g:hiddenField name="taskid" id="taskid" ></g:hiddenField>
+                <g:hiddenField name="version" id="version" ></g:hiddenField>
+                <button id="taskaccept" class="rbtn btn-blue ml25 mt10">接受</button>
+                <div class="discuss clearfix">
+                    <h4>反馈及评论</h4>
+                    <form id="form1">
+                        <g:hiddenField name="id" id="id"></g:hiddenField>
+                        <g:hiddenField name="bpuid" id="bpuid"></g:hiddenField>
+                        <g:hiddenField name="bpuname" id="bpuname"></g:hiddenField>
+                        <g:hiddenField name="puid" id="puid" value="${session.user.id}"></g:hiddenField>
+                        <g:hiddenField name="puname" id="puname" value="${session.user.name}"></g:hiddenField>
+                        <div>
+                            <textarea id="content" name="content"></textarea>
+                        </div>
+                        <a href="javascript:;" id="submit" class="rbtn btn-blue mt25">提交</a>
+                    </form>
+                </div>
+                <div id="reply_container">
                 </div>
             </div>
             <!--任务详情 end-->
@@ -176,18 +195,27 @@
         });
 
         //详情滑动框
-        $(".e-list-group .e-list .title").click(function(){
+        $(".e-list-group .e-list li").click(function(){
             var taskid = $(this).attr("data-task-id");
+            var version = $(this).attr("data-task-version");
+            var fzuid = $(this).attr("data-task-fzuid");
+            var fzname = $(this).attr("data-task-fzname");
+            $("#taskid").val(taskid);
+            $("#version").val(version);
+            $("#id").val(taskid);
+            $("#bpuid").val(fzuid);
+            $("#bpuname").val(fzname);
             $.ajax({
-                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid,
+                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid+'&version='+version,
                 dataType: "jsonp",
                 jsonp: "callback",
                 success: function (data) {
                     // 去渲染界面
                     if(data.msg){
                         var html="";
+                        var html2="";
                         var playstatus
-                        var status = (data.taskInfo.status)?"已完成":"未完成";
+                        var status = (data.taskInfo.status=="1")?"已完成":"未完成";
                         if(data.taskInfo.playstatus==1){
                             playstatus="紧急且重要";
                         }else if(data.taskInfo.playstatus==2){
@@ -205,8 +233,21 @@
                         html+='<div class="task_line"><span>起始日：</span><span>'+data.taskInfo.overtime+'</span></div>';
                         html+='<div class="task_line"><span>紧急程度：</span><span class="font_blue">'+playstatus+'</span></div>';
                         html+='<div class="task_line"><span>任务状态：</span><span class="font_blue">'+status+'</span></div>';
+
+                        $.each(data.replyTask,function(i,val){
+                            html2+='<div class="reply_box"><div class="name">'+val.puname+'&nbsp;回复&nbsp;'+val.bpuname+'</div>'
+                            html2+='<p>'+val.content+'</p>'
+                            html2+='<span>'+val.date+'</span><a href="javascript:;" class="reply" data-info="'+taskid+','+val.puid+','+val.puname+'">回复</a>'
+                            html2+='<div class="shuru"><span>回复&nbsp;'+val.puname+'</span>'
+                            html2+='<div class="rcontainer"></div>'
+                            html2+='</div></div>'
+                        })
                         $("#task .task_content").empty();
+                        $("#reply_container").empty();
                         $("#task .task_content").append(html);
+                        $("#reply_container").append(html2);
+                        replyclick();
+
                         $("#task").slideLeftShow(400);
                     }else{
                         alert("信息读取失败！");
@@ -215,6 +256,88 @@
             })
         });
 
+        function replyclick() {
+
+            $(".reply").on("click", function () {
+                var info = $(this).attr("data-info")
+                var arr = info.split(",")
+                $(".shuru .rcontainer").empty()
+                $(".shuru").hide()
+                var html2 = ""
+                html2+='<form id="form2">'
+                html2+='<input type="hidden" name="id" value="'+arr[0]+'" />'
+                html2+='<input type="hidden" name="bpuid" value="'+arr[1]+'" />'
+                html2+='<input type="hidden" name="bpuname" value="'+arr[2]+'" />'
+                html2+='<input type="hidden" name="puid" value="${session.user.id}" />'
+                html2+='<input type="hidden" name="puname" value="${session.user.name}" />'
+                html2+='<div class="mt10"><textarea name="content"></textarea></div>'
+                html2+='<a class="huifu fbtn btn-white mt10">回复</a><a class="quxiao fbtn btn-white mt10 ml20">取消</a>'
+                html2+='</form>'
+                $(this).next().find('.rcontainer').html(html2)
+                $(this).next().slideDown()
+                replysubmit();
+            })
+
+        }
+
+        function replysubmit(){
+            $(".quxiao").on("click",function(){
+                $(this).parent().parent().parent().slideUp();
+                $(".shuru .rcontainer").empty()
+            })
+            $(".huifu").click(function(){
+                $.ajax({
+                    url: '${webRequest.baseUrl}/front/replyTaskSave',
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    type: "POST",
+                    data: $("#form2").serialize(),
+                    success: function(data) {
+                        if(data.msg){
+                            alert("回复成功！")
+                        }else{
+                            alert("回复失败！")
+                        }
+                    }
+                })
+            })
+        }
+
+        $("#submit").click(function(){
+            $.ajax({
+                url: '${webRequest.baseUrl}/front/replyTaskSave',
+                dataType: "jsonp",
+                jsonp: "callback",
+                type: "POST",
+                data: $("#form1").serialize(),
+                success: function(data) {
+                    if(data.msg){
+                        alert("回复成功！")
+                    }else{
+                        alert("回复失败！")
+                    }
+                }
+            })
+        })
+
+        $("#taskaccept").click(function(){
+            var taskid = $("#taskid").val();
+            var version = $("#version").val();
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid+'&version='+version+'&accept=1',
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (data) {
+                    if(data.msg){
+                        alert("您已接受任务!")
+                        window.location.reload()
+                    }else{
+                        alert("接受任务失败!")
+                    }
+                }
+            })
+        })
+        
         $(".taskedit").click(function(){
             var id=$(this).attr("data-id");
             var version=$(this).attr("data-version");

@@ -25,7 +25,6 @@
                     <span>未读任务</span>
                     <em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0)}</em>
                 </g:link>
-
             </li>
             <li class="sub-menu dcjq-parent-li">
                 <g:link action="messageTargetOver" class="dcjq-parent" >
@@ -37,9 +36,15 @@
             <li class="sub-menu dcjq-parent-li">
                 <g:link action="messageTaskOver" class="dcjq-parent">
                     <span>任务到期提醒</span>
-                    <em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,0)}</em>
+                    <em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,2,0)}</em>
                 </g:link>
 
+            </li>
+            <li class="sub-menu dcjq-parent-li">
+                <g:link action="messageTaskF" >
+                    <span>完成任务</span>
+                    <em class="f-r">${com.guihuabao.Task.countByCidAndFzuidAndLookstatusAndStatusAndRemindstatus(session.company.id,session.user.id,2,1,1)}</em>
+                </g:link>
             </li>
         </ul>
         <!-- sidebar menu end-->

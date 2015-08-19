@@ -36,6 +36,7 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
+    <div style="height:110px;"></div>
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
@@ -53,10 +54,10 @@
                             <ul class="e-list fzalltasklist">
                                 <g:if test="${messageTargetInstance}">
                                     <g:each in="${messageTargetInstance}" status="i" var="messageTargetInfo">
-                                        <li>
+                                        <li data-task-id="${messageTargetInfo.id}">
                                             <span class="mark"></span>
                                             <span class="sn">${i+1}</span>
-                                            <span class="title" data-task-id="${messageTargetInfo.id}">${messageTargetInfo.title}</span>
+                                            <span class="title">${messageTargetInfo.title}</span>
                                             <div class="right">
                                                 <span class="date f-r">${messageTargetInfo.dateCreate.format("yyyy-MM-dd")}</span>
                                             </div>
@@ -162,7 +163,7 @@
         });
 
         //详情滑动框
-        $(".e-list-group .e-list .title").click(function(){
+        $(".e-list-group .e-list li").click(function(){
             var taskid = $(this).attr("data-task-id");
             $.ajax({
                 url:'${webRequest.baseUrl}/front/taskShow?id='+taskid,
@@ -173,7 +174,7 @@
                     if(data.msg){
                         var html="";
                         var playstatus
-                        var status = (data.taskInfo.status)?"已完成":"未完成";
+                        var status = (data.taskInfo.status=="1")?"已完成":"未完成";
                         if(data.taskInfo.playstatus==1){
                             playstatus="紧急且重要";
                         }else if(data.taskInfo.playstatus==2){

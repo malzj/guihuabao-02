@@ -47,6 +47,23 @@
         #select_img img{margin-right:40px;margin-bottom:40px;}
         #select_img a{cursor:pointer;}
         #select_img .upload{margin-left:20px;line-height:44px;}
+        .discuss{padding:10px 30px;}
+        .discuss h4,.discuss span {
+            font-size: 12px;
+            margin: 0px;
+            padding: 10px 25px;
+            background: transparent url("../img/dis_icon.png") no-repeat scroll 0% -27%;
+        }
+        .discuss span {cursor: pointer;}
+        .discuss textarea {
+            width: 100%;
+            height: 130px;
+            padding: 10px;
+            box-shadow: 0px 6px 5px -3px #D5D5D2 inset;
+            background-color: #FFF;
+            border: 1px solid #D0D0D0;
+        }
+        .sub li { background: none;}
     </style>
 </head>
 
@@ -93,7 +110,7 @@
                             <div class="tar_whole f-l">
                                 <input type="hidden" value="${targetInfo.id}"  />
                                 <div class="tar_title clearfix" >
-                                    <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
+                                    <a class="select_img" ><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
                                     <div class="f-l" style="margin-left:10px;">
 
                                         <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${targetInfo.title}</h2>
@@ -102,7 +119,7 @@
                                     <div class="f-r">
                                         <a href="#" style="color:#40bdf5;font-size:20px;"  onclick="stop_Pro(event)"><i class="fa fa-edit tar_edit" title="目标分解"></i></a>
                                         <input type="hidden" value="${targetInfo.id}"  />
-                                        <g:link controller="front" action="targetDelete" id="${targetInfo.id}" style="color:#40bdf5;font-size:20px;" onclick="del();stop_Pro(event)"><i class="fa fa-trash-o tar_delete" title="删除目标"></i></g:link>
+                                        <g:link controller="front" action="targetDelete" id="${targetInfo.id}" style="color:#40bdf5;font-size:20px;" onclick="confirm('确定删除？');stop_Pro(event)"><i class="fa fa-trash-o tar_delete" title="删除目标"></i></g:link>
                                     </div>
                                 </div>
 
@@ -118,7 +135,7 @@
                             </g:each>
 
                             <span style="display: none;" id="var_all"></span>
-
+                            <span style="display: none;" id="all_var"></span>
 
                         </div>
 
@@ -152,12 +169,12 @@
             <span><i class="yh"></i>添加新目标</span>
             <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
         </header>
-        <g:form url="[controller:'front',action:'targetSave']">
+        <g:form url="[controller:'front',action:'targetSave']" method="post">
         <ul>
             <li class="clearfix">
                 <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
                 <div class="f-l">
-                    <input type="text" name="title" placeholder="添加目标名称" style="margin-top: 5px;width:690px;" class="nr" title="该字段不能为空！" id="tar_title"/>
+                    <input type="text" name="title" placeholder="添加目标名称" style="margin-top: 5px;width:689px;" class="nr" title="该字段不能为空！" id="tar_title"/>
                 </div>
 
             </li>
@@ -207,10 +224,11 @@
 
         </ul>
 
-           <a style="cursor: pointer"> <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;margin:30px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="r_per">40</span>%)</span></h2></a>
+           <a style="cursor: pointer"> <h2  id="newmission" style="padding:0;margin: 0 20px 0 0;font-size: 20px;margin:30px;" ><i class="fa fa-plus-circle" style="margin-right: 10px;"></i>新建任务<span>(剩余任务权重<span id="r_per">40</span>%)</span></h2><span id="rp" style="display:none"></span></a>
+           <div id="issubmit" style="margin-left: 30px;color:#03a9f4;"></div>
 
         <div class="clearfix" style="margin:40px;">
-            <input type="submit" value="提交" class="f-r button"  disabled />
+            <input type="submit" value="提交" class="f-r button"  id="submit"  />
         </div>
     </div>
 </div>
@@ -297,7 +315,7 @@
                     <tr>
                         <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
                         <td>
-                            进行中 <input name="status" value="0" readonly style="border:none;" id="newmission_status" type="hidden" class="nr" title="该字段不能为空！"/>
+                            进行中 <input name="status" value="0"  style="border:none;" type="hidden" id="newmission_status"  title="该字段不能为空！"/>
 
                         </td>
                     </tr>
@@ -408,6 +426,35 @@
     </div>
 </div>
 <!--目标详情 end-->
+<!--评论及反馈 start-->
+<div class="passwordedit" id="task" style="width:100%;background-color:transparent;position:absolute;overflow: scroll;z-index:2000">
+    <div class="m_box" style="width:804px;overflow: scroll;">
+        <header class="panel-heading" style="padding:10px 28px;">
+
+            <span>评论及反馈<i class="fa fa-print" style="margin:0 10px;color:#03a9f4;"></i><i class="fa fa-file-text" style="color:#03a9f4;"></i></span>
+            <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
+        </header>
+        %{--<g:hiddenField name="taskid" id="taskid" ></g:hiddenField>--}%
+        %{--<g:hiddenField name="version" id="version" ></g:hiddenField>--}%
+        <div class="discuss clearfix">
+            <h4>反馈及评论</h4>
+            <form id="form1">
+
+                <g:hiddenField name="bpuid" id="bpuid"></g:hiddenField>
+                <g:hiddenField name="bpuname" id="bpuname"></g:hiddenField>
+                <g:hiddenField name="puid" id="puid" value="${session.user.id}"></g:hiddenField>
+                <g:hiddenField name="puname" id="puname" value="${session.user.name}"></g:hiddenField>
+                <div>
+                    <textarea id="content1" name="content"></textarea>
+                </div>
+                <a href="javascript:;" id="submit1" class="rbtn btn-blue mt25">提交</a>
+            </form>
+        </div>
+        <div id="reply_container">
+        </div>
+    </div>
+</div>
+<!--评论及反馈 end-->
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
     <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
@@ -477,7 +524,7 @@
             $(".tar_edit").click(function(){
                 var tid=$(this).parent().next().val();
                 $('#var_all').html(tid);
-
+                $('#submit').attr('disabled',true);
                 var html='';
                 $.ajax( {
                     url:'${webRequest.baseUrl}/front/tshow',
@@ -487,7 +534,7 @@
                     success:function(data){
 
                         var target=data.target;
-
+                        var issubmit=(target.issubmit=='1')?'目标已下发！':'该目标未下发！';
                         var missionlist=data.mission;
 
                         for(var i=0;i<missionlist.length;i++){
@@ -496,7 +543,7 @@
                             '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
                             '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
                                     '<a href="javascript:;"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit" ></i></a>'+
-                                    '<span style="display:none;">'+missionlist[i].id+'</span>'+
+                                    '<span style="display:none;" class="mis_id">'+missionlist[i].id+'</span>'+
                                      '<a href="#" style="font-size:20px;" ><i class="fa fa-trash-o mission_delete"></i></a>'+
                             '</div>'+
                             '</li>'+
@@ -529,6 +576,10 @@
                         }
 
                         $("#tar_fj ul").append(html);
+                        $('#issubmit').html(issubmit);
+                        if(target.issubmit=='1'){
+                            $('#submit').attr('disabled',true);
+                        }
                         var percents=$('#tar_fj input[name="percent"]');
 
                         var sum_per=0;
@@ -539,6 +590,12 @@
 
                         var r_per=100-sum_per;
                         $('#r_per').html(r_per);
+                        if(r_per==0){
+                            $('#submit').attr('disabled',false);
+                        }
+                        if(target.issubmit=='1'){
+                            $('#submit').attr('disabled',true);
+                        }
                         editclick();
                     },error:function(){alert("获取数据失败1");}});
 
@@ -550,8 +607,11 @@
 
 
             //编辑任务
-            function editclick() {
+           function editclick() {
+
                 $(".mission_edit").click(function () {
+                    var p=parseInt($('#r_per').html());
+                    alert(p);
 
                     var mid = $(this).parent().next().html();
 
@@ -574,6 +634,10 @@
                             $('#mission_status_edit').find('option[value='+mission.status+']').attr('selected',true);
                             $('#mid').val(mission.id);
                             $('#mission_edit_detail').css('display', 'block');
+                            p+=mission.percent;
+                            alert(p);
+                            $('#rp').html(p);
+                            editclick();
                         },
                         error: function () {
                             alert("获取数据失败2");
@@ -585,65 +649,69 @@
 
                 //提交任务更新
                 $('#save_mission_edit').click(function(){
-                    var z= /^[0-9]*$/;
-                    if($('#mission_title_edit').val()==''){
-                        $('#mission_title_edit').css('border-color','red');
-                        return false;
-                    }else{
-                        $('#mission_title_edit').css('border-color','#d2d2d2');
-                    }
-                    if($('#mission_content_edit').val()==''){
-                        $('#mission_content_edit').css('border-color','red');
-                        return false;
-                    }else{
-                        $('#mission_content_edit').css('border-color','#d2d2d2');
-                    }
-                    if($('#playuid_edit').val()==''){
-                        $('#playuid_edit').css('border-color','red');
-                        return false;
-                    }else{
-                        $('#playuid_edit').css('border-color','#d2d2d2');
-                    }
-                    if($('.zhxr').html()==''){
-                        $('.zhxr').next().css('border','1px solid red');
-                        return false
-                    }else{
-                        $('.zhxr').next().css('border','none');
-                    }
-                    if($('#startdate_edit').val()==''){
-                        $('#startdate_edit').css('border-color','red');
-                        return false;
-                    }else{
-                        $('#startdate_edit').css('border-color','#d2d2d2');
-                    }
-                    if($('#enddate_edit').val()==''){
-                        $('#enddate_edit').css('border-color','red');
-                        return false;
-                    }else{
-                        $('#enddate_edit').css('border-color','#d2d2d2');
-                    }
-                    if($('#mission_percent_edit').val()==''){
 
-                        $('#mission_percent_edit').css('border','1px solid red');
-                        return false;
-                    }else if(!z.test($('#newmission_percent_edit').val())){
-                        $('#newmission_percent_edit').css('border','1px solid red');
-
-                        return false
-                    }else{
-                        $('#mission_percent_edit').css('border','none');
-                    }
+//                    var z= /^[0-9]*$/;
+//                    if($('#mission_title_edit').val()==''){
+//                        $('#mission_title_edit').css('border-color','red');
+//                        return false;
+//                    }else{
+//                        $('#mission_title_edit').css('border-color','#d2d2d2');
+//                    }
+//                    if($('#mission_content_edit').val()==''){
+//                        $('#mission_content_edit').css('border-color','red');
+//                        return false;
+//                    }else{
+//                        $('#mission_content_edit').css('border-color','#d2d2d2');
+//                    }
+//                    if($('#playuid_edit').val()==''){
+//                        $('#playuid_edit').css('border-color','red');
+//                        return false;
+//                    }else{
+//                        $('#playuid_edit').css('border-color','#d2d2d2');
+//                    }
+//                    if($('.zhxr').html()==''){
+//                        $('.zhxr').next().css('border','1px solid red');
+//                        return false
+//                    }else{
+//                        $('.zhxr').next().css('border','none');
+//                    }
+//                    if($('#startdate_edit').val()==''){
+//                        $('#startdate_edit').css('border-color','red');
+//                        return false;
+//                    }else{
+//                        $('#startdate_edit').css('border-color','#d2d2d2');
+//                    }
+//                    if($('#enddate_edit').val()==''){
+//                        $('#enddate_edit').css('border-color','red');
+//                        return false;
+//                    }else{
+//                        $('#enddate_edit').css('border-color','#d2d2d2');
+//                    }
+//                    if($('#mission_percent_edit').val()==''){
+//
+//                        $('#mission_percent_edit').css('border','1px solid red');
+//                        return false;
+//                    }else if(!z.test($('#newmission_percent_edit').val())){
+//                        $('#newmission_percent_edit').css('border','1px solid red');
+//
+//                        return false
+//                    }else{
+//                        $('#mission_percent_edit').css('border','none');
+//                    }
 
                     var mid=$(this).prev().val();
+
                     var title=$('#mission_title_edit').val();
                     var content=$('#mission_content_edit').val();
                     var playbid=$('#playbid_edit').val();
                     var playuid=$('#playuid_edit').val();
-                    var playname=$('#playname_edit').val();
+                    var playname=$('.zhxr').html();
+
                     var begintime=$('#startdate_edit').val();
                     var overtime=$('#enddate_edit').val();
                     var percent=$('#mission_percent_edit').val();
-                    var status=$('#mission_status_edit').val();
+                    var status=$('#mission_status_edit option:selected').val();
+
                     var html="";
 
                     $.ajax({
@@ -663,7 +731,7 @@
                                 var status=(missionlist[i].status=='1')?'已完成':'进行中';
                                 html+=' <li class="clearfix">'+
                                         '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
-                                        '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
+                                        '<div class="f-l on" style="font-size: 20px;margin-top:7px;">'+
                                         '<a href="javascript:;"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit" ></i></a>'+
                                         '<span style="display:none;">'+missionlist[i].id+'</span>'+
                                         '<a href="#" style="font-size:20px;" ><i class="fa fa-trash-o mission_delete"></i></a>'+
@@ -697,25 +765,38 @@
 
                             }
                             $("#tar_fj ul").append(html);
-
-                            var r_per=100-data.target.percent
-                            $('#r_per').html(r_per);
+                            var p=parseInt($('#rp').html());
+                            p-=parseInt(percent);
+                            $('#r_per').html(p);
+                            if(r_per==0){
+                                $('#submit').attr('disabled',false);
+                            }
+                            if(target.issubmit=='1'){
+                                $('#submit').attr('disabled',true);
+                            }
+//                            var r_per=100-data.target.percent
+//                            $('#r_per').html(r_per);
+//                            if(r_per==0){
+//                                $('#submit').attr('disabled',false);
+//                            }
+//                            if(target.issubmit=='1'){
+//                                $('#submit').attr('disabled',true);
+//                            }
                             $('#mission_edit_detail').hide();
-
+                            editclick();
                         },
                         error:function(){
                             alert("获取数据失败3");
                         }
                     })
-                    editclick();
+
                 })
 
 
                 //删除任务
                 $(".mission_delete").click(function () {
+
                     if (confirm('确定删除？')) {
-
-
                     var mid = $(this).parent().prev().html();
                     var This = $(this)
                     $.ajax({
@@ -742,6 +823,10 @@
 
                             var r_per = 100 - sum_per;
                             $('#r_per').html(r_per);
+                            if(r_per==0){
+                                $('#submit').attr('disabled',false);
+                            }
+                            editclick();
                         },
                         error: function () {
                             alert("获取数据失败4");
@@ -752,6 +837,7 @@
                 }else{
                         return false;
                     }
+
                 })
             }
 
@@ -819,7 +905,7 @@
                         success: function (data) {
 
                             $('#detail_title').html(data.target.title);
-                            $('#detail_content').html (data.target.content);
+                            $('#detail_content').html(data.target.content);
                             $('#detail_fz').html(data.fzname )
                             $('#detail_btime').html ( data.target.begintime);
                             $('#detail_etime').html (data.target.etime);
@@ -829,8 +915,16 @@
                             for(var i=0;i<mission.length;i++){
 
                                 var s=(mission[i].status=='1')?'完成':'进行中';
+                                var hasvisited=(mission[i].hasvisited=='1')?'已阅读':'未读';
+                                if(mission[i].hasvisited=='1'){
+                                    hasvisited='已阅读';
+                                }else if(mission[i].hasvisited=='0'){
+                                    hasvisited='未读';
+                                }else{
+                                    hasvisited='接受';
+                                }
                             tar_mission+='     <li class="clearfix">'+
-                            ' <h2 style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务'+(i+1)+'：<span style="color:#797979;">'+mission[i].title+'</span></h2>'+
+                            ' <h2 class="clearfix" style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务'+(i+1)+'：<span style="color:#797979;">'+mission[i].title+'</span><span style="font-size:20px;margin-left: 16px;">'+hasvisited+'</span><div class="discuss f-r comment1"><span class="id" style="display:none;">'+mission[i].id+'</span><span>反馈及评论</span></div></h2>'+
 
                             '<table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">'+
                             '<tr>'+
@@ -861,10 +955,14 @@
 
                            }
                             $("#tar_detail .rwfj").append(tar_mission);
+                            com();
                             }
-                        ,error:function(){alert("获取数据失败5")}})
+                        ,error:function(){
+                            alert("获取数据失败5")
+                        }
+                    })
                             $("#tar_detail").css("display","block");
-                            })
+                })
 
 
             //执行人选择部分
@@ -905,7 +1003,7 @@
             );
 
 
-            context.init({preventDoubleContext: false});
+//            context.init({preventDoubleContext: false});
 
             context.attach('#playman_edit', [
                 <g:if test=" ${session.user.pid==1}">
@@ -993,6 +1091,7 @@
                     }
 
                     $('#target_id').val($('#var_all').html());
+
                     var target_id=$('#target_id').val();
                     var title=$('#newmission_title').val();
                     var content=$('#newmission_content').val();
@@ -1004,19 +1103,21 @@
                     var percent=$('#newmission_percent').val();
                     var status=$('#newmission_status').val();
 
+
                     $.ajax({
                         url:'${webRequest.baseUrl}/front/missionSave',
                         type:'post',
                         dataType:'json',
                         data:{target_id:target_id,title:title,content:content,playname:playname,playbid:playbid,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent,status:status},
                         success:function(data){
-
+                            var target=data.target;
                             var status=(data.mission.status=='1')?'已完成':'进行中';
                             var html=' <li class="clearfix">'+
                                     '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(data.target.mission.length)+'：<span style="color:#797979;">'+data.mission.title+'</span></h2>'+
                                     '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
-                                    '<a href="#"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit"></i></a>'+
-                                    '<a href="#" style="font-size:20px;"><i class="fa fa-trash-o"></i></a>'+
+                                    '<a href="#"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit"></i></a>'+
+                                    '<span style="display:none;">'+data.mission.id+'</span>'+
+                                    '<a href="#" style="font-size:20px;"><i class="fa fa-trash-o mission_delete"></i></a>'+
                                     '</div>'+
                                     '</li>'+
                                     '<li class="clearfix">'+
@@ -1057,13 +1158,39 @@
                             var r_per=100-sum_per;
 
                             $('#r_per').html(r_per);
+                            if(r_per==0){
+                                $('#submit').attr('disabled',false);
+                            }
+                            if(target.issubmit=='1'){
+                                $('#submit').attr('disabled',true);
+                            }
                             $("#newmissiondetail").css('display','none');
-
+                            editclick();
                         },
                         error:function(){alert("获取数据失败6")}
                     })
-                    editclick();
+
                 });
+
+            $('#submit').click(function(){
+
+                var tid= $('#var_all').html();
+
+
+                $.ajax({
+                    url:'${webRequest.baseUrl}/front/issubmit',
+                    type:'post',
+                    dataType:'json',
+                    data:{target_id:tid},
+                    success:function(data){
+                        alert("下发任务成功！");
+                        $('#tar_fj').css('display','none');
+
+                    },
+                    error:function(){alert('获取数据失败9！')}
+                })
+            })
+
             $('.select_img').click(function() {
                 $('#select_img').css('display', 'block');
                 $('#select_img .ori img').click(function () {
@@ -1141,6 +1268,7 @@
                         $('#var_all').html(data.target.id);
 
                         $('#r_per').html(100);
+                        $('#submit').attr('disabled',true);
                     },
                     error:function(){alert('获取数据失败8！')}
                 })
@@ -1171,6 +1299,143 @@
                 }else{
                     $('#enddate').css('border-color','#d2d2d2');
                 }
+            })
+
+
+
+
+
+            //任务评论及反馈
+            function com() {
+                $('.comment1').click(function () {
+                    var mid=$(this).find('span:first-child').html();
+                    $('#all_var').html(mid);
+                    $.ajax({
+                        url:'${webRequest.baseUrl}/front/mhasvisited?mid='+mid,
+                        dataType: "json",
+                        type:'post',
+                        success: function (data) {
+                            // 去渲染界面
+                            var html2="";
+
+                            var fzuid=data.target.fzuid;
+
+                            $('#bpuid').val(data.mission.playuid);
+                            $('#bpuname').val(data.mission.playname);
+                            $.each(data.replymission,function(i,val){
+                                html2+='<div class="reply_box"><div class="name">'+val.puname+'&nbsp;回复&nbsp;'+val.bpuname+'</div>'
+                                html2+='<p>'+val.content+'</p>'
+                                html2+='<span>'+val.date+'</span><a href="javascript:;" class="reply" data-info="'+val.puid+','+val.puname+'">回复</a>'
+                                html2+='<div class="shuru"><span>回复&nbsp;'+val.puname+'</span>'
+                                html2+='<div class="rcontainer"></div>'
+                                html2+='</div></div>'
+                            })
+                            $("#task .task_content").empty();
+                            $("#reply_container").empty();
+
+                            $("#reply_container").append(html2);
+                            $('#task').css('display', 'block');
+                            replyclick();
+
+                        },
+                        error:function() {
+
+                            alert("信息读取失败！");
+
+                        }
+
+                    })
+                });
+                $('#task .close').click(function(){
+                   $('#content1').val('');
+                    $('#task').css('display','none');
+                })
+            }
+
+            function replyclick() {
+
+                $(".reply").on("click", function () {
+                    var info = $(this).attr("data-info")
+                    var arr = info.split(",")
+                    $(".shuru .rcontainer").empty()
+                    $(".shuru").hide()
+                    var html2 = ""
+                    html2+='<form id="form2">'
+//                html2+='<input type="hidden" name="id" value="'+arr[0]+'" />'
+                    html2+='<input type="hidden" name="bpuid" value="'+arr[0]+'" />'
+                    html2+='<input type="hidden" name="bpuname" value="'+arr[1]+'" />'
+                    html2+='<input type="hidden" name="puid" value="${session.user.id}" />'
+                    html2+='<input type="hidden" name="puname" value="${session.user.name}" />'
+                    html2+='<div class="mt10"><textarea name="content"></textarea></div>'
+                    html2+='<a class="huifu fbtn btn-white mt10">回复</a><a class="quxiao fbtn btn-white mt10 ml20">取消</a>'
+                    html2+='</form>'
+                    $(this).next().find('.rcontainer').html(html2)
+                    $(this).next().slideDown()
+                    replysubmit();
+                })
+
+            }
+            function replysubmit() {
+                $(".quxiao").on("click", function () {
+                    $(this).parent().parent().parent().slideUp();
+                    $(".shuru .rcontainer").empty()
+                })
+                $(".huifu").click(function () {
+
+                    var mid = $('#all_var').html();
+
+                    var html2 = '';
+                    $.ajax({
+                        url: '${webRequest.baseUrl}/front/replyMissionSave?mid=' + mid + '',
+                        dataType: "json",
+                        type: "POST",
+                        data: $("#form2").serialize(),
+                        success: function (data) {
+                            if (data.msg) {
+                                var re = data.replymission;
+                                alert("回复成功！");
+                                html2 += '<div class="reply_box"><div class="name">' + re.puname + '&nbsp;回复&nbsp;' + re.bpuname + '</div>'
+                                html2 += '<p>' + re.content + '</p>'
+                                html2 += '<span>' + re.date + '</span><a href="javascript:;" class="reply" data-info="' + re.puid + ',' + re.puname + '">回复</a>'
+                                html2 += '<div class="shuru"><span>回复&nbsp;' + re.puname + '</span>'
+                                html2 += '<div class="rcontainer"></div>'
+                                html2 += '</div></div>'
+                                $("#reply_container").prepend(html2);
+                                $('.shuru').slideUp()
+                            } else {
+                                alert("回复失败！")
+                            }
+                            replyclick();
+                        }
+                    })
+                })
+            }
+            $("#submit1").click(function(){
+                var mid=$('#all_var').html();
+                var html2='';
+                $.ajax({
+                    url: '${webRequest.baseUrl}/front/replyMissionSave?mid='+mid+'',
+                    dataType: "json",
+                    type: "POST",
+                    data: $("#form1").serialize(),
+                    success: function(data) {
+                        if(data.msg){
+                            var re=data.replymission;
+                            alert("回复成功！");
+                            html2+='<div class="reply_box"><div class="name">'+re.puname+'&nbsp;回复&nbsp;'+re.bpuname+'</div>'
+                            html2+='<p>'+re.content+'</p>'
+                            html2+='<span>'+re.date+'</span><a href="javascript:;" class="reply" data-info="'+re.puid+','+re.puname+'">回复</a>'
+                            html2+='<div class="shuru"><span>回复&nbsp;'+re.puname+'</span>'
+                            html2+='<div class="rcontainer"></div>'
+                            html2+='</div></div>'
+                            $('#content1').val('');
+                            $("#reply_container").prepend(html2);
+                        }else{
+                            alert("回复失败！")
+                        }
+                        replyclick();
+                    }
+                })
             })
             })
 

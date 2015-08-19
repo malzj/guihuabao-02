@@ -40,26 +40,44 @@
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
-        <g:render template="messagesiderbar" />
+        <div class="col-xs-3" style="height:100%"></div>
+        <g:render template="target_sider" />
         <!--sidebar end-->
         <!--main content start-->
-        <section id="main-content" class="col-xs-10" style="padding-left: 0;">
+        <section id="main-content" class="col-xs-9" style="padding-left: 0;">
             <section class="wrapper">
                 <div class="col-tb">
                     <div class="col-cell">
                         <div class="toolkit">
-                            <span>未读任务</span>
+                            <span>参与的任务</span>
+                            <div class="shaixuan">
+                                <a class="task-order">筛选<i class="fa fa-caret-down"></i></a>
+                                <ul>
+
+                                    <g:link action="join_hasfinished_mission" params="[selected: 1]">按任务到期时间</g:link>
+                                </li>
+                                    <li>
+                                        <g:link action="join_hasfinished_mission" params="[selected: 2]">按任务创建时间</g:link>
+                                    </li>
+
+                                </ul>
+                            </div>
                         </div>
                         <div class="e-list-group">
-                            <ul class="e-list fzalltasklist">
-                                <g:if test="${messageTaskInstance}">
-                                    <g:each in="${messageTaskInstance}" status="i" var="messageTaskInfo">
-                                        <li data-task-id="${messageTaskInfo.id}">
-                                            <span class="mark"></span>
+                            <ul class="e-list">
+                                <g:if test="${missionInstance}">
+                                    <g:each in="${missionInstance}" status="i" var="missionInfo">
+                                        <li class="m_all">
+                                            <span style="display:none">${missionInfo.id}</span>
                                             <span class="sn">${i+1}</span>
-                                            <span class="title">${messageTaskInfo.title}</span>
+                                            <span class="title" data-task-id="${missionInfo.id}">${missionInfo.title}</span>
+                                            <span class="status"><g:if test="${missionInfo.status=="1"}">已完成</g:if><g:else>未完成</g:else></span>
                                             <div class="right">
-                                                <span class="date f-r">${messageTaskInfo.dateCreate.format("yyyy-MM-dd")}</span>
+                                                %{--<span class="hsfinish"><g:link action="taskUpdate" id="${missionInfo.id}" params="[version: missionInfo.version]"><i class="fa <g:if test="${missionInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
+                                                %{--<g:if test="${missionInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${missionInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
+
+                                                %{--<g:if test="${missionInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${missionInfo.id}" data-version="${missionInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>--}%
+                                                <span class="date f-r">${missionInfo.overtime}</span>
                                             </div>
                                         </li>
                                     </g:each>
@@ -69,17 +87,15 @@
                                     <li><span class="mark"></span>没有任务！</li>
                                 </g:else>
                             </ul>
-
                         </div>
                         <div class="pagination">
-                            <g:paginate total="${messageTaskInstanceTotal}" />
+                            <g:paginate total="${missionInstanceTotal}" params="[selected: selected]" />
                         </div>
                     </div>
-                    <div class="col-cell bfb" style="width:340px;">
-                    </div>
+
                 </div>
                 <!--任务详情 start-->
-                <div id="task" style="display: none">
+                <div id="task" style="display: none ;z-index:1000;">
                     <div class="task_hearder">
                         <div class="task_hearder_title">
                             <span><i class="yh"></i>任务详情</span>
@@ -139,10 +155,28 @@
 <script src="${resource(dir: 'js', file: 'slidelefthideshow.js')}"></script>
 
 <script type="text/javascript">
+    %{--var Script = function () {--}%
+    %{--var doughnutData = [--}%
+    %{--{--}%
+    %{--value: ${infos.yq},//延期任务--}%
+    %{--color:"#FF7F50"--}%
+    %{--},--}%
+    %{--{--}%
+    %{--value: ${infos.unfinished},//未完成数--}%
+    %{--color:"#87CEFA"--}%
+    %{--},--}%
+    %{--{--}%
+    %{--value : ${infos.finished},//已完成数--}%
+    %{--color : "#32CD32"--}%
+    %{--}--}%
+    %{--];--}%
+    %{--new Chart(document.getElementById("doughnut").getContext("2d")).Doughnut(doughnutData);--}%
+    %{--}();--}%
+
     $(function(){
-        $("#addrenwu").click(function(){
-            $(".popup_box").css("display","block");
-        });
+//        $("#addrenwu").click(function(){
+//            $(".popup_box").css("display","block");
+//        });
         $(".close").click(function(){
             $(".popup_box").css("display","none");
         });
@@ -163,61 +197,77 @@
         });
 
         //详情滑动框
-        $(".e-list-group .e-list li").click(function(){
-            var taskid = $(this).attr("data-task-id");
+        $(".m_all").click(function(){
+            var mid = $(this).find('span:first').html();
+
             $.ajax({
-                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid,
-                dataType: "jsonp",
-                jsonp: "callback",
+                url:'${webRequest.baseUrl}/front/mhasvisited?mid='+mid,
+                dataType: "json",
+                type:'post',
                 success: function (data) {
                     // 去渲染界面
-                    if(data.msg){
-                        var html="";
-                        var playstatus
-                        var status = (data.taskInfo.status=="1")?"已完成":"未完成";
-                        if(data.taskInfo.playstatus==1){
-                            playstatus="紧急且重要";
-                        }else if(data.taskInfo.playstatus==2){
-                            playstatus=" 紧急不重要";
-                        }else if(data.taskInfo.playstatus==3){
-                            playstatus=" 重要不紧急";
-                        }else if(data.taskInfo.playstatus==4){
-                            playstatus=" 不重要不紧急";
-                        }
-                        html+='<div class="task_line"><span class="title">'+data.taskInfo.title+'</span></div>';
-                        html+='<div class="task_line"><span class="content">'+data.taskInfo.content+'</span></div>';
-                        html+='<div class="task_line"><span>指派人：</span><span class="font_blue">'+data.taskInfo.fzname+'</span></div>';
-                        html+='<div class="task_line"><span>执行人：</span><span class="font_blue">'+data.taskInfo.playname+'</span></div>';
-                        html+='<div class="task_line"><span>起始日：</span><span>'+data.taskInfo.bigentime+'</span></div>';
-                        html+='<div class="task_line"><span>起始日：</span><span>'+data.taskInfo.overtime+'</span></div>';
-                        html+='<div class="task_line"><span>紧急程度：</span><span class="font_blue">'+playstatus+'</span></div>';
-                        html+='<div class="task_line"><span>任务状态：</span><span class="font_blue">'+status+'</span></div>';
-                        $("#task .task_content").empty();
-                        $("#task .task_content").append(html);
-                        $("#task").slideLeftShow(400);
-                    }else{
-                        alert("信息读取失败！");
-                    }
+
+                    var html="";
+                    var status = (data.mission.status=='1')?"已完成":"进行中";
+                    var fzuid=data.target.fzuid;
+                    html+='<div class="task_line"><span class="title">'+data.mission.title+'</span></div>';
+                    html+='<div class="task_line"><span class="content">'+data.mission.content+'</span></div>';
+                    html+='<div class="task_line"><span>指派人：</span><span class="font_blue">'+data.fzname+'</span></div>';
+                    html+='<div class="task_line"><span>执行人：</span><span class="font_blue">'+data.mission.playname+'</span></div>';
+                    html+='<div class="task_line"><span>起始日：</span><span>'+data.mission.begintime+'</span></div>';
+                    html+='<div class="task_line"><span>终止日：</span><span>'+data.mission.overtime+'</span></div>';
+
+                    html+='<div class="task_line"><span>任务状态：</span><span class="font_blue">'+status+'</span></div>';
+                    $("#task .task_content").empty();
+                    $("#task .task_content").append(html);
+                    $("#task").slideLeftShow(400);
+                },
+                error:function() {
+
+                    alert("信息读取失败！");
+
                 }
+
             })
         });
+        %{--$(".taskedit").click(function(){--}%
+        %{--var id=$(this).attr("data-id");--}%
+        %{--var version=$(this).attr("data-version");--}%
+        %{--$.ajax({--}%
+        %{--url:'${webRequest.baseUrl}/front/taskUpdate?id='+id+'&version='+version,--}%
+        %{--dataType: "jsonp",--}%
+        %{--jsonp: "callback",--}%
+        %{--success: function(data){--}%
+        %{--if(data.msg){--}%
+        %{--alert("标记成功!")--}%
+        %{--window.location.reload()--}%
+        %{--}else{--}%
+        %{--alert("标记失败!")--}%
+        %{--}--}%
+        %{--}--}%
+        %{--})--}%
+        %{--})--}%
+
+        %{--$(".taskdelete").click(function(){--}%
+        %{--var id=$(this).attr("data-id");--}%
+        %{--var version=$(this).attr("data-version");--}%
+        %{--$.ajax({--}%
+        %{--url:'${webRequest.baseUrl}/front/taskDelete?id='+id,--}%
+        %{--dataType: "jsonp",--}%
+        %{--jsonp: "callback",--}%
+        %{--success: function(data){--}%
+        %{--if(data.msg){--}%
+        %{--alert("删除成功!")--}%
+        %{--window.location.reload()--}%
+        %{--}else{--}%
+        %{--alert("删除失败!")--}%
+        %{--}--}%
+        %{--}--}%
+        %{--})--}%
+        %{--})--}%
         $(".taskclose").click(function(){
             $("#task").slideLeftHide(400);
             $("#task .task_content").empty();
-        });
-
-        //筛选
-        $(".toolkit .shaixuan .finished").bind("click",function(){
-            $(this).parent().parent(). slideUp("fast");
-            $(".toolkit .task-order").css("border-bottom","none");
-            $(".e-list-group .finishedlist").siblings().hide();
-            $(".e-list-group .finishedlist").show();
-        });
-        $(".toolkit .shaixuan .unfinished").bind("click",function(){
-            $(this).parent().parent(). slideUp("fast");
-            $(".toolkit .task-order").css("border-bottom","none");
-            $(".e-list-group .unfinishedlist").siblings().hide();
-            $(".e-list-group .unfinishedlist").show();
         });
     })
 </script>

@@ -1,16 +1,18 @@
 package com.guihuabao
 
 class Target {
-    String cid
-    String fzuid
-    String begintime
-    String etime
-    Date dateCreate
-    String content
-    String title
-    Integer percent
-    String img
-    String status
+    String cid              //公司id
+    String fzuid            //负责人id
+    String begintime       // 起始时间
+    String etime            //结束时间
+    Date dateCreate        // 创建时间
+    String content          //详情
+    String title            //标题
+    Integer percent         //权重
+    String img              //图片
+    String status           //状态
+    String targetzj         //目标总结
+    String issubmit         //是否下发
     static hasMany = [mission:Mission]
     static constraints = {
         cid(nullable: true)
@@ -23,5 +25,7 @@ class Target {
         percent(nullable: true)
         img(nullable: true)
         status(nullable:true)
+        targetzj(nullable:true)
+        issubmit(nullable:true)
     }
 }

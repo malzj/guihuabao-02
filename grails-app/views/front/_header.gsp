@@ -26,8 +26,11 @@
             <%def nowtime = timearr1[1]%>
             <%def utaskcount = com.guihuabao.Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0)%>
             <%def otargetcount = com.guihuabao.Target.countByCidAndFzuidAndEtimeAndEtimeGreaterThanEqualsAndStatus(session.company.id,session.user.id,etime,date,0)%>
-            <%def otaskcount = com.guihuabao.Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,0)%>
-            <%def allcount = utaskcount+otargetcount+otaskcount%>
+            <%def otaskcount = com.guihuabao.Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,2,0)%>
+            <%def messageTaskFcount = com.guihuabao.Task.countByCidAndFzuidAndLookstatusAndStatusAndRemindstatus(session.company.id,session.user.id,2,1,1)%>
+            <%def newapplycount = com.guihuabao.Apply.countByApprovaluidAndCidAndApplystatus(session.user.id,session.company.id,0)%>
+            <%def applycount = com.guihuabao.Apply.countByApplyuidAndCidAndRemindstatus(session.user.id,session.company.id,1)%>
+            <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount%>
             <ul>
                 <li class="msg">
                     <a href="javascript:;"><i class="fa fa-bell"></i>消息<span class="tsh bg-important">${allcount}</span></a>
@@ -50,6 +53,28 @@
                             <em class="f-r">${otaskcount}</em>
                         </g:link>
                         </li>
+                        <li>
+                            <g:link action="messageTaskF" >
+                                完成任务
+                                <em class="f-r">${messageTaskFcount}</em>
+                            </g:link>
+                        </li>
+                        <g:if test="${newapplycount!=0}">
+                        <li>
+                            <g:link action="user_approve" >
+                                审批提醒
+                                <em class="f-r">${newapplycount}</em>
+                            </g:link>
+                        </li>
+                        </g:if>
+                        <g:if test="${applycount!=0}">
+                            <li>
+                                <g:link action="apply" >
+                                    申请提醒
+                                    <em class="f-r">${applycount}</em>
+                                </g:link>
+                            </li>
+                        </g:if>
                     </ul>
                 </li>
                 <li>|</li>

@@ -42,10 +42,11 @@
     #apply_tab .th{background:#f8f8f8;}
     #apply_tab td{padding:10px;margin:0;}
     #apply_tab tr td:nth-of-type(1){width:140px;}
-    #apply_tab tr td:nth-of-type(2){width:1000px;}
+    #apply_tab tr td:nth-of-type(2){width:600px;}
     #apply_tab tr td:nth-of-type(3){width:200px;}
     #apply_tab tr td:nth-of-type(4){width:140px;}
-    #apply_tab tr td:nth-of-type(5){width:140px;}
+    #apply_tab tr td:nth-of-type(5){width:400px;}
+    #apply_tab tr td:nth-of-type(6){width:140px;}
     .select{width:300px;height:35px;border:1px solid #d0d0d0;}
     textarea{border:1px solid #d0d0d0;width:500px;height:400px;resize:none;}
     .panel-content{margin:15px;}
@@ -95,14 +96,16 @@
                             <td>申请内容</td>
                             <td>审批人</td>
                             <td>审批结果</td>
+                            <td>备注</td>
                             <td>申请时间</td>
                         </tr>
                         <g:each in="${applylist}" status="i" var="applyInstance">
-                            <tr>
+                            <tr data-id="${applyInstance.id}" data-version="${applyInstance.version}">
                                 <td>${applyInstance.type}</td>
                                 <td>${applyInstance.content}</td>
                                 <td>${applyInstance.approvalusername}</td>
                                 <td>${applyInstance.status}</td>
+                                <td>${applyInstance.approvetext}</td>
                                 <td>${applyInstance.dateCreate.format("yyyy-MM-dd")}</td>
                             </tr>
                         </g:each>
@@ -170,11 +173,12 @@
         </header>
         <div class="panel-content">
             <ul>
-                <li>申请类型：<span>出差申请单</span></li>
-                <li>审批人：<span>营销部经理-法拉利</span></li>
-                <li>申请内容：<span>新项目调研，需出差五天！</span></li>
-                <li>申请时间：<span>2015-7-15</span></li>
-                <li>申请结果：<span>已通过</span></li>
+                <li>申请类型：<span></span></li>
+                <li>审批人：<span></span></li>
+                <li>申请内容：<span></span></li>
+                <li>申请时间：<span></span></li>
+                <li>申请结果：<span></span></li>
+                <li>审核批注：<span></span></li>
             </ul>
         </div>
 
@@ -221,12 +225,27 @@
             var applyContent = $(this).children("td:eq(1)").html();
             var approvalusername = $(this).children("td:eq(2)").html();
             var applyStauts = $(this).children("td:eq(3)").html();
-            var applyDate = $(this).children("td:eq(4)").html();
+            var approvetext = $(this).children("td:eq(4)").html();
+            var applyDate = $(this).children("td:eq(5)").html();
             $(".panel-content ul li:eq(0) span").html(applyType)
             $(".panel-content ul li:eq(1) span").html(approvalusername)
             $(".panel-content ul li:eq(2) span").html(applyContent)
             $(".panel-content ul li:eq(3) span").html(applyStauts)
             $(".panel-content ul li:eq(4) span").html(applyDate)
+            $(".panel-content ul li:eq(5) span").html(approvetext)
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/applyRemindUpdate?id='+encodeURI(applyId)+'&version='+encodeURI(version)+'&applyremind=1',
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (data) {
+//                    // 去渲染界面
+//                    if(data.msg){
+//                        alert("保存成功！")
+//                    }else{
+//                        alert("保存失败！");
+//                    }
+                }
+            })
             $("#applydetails").css("display","block");
         })
         $(".close").click(function(){

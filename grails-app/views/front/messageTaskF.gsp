@@ -48,13 +48,13 @@
                 <div class="col-tb">
                     <div class="col-cell">
                         <div class="toolkit">
-                            <span>未读任务</span>
+                            <span>完成任务</span>
                         </div>
                         <div class="e-list-group">
                             <ul class="e-list fzalltasklist">
-                                <g:if test="${messageTaskInstance}">
-                                    <g:each in="${messageTaskInstance}" status="i" var="messageTaskInfo">
-                                        <li data-task-id="${messageTaskInfo.id}">
+                                <g:if test="${messageTaskFInstance}">
+                                    <g:each in="${messageTaskFInstance}" status="i" var="messageTaskInfo">
+                                        <li data-task-id="${messageTaskInfo.id}" data-task-version="${messageTaskInfo.version}">
                                             <span class="mark"></span>
                                             <span class="sn">${i+1}</span>
                                             <span class="title">${messageTaskInfo.title}</span>
@@ -72,7 +72,7 @@
 
                         </div>
                         <div class="pagination">
-                            <g:paginate total="${messageTaskInstanceTotal}" />
+                            <g:paginate total="${messageTaskFInstanceTotal}" />
                         </div>
                     </div>
                     <div class="col-cell bfb" style="width:340px;">
@@ -165,8 +165,9 @@
         //详情滑动框
         $(".e-list-group .e-list li").click(function(){
             var taskid = $(this).attr("data-task-id");
+            var version = $(this).attr("data-task-version");
             $.ajax({
-                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid,
+                url:'${webRequest.baseUrl}/front/messageTaskShow?id='+taskid+'&version='+version,
                 dataType: "jsonp",
                 jsonp: "callback",
                 success: function (data) {
