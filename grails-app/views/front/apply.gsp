@@ -96,7 +96,7 @@
                             <td>申请内容</td>
                             <td>审批人</td>
                             <td>审批结果</td>
-                            <td>备注</td>
+                            <td>审批反馈</td>
                             <td>申请时间</td>
                         </tr>
                         <g:each in="${applylist}" status="i" var="applyInstance">
@@ -178,7 +178,7 @@
                 <li>申请内容：<span></span></li>
                 <li>申请时间：<span></span></li>
                 <li>申请结果：<span></span></li>
-                <li>审核批注：<span></span></li>
+                <li>审核反馈：<span></span></li>
             </ul>
         </div>
 

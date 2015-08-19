@@ -867,8 +867,8 @@
 									date: this.viewDate
 								});
 																if (this.viewSelect >= 1) {
-										this._setDate(UTCDate(year, month, day, hours, 0));
-										//this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
+                                                                    this._setDate(UTCDate(year, month, day, hours, 0));
+//                                                                    this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
 																}
 							} else if (target.is('.minute')){
 								minutes = parseInt(target.text().substr(target.text().indexOf(':')+1), 10) || 0;
@@ -878,6 +878,7 @@
 									date: this.viewDate
 								});
 																if (this.viewSelect >= 0) {
+
 										this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
 																}
 							}
@@ -1226,7 +1227,17 @@
 			meridiem: ["am", "pm"],
 			suffix: ["st", "nd", "rd", "th"],
 			today: "Today"
-		}
+		},
+		ch: {
+            days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+            daysShort: ["日", "一", "二", "三", "四", "五", "六", "日"],
+            daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
+            months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            monthsShort: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+            meridiem: ["am", "pm"],
+            suffix: ["st", "nd", "rd", "th"],
+            today: "今天"
+        }
 	};
 
 	var DPGlobal = {

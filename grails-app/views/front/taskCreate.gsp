@@ -170,11 +170,11 @@
                         <span>新建任务</span>
                         <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
                     </header>
-                    <g:form url="[controller:'front',action:'taskSave']">
+                    <g:form id="taskcreate" name="taskcreate" url="[controller:'front',action:'taskSave']">
                         <div class="r-title">
                             <div class="r-title-con f-l">任务</div>
                             <div class="r-title-jinji f-l">
-                                <i></i><span class="r-chd">紧急程度</span>
+                                <i></i><span class="r-chd">紧急程度</span><span id="taskcreate-playstatus"></span>
                                 <input type="hidden" id="playstatus" name="playstatus" />
                                 <ul class="r-jinji-down">
                                     <li><a data-playstatus="1"><i class="clock-red"></i>紧急且重要</a></li>
@@ -185,7 +185,7 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <input type="text" placeholder="一句话描述任务" class="size" name="title" />
+                            <input type="text" placeholder="一句话描述任务" class="size" name="title" /><span id="taskcreate-title"></span>
                         </div>
                         <div class="control-group">
                             <input type="text" placeholder="添加任务详情" class="size" name="content" />
@@ -213,12 +213,12 @@
                                 </tr>
                                 <tr>
                                     <td>起止日期</td>
-                                    <td><input id="startdate" name="bigentime" value="" readonly="" class="default-date-picker" type="text">-<input id="enddate" name="overtime" value="" readonly="" class="form_datetime" type="text"></td>
+                                    <td><input id="startdate" name="bigentime" value="" readonly="" type="text">-<input id="enddate" name="overtime" value="" readonly="" type="text"></td>
                                 </tr>
                             </table>
                         </div>
                         <div class="control-group">
-                            <button id="submit" type="submit" class="btn btn-info f-r">提交</button>
+                            <button type="submit" class="btn btn-info f-r">提交</button>
                         </div>
                     </g:form>
                 </div>
@@ -304,6 +304,10 @@
 <!--详情滑动框-->
 <script src="${resource(dir: 'js', file: 'slidelefthideshow.js')}"></script>
 
+<!--表单验证-->
+<script src="${resource(dir: 'js', file: 'jquery.validate.min.js')}"></script>
+<script src="${resource(dir: 'js', file: 'jquery.form.js')}"></script>
+
 <script type="text/javascript">
     var Script = function () {
         var doughnutData = [
@@ -320,6 +324,37 @@
     }();
 
     $(function(){
+        $("#taskcreate").validate({
+            errorPlacement: function(error, element) {
+                $('#taskcreate-'+element[0].name).html(error);
+            },
+//            submitHandler:function(form) {
+//                var options = {
+//                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+//                    success: showResponse
+//                };
+//                $(form).ajaxSubmit(options);
+//                return false;
+//            },
+            rules: {
+
+                title: {
+                    required: true
+                },
+                content: {
+                    required: true
+                }
+            },
+            messages: {
+                title: {
+                    required: "任务标题不能为空"
+                },
+                content: {
+                    required: "任务详情不能为空"
+                }
+            }
+        });
+
         $("#addrenwu").click(function(){
             $(".popup_box").css("display","block");
         });
@@ -347,7 +382,7 @@
             }
             $(".popup_box .r-title-jinji>i").removeClass();
             $(".popup_box .r-title-jinji>i").addClass(status);
-            $(".popup_box .r-title-jinji span").html(playstatuscn);
+            $(".popup_box .r-title-jinji .r-chd").html(playstatuscn);
             $(".popup_box .r-title-jinji").removeClass("active");
         });
 
@@ -387,7 +422,7 @@
                         html+='<div class="task_line"><span>指派人：</span><span class="font_blue">'+data.taskInfo.fzname+'</span></div>';
                         html+='<div class="task_line"><span>执行人：</span><span class="font_blue">'+data.taskInfo.playname+'</span></div>';
                         html+='<div class="task_line"><span>起始日：</span><span>'+data.taskInfo.bigentime+'</span></div>';
-                        html+='<div class="task_line"><span>起始日：</span><span>'+data.taskInfo.overtime+'</span></div>';
+                        html+='<div class="task_line"><span>结束日：</span><span>'+data.taskInfo.overtime+'</span></div>';
                         html+='<div class="task_line"><span>紧急程度：</span><span class="font_blue">'+playstatus+'</span></div>';
                         html+='<div class="task_line"><span>任务状态：</span><span class="font_blue">'+status+'</span></div>';
 
@@ -460,7 +495,7 @@
             })
         }
 
-        $("#submit").click(function(){
+        $("#submit1").click(function(){
             $.ajax({
                 url: '${webRequest.baseUrl}/front/replyTaskSave',
                 dataType: "jsonp",
@@ -529,9 +564,8 @@
             }
         });
         context.init({preventDoubleContext: false});
-
-    context.attach('#playman', [
-        <g:if test=" ${session.user.pid==1}">
+        <g:if test="${session.user.pid==1}">
+        context.attach('#playman', [
         {header: '部门'},
         <g:each in="${bumenInstance}" var="bumenInfo">
         {text: '${bumenInfo.name}', subMenu: [
@@ -547,19 +581,29 @@
             </g:each>
         ]},
         </g:each>
+        ]);
         </g:if>
+        <g:elseif test="${session.user.pid==2}">
+        context.attach('#playman', [
+            {header: '员工'},
+            <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
+            {text: '${userInfo.name}', href: '#', action: function(e){
+                $("#playuid").val(${userInfo.id});
+                $("#playbid").val(${userInfo.bid});
+                $("#playname").val("${userInfo.name}");
+                $(this).hide();
+                $("#cnplayname").html("${userInfo.name}");
+            }},
+            </g:each>
+        ]);
+        </g:elseif>
         <g:else>
-        <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
-        {text: '${userInfo.name}', href: '#', action: function(e){
-            $("#playuid").val(${userInfo.id});
-            $("#playbid").val(${userInfo.bid});
-            $("#playname").val("${userInfo.name}");
-            $(this).hide();
-            $(".zhxr").html("${userInfo.name}");
-        }}
-        </g:each>
+            $("#playuid").val(${session.user.id});
+            $("#playbid").val(${session.user.bid});
+            $("#playname").val("${session.user.name}");
+            $("#cnplayname").html("${session.user.name}");
         </g:else>
-    ]);
+
     })
 </script>
 </body>
