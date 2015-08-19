@@ -1,6 +1,9 @@
 package com.guihuabao
 
 import grails.converters.JSON
+import org.springframework.dao.DataIntegrityViolationException
+
+import java.text.SimpleDateFormat
 
 class GuihuabaoapiController {
     static allowedMethods = [login: "POST", update: "POST", delete: "POST"]
@@ -50,7 +53,7 @@ class GuihuabaoapiController {
             render rs as JSON
     }
     //获取部门
-    def bumenlist(){
+        def bumenlist(){
     def rs=[:]
         def cid = params.cid
         def bumenlist= Bumen.findAllByCid(cid)
@@ -65,6 +68,7 @@ class GuihuabaoapiController {
         } else
             render rs as JSON
     }
+    //获取部门员工
     def bumenCompanyUserList(){
         def rs=[:]
         def bid = params.bid
@@ -75,6 +79,321 @@ class GuihuabaoapiController {
             rs.companyUserList = companyUserList
         }else {
            rs.result = false
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //我的任务
+      def  mytask(){
+      def rs =[:]
+      def userId = params.userId
+      def cid = params.cid
+          def current = new Date()
+          SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+          def now = time.format(current)
+          def order = [sort:"dateCreate",order: "desc"]
+          def todayTaskList = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(cid,userId,2,0,now,now,order)
+          def dueTaskList = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndOvertimeGreaterThanEquals(cid,userId,2,0,now,[sort:"overtime",order:"asc"])
+            if(todayTaskList||dueTaskList){
+                rs.result =true
+                rs.todayTaskList=todayTaskList
+                rs.dueTaskList=dueTaskList
+            }    else {
+                rs.result = false
+                rs.todayTaskList=todayTaskList
+                rs.dueTaskList=dueTaskList
+            }
+
+          if (params.callback) {
+              render "${params.callback}(${rs as JSON})"
+          } else
+              render rs as JSON
+      }
+    //删除任务
+    def taskDelete(){
+        def id= params.id
+        def cid = params.cid
+        def taskInstnstance = Task.findByIdAndCid(id,cid)
+        def rs = [:]
+        if (!taskInstnstance) {
+            rs.result = false
+            rs.msg="没有找到对应任务"
+        }else {
+            try {
+                taskInstnstance.delete(flush: true)
+                rs.result = true
+                rs.msg="删除成功"
+            }
+            catch (DataIntegrityViolationException e) {
+                rs.result = false
+                rs.msg="删除未成功"
+            }
+
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //完成任务
+         def taskupdate(){
+        def rs =[:]
+        def id = params.id
+        def cid = params.cid
+        def taskInstance = Task.findByCidAndId(cid,id)
+        if (taskInstance){
+            taskInstance.status = 1
+            taskInstance.remindstatus = 1
+            if (!taskInstance.save(flush: true)) {
+                rs.result = false
+                rs.msg ="未完成"
+            }else {
+                rs.result= true
+                rs.msg ="已完成"
+            }
+        }else {
+            rs.result = false
+            rs.msg ="未找到任务"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //负责任务列表
+       def fztaskList(){
+           def rs= [:]
+           def userId = params.userId
+           def cid = params.cid
+
+           params.max = 5
+           params<<[sort: "id",order: "asc"]
+           def offset = 0;
+
+
+           if (params.offset.toInteger()>0){
+               offset =params.offset.toInteger()
+           }
+           params<<[offset:offset]
+           def fztaskSize = Task.countByCidAndFzuid(cid,userId)
+           def x = fztaskSize
+           def offse=params.offset.toInteger()
+           if (x>offse){
+               def fztaskList = Task.findAllByFzuidAndCid(userId,cid,params)
+               if (fztaskList){
+                   rs.result =  true
+                   rs.fztaskList=fztaskList
+               }else {
+                   rs.result = false
+                   rs.msg="已加载所有数据"
+               }
+           }else {
+               rs.result = false
+               rs.msg="已加载所有数据"
+           }
+
+           if (params.callback) {
+               render "${params.callback}(${rs as JSON})"
+           } else
+               render rs as JSON
+       }
+    //参与任务列表
+    def cytaskList(){
+        def rs= [:]
+        def userId = params.userId
+        def cid = params.cid
+
+        params.max = 5
+        params<<[sort: "id",order: "asc"]
+        def offset = 0;
+
+
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
+        }
+        params<<[offset:offset]
+        def fztaskSize = Task.countByCidAndPlayuid(cid,userId)
+        def x = fztaskSize
+        def offse=params.offset.toInteger()
+        if (x>offse){
+            def cytaskList = Task.findAllByPlayuidAndCid(userId,cid,params)
+            if (cytaskList){
+                rs.result =  true
+                rs.cytaskList=cytaskList
+            }else {
+                rs.result = false
+                rs.msg="已加载所有数据"
+            }
+        }else {
+            rs.result = false
+            rs.msg="已加载所有数据"
+        }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //任务详情
+    def taskInstance(){
+        def rs =[:]
+        def cid = params.cid
+        def id = params.id
+        def userId = params.userId
+        def replyId = params.replyId
+        if (replyId){
+            def rep =ReplyTask.get(replyId)
+            rep.status =1
+        }
+        def taskInstance = Task.findByCidAndId(cid,id)
+        if (userId==taskInstance.playuid){
+            taskInstance.lookstatus=1
+            taskInstance.save(flush: true)
+        }
+        if (userId == taskInstance.fzuid){
+            if(taskInstance.remindstatus==1){
+                taskInstance.remindstatus=2
+            }
+        }
+        if (taskInstance){
+            rs.result =true
+            rs.taskInstance = taskInstance
+            rs.replaytasks  =taskInstance.replaytasks
+        }else {
+            rs.result =false
+            rs.msg="未找到任务"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //接受任务
+    def taskInstanceupdateLookStaust(){
+        def rs =[:]
+        def cid = params.cid
+        def id = params.id
+        def userId = params.userId
+        def taskInstance = Task.findByCidAndId(cid,id)
+        if (userId==taskInstance.playuid){
+            taskInstance.lookstatus=2
+            taskInstance.save(flush: true)
+        }
+        if (taskInstance){
+            rs.result =true
+            rs.taskInstance = taskInstance
+            rs.replaytasks  =taskInstance.replaytasks
+        }else {
+            rs.result =false
+            rs.msg="未找到任务"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //未接受任务
+    def wjstaskList(){
+             def rs=[:]
+             def userId = params.userId
+             def cid = params.cid
+             params.max = 5
+             params<<[sort: "id",order: "asc"]
+             def offset = 0;
+
+
+             if (params.offset.toInteger()>0){
+                 offset =params.offset.toInteger()
+             }
+             params<<[offset:offset]
+             def fztaskSize = Task.countByCidAndPlayuidAndLookstatus(cid,userId,1)
+             def x = fztaskSize
+             def offse=params.offset.toInteger()
+             if (x>offse){
+                 def wjstaskList = Task.findAllByPlayuidAndCidAndLookstatus(userId,cid,1,params)
+                 if (wjstaskList){
+                     rs.result =  true
+                     rs.wjstaskList=wjstaskList
+                 }else {
+                     rs.result = false
+                     rs.msg="已加载所有数据"
+                 }
+             }else {
+                 rs.result = false
+                 rs.msg="已加载所有数据"
+             }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+         }
+    //未读任务
+    def wdtaskList(){
+             def rs=[:]
+             def userId = params.userId
+             def cid = params.cid
+             params.max = 5
+             params<<[sort: "id",order: "asc"]
+             def offset = 0;
+
+
+             if (params.offset.toInteger()>0){
+                 offset =params.offset.toInteger()
+             }
+             params<<[offset:offset]
+             def fztaskSize = Task.countByCidAndPlayuidAndLookstatus(cid,userId,0)
+             def x = fztaskSize
+             def offse=params.offset.toInteger()
+             if (x>offse){
+                 def wdtaskList = Task.findAllByPlayuidAndCidAndLookstatus(userId,cid,0,params)
+                 if (wdtaskList){
+                     rs.result =  true
+                     rs.wdtaskList=wdtaskList
+                 }else {
+                     rs.result = false
+                     rs.msg="已加载所有数据"
+                 }
+             }else {
+                 rs.result = false
+                 rs.msg="已加载所有数据"
+             }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+         }
+    //未读的回复
+    def wdReplyTaskList(){
+        def rs=[:]
+        def userId = params.userId
+        def cid =params.cid
+        def replyTaskList = ReplyTask.findAllByCidAndBpuidAndStatus(cid,userId,0)
+        if (replyTaskList){
+            rs.result = true
+            rs.replyTaskList=replyTaskList
+        }else {
+            rs.result =false
+            rs.msg = "没有未回复消息"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    //新增回复
+    def saveReplyTask(){
+        def rs=[:]
+        def replyTaskInstance = new ReplyTask(params)
+        if (!replyTaskInstance.save(flush: true)) {
+            rs.result =false
+            rs.msg = "没有回复成功"
+        }else {
+            rs.result = true
+            rs.replyTaskInstance=replyTaskInstance
+            rs.task = replyTaskInstance.tasks
+            rs.replyTaskList = replyTaskInstance.tasks.replaytasks
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"

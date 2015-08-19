@@ -1473,15 +1473,17 @@ class FrontController {
         def rs = [:]
         if (!taskInstnstance) {
             rs.msg = false
+        }else {
+            try {
+                taskInstnstance.delete(flush: true)
+                rs.msg = true
+            }
+            catch (DataIntegrityViolationException e) {
+                rs.msg = false
+            }
+
         }
 
-        try {
-            taskInstnstance.delete(flush: true)
-            rs.msg = true
-        }
-        catch (DataIntegrityViolationException e) {
-            rs.msg = false
-        }
 
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
