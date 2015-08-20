@@ -2192,10 +2192,18 @@ class FrontController {
         def mission = new Mission(params)
         mission.hasvisited='0'
         mission.issubmit='0'
+
         def targetInstance = Target.get(params.target_id)
+
         mission.target = targetInstance
-
-
+        mission.save()
+        def missionlist=targetInstance.mission
+        def sum=0
+        for(def m in missionlist){
+           println(m.percent)
+           sum+=m.percent.toInteger()
+        }
+        def r_per=100-sum
         if (!mission.save(flush: true)) {
 
             rs.msg = false
@@ -2206,6 +2214,7 @@ class FrontController {
             rs.msg=true
             rs.target=targetInstance
             rs.mission=mission
+            rs.r_per=r_per
         }
 
 
@@ -2281,10 +2290,20 @@ class FrontController {
 
         try {
             missionInstance.delete(flush: true)
-           targetInstance.percent-=missionInstance.percent
+            if(missionInstance.status==1) {
+                targetInstance.percent -= missionInstance.percent
+            }
+            def missionlist=targetInstance.mission
+            def sum=0
+            for(def m in missionlist){
+                println(m.percent)
+                sum+=m.percent.toInteger()
+            }
+            def r_per=100-sum
             rs.msg="删除任务成功！"
             rs.target=targetInstance
             rs.mission=missionInstance
+            rs.r_per=r_per
         }
         catch (DataIntegrityViolationException e) {
            rs.msg="删除失败！"
@@ -2301,8 +2320,7 @@ class FrontController {
 
         def mission = Mission.get(mid)
 
-        def target = mission.target
-        def missionlist = target.mission
+
         if(mission.status=='0') {
             mission.properties = params
             if(mission.status=='1'){
@@ -2311,11 +2329,19 @@ class FrontController {
         }else{
             target.percent-=mission.percent
             mission.properties = params
+            mission.save()
             if(mission.status=='1'){
                 target.percent+=mission.percent
             }
         }
-
+        def target = mission.target
+        def missionlist = target.mission
+        def sum=0
+        for(def m in missionlist){
+            println(m.percent)
+            sum+=m.percent.toInteger()
+        }
+        def r_per=100-sum
         if (target.percent == 100) {
             target.status = '1'
         }else{
@@ -2325,7 +2351,7 @@ class FrontController {
         rs.target = target
         rs.mission = missionlist
         rs.missionSize = mission.target.mission.size()
-
+        rs.r_per=r_per
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
@@ -2699,10 +2725,10 @@ class FrontController {
             def userDir = new File(webRootDir, "img/target-img/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
-            filePath=webRootDir+"img/target-img/"+fileName
+
 
             println(filePath)
-            rs.filePath=filePath
+            rs.fileName=fileName
 
         }
         if (params.callback) {
@@ -2717,6 +2743,16 @@ class FrontController {
         def targetInstance = Target.get(tid)
         targetInstance.img=params.img
         rs.target=targetInstance
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def showImg(){
+        def rs = [:]
+        def tid = params.target_id
+        def targetInstance = Target.get(tid)
+        rs.img=targetInstance.img
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
