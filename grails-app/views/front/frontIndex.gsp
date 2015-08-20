@@ -48,7 +48,7 @@
                             <ul>
                                 <li class="on"><i></i><span>我的目标</span></li>
                             </ul>
-                            <g:link class="f-r" action="user_target">查看更多</g:link>
+                            <g:link class="f-r" action="user_target ">查看更多</g:link>
                             <span class="f-r">|</span>
                             <a class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
                         </div>
