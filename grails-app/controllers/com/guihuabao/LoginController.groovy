@@ -18,6 +18,11 @@ class LoginController {
         }
         redirect(action:'userList')
     }
+    def logout(){
+        session.user = ""
+        session.company = ""
+        redirect(action: "index")
+    }
     def index() {}
     def userList(Integer max){
         params.max = Math.min(max ?: 10, 100)
