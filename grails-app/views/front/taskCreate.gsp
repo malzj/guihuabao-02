@@ -174,7 +174,7 @@
                         <div class="r-title">
                             <div class="r-title-con f-l">任务</div>
                             <div class="r-title-jinji f-l">
-                                <i></i><span class="r-chd">紧急程度</span><span id="taskcreate-playstatus"></span>
+                                <i></i><span class="r-chd">紧急程度</span>
                                 <input type="hidden" id="playstatus" name="playstatus" />
                                 <ul class="r-jinji-down">
                                     <li><a data-playstatus="1"><i class="clock-red"></i>紧急且重要</a></li>
@@ -183,12 +183,13 @@
                                     <li><a data-playstatus="4"><i class="clock-blue"></i>不重要不紧急</a></li>
                                 </ul>
                             </div>
+                            <span id="taskcreate-playstatus" style="color: red;position: absolute;left:250px"></span>
                         </div>
                         <div class="control-group">
-                            <input type="text" placeholder="一句话描述任务" class="size" name="title" /><span id="taskcreate-title"></span>
+                            <input type="text" placeholder="一句话描述任务" class="size" name="title" /><span id="taskcreate-title" style="color: red"></span>
                         </div>
                         <div class="control-group">
-                            <input type="text" placeholder="添加任务详情" class="size" name="content" />
+                            <input type="text" placeholder="添加任务详情" class="size" name="content" /><span id="taskcreate-content" style="color: red"></span>
                         </div>
                         <div class="control-group">
                             <table>
@@ -208,12 +209,14 @@
                                         <div id="zhxr">
                                             <a id="playman"></a>
                                             <span id="cnplayname"></span>
+                                            <span id="taskcreate-playuid" style="color: red"></span>
                                         </div>
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>起止日期</td>
-                                    <td><input id="startdate" name="bigentime" value="" readonly="" type="text">-<input id="enddate" name="overtime" value="" readonly="" type="text"></td>
+                                    <td><input id="startdate" name="bigentime" value="" readonly="" type="text">-<input id="enddate" name="overtime" value="" readonly="" type="text"><span id="taskcreate-bigentime" style="color: red"></span><span class="taskcreate-overtime" style="color: red"></span></td>
                                 </tr>
                             </table>
                         </div>
@@ -328,20 +331,31 @@
             errorPlacement: function(error, element) {
                 $('#taskcreate-'+element[0].name).html(error);
             },
-//            submitHandler:function(form) {
-//                var options = {
-//                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
-//                    success: showResponse
-//                };
-//                $(form).ajaxSubmit(options);
-//                return false;
-//            },
+            submitHandler:function(form) {
+                var playstatus = $("#playstatus").val()
+                var playuid = $("#playuid").val()
+                if(!playstatus){
+                    $('#taskcreate-playstatus').html("请选择紧急程度！")
+                    return false;
+                }else if(!playuid){
+                    $('#taskcreate-playuid').html("请选择执行人！")
+                    return false;
+                }else{
+                    form.submit()
+                }
+            },
             rules: {
 
                 title: {
                     required: true
                 },
                 content: {
+                    required: true
+                },
+                bigentime: {
+                    required: true
+                },
+                overtime: {
                     required: true
                 }
             },
@@ -351,10 +365,22 @@
                 },
                 content: {
                     required: "任务详情不能为空"
+                },
+                bigentime: {
+                    required: "请选择开始时间"
+                },
+                overtime: {
+                    required: "请选择结束时间"
                 }
             }
         });
 
+        $("#playstatus").bind("input propertychange",function(){
+            $('#taskcreate-playstatus').empty();
+        })
+        $("#playuid").bind("input propertychange",function(){
+            $('#taskcreate-playuid').empty();
+        })
         $("#addrenwu").click(function(){
             $(".popup_box").css("display","block");
         });
