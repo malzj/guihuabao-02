@@ -5,6 +5,31 @@
             和许助手
         </div>
         <!-- sidebar menu start-->
-
+        <ul class="sidebar-menu" id="nav-accordion">
+            <li class="sub-menu dcjq-parent-li">
+                <div>
+                    <g:link controller="front" action="hxhelper">
+                        <span>知识</span>
+                        %{--<span class="dcjq-icon"></span>--}%
+                    </g:link>
+                </div>
+            </li>
+            <li class="sub-menu dcjq-parent-li">
+                <div>
+                    <g:link controller="front" action="hxhelper">
+                        <span>工具</span>
+                    %{--<span class="dcjq-icon"></span>--}%
+                    </g:link>
+                </div>
+            </li>
+        <li class="sub-menu dcjq-parent-li">
+            <div>
+                <g:link controller="front" action="hxhelper">
+                    <span>案例</span>
+                %{--<span class="dcjq-icon"></span>--}%
+                </g:link>
+            </div>
+        </li>
+        </ul>
     </div>
 </aside>
