@@ -101,6 +101,7 @@
                             </ul>
                         </div>
                         <a href="#" id="newtarget" class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
+
                     </div>
                     <div class="content">
                         <div style="margin-top:20px;" class="clearfix">
@@ -244,7 +245,7 @@
         </header>
         <h2>已选图标</h2>
         <div class="clearfix ori">
-            <a class="f-l"><div id="imgDefault"><img  src="${resource(dir:'img/target-img',file:'1.png')}" id="img" width="48px" height="48px"/></div></a>
+            <a class="f-l"><div id="imgDefault"><img  src="" id="img" width="48px" height="48px"/><span style="display:none;" id="filename"></span></div></a>
             <div class="f-l upload">
                 <a><form method="post" id="uploadForm" enctype="multipart/form-data">
                     <i class="fa fa-plus-circle"></i>
@@ -267,6 +268,7 @@
             <a><img  src="${resource(dir:'img/target-img',file:'10.png')}"/></a>
             <a><img  src="${resource(dir:'img/target-img',file:'11.png')}"/></a>
             <a><img  src="${resource(dir:'img/target-img',file:'12.png')}"/></a>
+
         </div>
         <div class="f-r" style="margin-right: 30px;"><input type="button" class="btn" id="upimg" value="确认" style="width:80px;height:30px;line-height:16px;background:#03a9f4;color:#fff;"/></div>
     </div>
@@ -299,8 +301,29 @@
                             <input type="hidden"  name="playuid" value=""  id="newmission_playname" class="nr" title="该字段不能为空！"/>
                             <input type="hidden" id="playbid" name="playbid" value="" class="nr" title="该字段不能为空！"/>
                             <input type="hidden" id="playname" name="playname" value="" class="nr" title="该字段不能为空！"/>
-                            <div><span class="zhxr con"></span>
-                                <a  id="playman" style="cursor:pointer;"><i class="fa fa-plus-square-o" ></i></a>
+                            <div class="dropdown"><span class="zhxr con"></span>
+                                <a  id="playman" style="cursor:pointer;" class="menu"  data-toggle="dropdown"><i class="fa fa-plus-square-o"></i></a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="margin:0;" id="topmenu">
+
+                                    <g:if test="${session.user.pid==1}">
+                                        <g:each in="${bumenInstance}" var="bumenInfo">
+                                            <li class="dropdown-submenu "  >
+                                                <a tabindex="-1"  data-toggle="dropdown" class="bumen">${bumenInfo.name}<span style="display:-none" >${bumenInfo.id}</span></a>
+                                                <ul class="dropdown-menu"  role="menu" aria-labelledby="dLabel"  style="margin:0;padding-top:20px;">
+                                                    <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
+                                                         <li  class="dropdown" ><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
+                                                    </g:each>
+                                                </ul>
+                                            </li>
+                                        </g:each>
+                                    </g:if>
+                                    <g:else>
+                                         <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
+                                             <li  class="dropdown"><a class="pn">${userInfo.name}<span style="display:-none">${userInfo.id}</span></a></li>
+                                         </g:each>
+                                    </g:else>
+                                </ul>
+
                             </div></td>
 
                     </tr>
@@ -357,8 +380,29 @@
                                 <input type="hidden" id="playuid_edit" name="playuid" value="" title="该字段不能为空！"/>
                                 <input type="hidden" id="playbid_edit" name="playbid" value="" title="该字段不能为空！"/>
                                 <input type="hidden" id="playname_edit" name="playname" value="" title="该字段不能为空！"/>
-                                <div ><span class="zhxr con"></span>
-                                    <a  id="playman_edit" style="cursor:pointer;"><i class="fa fa-plus-square-o" style="line-height:26px;"></i></a>
+                                <div class="dropdown"><span class="zhxr con"></span>
+                                    <a  id="playman_edit" style="cursor:pointer;" class="menu"  data-toggle="dropdown"><i class="fa fa-plus-square-o"></i></a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="margin:0;" >
+
+                                        <g:if test="${session.user.pid==1}">
+                                            <g:each in="${bumenInstance}" var="bumenInfo">
+                                                <li class="dropdown-submenu "  >
+                                                    <a tabindex="-1"  data-toggle="dropdown" class="bumen">${bumenInfo.name}<span style="display:-none" >${bumenInfo.id}</span></a>
+                                                    <ul class="dropdown-menu"  role="menu1" aria-labelledby="dLabel"  style="margin:0;padding-top:20px;">
+                                                        <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
+                                                            <li  class="dropdown" ><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
+                                                        </g:each>
+                                                    </ul>
+                                                </li>
+                                            </g:each>
+                                        </g:if>
+                                        <g:else>
+                                            <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
+                                                <li  class="dropdown"><a class="pn">${userInfo.name}<span style="display:-none">${userInfo.id}</span></a></li>
+                                            </g:each>
+                                        </g:else>
+                                    </ul>
+
                                 </div></td>
 
                         </tr>
@@ -601,7 +645,7 @@
                             $('#submit').attr('disabled',true);
                         }
                         editclick();
-                    },error:function(){alert("获取数据失败1");}});
+                    },error:function(){alert("获取数据失败");}});
 
 
                 $("#tar_fj").css('display','block');
@@ -614,8 +658,7 @@
            function editclick() {
 
                 $(".mission_edit").click(function () {
-                    var p=parseInt($('#r_per').html());
-                    alert(p);
+//                    var p=parseInt($('#r_per').html());
 
                     var mid = $(this).parent().next().html();
 
@@ -639,12 +682,12 @@
                             $('#mid').val(mission.id);
                             $('#mission_edit_detail').css('display', 'block');
                             p+=mission.percent;
-                            alert(p);
+
                             $('#rp').html(p);
                             editclick();
                         },
                         error: function () {
-                            alert("获取数据失败2");
+                            alert("获取数据失败");
                         }
                     })
 
@@ -769,28 +812,23 @@
 
                             }
                             $("#tar_fj ul").append(html);
-                            var p=parseInt($('#rp').html());
-                            p-=parseInt(percent);
-                            $('#r_per').html(p);
-                            if(r_per==0){
+//                            var p=parseInt($('#rp').html());
+//                            p-=parseInt(percent);
+                            $('#r_per').html(data.r_per);
+                            if($('#r_per').html()==0){
                                 $('#submit').attr('disabled',false);
+                            }else{
+                                $('#submit').attr('disabled',true);
                             }
                             if(target.issubmit=='1'){
                                 $('#submit').attr('disabled',true);
                             }
-//                            var r_per=100-data.target.percent
-//                            $('#r_per').html(r_per);
-//                            if(r_per==0){
-//                                $('#submit').attr('disabled',false);
-//                            }
-//                            if(target.issubmit=='1'){
-//                                $('#submit').attr('disabled',true);
-//                            }
+//
                             $('#mission_edit_detail').hide();
                             editclick();
                         },
                         error:function(){
-                            alert("获取数据失败3");
+                            alert("获取数据失败");
                         }
                     })
 
@@ -817,23 +855,17 @@
                                 rm1.remove();
                                 rm2.remove();
                             }
-                            var percents = $('#tar_fj input[name="percent"]');
 
-                            var sum_per = 0;
-                            for (var i = 0; i < percents.length; i++) {
-                                sum_per += parseInt(percents[i].value);
-
-                            }
-
-                            var r_per = 100 - sum_per;
-                            $('#r_per').html(r_per);
-                            if(r_per==0){
+                            $('#r_per').html(data.r_per);
+                            if( $('#r_per').html()==0){
                                 $('#submit').attr('disabled',false);
+                            }else{
+                                $('#submit').attr('disabled',true);
                             }
-                            editclick();
+
                         },
                         error: function () {
-                            alert("获取数据失败4");
+                            alert("获取数据失败");
                         }
 
 
@@ -965,84 +997,32 @@
                             com();
                             }
                         ,error:function(){
-                            alert("获取数据失败5")
+                            alert("获取数据失败")
                         }
                     })
                             $("#tar_detail").css("display","block");
                 })
 
-
-            //执行人选择部分
-            context.init({preventDoubleContext: false});
-
-            context.attach('#playman', [
-                <g:if test=" ${session.user.pid==1}">
-                    {header: '部门'},
-                     <g:each in="${bumenInstance}" var="bumenInfo">
-                     {text: '${bumenInfo.name}', subMenu: [
-                    {header: '员工'},
-                    <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
-                    {text: '${userInfo.name}', href: '#', action: function(e){
-                        $("#newmission_playname").val(${userInfo.id});
-                        $("#playbid").val(${userInfo.bid});
-                        $("#playname").val("${userInfo.name}");
-                        $(this).hide();
-                        $(".zhxr").html("${userInfo.name}");
-                    }},
-                    </g:each>
-                ]},
-                </g:each>
-                </g:if>
-                <g:else>
-                <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
-                {text: '${userInfo.name}', href: '#', action: function(e){
-                    $("#newmission_playname").val(${userInfo.id});
-                    $("#playbid").val(${userInfo.bid});
-                    $("#playname").val("${userInfo.name}");
-                    $(this).hide();
-                    $(".zhxr").html("${userInfo.name}");
-                }}
-                </g:each>
-                </g:else>
-
-            ]
-
-            );
-
-
-//            context.init({preventDoubleContext: false});
-
-            context.attach('#playman_edit', [
-                <g:if test=" ${session.user.pid==1}">
-                {header: '部门'},
-                <g:each in="${bumenInstance}" var="bumenInfo">
-                {text: '${bumenInfo.name}', subMenu: [
-                    {header: '员工'},
-                    <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
-                    {text: '${userInfo.name}', href: '#', action: function(e){
-                        $("#playuid_edit").val(${userInfo.id});
-                        $("#playbid_edit").val(${userInfo.bid});
-                        $("#playname_edit").val("${userInfo.name}");
-                        $(this).hide();
-                        $(".zhxr").html("${userInfo.name}");
-                    }},
-                    </g:each>
-                ]},
-                </g:each>
-                </g:if>
-                <g:else>
-                <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
-                {text: '${userInfo.name}', href: '#', action: function(e){
-                    $("#playuid_edit").val(${userInfo.id});
-                    $("#playbid_edit").val(${userInfo.bid});
-                    $("#playname_edit").val("${userInfo.name}");
-                    $(this).hide();
-                    $(".zhxr").html("${userInfo.name}");
-                }}
-                </g:each>
-                </g:else>
-            ]);
-
+            $('.menu').click(function(){
+                $('.bumen').hover(function(){
+                    $('#playbid').val($(this).find('span:first-child').html());
+                })
+                $('.user').click(function(){
+                    $('#newmission_playname').val($(this).next().html());
+                    $('#playname').val($(this).text());
+                    $('.zhxr').html($(this).text());
+                })
+            })
+            $('.menu1').click(function(){
+                $('.bumen').hover(function(){
+                    $('#playbid_edit').val($(this).find('span:first-child').html());
+                })
+                $('.user').click(function(){
+                    $('#playuid_edit').val($(this).next().html());
+                    $('#playname_edit').val($(this).text());
+                    $('.zhxr').html($(this).text());
+                })
+            })
 
             //新建任务
             $("#newmission").click(function() {
@@ -1154,18 +1134,9 @@
                                     '</li>';
 
                             $("#tar_fj ul").append(html);
-                            var percents=$('#tar_fj input[name="percent"]');
 
-                            var sum_per=0;
-                            for(var i=0;i<percents.length;i++){
-                                sum_per+=parseInt(percents[i].value);
-
-                            }
-                            sum_per+=data.mission.percent;
-                            var r_per=100-sum_per;
-
-                            $('#r_per').html(r_per);
-                            if(r_per==0){
+                            $('#r_per').html(data.r_per);
+                            if($('#r_per').html()==0){
                                 $('#submit').attr('disabled',false);
                             }
                             if(target.issubmit=='1'){
@@ -1174,7 +1145,7 @@
                             $("#newmissiondetail").css('display','none');
                             editclick();
                         },
-                        error:function(){alert("获取数据失败6")}
+                        error:function(){alert("获取数据失败")}
                     })
 
                 });
@@ -1191,22 +1162,34 @@
                     data:{target_id:tid},
                     success:function(data){
                         alert("下发任务成功！");
-                        $('#tar_fj').css('display','none');
+                        location.reload();
 
                     },
-                    error:function(){alert('获取数据失败9！')}
+                    error:function(){alert('获取数据失败！')}
                 })
             })
 
             $('.select_img').click(function() {
                 var tid=$(this).parent().prev().val();
                 $('#all_var').html(tid);
-                
+                $.ajax({
+                    url:'${webRequest.baseUrl}/front/showImg',
+                    type:'post',
+                    dataType:'json',
+                    data:{target_id:tid},
+                    success:function(data){
+                        $('#img').attr('src','/guihuabao/static/img/target-img/'+data.img);
+                    },
+                    error:function(){
+                        alert('获取数据失败！');
+                    }}
+                )
                 $('#select_img').css('display', 'block');
                 $('#select_img .ori img').click(function () {
                     var thisimg = $(this).attr('src');
 
                     $('#img').attr('src', thisimg);
+                    $('#filename').html(thisimg);
                 });
 
 
@@ -1215,7 +1198,7 @@
             $('#upimg').click(function(){
                 var target_id=$('#all_var').html();
 
-                var imgs=$('#img').attr('src').split('/');
+                var imgs=$('#filename').html().split('/');
                 var img=imgs[imgs.length-1];
 
                 $.ajax({
@@ -1227,7 +1210,7 @@
                         location.reload();
 
                     },
-                    error:function(){alert('获取数据失败7！')}
+                    error:function(){alert('获取数据失败！')}
                 })
             })
 
@@ -1247,12 +1230,12 @@
                    success: function (data) {
                        alert('成功上传！');
 
-                       $('#img').attr('src', data.filePath);
+                       $('#filename').html(data.fileName);
 
 
                    },
                    error: function () {
-                       alert('获取数据失败12！');
+                       alert('获取数据失败！');
                    }
                })
            })
@@ -1301,7 +1284,7 @@
                         $('#r_per').html(100);
                         $('#submit').attr('disabled',true);
                     },
-                    error:function(){alert('获取数据失败8！')}
+                    error:function(){alert('获取数据失败！')}
                 })
             })
             $('#save_target').click(function(){
