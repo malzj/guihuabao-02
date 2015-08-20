@@ -1543,11 +1543,12 @@ class FrontController {
             redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
             return
         }
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         def replyTaskInstance = new ReplyTask(params)
         def taskInstance = Task.get(id)
         taskInstance.reply = 1
         replyTaskInstance.tasks = taskInstance
-        replyTaskInstance.date = new Date()
+        replyTaskInstance.date = time.format(new Date())
         replyTaskInstance.status = 0
         if (!replyTaskInstance.save(flush: true)) {
             render(view: "unreadTaskReply", model: [id: params.id])
