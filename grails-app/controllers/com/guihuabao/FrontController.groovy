@@ -2761,6 +2761,9 @@ class FrontController {
         } else
             render rs as JSON
     }
-
+   def hxtools(){}
+    def hxexample(){}
+    def tool(){}
+    def example(){}
 }
 

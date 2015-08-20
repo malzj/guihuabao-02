@@ -131,7 +131,7 @@ ul.sidebar-menu.reset li .hx{ background:url("../img/menu_icon_4.png") no-repeat
 #listsider
 
 ul.sidebar-menu.reset li a.active i, ul.sidebar-menu.reset li a:hover i, ul.sidebar-menu.reset li a:focus i { background-position:0% 100%;}
-ul.sidebar-menu.reset ul.sub li{ padding-left:49px !important;}
+ul.sidebar-menu.reset ul.sub li{ padding-left:49px}
 ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .panel-heading h2{font-size:16px;color:#1c7ff4; margin-top:10px !important;}
 
@@ -203,13 +203,13 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .passwordedit .m_box ul{margin:28px;}
 .passwordedit .m_box ul li{margin-bottom: 15px;}
 /*���뵯�� end*/
-.hxzs_content .book_list .menu_side{ margin:20px 0;height: 926px; width: 246px; overflow-x:hidden; overflow-y: scroll; }
+.hxzs_content .book_list .menu_side{ margin:20px 0;height: 926px; width: 246px; overflow-x:hidden;  }
 .hxzs_content .book_list .menu{ background:url("../img/line_img.png") repeat-y 50% 0%; }
 .hxzs_content .menu>li>span { cursor:pointer; display:block; text-align:right; font-size:16px; width:110px; color:#03a9f4; padding:5px 30px; background:url("../img/b_point.png") no-repeat 100% 50%; }
 .hxzs_content .weeks{ display:none; }
 .hxzs_content .weeks.on{ display:block; }
 .hxzs_content .weeks > li{ display:block; font-size:14px; padding:0 0 0 115px; background:url("../img/s_point.png") no-repeat 50% 285%; }
-.hxzs_content .weeks > li >a{ display:inline-block; cursor:pointer; padding:5px 15px; }
+.hxzs_content .weeks > li >a{ display:inline-block; cursor:pointer; padding:5px 15px;display: inline-block;width: 62px; }
 .hxzs_content .weeks > li.active > a{ background:url("../img/wbk.png") no-repeat;}
 .hxzs_content .weeks > li.active{ background-position:50% -158%;}
 
