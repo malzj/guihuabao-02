@@ -67,13 +67,41 @@
 
 
 //datetime picker start
+//选取开始时间
+$("#startdate").datetimepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    todayBtn: true,
+    language: 'ch',
+    pickerPosition: "bottom-left",
+    minView:2,
+    pickSeconds:false
+}).on('changeDate',function(ev){
+    var starttime = $("#startdate").val();
+    $("#enddate").datetimepicker('setStartDate',starttime);
+});
+
+$("#enddate").datetimepicker({
+    format: 'yyyy-mm-dd hh:ii',
+    autoclose: true,
+    todayBtn: true,
+    language: 'ch',
+    pickerPosition: "bottom-left",
+    minView:1,
+    pickSeconds:false
+}).on('changeDate',function(ev){
+    var endtime = $("#enddate").val();
+    $("#startdate").datetimepicker('setEndDate',endtime);
+});
 
 $(".form_datetime").datetimepicker({
     format: 'yyyy-mm-dd hh:ii',
     autoclose: true,
     todayBtn: true,
+    language: 'ch',
     pickerPosition: "bottom-left",
-	minView:1
+	minView:1,
+    pickSeconds:false
 });
 
 

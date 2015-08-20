@@ -101,7 +101,7 @@
                             <td>申请内容</td>
                             <td>申请人</td>
                             <td>审批结果</td>
-                            <td>备注</td>
+                            <td>审批反馈</td>
                             <td>申请时间</td>
                             <td>
                                 操作
@@ -147,7 +147,7 @@
                 <li>申请内容：<span></span></li>
                 <li>申请时间：<span></span></li>
                 <li>申请结果：<span></span></li>
-                <li>审核批注：<span><textarea id="approvetext" name="approvetext"></textarea></span></li>
+                <li>审批反馈：<span><textarea id="approvetext" name="approvetext"></textarea></span></li>
             </ul>
             <input type="button" value="通过" id="pass" class="ispass" data-status="1" />
             <input type="button" value="未通过" id="nopass" class="ispass" data-status="2"/>
