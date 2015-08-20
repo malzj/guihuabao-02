@@ -67,7 +67,7 @@
                 <div class="book_show col-xs-9 ">
                     <div class="top clearfix">
                         <div class="address f-l">
-                            和许助手>${syllabus.syllabusName}>${chapter.chapterName}
+                            和许助手>${syllabus?.syllabusName}>${chapter?.chapterName}
                         </div>
                         <div class="pick_page f-r">
                             %{--<a class="single_page"><i></i>单页</a>--}%

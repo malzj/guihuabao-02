@@ -53,7 +53,7 @@
                     <span>${bookInstance.bookName}</span>
                 </div>
             </g:each>
-                <img src="${resource(dir: 'img', file: 'add.png')}" height="195" width="235" />
+            <g:link action="bookCreate"><img src="${resource(dir: 'img', file: 'add.png')}" height="195" width="235" /></g:link>
                 </div>
 
 

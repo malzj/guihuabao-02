@@ -48,35 +48,19 @@
                             <ul>
                                 <li class="on"><i></i><span>我的目标</span></li>
                             </ul>
-                            <a class="f-r">查看更多</a>
+                            <g:link class="f-r" action="user_target ">查看更多</g:link>
                             <span class="f-r">|</span>
                             <a class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
                         </div>
                         <ul class="index-img-list clearfix">
+                            <g:each in="${targetInstance}" status="i" var="targetInfo">
                             <li>
                                 <a>
                                     <img src="${resource(dir: 'img', file: 'mb_bg.png')}" />
-                                    <p>企业数据报告</p>
+                                    <p>${targetInfo.title}</p>
                                 </a>
                             </li>
-                            <li>
-                                <a>
-                                    <img src="${resource(dir: 'img', file: 'mb_bg.png')}" />
-                                    <p>企业数据报告</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a>
-                                    <img src="${resource(dir: 'img', file: 'mb_bg.png')}" />
-                                    <p>企业数据报告</p>
-                                </a>
-                            </li>
-                            <li class="mr0">
-                                <a>
-                                    <img src="${resource(dir: 'img', file: 'mb_bg.png')}" />
-                                    <p>企业数据报告</p>
-                                </a>
-                            </li>
+                            </g:each>
                         </ul>
                     </div>
                     <div class="index-group">

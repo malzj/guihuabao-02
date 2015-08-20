@@ -94,6 +94,58 @@ $("#enddate").datetimepicker({
     $("#startdate").datetimepicker('setEndDate',endtime);
 });
 
+$("#startdate_mission").datetimepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    todayBtn: true,
+    language: 'ch',
+    pickerPosition: "bottom-left",
+    minView:2,
+    pickSeconds:false
+}).on('changeDate',function(ev){
+    var starttime = $("#startdate_mission").val();
+    $("#enddate_mission").datetimepicker('setStartDate',starttime);
+});
+
+$("#enddate_mission").datetimepicker({
+    format: 'yyyy-mm-dd hh:ii',
+    autoclose: true,
+    todayBtn: true,
+    language: 'ch',
+    pickerPosition: "bottom-left",
+    minView:1,
+    pickSeconds:false
+}).on('changeDate',function(ev){
+    var endtime = $("#enddate_mission").val();
+    $("#startdate_mission").datetimepicker('setEndDate',endtime);
+});
+
+$("#startdate_edit").datetimepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    todayBtn: true,
+    language: 'ch',
+    pickerPosition: "bottom-left",
+    minView:2,
+    pickSeconds:false
+}).on('changeDate',function(ev){
+    var starttime = $("#startdate_edit").val();
+    $("#enddate_edit").datetimepicker('setStartDate',starttime);
+});
+
+$("#enddate_edit").datetimepicker({
+    format: 'yyyy-mm-dd hh:ii',
+    autoclose: true,
+    todayBtn: true,
+    language: 'ch',
+    pickerPosition: "bottom-left",
+    minView:1,
+    pickSeconds:false
+}).on('changeDate',function(ev){
+    var endtime = $("#enddate_edit").val();
+    $("#startdate_edit").datetimepicker('setEndDate',endtime);
+});
+
 $(".form_datetime").datetimepicker({
     format: 'yyyy-mm-dd hh:ii',
     autoclose: true,

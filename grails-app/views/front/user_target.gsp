@@ -329,7 +329,7 @@
                     </tr>
                     <tr>
                         <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;line-height: 30px;">起止日</th>
-                        <td width="75%"> <input id="startdate_mission" name="begintime" value="" readonly="" class="default-date-picker nr" type="text" style="width:120px;" title="该字段不能为空！">-<input id="enddate_mission" name="overtime" value="" readonly="" class="form_datetime nr" type="text" style="width:163px;" title="该字段不能为空！"></td>
+                        <td width="75%"> <input id="startdate_mission" name="begintime" value="" readonly="" class="nr" type="text" style="width:120px;" title="该字段不能为空！">-<input id="enddate_mission" name="overtime" value="" readonly="" class="nr" type="text" style="width:163px;" title="该字段不能为空！"></td>
 
                     </tr>
                     <tr>
@@ -408,7 +408,7 @@
                         </tr>
                         <tr>
                             <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;line-height: 30px;">起止日</th>
-                            <td width="75%" style="line-height:36px;"> <input id="startdate_edit" name="begintime" value="" readonly="" class="default-date-picker" type="text" style="width:120px;" title="该字段不能为空！">—<input id="enddate_edit" name="overtime" value="" readonly="" class="form_datetime" type="text" style="width:163px;" title="该字段不能为空！"></td>
+                            <td width="75%" style="line-height:36px;"> <input id="startdate_edit" name="begintime" value="" readonly="" type="text" style="width:120px;" title="该字段不能为空！">—<input id="enddate_edit" name="overtime" value="" readonly="" type="text" style="width:163px;" title="该字段不能为空！"></td>
 
                         </tr>
                         <tr>
