@@ -385,7 +385,11 @@ class GuihuabaoapiController {
     //新增回复
     def saveReplyTask(){
         def rs=[:]
+        def   id = params.id
+        def taskInstance =Task.get(id)
+
         def replyTaskInstance = new ReplyTask(params)
+        replyTaskInstance.tasks=taskInstance
         if (!replyTaskInstance.save(flush: true)) {
             rs.result =false
             rs.msg = "没有回复成功"
