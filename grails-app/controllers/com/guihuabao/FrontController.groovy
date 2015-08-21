@@ -67,12 +67,13 @@ class FrontController {
         }
         def uid = session.user.id
         def cid = session.company.id
+        def uname = session.user.name
         def current = new Date()
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
         def now = time.format(current)
         def order = [sort:"dateCreate",order: "desc"]
         def targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,uid,0,[max: 3,sort:"dateCreate",order: "desc"])
-        def missionInstance = Mission.findAllByPlaynameAndStatus( playname, '0', params)
+        def missionInstance = Mission.findAllByPlaynameAndStatus(uname, '0', [max: 3,sort:"dateCreate",order: "desc"])
         def todayTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(cid,uid,0,now,now,order)//今天任务
         def taskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeGreaterThanEquals(cid,uid,0,now,[sort:"overtime",order:"asc"])//即将到期
         def applyInstance = Apply.findAllByApplyuidAndCidAndApplystatuss(uid,cid,1,[max: 3,sort:"dateCreate",order: "desc"])

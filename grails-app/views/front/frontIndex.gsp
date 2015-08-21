@@ -49,8 +49,8 @@
                                 <li class="on"><i></i><span>我的目标</span></li>
                             </ul>
                             <g:link class="f-r" action="user_target ">查看更多</g:link>
-                            <span class="f-r">|</span>
-                            <a class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
+                            %{--<span class="f-r">|</span>--}%
+                            %{--<a class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>--}%
                         </div>
                         <ul class="index-img-list clearfix">
                             <g:each in="${targetInstance}" status="i" var="targetInfo">
@@ -71,8 +71,8 @@
                                 <li>即将到期任务</li>
                             </ul>
                             <g:link class="f-r" action="taskCreate">查看更多</g:link>
-                            <span class="f-r">|</span>
-                            <a class="f-r"><i class="fa fa-plus-circle"></i>新建任务</a>
+                            %{--<span class="f-r">|</span>--}%
+                            %{--<a class="f-r"><i class="fa fa-plus-circle"></i>新建任务</a>--}%
                         </div>
                         <ul class="e-list">
                             <g:if test="${todayTaskInstance}">
@@ -121,8 +121,8 @@
                                 <li class="on"><i class="apply"></i><span>我的申请</span></li>
                             </ul>
                             <g:link class="f-r" action="apply">查看更多</g:link>
-                            <span class="f-r">|</span>
-                            <a class="f-r"><i class="fa fa-plus-circle"></i>新建申请</a>
+                            %{--<span class="f-r">|</span>--}%
+                            %{--<a class="f-r"><i class="fa fa-plus-circle"></i>新建申请</a>--}%
                         </div>
                         <ul class="e-list">
                             <g:if test="${applyInstance}">
@@ -177,8 +177,8 @@
                                 <li class="on"><i class="report"></i><span>我的报告</span></li>
                             </ul>
                             <a class="f-r">查看更多</a>
-                            <span class="f-r">|</span>
-                            <g:link class="f-r" action="myReport"><i class="fa fa-plus-circle"></i>撰写报告</g:link>
+                            %{--<span class="f-r">|</span>--}%
+                            %{--<g:link class="f-r" action="myReport"><i class="fa fa-plus-circle"></i>撰写报告</g:link>--}%
                         </div>
                         <ul class="e-list">
                             <g:if test="${zhoubaoInstance}">
@@ -205,8 +205,8 @@
                                 <li class="on"><i class="target"></i><span>参与目标</span></li>
                             </ul>
                             <a class="f-r">查看更多</a>
-                            <span class="f-r">|</span>
-                            <a class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
+                            %{--<span class="f-r">|</span>--}%
+                            %{--<a class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>--}%
                         </div>
                         <ul class="e-list">
                             <g:if test="${missionInstance}">
@@ -229,80 +229,80 @@
                     </div>
                 </div>
             </div>
-            <!--弹层 start-->
-            <div class="popup_box">
-                <div class="m_box">
-                    <header class="panel-heading">
-                        <span><i class="yh"></i>新建任务</span>
-                        <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
-                    </header>
-                    <g:form url="[controller:'front',action:'taskSave']">
-                        <div class="r-title">
-                            <div class="r-title-con f-l">任务</div>
-                            <div class="r-title-jinji f-l">
-                                <i class="clock-b"></i><span class="r-chd">紧急程度</span>
-                                <input type="hidden" id="playstatus" name="playstatus" />
-                                <ul class="r-jinji-down">
-                                    <li><a data-playstatus="1"><i class="clock-red"></i>紧急且重要</a></li>
-                                    <li><a data-playstatus="2"><i class="clock-yellow"></i>紧急不重要</a></li>
-                                    <li><a data-playstatus="3"><i class="clock-green"></i>重要不紧急</a></li>
-                                    <li><a data-playstatus="4"><i class="clock-blue"></i>不重要不紧急</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <input type="text" placeholder="一句话描述任务" class="size" name="title" />
-                        </div>
-                        <div class="control-group">
-                            <input type="text" placeholder="添加任务详情" class="size" name="content" />
-                        </div>
-                        <div class="control-group">
-                            <table>
-                                <tr>
-                                    <td>负责人</td>
-                                    <td>
-                                        ${session.user.name}
-                                        <g:hiddenField name="fzuid" value="${session.user.id}" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>执行人</td>
-                                    <td>
-                                        <input type="hidden" id="playuid" name="playuid" value="" />
-                                        <input type="hidden" id="playbid" name="playbid" value="" />
-                                        <input type="hidden" id="playname" name="playname" value="" />
-                                        <div class="zhxr">
-                                            <a id="playman">选择</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>起止日期</td>
-                                    <td><input id="startdate" name="bigentime" value="" readonly="" class="default-date-picker" type="text">-<input id="enddate" name="overtime" value="" readonly="" class="form_datetime" type="text"></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="control-group">
-                            <button id="submit" type="submit" class="btn btn-info f-r">提交</button>
-                        </div>
-                    </g:form>
-                </div>
-            </div>
-            <!--弹层 end-->
-            <!--任务详情 start-->
-            <div id="task" style="display: none">
-                <div class="task_hearder">
-                    <div class="task_hearder_title">
-                        <span><i class="yh"></i>任务详情</span>
-                        <div class="taskclose"><a href="javascript:;" class="fa fa-times"></a></div>
-                    </div>
-                    <a class="print_icon"></a>
-                    <a class="copy_icon"></a>
-                </div>
-                <div class="task_content">
-                </div>
-            </div>
-            <!--任务详情 end-->
+            %{--<!--弹层 start-->--}%
+            %{--<div class="popup_box">--}%
+                %{--<div class="m_box">--}%
+                    %{--<header class="panel-heading">--}%
+                        %{--<span><i class="yh"></i>新建任务</span>--}%
+                        %{--<div class="close"><a href="javascript:;" class="fa fa-times"></a></div>--}%
+                    %{--</header>--}%
+                    %{--<g:form url="[controller:'front',action:'taskSave']">--}%
+                        %{--<div class="r-title">--}%
+                            %{--<div class="r-title-con f-l">任务</div>--}%
+                            %{--<div class="r-title-jinji f-l">--}%
+                                %{--<i class="clock-b"></i><span class="r-chd">紧急程度</span>--}%
+                                %{--<input type="hidden" id="playstatus" name="playstatus" />--}%
+                                %{--<ul class="r-jinji-down">--}%
+                                    %{--<li><a data-playstatus="1"><i class="clock-red"></i>紧急且重要</a></li>--}%
+                                    %{--<li><a data-playstatus="2"><i class="clock-yellow"></i>紧急不重要</a></li>--}%
+                                    %{--<li><a data-playstatus="3"><i class="clock-green"></i>重要不紧急</a></li>--}%
+                                    %{--<li><a data-playstatus="4"><i class="clock-blue"></i>不重要不紧急</a></li>--}%
+                                %{--</ul>--}%
+                            %{--</div>--}%
+                        %{--</div>--}%
+                        %{--<div class="control-group">--}%
+                            %{--<input type="text" placeholder="一句话描述任务" class="size" name="title" />--}%
+                        %{--</div>--}%
+                        %{--<div class="control-group">--}%
+                            %{--<input type="text" placeholder="添加任务详情" class="size" name="content" />--}%
+                        %{--</div>--}%
+                        %{--<div class="control-group">--}%
+                            %{--<table>--}%
+                                %{--<tr>--}%
+                                    %{--<td>负责人</td>--}%
+                                    %{--<td>--}%
+                                        %{--${session.user.name}--}%
+                                        %{--<g:hiddenField name="fzuid" value="${session.user.id}" />--}%
+                                    %{--</td>--}%
+                                %{--</tr>--}%
+                                %{--<tr>--}%
+                                    %{--<td>执行人</td>--}%
+                                    %{--<td>--}%
+                                        %{--<input type="hidden" id="playuid" name="playuid" value="" />--}%
+                                        %{--<input type="hidden" id="playbid" name="playbid" value="" />--}%
+                                        %{--<input type="hidden" id="playname" name="playname" value="" />--}%
+                                        %{--<div class="zhxr">--}%
+                                            %{--<a id="playman">选择</a>--}%
+                                        %{--</div>--}%
+                                    %{--</td>--}%
+                                %{--</tr>--}%
+                                %{--<tr>--}%
+                                    %{--<td>起止日期</td>--}%
+                                    %{--<td><input id="startdate" name="bigentime" value="" readonly="" class="default-date-picker" type="text">-<input id="enddate" name="overtime" value="" readonly="" class="form_datetime" type="text"></td>--}%
+                                %{--</tr>--}%
+                            %{--</table>--}%
+                        %{--</div>--}%
+                        %{--<div class="control-group">--}%
+                            %{--<button id="submit" type="submit" class="btn btn-info f-r">提交</button>--}%
+                        %{--</div>--}%
+                    %{--</g:form>--}%
+                %{--</div>--}%
+            %{--</div>--}%
+            %{--<!--弹层 end-->--}%
+            %{--<!--任务详情 start-->--}%
+            %{--<div id="task" style="display: none">--}%
+                %{--<div class="task_hearder">--}%
+                    %{--<div class="task_hearder_title">--}%
+                        %{--<span><i class="yh"></i>任务详情</span>--}%
+                        %{--<div class="taskclose"><a href="javascript:;" class="fa fa-times"></a></div>--}%
+                    %{--</div>--}%
+                    %{--<a class="print_icon"></a>--}%
+                    %{--<a class="copy_icon"></a>--}%
+                %{--</div>--}%
+                %{--<div class="task_content">--}%
+                %{--</div>--}%
+            %{--</div>--}%
+            %{--<!--任务详情 end-->--}%
         </section>
     </section>
     <!--main content end-->

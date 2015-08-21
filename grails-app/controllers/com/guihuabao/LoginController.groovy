@@ -1077,7 +1077,7 @@ class LoginController {
     def toolShow(Long id) {
         def toolInstance = HexuTool.get(id)
         if (!toolInstance) {
-//            flash.message = message(code: 'default.not.found.message', args: [message(code: 'book.label', default: 'Book'), id])
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'book.label', default: 'Book'), id])
             redirect(action: "tools")
             return
         }
