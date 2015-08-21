@@ -38,56 +38,54 @@
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
-    <div class="col-xs-2" style="height:100%"></div>
-    <g:render template="hx_siderbar" />
-    <!--sidebar end-->
-    <!--main content start-->
-    <section id="main-content" class="col-xs-10" style="padding-left: 0;">
-        <section class="wrapper wrapper_reset">
-            <div class="hxzs_content clearfix row">
-                <div class="book_list col-xs-3">
-                    <h2><g:fieldValue bean="${bookInstance}" field="bookName"/></h2>
-                    <div class="menu_side">
-                        <ul class="menu">
+        <div class="col-xs-2" style="height:100%"></div>
+        <g:render template="hx_siderbar" />
+        <!--sidebar end-->
+        <!--main content start-->
+        <section id="main-content" class="col-xs-10" style="padding-left: 0;">
+            <section class="wrapper wrapper_reset">
+                <div class="hxzs_content clearfix row">
+                    <div class="book_list col-xs-3">
+                        <h2><g:fieldValue bean="${bookInstance}" field="bookName"/></h2>
+                        <div class="menu_side">
+                            <ul class="menu">
 
-                            <g:each status="i" in="${syllabusInstanceList}" var="syllabusInstance" >
-                                <li>
-                                    <span>${syllabusInstance.syllabusName}</span>
-                                    <ul class="weeks <g:if test="${syllabusInstance.id==syllabus.id}">on</g:if>">
-                                        <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" var="chapterInstance">
-                                            <li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link action="chapterBook" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>
-                                        </g:each>
-                                    </ul>
-                                </li>
-                            </g:each>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="book_show col-xs-9 ">
-                    <div class="top clearfix">
-                        <div class="address f-l">
-                            和许助手>${syllabus?.syllabusName}>${chapter?.chapterName}
-                        </div>
-                        <div class="pick_page f-r">
-                            %{--<a class="single_page"><i></i>单页</a>--}%
-                            %{--<a class="double_page"><i></i>双页</a>--}%
-
-                            <g:if test="${offset.toInteger() != 0}"><g:link action="book" id="${bookId}"  params="[offset:offset.toInteger()-2]"  class="pre_page ml25" >上一页</g:link> </g:if>
-                           <g:if test="${offset.toInteger() < contentsize.toInteger()/2+1}"> <g:link action="book" id="${bookId}" params="[offset:offset.toInteger()+2]" class="next_page">下一页</g:link></g:if>
+                                <g:each status="i" in="${syllabusInstanceList}" var="syllabusInstance" >
+                                    <li>
+                                        <span>${syllabusInstance.syllabusName}</span>
+                                        <ul class="weeks <g:if test="${syllabusInstance.id==syllabus.id}">on</g:if>">
+                                            <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" var="chapterInstance">
+                                                <li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link action="chapterBook" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>
+                                            </g:each>
+                                        </ul>
+                                    </li>
+                                </g:each>
+                            </ul>
                         </div>
                     </div>
-                    <div class="row" style="padding:0 15px;">
-                    <div class="page b-k col-xs-6" style="width:48%">${content}</div>
-                    <div class="page b-k ml20 col-xs-6" style="width:48%">${content1}</div>
+
+                    <div class="book_show col-xs-9 ">
+                        <div class="top clearfix">
+                            <div class="address f-l">
+                                工具>列表>内容
+                            </div>
+                            <div class="pick_page f-r">
+                                %{--<a class="single_page"><i></i>单页</a>--}%
+                                %{--<a class="double_page"><i></i>双页</a>--}%
+
+                                上一页/下一页
+                            </div>
+                        </div>
+                        <div class="row" style="padding:0 15px;">
+                            <div class="page b-k col-xs-12">${content}</div>
+
                     </div>
                 </div>
-            </div>
+            </section>
+            <!--main content end-->
+
         </section>
-        <!--main content end-->
-
-    </section>
-</div>
+    </div>
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
     <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
@@ -117,6 +115,9 @@
                 $(this).next(".weeks").toggle();
             })
         })
+
+
+
 
     </script>
 </body>

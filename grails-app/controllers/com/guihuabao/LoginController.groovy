@@ -1030,4 +1030,7 @@ class LoginController {
         redirect(action: "contentShow", id: contentInstance.id)
 
     }
+    def tools(){}
+    def examples(){}
+    def toolShow(){}
 }
