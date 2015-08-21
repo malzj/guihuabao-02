@@ -59,7 +59,12 @@ class FrontController {
     }
 
     def frontIndex(){
-        yanzheng()
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def uid = session.user.id
         def cid = session.company.id
         def current = new Date()

@@ -880,10 +880,20 @@ class LoginController {
 
         MultipartFile f = request.getFile('bookImg1')
         if(!f.empty) {
-            fileName=f.getOriginalFilename()
-            filePath="web-app/images/"
-            f.transferTo(new File(filePath+fileName))
-         bookInstance.bookImg=fileName
+            def date= new Date().getTime()
+            Random random =new Random()
+            def x = random.nextInt(100)
+            def str =f.originalFilename
+            String [] strs = str.split("[.]")
+
+
+            fileName=date.toString()+x.toString()+"."+strs[1]
+            def webRootDir = servletContext.getRealPath("/")
+            println webRootDir
+            def userDir = new File(webRootDir, "/images/")
+            userDir.mkdirs()
+            f.transferTo( new File( userDir, fileName))
+            bookInstance.bookImg=fileName
         }
 
 
@@ -1030,7 +1040,134 @@ class LoginController {
         redirect(action: "contentShow", id: contentInstance.id)
 
     }
-    def tools(){}
+
+    //案例和工具
+    def tools(){
+
+    }
+
+    //案例和工具新建
+    def toolCreate(){
+        [toolInstance: new HexuTool(params)]
+    }
+    //案例和工具新建
+    def toolDelete(Long id){
+        def toolInstance = HexuTool.get(id)
+        if (!toolInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'tool.label', default: 'Tool'), id])
+            redirect(action: "tools")
+            return
+        }
+
+        try {
+            toolInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'tool.label', default: 'Tool'), id])
+            redirect(action: "tools")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'tool.label', default: 'Tool'), id])
+            redirect(action: "tools", id: id)
+        }
+    }
+    def toolEdit(Long id){
+        def toolInstance = Book.get(id)
+        [toolInstance: toolInstance]
+    }
+    def toolShow(Long id) {
+        def toolInstance = Book.get(id)
+        if (!toolInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'book.label', default: 'Book'), id])
+            redirect(action: "roleList")
+            return
+        }
+
+        [toolInstance: toolInstance]
+    }
+    def toolUpdate(Long id, Long version){
+        def toolInstance = HexuTool.get(id)
+        def a =params
+        def  filePath
+        def  fileName
+
+        MultipartFile f = request.getFile('bookImg1')
+        if(!f.empty) {
+            def date= new Date().getTime()
+            Random random =new Random()
+            def x = random.nextInt(100)
+            def str =f.originalFilename
+            String [] strs = str.split("[.]")
+
+
+            fileName=date.toString()+x.toString()+"."+strs[1]
+            def webRootDir = servletContext.getRealPath("/")
+            println webRootDir
+            def userDir = new File(webRootDir, "/images/")
+            userDir.mkdirs()
+            f.transferTo( new File( userDir, fileName))
+
+            toolInstance.toolImg=fileName
+        }
+
+
+
+        if (!toolInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'tool.label', default: 'Tool'), id])
+            redirect(action: "toolShow", id: toolInstance.id)
+            return
+        }
+
+        if (version != null) {
+            if (toolInstance.version > version) {
+                toolInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'book.label', default: 'Book')] as Object[],
+                        "Another user has updated this Book while you were editing")
+                render(view: "toolEdit", model: [toolInstance: toolInstance])
+                return
+            }
+        }
+
+        toolInstance.properties = params
+
+
+        if (!toolInstance.save(flush: true)) {
+            render(view: "toolEdit", model: [bookInstance: toolInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'tool.label', default: 'Tool'), toolInstance.id])
+        redirect(action: "toolShow", id: toolInstance.id)
+
+    }
+    //案例和工具保存
+    def toolSave(){
+        def toolInstance = new HexuTool(params)
+        def  fileName
+        MultipartFile f = request.getFile('bookImg')
+        if(!f.empty) {
+
+            def date= new Date().getTime()
+            Random random =new Random()
+            def x = random.nextInt(100)
+            def str =f.originalFilename
+            String [] strs = str.split("[.]")
+
+
+            fileName=date.toString()+x.toString()+"."+strs[1]
+            def webRootDir = servletContext.getRealPath("/")
+            println webRootDir
+            def userDir = new File(webRootDir, "/images/")
+            userDir.mkdirs()
+            f.transferTo( new File( userDir, fileName))
+
+            toolInstance.toolImg=fileName
+        }
+        if(!toolInstance.save(flush: true)){
+            render(view: "toolCreate",model: [toolInstance: toolInstance])
+        }
+
+        flash.message =message(code: 'default.created.message', args: [message(code: 'book.label', default: 'Book'), toolInstance.id])
+        redirect(action: "toolShow", id:toolInstance.id, params: [bookName: toolInstance.toolName])
+    }
     def examples(){}
     def toolShow(){}
 }
