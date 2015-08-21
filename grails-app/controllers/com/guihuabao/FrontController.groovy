@@ -2307,11 +2307,12 @@ class FrontController {
         def mid=params.mid
         def missionInstance = Mission.get(mid)
         def targetInstance=missionInstance.target
-
+        println(targetInstance.percent)
         try {
             missionInstance.delete(flush: true)
-            if(missionInstance.status==1) {
+            if(missionInstance.status=='1') {
                 targetInstance.percent-= missionInstance.percent
+
             }
             def missionlist=targetInstance.mission
             def sum=0
