@@ -77,7 +77,8 @@
                                             <span class="title" data-task-id="${missionInfo.id}">${missionInfo.title}</span>
                                             <span class="status"><g:if test="${missionInfo.status=="1"}">已完成</g:if><g:else>未完成</g:else></span>
                                             <div class="right">
-                                                %{--<span class="hsfinish"><g:link action="taskUpdate" id="${missionInfo.id}" params="[version: missionInfo.version]"><i class="fa <g:if test="${missionInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
+                                                <span class="hsfinish"><a href="javascript:;" onclick="stop_Pro(event)" class="taskedit" data-id="${missionInfo.id}"><i class="fa <g:if test="${missionInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
+                                                %{--<span class="hsfinish"><g:link action="taskUpdate" id="${missionInfo.id}" ><i class="fa <g:if test="${missionInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
                                                 %{--<g:if test="${missionInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${missionInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
 
                                                 %{--<g:if test="${missionInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${missionInfo.id}" data-version="${missionInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>--}%
@@ -369,6 +370,34 @@
             $("#task").slideLeftHide(400);
             $("#task .task_content").empty();
         });
+        $(".taskedit").click(function(){
+            var id=$(this).attr("data-id");
+            alert(id);
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/mfinished',
+                dataType: "json",
+                type:'post',
+                data:{id:id},
+                success: function(data){
+                    if(data.msg){
+                        alert("标记成功!")
+                        window.location.reload()
+                    }else{
+                        alert("标记失败!")
+                    }
+                }
+            })
+        })
+        function stop_Pro(e){
+            var e=e || window.event;
+            if (e && e.stopPropagation) {
+                //W3C取消冒泡事件
+                e.stopPropagation();
+            } else {
+                //IE取消冒泡事件
+                window.event.cancelBubble = true;
+            }
+        }
     })
 </script>
 </body>

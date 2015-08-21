@@ -2310,7 +2310,7 @@ class FrontController {
         try {
             missionInstance.delete(flush: true)
             if(missionInstance.status==1) {
-                targetInstance.percent -= missionInstance.percent
+                targetInstance.percent-= missionInstance.percent
             }
             def missionlist=targetInstance.mission
             def sum=0
@@ -2338,7 +2338,7 @@ class FrontController {
         def mid = params.mid
 
         def mission = Mission.get(mid)
-
+        def target = mission.target
 
         if(mission.status=='0') {
             mission.properties = params
@@ -2353,7 +2353,7 @@ class FrontController {
                 target.percent+=mission.percent
             }
         }
-        def target = mission.target
+
         def missionlist = target.mission
         def sum=0
         for(def m in missionlist){
@@ -2672,6 +2672,24 @@ class FrontController {
             missionInstanceTotal = Mission.countByPlaynameAndStatus( playname, '1')
         }
         [missionInstance:missionInstance,missionInstanceTotal:missionInstanceTotal, selected: selected]
+    }
+    def mfinished(){
+        def rs=[:]
+        def mid=params.id
+        def mission=Mission.get(mid)
+
+        if(!mission){
+            rs.msg=false
+        }else{
+            rs.msg=true
+            def target=mission.target
+            mission.status=1
+            target.percent+=mission.percent
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
     def replyMissionSave(){
         def rs = [:]
