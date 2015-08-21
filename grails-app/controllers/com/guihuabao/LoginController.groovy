@@ -1073,11 +1073,12 @@ class LoginController {
         def toolInstance = Book.get(id)
         [toolInstance: toolInstance]
     }
+
     def toolShow(Long id) {
-        def toolInstance = Book.get(id)
+        def toolInstance = HexuTool.get(id)
         if (!toolInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'book.label', default: 'Book'), id])
-            redirect(action: "roleList")
+//            flash.message = message(code: 'default.not.found.message', args: [message(code: 'book.label', default: 'Book'), id])
+            redirect(action: "tools")
             return
         }
 
@@ -1169,5 +1170,4 @@ class LoginController {
         redirect(action: "toolShow", id:toolInstance.id, params: [bookName: toolInstance.toolName])
     }
     def examples(){}
-    def toolShow(){}
 }

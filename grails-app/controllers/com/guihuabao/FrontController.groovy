@@ -72,13 +72,14 @@ class FrontController {
         def now = time.format(current)
         def order = [sort:"dateCreate",order: "desc"]
         def targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,uid,0,[max: 3,sort:"dateCreate",order: "desc"])
+        def missionInstance = Mission.findAllByPlaynameAndStatus( playname, '0', params)
         def todayTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(cid,uid,0,now,now,order)//今天任务
         def taskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeGreaterThanEquals(cid,uid,0,now,[sort:"overtime",order:"asc"])//即将到期
         def applyInstance = Apply.findAllByApplyuidAndCidAndApplystatuss(uid,cid,1,[max: 3,sort:"dateCreate",order: "desc"])
         def zhoubaoInstance = Zhoubao.findAllByCidAndUid(cid,uid,order)
         //公司公告
         def companyNoticeInstance = CompanyNotice.findAllByCid(cid,order)
-        [targetInstance: targetInstance,todayTaskInstance: todayTaskInstance,taskInstance: taskInstance,zhoubaoInstance: zhoubaoInstance,applyInstance: applyInstance,companyNoticeInstance: companyNoticeInstance]
+        [targetInstance: targetInstance,missionInstance: missionInstance,todayTaskInstance: todayTaskInstance,taskInstance: taskInstance,zhoubaoInstance: zhoubaoInstance,applyInstance: applyInstance,companyNoticeInstance: companyNoticeInstance]
     }
     def companyUserCreate() {
         yanzheng()

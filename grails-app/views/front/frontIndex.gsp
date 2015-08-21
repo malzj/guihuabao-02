@@ -209,8 +209,22 @@
                             <a class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
                         </div>
                         <ul class="e-list">
-                            <li>1234</li>
-                            <li>2345</li>
+                            <g:if test="${missionInstance}">
+                                <g:each in="${missionInstance}" status="i" var="missionInfo">
+                                    <li>
+                                        <span class="mark"></span>
+                                        <span class="sn">${i+1}</span>
+                                        <span class="title"><g:link action="companyNoticeIndex">${missionInfo.title}</g:link></span>
+                                        <div class="right">
+                                            <span class="date f-r">${missionInfo.dateCreate.format("yyyy-MM-dd")}</span>
+                                        </div>
+                                    </li>
+                                </g:each>
+
+                            </g:if>
+                            <g:else>
+                                <li><span class="mark"></span>没有周报！</li>
+                            </g:else>
                         </ul>
                     </div>
                 </div>
