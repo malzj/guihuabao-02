@@ -162,56 +162,57 @@
         %{--</footer>--}%
         <!--footer end-->
     </section>
-</div>
-<!--新建弹层 start-->
-<div class="passwordedit" id="newtargetdetail" style="position:absolute;overflow: scroll;">
-    <div class="m_box" style="width:804px;">
-        <header class="panel-heading" style="padding:10px 28px;">
-            <span><i class="yh"></i>添加新目标</span>
-            <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
-        </header>
-        <g:form url="[controller:'front',action:'targetSave']" method="post">
-        <ul>
-            <li class="clearfix">
-                <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
-                <div class="f-l">
-                    <input type="text" name="title" placeholder="添加目标名称" style="margin-top: 5px;width:689px;" class="nr" title="该字段不能为空！" id="tar_title"/>
-                </div>
+    <!--新建弹层 start-->
+    <div class="passwordedit" id="newtargetdetail" style="position:absolute;overflow: scroll;">
+        <div class="m_box" style="width:804px;">
+            <header class="panel-heading" style="padding:10px 28px;">
+                <span><i class="yh"></i>添加新目标</span>
+                <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
+            </header>
+            <g:form url="[controller:'front',action:'targetSave']" method="post">
+                <ul>
+                    <li class="clearfix">
+                        <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
+                        <div class="f-l">
+                            <input type="text" name="title" placeholder="添加目标名称" style="margin-top: 5px;width:689px;" class="nr" title="该字段不能为空！" id="tar_title"/>
+                        </div>
 
-            </li>
-            <li>
-                <textarea name="content" rows="4" placeholder="这里可以添加目标详情" style="width:100%;height:68px;resize: none;" class="nr" title="该字段不能为空！" id="tar_con"></textarea>
-            </li>
-            <li>
-                <table width="100%" class="table table-bordered" style="border-spacing: 0;">
-                    <tr>
-                        <th style="text-align: center;width:15%;background:#f8f8f8">负责人</th>
-                        <td width="85%" class="nr">${session.user.name}<input  name="fzuid" value="${session.user.id}" type="hidden" class="nr" id="tar_fzuid"/></td>
+                    </li>
+                    <li>
+                        <textarea name="content" rows="4" placeholder="这里可以添加目标详情" style="width:100%;height:68px;resize: none;" class="nr" title="该字段不能为空！" id="tar_con"></textarea>
+                    </li>
+                    <li>
+                        <table width="100%" class="table table-bordered" style="border-spacing: 0;">
+                            <tr>
+                                <th style="text-align: center;width:15%;background:#f8f8f8">负责人</th>
+                                <td width="85%" class="nr">${session.user.name}<input  name="fzuid" value="${session.user.id}" type="hidden" class="nr" id="tar_fzuid"/></td>
 
-                    </tr>
-                    <tr>
-                        <th style="text-align:center;width:15%;background:#f8f8f8;line-height: 40px;" >起止日</th>
-                        <td style="line-height: 40px;">
-                            %{--<input type="text" name="btime" style="width:88px;height:28px;"/>—<input type="text" name="etime" style="width:88px;height:28px;"/>--}%
-                            <input id="startdate" name="begintime" value="" readonly="" class="nr" type="text" style="width:120px;" title="该字段不能为空！">—<input id="enddate" name="etime" value="" readonly="" class=" nr" type="text" style="width:163px;" title="该字段不能为空！">
-                        </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center;width:15%;background:#f8f8f8;line-height: 40px;" >起止日</th>
+                                <td style="line-height: 40px;">
+                                    %{--<input type="text" name="btime" style="width:88px;height:28px;"/>—<input type="text" name="etime" style="width:88px;height:28px;"/>--}%
+                                    <input id="startdate" name="begintime" value="" readonly="" class="nr" type="text" style="width:120px;" title="该字段不能为空！">—<input id="enddate" name="etime" value="" readonly="" class=" nr" type="text" style="width:163px;" title="该字段不能为空！">
+                                </td>
 
-                    </tr>
-                </table>
-            </li>
-            <li class="clearfix">
-                <div class="f-r">
+                            </tr>
+                        </table>
+                    </li>
+                    <li class="clearfix">
+                        <div class="f-r">
 
-                    <button type="submit"  style="margin-right: 10px;" class="button" id="save_target">保存</button>
-                    <a class="button"  style="width:160px;line-height:32px;display:inline-block;text-align: center;" id="saf"  >保存并分解目标</a>
+                            <button type="submit"  style="margin-right: 10px;" class="button" id="save_target">保存</button>
+                            <a class="button"  style="width:160px;line-height:32px;display:inline-block;text-align: center;" id="saf"  >保存并分解目标</a>
 
-                </div>
-            </li>
-        </ul>
-        </g:form>
+                        </div>
+                    </li>
+                </ul>
+            </g:form>
+        </div>
     </div>
+    <!--新建弹层 end-->
 </div>
-<!--新建弹层 end-->
+
 <!--目标分解 start-->
 <div class="passwordedit" id="tar_fj" style="position:absolute;overflow: scroll;">
 
@@ -855,7 +856,7 @@
                         success: function (data) {
                             if (data.msg == "删除任务成功！") {
                                 alert("删除成功！");
-//                                data.target.percent-=data.mission.percent;
+
                                 var rm1 = This.parent().parent().parent();
                                 var rm2 = This.parent().parent().parent().next();
                                 rm1.remove();
