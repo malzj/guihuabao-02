@@ -209,7 +209,7 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .hxzs_content .weeks{ display:none; }
 .hxzs_content .weeks.on{ display:block; }
 .hxzs_content .weeks > li{ display:block; font-size:14px; padding:0 0 0 115px; background:url("../img/s_point.png") no-repeat 50% 285%; }
-.hxzs_content .weeks > li >a{ display:inline-block; cursor:pointer; padding:5px 15px;display: inline-block;width: 62px; }
+.hxzs_content .weeks > li >a{ display:inline-block; cursor:pointer; padding:5px 15px;display: inline-block;width: 90px; }
 .hxzs_content .weeks > li.active > a{ background:url("../img/wbk.png") no-repeat;}
 .hxzs_content .weeks > li.active{ background-position:50% -158%;}
 
