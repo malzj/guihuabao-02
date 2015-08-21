@@ -298,9 +298,9 @@
                         <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>
                         <td width="75%" >
 
-                            <input type="hidden"  name="playuid" value=""  id="newmission_playname" class="nr" title="该字段不能为空！"/>
-                            <input type="hidden" id="playbid" name="playbid" value="" class="nr" title="该字段不能为空！"/>
-                            <input type="hidden" id="playname" name="playname" value="" class="nr" title="该字段不能为空！"/>
+                            <input type="-hidden"  name="playuid" value=""  id="newmission_playname" class="nr" title="该字段不能为空！"/>
+                            <input type="-hidden" id="playbid" name="playbid" value="" class="nr" title="该字段不能为空！"/>
+                            <input type="-hidden" id="playname" name="playname" value="" class="nr" title="该字段不能为空！"/>
                             <div class="dropdown"><span class="zhxr con"></span>
                                 <a  id="playman" style="cursor:pointer;" class="menu"  data-toggle="dropdown"><i class="fa fa-plus-square-o"></i></a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="margin:0;" id="topmenu">
@@ -311,6 +311,7 @@
                                                 <a tabindex="-1"  data-toggle="dropdown" class="bumen">${bumenInfo.name}<span style="display:none" >${bumenInfo.id}</span></a>
                                                 <ul class="dropdown-menu"  role="menu" aria-labelledby="dLabel"  style="margin:0;padding-top:20px;">
                                                     <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
+                                                        <span style="display:none">${session.user.bid}</span>
                                                          <li  class="dropdown" ><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
                                                     </g:each>
                                                 </ul>
@@ -319,7 +320,8 @@
                                     </g:if>
                                     <g:else>
                                          <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
-                                             <li  class="dropdown"><a class="pn">${userInfo.name}<span style="display:-none">${userInfo.id}</span></a></li>
+                                             <span style="display:none">${session.user.bid}</span>
+                                             <li  class="dropdown"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
                                          </g:each>
                                     </g:else>
                                 </ul>
@@ -377,20 +379,23 @@
                         <tr>
                             <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>
                             <td width="75%">
-                                <input type="hidden" id="playuid_edit" name="playuid" value="" title="该字段不能为空！"/>
-                                <input type="hidden" id="playbid_edit" name="playbid" value="" title="该字段不能为空！"/>
-                                <input type="hidden" id="playname_edit" name="playname" value="" title="该字段不能为空！"/>
+                                <input type="-hidden" id="playuid_edit" name="playuid" value="" title="该字段不能为空！"/>
+                                <input type="-hidden" id="playbid_edit" name="playbid" value="" title="该字段不能为空！"/>
+                                <input type="-hidden" id="playname_edit" name="playname" value="" title="该字段不能为空！"/>
                                 <div class="dropdown"><span class="zhxr con"></span>
-                                    <a  id="playman_edit" style="cursor:pointer;" class="menu"  data-toggle="dropdown"><i class="fa fa-plus-square-o"></i></a>
+                                    <a  id="playman_edit" style="cursor:pointer;" class="menu1"  data-toggle="dropdown"><i class="fa fa-plus-square-o"></i></a>
+                                    <span style="display:none;">${session.user.pid}</span>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="margin:0;" >
 
                                         <g:if test="${session.user.pid==1}">
                                             <g:each in="${bumenInstance}" var="bumenInfo">
                                                 <li class="dropdown-submenu "  >
-                                                    <a tabindex="-1"  data-toggle="dropdown" class="bumen">${bumenInfo.name}<span style="display:none" >${bumenInfo.id}</span></a>
-                                                    <ul class="dropdown-menu"  role="menu1" aria-labelledby="dLabel"  style="margin:0;padding-top:20px;">
+                                                    <a tabindex="-1"  data-toggle="dropdown" class="bumen">${bumenInfo.name}</a>
+                                                    <ul class="dropdown-menu"  role="menu" aria-labelledby="dLabel"  style="margin:0;padding-top:20px;">
                                                         <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
+                                                            <span style="display:-none" >${session.user.bid}</span>
                                                             <li  class="dropdown" ><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
+
                                                         </g:each>
                                                     </ul>
                                                 </li>
@@ -398,7 +403,8 @@
                                         </g:if>
                                         <g:else>
                                             <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
-                                                <li  class="dropdown"><a class="pn">${userInfo.name}<span style="display:none">${userInfo.id}</span></a></li>
+                                                <span style="display:-none">${session.user.bid}</span>
+                                                <li  class="dropdown "><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
                                             </g:each>
                                         </g:else>
                                     </ul>
@@ -765,7 +771,7 @@
                         url:'${webRequest.baseUrl}/front/mupdate',
                         type: 'post',
                         dataType: 'json',
-                        data: {mid: mid,title:title,content:content,playname:playname,begintime:begintime,overtime:overtime,percent:percent,status:status},
+                        data: {mid: mid,title:title,content:content,playname:playname,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent,status:status},
                         success: function (data) {
                              $('#tar_fj ul').empty();
 
@@ -1004,20 +1010,22 @@
                 })
 
             $('.menu').click(function(){
-                $('.bumen').hover(function(){
-                    $('#playbid').val($(this).find('span:first-child').html());
-                })
+//                $('.bumen').hover(function(){
+//                    $('#playbid').val($(this).find('span:first-child').html());
+//                })
                 $('.user').click(function(){
+                    $('#playbid').val($(this).parent().prev().html());
                     $('#newmission_playname').val($(this).next().html());
                     $('#playname').val($(this).text());
                     $('.zhxr').html($(this).text());
                 })
-            })
+            });
             $('.menu1').click(function(){
-                $('.bumen').hover(function(){
-                    $('#playbid_edit').val($(this).find('span:first-child').html());
-                })
+//                $('.bumen').hover(function(){
+//                    $('#playbid_edit').val($(this).find('span:first-child').html());
+//                })
                 $('.user').click(function(){
+                    $('#playbid_edit').val($(this).parent().prev().html());
                     $('#playuid_edit').val($(this).next().html());
                     $('#playname_edit').val($(this).text());
                     $('.zhxr').html($(this).text());
