@@ -361,5 +361,6 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .index-group .index-img-list li{ position:relative; float:left; margin-right:2.5%; width:23% }
 .index-group .index-img-list li img{ width:100%; }
 .index-group .index-img-list li p{ position:absolute; margin:0px; width:100%; left:0px; bottom:0px;/* height:42px;*/ color:#FFF; padding: 5%; text-align:center; background:url("../img/bg.png")}
+.index-group .index-img-list li span{position: absolute;top: 30%;left: 40%;font-size: 30px;color: #fff;}
 .index-group .e-list{ background-color:#FFF; margin:0; }
 .col-tb .col-cell.reset{ padding-right:30px;  }
