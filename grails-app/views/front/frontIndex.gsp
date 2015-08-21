@@ -55,10 +55,11 @@
                         <ul class="index-img-list clearfix">
                             <g:each in="${targetInstance}" status="i" var="targetInfo">
                             <li>
-                                <a>
+                                <g:link action="user_target">
                                     <img src="${resource(dir: 'img', file: 'mb_bg.png')}" />
+                                    <span>${targetInfo.percent}%</span>
                                     <p>${targetInfo.title}</p>
-                                </a>
+                                </g:link>
                             </li>
                             </g:each>
                         </ul>
