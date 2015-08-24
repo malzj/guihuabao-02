@@ -29,9 +29,9 @@
                 </a>
                 <ul class="sub">
                     <li><g:link controller="login" action="hxhelper">和许助手</g:link></li>
-                    <li style="padding-left: 80px;"><g:link controller="login" action="hxhelper">知识</g:link></li>
-                    <li style="padding-left: 80px;"><g:link controller="login" action="tools">工具</g:link></li>
-                    <li style="padding-left: 80px;"><g:link controller="login" action="examples">案例</g:link></li>
+
+                    <li><g:link controller="login" action="tools">工具和案例</g:link></li>
+
                     <li><g:link controller="login" action="hxset">和许设置</g:link></li>
                 </ul>
             </li>

@@ -1169,5 +1169,10 @@ class LoginController {
         flash.message =message(code: 'default.created.message', args: [message(code: 'book.label', default: 'Book'), toolInstance.id])
         redirect(action: "toolShow", id:toolInstance.id, params: [bookName: toolInstance.toolName])
     }
-    def examples(){}
+    def toolContentList(){
+
+    }
+    def toolContentShow(){
+
+    }
 }
