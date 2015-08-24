@@ -40,33 +40,51 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper mt80">
-            <div class="hxzs_heading clearfix">
-                <h2>书籍内容</h2>
-                <g:link action="contentCreate" id="${chapterId}" class="btn btn-info" style="display:block;float:right;">新建内容</g:link>
-                <g:link action="chapterList" id="${syllabusId}" class="btn btn-info" style="display:block;float:right;">返回章节</g:link>
-            </div>
-            <div class="content mt25">
-                <table class="table table-striped table-advance table-hover">
-                    <tr class="even">
-                        <th>编号</th>
-                        <th>标题名称</th>
-                        <th>操作</th>
-                    </tr>
-                    <g:each in="${contentInstanceList}" status="i" var="contentInstance">
-                        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-                            <td>${fieldValue(bean: contentInstance, field: "id")}</td>
-                            <td>${fieldValue(bean: contentInstance, field: "title")}</td>
-                            <td>
-                                <g:link action="toolContentShow" id="${contentInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
-                                <g:link action="contentEdit" id="${contentInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
-                                <g:link action="contentDelete" id="${contentInstance?.id}" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
-                            </td>
-                        </tr>
-                    </g:each>
-                </table>
+            <div class="middle_content">
+                <div class="m_box">
 
-            </div>
+                    <header class="panel-heading">
+                        新建
+                    </header>
 
+                    <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'toolSave']" method="post"  enctype= "multipart/form-data">
+                        <table>
+                            <tr>
+                                <td>名称：</td>
+                                <td width="345"><input name="toolName" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${toolInstance?.toolName}"></td>
+                            </tr>
+                            <tr>
+                                <td>封面：</td>
+                                <td>
+                                    <input id="up_img" name="bookImg" type="file" value="${toolInstance?.toolImg}" />
+                                    <div id="imgdiv" class="zsimg"><img id="imgShow" /></div>
+                                    <span>上传封面：（232*196）</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>创建时间：</td>
+                                <td><g:datePicker name="dateCreate" precision="day" value="${toolInstance?.dateCreate}" /> </td>
+                            </tr>
+                            <tr>
+                                <td>创建类型：</td>
+                                <td>
+                                    <select name="style">
+                                        <option value="0">工具</option>
+                                        <option value="1">案例</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button type="submit" class="btn btn-info">保存</button>
+                                    <button class="btn btn-info">返回</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </g:form>
+                </div>
+            </div>
         </section>
         <!--main content end-->
 
@@ -105,6 +123,8 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
 
+    %{--<script>--}%
+
     %{--//owl carousel--}%
 
     %{--$(document).ready(function() {--}%
@@ -125,6 +145,13 @@
     %{--});--}%
 
     %{--</script>--}%
+    <!--上传图片预览 js-->
+    <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
+        }
+    </script>
 
 </body>
 </html>

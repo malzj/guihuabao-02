@@ -41,24 +41,45 @@
     <section id="main-content">
         <section class="wrapper mt80">
             <div class="hxzs_heading clearfix">
-                <h2>案例</h2>
-                <g:link action="bookCreate" class="btn btn-info" style="display:block;float:right;">新建案例</g:link>
+                <h2>内容</h2>
+                <g:link action="contentCreate" id="${toolId}" class="btn btn-info" style="display:block;float:right;">新建内容</g:link>
+                <g:link action="tools"  class="btn btn-info" style="display:block;float:right;">返回工具列表</g:link>
             </div>
-            <div class="mt25">
-                <g:each in="${bookInstanceList}" status="i" var="bookInstance">
-                    <div class="zs_style">
-                        <g:link controller="login" action="bookShow" id="${bookInstance.id}">
-                            <img src="${resource(dir: 'images', file: ''+bookInstance.bookImg+'')}" height="195" width="235" />
-                        </g:link>
-                        <span>${bookInstance.bookName}</span>
-                    </div>
-                </g:each>
-                <img src="${resource(dir: 'img', file: 'add.png')}" height="195" width="235" />
-            </div>
+            <div class="content mt25">
+                <table class="table table-striped table-advance table-hover">
+                    <tr class="even">
+                        <th>编号</th>
+                        <th>标题名称</th>
+                        <th>操作</th>
+                    </tr>
+                    <g:each in="${toolContentInstanceList}" status="i" var="toolContentInstance">
+                        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+                            <td>${fieldValue(bean: toolContentInstance, field: "id")}</td>
+                            <td>${fieldValue(bean: toolContentInstance, field: "title")}</td>
+                            <td>
+                                <g:link action="toolContentShow" id="${toolContentInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
+                                <g:link action="contentEdit" id="${toolContentInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
+                                <g:link action="contentDelete" id="${toolContentInstance?.id}" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
+                            </td>
+                        </tr>
+                    </g:each>
+                </table>
 
+            </div>
 
         </section>
+        <!--main content end-->
 
+        <!--footer start-->
+        %{--<footer class="site-footer">--}%
+        %{--<div class="text-center">--}%
+        %{--2013 &copy; FlatLab by VectorLab.--}%
+        %{--<a href="index.html#" class="go-top">--}%
+        %{--<i class="fa fa-angle-up"></i>--}%
+        %{--</a>--}%
+        %{--</div>--}%
+        %{--</footer>--}%
+        <!--footer end-->
     </section>
 
     <!-- js placed at the end of the document so the pages load faster -->
@@ -84,6 +105,26 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
 
+    %{--//owl carousel--}%
+
+    %{--$(document).ready(function() {--}%
+    %{--$("#owl-demo").owlCarousel({--}%
+    %{--navigation : true,--}%
+    %{--slideSpeed : 300,--}%
+    %{--paginationSpeed : 400,--}%
+    %{--singleItem : true,--}%
+    %{--autoPlay:true--}%
+
+    %{--});--}%
+    %{--});--}%
+
+    %{--//custom select box--}%
+
+    %{--$(function(){--}%
+    %{--$('select.styled').customSelect();--}%
+    %{--});--}%
+
+    %{--</script>--}%
 
 </body>
 </html>

@@ -40,33 +40,29 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper mt80">
-            <div class="hxzs_heading clearfix">
-                <h2>书籍内容</h2>
-                <g:link action="contentCreate" id="${chapterId}" class="btn btn-info" style="display:block;float:right;">新建内容</g:link>
-                <g:link action="chapterList" id="${syllabusId}" class="btn btn-info" style="display:block;float:right;">返回章节</g:link>
-            </div>
-            <div class="content mt25">
-                <table class="table table-striped table-advance table-hover">
-                    <tr class="even">
-                        <th>编号</th>
-                        <th>标题名称</th>
-                        <th>操作</th>
-                    </tr>
-                    <g:each in="${contentInstanceList}" status="i" var="contentInstance">
-                        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-                            <td>${fieldValue(bean: contentInstance, field: "id")}</td>
-                            <td>${fieldValue(bean: contentInstance, field: "title")}</td>
-                            <td>
-                                <g:link action="toolContentShow" id="${contentInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
-                                <g:link action="contentEdit" id="${contentInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
-                                <g:link action="contentDelete" id="${contentInstance?.id}" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
-                            </td>
-                        </tr>
-                    </g:each>
-                </table>
+            <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'contentSave']" method="post"  enctype= "multipart/form-data">
 
-            </div>
+                <div class="hxzs_heading clearfix">
+                    %{--<header class="panel-heading">--}%
+                    <h2>新建内容</h2>
+                    <button type="submit" class="btn btn-info f-r">保存</button>
+                    %{--</header>--}%
 
+                </div>
+                <g:hiddenField name="chapterId" value="${chapterId}"></g:hiddenField>
+                <div class="mt25">
+                    <div class="form-group">
+                        <label class="col-lg-3 col-sm-3 control-label">标题：</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" name="title" />
+                        </div>
+                    </div>
+                    <div class="textarea">
+                        <textarea id="editor_id" name="introduction" style="width:100%;height:500px;"></textarea>
+                    </div>
+
+                </div>
+            </g:form>
         </section>
         <!--main content end-->
 
@@ -105,26 +101,31 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
 
-    %{--//owl carousel--}%
+    <!--keditor js-->
+    <script charset="utf-8" src="${resource(dir: 'keditor', file: 'kindeditor.js')}"></script>
+    <script charset="utf-8" src="${resource(dir: 'keditor/lang', file: 'zh_CN.js')}"></script>
+    <script>
 
-    %{--$(document).ready(function() {--}%
-    %{--$("#owl-demo").owlCarousel({--}%
-    %{--navigation : true,--}%
-    %{--slideSpeed : 300,--}%
-    %{--paginationSpeed : 400,--}%
-    %{--singleItem : true,--}%
-    %{--autoPlay:true--}%
+        KindEditor.ready(function(K) {
+            var editor1 = K.create('textarea[name="introduction"]', {
+//                cssPath : '../plugins/code/prettify.css',
+                cssPath : '${resource(dir: 'keditor/plugins/code', file: 'prettify.css')}',
+//                uploadJson : '../jsp/upload_json.jsp',
+                uploadJson : '../upload/',
+//                fileManagerJson : '../jsp/file_manager_json.jsp',
+                fileManagerJson : '${resource(dir: 'keditor/jsp', file: 'file_manager_json.jsp')}',
+                allowFileManager : true,
+                afterCreate : function() {
+                    this.sync();
+//                    document.forms['example'].submit();
+                },
+                afterBlur:function(){
+                    this.sync();
+//                    document.forms['example'].submit();
+                }
+            })
 
-    %{--});--}%
-    %{--});--}%
-
-    %{--//custom select box--}%
-
-    %{--$(function(){--}%
-    %{--$('select.styled').customSelect();--}%
-    %{--});--}%
-
-    %{--</script>--}%
-
+        });
+    </script>
 </body>
 </html>

@@ -163,7 +163,7 @@
         <!--footer end-->
     </section>
     <!--新建弹层 start-->
-    <div class="passwordedit" id="newtargetdetail" style="position:absolute;overflow: scroll;">
+    <div class="passwordedit" id="newtargetdetail" style="height:130%;position:absolute;">
         <div class="m_box" style="width:804px;">
             <header class="panel-heading" style="padding:10px 28px;">
                 <span><i class="yh"></i>添加新目标</span>
@@ -1461,6 +1461,10 @@
                     }
                 })
             })
+//            $('#startdate,#enddate').click(function(){
+//                var h='<div style="height:500px"></div>';
+//                $('#newtargetdetail').append(h);
+//            })
             })
 
 
