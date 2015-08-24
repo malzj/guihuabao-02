@@ -445,6 +445,96 @@ class FrontController {
         }
         [bookInstance: bookInstance,content:content,content1:content1,contentsize:contentsize,syllabusInstanceList:syllabusInstanceList,bookId: chapter.id,offset: offset,syllabus:syllabus,chapter:chapter]
     }
+
+    //案例列表
+    def hxexample(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+        def exampleInstanceList = HexuTool.findAllByStyle(1,params)
+        def exampleInstanceTotal = HexuTool.countByStyle(1)
+        [exampleInstanceList: exampleInstanceList, exampleInstanceTotal: exampleInstanceTotal]
+    }
+    //案例内容
+    def example(Integer max,Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 1, 100)
+        params<<[sort: "id",order: "asc"]
+        def offset = 0;
+        if (params.offset>0){
+            offset =params.offset
+        }
+        params<<[offset:offset]
+        def hxtool = HexuTool.findByIdAndStyle(id,2)
+        def contentlist = ToolContent.findAllByHexutools(hxtool,[sort:"id", order:"asc"])
+        def contentsize= ToolContent.countByHexutools(hxtool)
+        def content=""
+
+        if(contentlist.size()>0){
+            content= contentlist.get(0).introduction
+        }
+        if(!hxtool){
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'tool.label', default: 'Tool'), id])
+            redirect(action: "hxtools")
+            return
+        }
+
+        [content:content,contentsize:contentsize,toolId:id,offset: offset]
+    }
+    //工具列表
+    def hxtools(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+        def toolInstanceList = HexuTool.findAllByStyle(1,params)
+        def toolInstanceTotal = HexuTool.countByStyle(1)
+        [toolInstanceList: toolInstanceList, toolInstanceTotal: toolInstanceTotal]
+    }
+    //工具内容
+    def tool(Integer max,Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 1, 100)
+        params<<[sort: "id",order: "asc"]
+        def offset = 0;
+        if (params.offset>0){
+            offset =params.offset
+        }
+        params<<[offset:offset]
+        def hxtool = HexuTool.findByIdAndStyle(id,1)
+        def contentlist = ToolContent.findAllByHexutools(hxtool,[sort:"id", order:"asc"])
+        def contentsize= ToolContent.countByHexutools(hxtool)
+        def content=""
+
+        if(contentlist.size()>0){
+            content= contentlist.get(0).introduction
+
+        }
+        if(!hxtool){
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'tool.label', default: 'Tool'), id])
+            redirect(action: "hxtools")
+            return
+        }
+
+        [content:content,contentsize:contentsize,toolId:id,offset: offset]
+    }
     //系统设置
 
     //功能介绍
@@ -2798,9 +2888,6 @@ class FrontController {
         } else
             render rs as JSON
     }
-   def hxtools(){}
-    def hxexample(){}
-    def tool(){}
-    def example(){}
+
 }
 

@@ -30,7 +30,8 @@
             <%def messageTaskFcount = com.guihuabao.Task.countByCidAndFzuidAndLookstatusAndStatusAndRemindstatus(session.company.id,session.user.id,2,1,1)%>
             <%def newapplycount = com.guihuabao.Apply.countByApprovaluidAndCidAndApplystatus(session.user.id,session.company.id,0)%>
             <%def applycount = com.guihuabao.Apply.countByApplyuidAndCidAndRemindstatus(session.user.id,session.company.id,1)%>
-            <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount%>
+            <%def taskreplycount = com.guihuabao.ReplyTask.countByBpuidAndCidAndStatus(session.user.id,session.company.id,0)%>
+            <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount+taskreplycount%>
             <ul>
                 <li class="msg">
                     <a href="javascript:;"><i class="fa fa-bell"></i>消息<span class="tsh bg-important">${allcount}</span></a>
@@ -55,7 +56,7 @@
                         </li>
                         <li>
                             <g:link action="messageTaskF" >
-                                完成任务
+                                已完成任务
                                 <em class="f-r">${messageTaskFcount}</em>
                             </g:link>
                         </li>
@@ -70,8 +71,16 @@
                         <g:if test="${applycount!=0}">
                             <li>
                                 <g:link action="apply" >
-                                    申请提醒
+                                    申请通过提醒
                                     <em class="f-r">${applycount}</em>
+                                </g:link>
+                            </li>
+                        </g:if>
+                        <g:if test="${taskreplycount!=0}">
+                            <li>
+                                <g:link action="unreadTaskReply" >
+                                    未读回复
+                                    <em class="f-r">${taskreplycount}</em>
                                 </g:link>
                             </li>
                         </g:if>

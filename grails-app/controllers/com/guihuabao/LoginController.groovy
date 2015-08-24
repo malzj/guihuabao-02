@@ -1042,8 +1042,9 @@ class LoginController {
     }
 
     //案例和工具
-    def tools(){
-
+    def tools(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        [toolInstanceList: HexuTool.list(params), toolInstanceTotal: HexuTool.count()]
     }
 
     //案例和工具新建
