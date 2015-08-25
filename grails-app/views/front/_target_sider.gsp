@@ -19,12 +19,14 @@
                     <li> <g:link controller="front" action="join_mission"  class="dcjq-parent">参与的任务<em class="f-r">${com.guihuabao.Mission.countByPlaynameAndStatusAndIssubmit(session.user.name,0,1)}</em></g:link></li>
                 </ul>
             </li>
+        <g:if test="${session.user.pid==1||session.user.pid==2}">
         <li>
             <g:link controller="front" action="xsTarget">
                 <span>下属目标</span>
                 <span class="dcjq-icon"></span>
             </g:link>
         </li>
+        </g:if>
         <li class="sub-menu dcjq-parent-li">
             <div>
                     <a>

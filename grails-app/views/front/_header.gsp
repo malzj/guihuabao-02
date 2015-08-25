@@ -111,7 +111,7 @@
             <li><g:link action="frontIndex"><i class="home"></i>首页</g:link></li>
             <li><g:link action="user_target"><i class="aim"></i>目标</g:link></li>
             <li><g:link action="taskCreate"><i class="rw"></i>任务</g:link></li>
-            <li><g:link action="apply"><i class="fa fa-edit" style="font-size:30px;margin-top:10px;"></i>申请</g:link></li>
+            <li><g:link action="apply"><i class="apply"></i>申请</g:link></li>
             <li><g:link action="myReport"><i class="bg"></i>报告</g:link></li>
             <li><a href="javascript:;"><i class="app"></i>应用</a></li>
             <g:if test="${session.user.rid}">

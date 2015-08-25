@@ -43,12 +43,12 @@
                 </g:link>
             </li>
             </g:if>
-            <li>
-                <g:link action="finishedTask" >
-                    <span>已完成任务</span>
-                    <em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)}</em>
-                </g:link>
-            </li>
+            %{--<li>--}%
+                %{--<g:link action="finishedTask" >--}%
+                    %{--<span>已完成任务</span>--}%
+                    %{--<em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)}</em>--}%
+                %{--</g:link>--}%
+            %{--</li>--}%
             %{--<li>--}%
                 %{--<g:link action="allTask" >--}%
                     %{--<span>全部任务</span>--}%
