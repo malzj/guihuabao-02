@@ -56,7 +56,7 @@
                             <tr>
                                 <td>封面：</td>
                                 <td>
-                                    <input id="up_img" name="bookImg" type="file" value="${toolInstance?.toolImg}" />
+                                    <input id="up_img" name="toolImg" type="file" value="${toolInstance?.toolImg}" />
                                     <div id="imgdiv" class="zsimg"><img id="imgShow" /></div>
                                     <span>上传封面：（232*196）</span>
                                 </td>
@@ -69,8 +69,8 @@
                                 <td>创建类型：</td>
                                 <td>
                                     <select name="style">
-                                        <option value="0">工具</option>
-                                        <option value="1">案例</option>
+                                        <option value="1">工具</option>
+                                        <option value="2">案例</option>
                                     </select>
                                 </td>
                             </tr>
