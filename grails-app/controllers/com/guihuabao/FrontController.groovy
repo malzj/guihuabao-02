@@ -2788,16 +2788,7 @@ class FrontController {
         } else
             render rs as JSON
     }
-    def showImg(){
-        def rs = [:]
-        def tid = params.target_id
-        def targetInstance = Target.get(tid)
-        rs.img=targetInstance.img
-        if (params.callback) {
-            render "${params.callback}(${rs as JSON})"
-        } else
-            render rs as JSON
-    }
+
    def hxtools(){}
     def hxexample(){}
     def tool(){}

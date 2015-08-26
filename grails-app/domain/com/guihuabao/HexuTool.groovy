@@ -6,7 +6,7 @@ class HexuTool {
     String remark//工具或案例备注
     String style//工具1或案例2
     Date dateCreate//创建时间
-    static hasMany = [ToolContents: ToolContent]
+    static hasMany = [toolContents: ToolContent]
 
 
     static constraints = {
