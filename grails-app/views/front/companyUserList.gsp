@@ -68,10 +68,10 @@
 
                     <td><g:link controller="front" action="companyUserShow" id="${companyUserInstance?.id}">${fieldValue(bean: companyUserInstance, field: "name")}</g:link></td>
 
-                    <td>${fieldValue(bean: companyUserInstance, field: "phone")}</td>
-                    <td>${fieldValue(bean: companyUserInstance, field: "cid")}</td>
-                    <td>${fieldValue(bean: companyUserInstance, field: "bid")}</td>
-                    <td>${fieldValue(bean: companyUserInstance, field: "pid")}</td>
+                    <td>${companyUserInstance.phone}</td>
+                    <td>${com.guihuabao.Company.findById(companyUserInstance.cid).companyname}</td>
+                    <td>${com.guihuabao.Bumen.findById(companyUserInstance.bid).name}</td>
+                    <td>${com.guihuabao.Persona.findById(companyUserInstance.pid).name}</td>
                     <td>
                         <g:link action="companyUserShow" id="${companyUserInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
                         <g:link action="companyUserEdit" id="${companyUserInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>

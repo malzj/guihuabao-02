@@ -31,35 +31,44 @@
             <%def newapplycount = com.guihuabao.Apply.countByApprovaluidAndCidAndApplystatus(session.user.id,session.company.id,0)%>
             <%def applycount = com.guihuabao.Apply.countByApplyuidAndCidAndRemindstatus(session.user.id,session.company.id,1)%>
             <%def taskreplycount = com.guihuabao.ReplyTask.countByBpuidAndCidAndStatus(session.user.id,session.company.id,0)%>
-            <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount+taskreplycount%>
+            <%def utargetcount = com.guihuabao.ReplyMission.countByBpunameAndStatus(session.user.name,0)%>
+            <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount+taskreplycount+utargetcount%>
             <ul>
                 <li class="msg">
-                    <a href="javascript:;"><i class="fa fa-bell"></i>消息<span class="tsh bg-important">${allcount}</span></a>
+                    <a href="javascript:;"><i class="fa fa-bell"></i>消息<g:if test="${allcount!=0}"><span class="tsh bg-important">${allcount}</span></g:if></a>
                     <ul class="list">
+                        <g:if test="${utaskcount!=0}">
                         <li>
-                            <g:link action="messageTask" >
+                            <g:link action="unreadTask" >
                                 未读任务
                                 <em class="f-r">${utaskcount}</em>
                             </g:link>
                         </li>
+                        </g:if>
+                        <g:if test="${otargetcount!=0}">
                         <li>
                             <g:link action="messageTargetOver" >
                                 目标到期提醒
                                 <em class="f-r">${otargetcount}</em>
                             </g:link>
                         </li>
+                        </g:if>
+                        <g:if test="${otaskcount!=0}">
                         <li>
                         <g:link action="messageTaskOver" >
                             任务到期提醒
                             <em class="f-r">${otaskcount}</em>
                         </g:link>
                         </li>
+                        </g:if>
+                        <g:if test="${messageTaskFcount!=0}">
                         <li>
                             <g:link action="messageTaskF" >
                                 已完成任务
                                 <em class="f-r">${messageTaskFcount}</em>
                             </g:link>
                         </li>
+                        </g:if>
                         <g:if test="${newapplycount!=0}">
                         <li>
                             <g:link action="user_approve" >
@@ -79,8 +88,16 @@
                         <g:if test="${taskreplycount!=0}">
                             <li>
                                 <g:link action="unreadTaskReply" >
-                                    未读回复
+                                    未读任务回复
                                     <em class="f-r">${taskreplycount}</em>
+                                </g:link>
+                            </li>
+                        </g:if>
+                        <g:if test="${utargetcount!=0}">
+                            <li>
+                                <g:link action="unread_comment" >
+                                    未读目标回复
+                                    <em class="f-r">${utargetcount}</em>
                                 </g:link>
                             </li>
                         </g:if>

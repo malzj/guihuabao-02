@@ -27,9 +27,12 @@
         </td>
         <td>
             <select name="pid" required="" class="form-control form-control-inline input-medium default-date-picker" id="pid">
-                <option value="1" <g:if test="${companyUserInstance.pid==1}">selected="selected" </g:if>>Boss</option>
-                <option value="2" <g:if test="${companyUserInstance.pid==2}">selected="selected" </g:if>>经理</option>
-                <option value="3" <g:if test="${companyUserInstance.pid==3}">selected="selected" </g:if>>员工</option>
+                %{--<option value="1" <g:if test="${companyUserInstance.pid==1}">selected="selected" </g:if>>Boss</option>--}%
+                %{--<option value="2" <g:if test="${companyUserInstance.pid==2}">selected="selected" </g:if>>经理</option>--}%
+                %{--<option value="3" <g:if test="${companyUserInstance.pid==3}">selected="selected" </g:if>>员工</option>--}%
+                <g:each in="${com.guihuabao.Persona.findAll()}" var="pinfo">
+                    <option value="${pinfo.id}" <g:if test="${companyUserInstance.pid==pinfo.id}">selected="selected" </g:if>>${pinfo.name}</option>
+                </g:each>
             </select>
         </td>
     </tr>

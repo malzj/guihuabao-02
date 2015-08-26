@@ -20,12 +20,12 @@
         <%def nowtime = timearr1[1]%>
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
-            <li class="sub-menu dcjq-parent-li">
-                <g:link action="messageTask" >
-                    <span>未读任务</span>
-                    <em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0)}</em>
-                </g:link>
-            </li>
+            %{--<li class="sub-menu dcjq-parent-li">--}%
+                %{--<g:link action="messageTask" >--}%
+                    %{--<span>未读任务</span>--}%
+                    %{--<em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0)}</em>--}%
+                %{--</g:link>--}%
+            %{--</li>--}%
             <li class="sub-menu dcjq-parent-li">
                 <g:link action="messageTargetOver" class="dcjq-parent" >
                     <span>目标到期提醒</span>

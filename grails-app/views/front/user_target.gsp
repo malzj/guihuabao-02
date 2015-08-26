@@ -36,8 +36,11 @@
         body{-webkit-text-size-adjust:none;}
         .btime,.etime{width:87px;height:25px;display:block;border:1px solid #d2d2d2;text-align:center;line-height:25px;}
         .btime{margin-right: 12px;}
-        .tar_whole{border:1px solid #d2d2d2;width:250px;height:210px;margin:0 15px 15px 0;cursor:pointer;}
+        .tar_whole{border:1px solid #d2d2d2;width:250px;height:210px;margin:0 15px 15px 0;cursor:pointer;background-color: #FFF;}
+        .tar_whole:hover{border:1px solid #03a9f4;}
         .tar_title{padding:14px;border-bottom: 1px solid #d2d2d2}
+        .tar_title .tar_edit,.tar_title .tar_delete,.mission_edit,.mission_delete{color:#adadad;}
+        .tar_title .tar_edit:hover,.tar_title .tar_delete:hover,.mission_edit:hover,.mission_delete:hover{color:#03a9f4;}
         .tar_content{margin:20px 0;font-size:20px;line-height:56px;}
         .percent{clear: both;width:56px;height:56px;margin-left:10px;text-align:center;line-height:56px;border:3px solid #d2d2d2;border-radius: 50px;}
         .passwordedit input[type='text']{width:100%;height:38px;border:1px solid #d2d2d2;text-indent: 10px;}
@@ -167,7 +170,7 @@
     <div class="passwordedit" id="newtargetdetail" style="height:130%;position:absolute;">
         <div class="m_box" style="width:804px;">
             <header class="panel-heading" style="padding:10px 28px;">
-                <span><i class="yh"></i>添加新目标</span>
+                <span><i class="yh"></i>新建目标</span>
                 <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
             </header>
             <g:form url="[controller:'front',action:'targetSave']" method="post">
@@ -290,7 +293,7 @@
                 <input type="text" name="title" placeholder="一句话描述任务" id="newmission_title" class="nr" title="该字段不能为空！"/>
             </li>
             <li>
-                <input type="text" name="content" placeholder="添加任务详情" id="newmission_content" class="nr" title="该字段不能为空！"/>
+                <textarea style="width:100%;height:68px;resize: none;" name="content" placeholder="添加任务详情" id="newmission_content" class="nr" title="该字段不能为空！"></textarea>
             </li>
             <li>
                 <table class="table table-bordered" style="border-spacing: 0;margin-right: 20px;">
@@ -372,7 +375,7 @@
                     <input type="text" name="title" placeholder="一句话描述任务" id="mission_title_edit" title="该字段不能为空！"/>
                 </li>
                 <li>
-                    <input type="text" name="content" placeholder="添加任务详情" id="mission_content_edit" title="该字段不能为空！"/>
+                    <textarea style="width:100%;height:68px;resize: none;" name="content" placeholder="添加任务详情" id="mission_content_edit" title="该字段不能为空！"></textarea>
                 </li>
                 <li>
                     <table class="table table-bordered" style="border-spacing: 0;margin-right: 20px;">
