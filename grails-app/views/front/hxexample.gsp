@@ -47,12 +47,12 @@
                     <h2>案例</h2>
                 </div>
                 <div class="mt25">
-                    <g:each in="${bookInstanceList}" status="i" var="bookInstance">
+                    <g:each in="${exampleInstanceList}" status="i" var="exampleInstance">
                         <div class="zs_style">
-                            <g:link controller="front" action="book" id="${bookInstance.id}">
-                                <img src="${resource(dir: 'images', file: ''+bookInstance.bookImg+'')}" height="195" width="235" />
+                            <g:link controller="front" action="book" id="${exampleInstance.id}">
+                                <img src="${resource(dir: 'images', file: ''+exampleInstance.toolImg+'')}" height="195" width="235" />
                             </g:link>
-                            <span>${bookInstance.bookName}</span>
+                            <span>${exampleInstance.toolName}</span>
                         </div>
                     </g:each>
                 </div>

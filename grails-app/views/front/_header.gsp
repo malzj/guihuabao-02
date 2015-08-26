@@ -30,7 +30,8 @@
             <%def messageTaskFcount = com.guihuabao.Task.countByCidAndFzuidAndLookstatusAndStatusAndRemindstatus(session.company.id,session.user.id,2,1,1)%>
             <%def newapplycount = com.guihuabao.Apply.countByApprovaluidAndCidAndApplystatus(session.user.id,session.company.id,0)%>
             <%def applycount = com.guihuabao.Apply.countByApplyuidAndCidAndRemindstatus(session.user.id,session.company.id,1)%>
-            <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount%>
+            <%def taskreplycount = com.guihuabao.ReplyTask.countByBpuidAndCidAndStatus(session.user.id,session.company.id,0)%>
+            <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount+taskreplycount%>
             <ul>
                 <li class="msg">
                     <a href="javascript:;"><i class="fa fa-bell"></i>消息<span class="tsh bg-important">${allcount}</span></a>
@@ -55,7 +56,7 @@
                         </li>
                         <li>
                             <g:link action="messageTaskF" >
-                                完成任务
+                                已完成任务
                                 <em class="f-r">${messageTaskFcount}</em>
                             </g:link>
                         </li>
@@ -70,8 +71,16 @@
                         <g:if test="${applycount!=0}">
                             <li>
                                 <g:link action="apply" >
-                                    申请提醒
+                                    申请通过提醒
                                     <em class="f-r">${applycount}</em>
+                                </g:link>
+                            </li>
+                        </g:if>
+                        <g:if test="${taskreplycount!=0}">
+                            <li>
+                                <g:link action="unreadTaskReply" >
+                                    未读回复
+                                    <em class="f-r">${taskreplycount}</em>
                                 </g:link>
                             </li>
                         </g:if>
@@ -102,7 +111,7 @@
             <li><g:link action="frontIndex"><i class="home"></i>首页</g:link></li>
             <li><g:link action="user_target"><i class="aim"></i>目标</g:link></li>
             <li><g:link action="taskCreate"><i class="rw"></i>任务</g:link></li>
-            <li><g:link action="apply"><i class="fa fa-edit" style="font-size:30px;margin-top:10px;"></i>申请</g:link></li>
+            <li><g:link action="apply"><i class="apply"></i>申请</g:link></li>
             <li><g:link action="myReport"><i class="bg"></i>报告</g:link></li>
             <li><a href="javascript:;"><i class="app"></i>应用</a></li>
             <g:if test="${session.user.rid}">
