@@ -2187,29 +2187,31 @@ class FrontController {
         } else
             render rs as JSON
     }
-    def targetDelete(Long id) {
+    def targetDelete() {
+        def rs=[:]
+        def tid=params.target_id
         def user = session.user
         def company = session.company
         if(!user&&!company){
             redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
             return
         }
-        def targetInstance = Target.get(id)
+        def targetInstance = Target.get(tid)
         if (!targetInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
-//            redirect(action: "targetEdit")
-            return
+           rs.msg=false
         }
 
         try {
             targetInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "user_target")
+            rs.msg=true
         }
         catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "user_target", id: id)
+           rs.msg=false
         }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
     def user_target(Integer max){
         def user = session.user
@@ -2810,24 +2812,79 @@ class FrontController {
         } else
             render rs as JSON
     }
-    def unread_comment(Integer max){
+    def unread_comment(Long id){
         def user = session.user
         def company = session.company
         if (!user && !company) {
             redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
             return
         }
-        params.max = Math.min(max ?: 10, 100)
+
         def bpuname=user.name
         def replymission
-        def replymissionTotal
-        params<<[sort:"date",order: "desc"]
-        replymission=ReplyMission.findAllByBpunameAndStatus(bpuname,0,params)
-        for(def r in replymission){
-            r.status=1
+
+
+        replymission=ReplyMission.findAllByBpunameAndStatus(bpuname,0,[sort:"date",order: "desc"])
+
+        def mission
+        if (!id ) {
+            mission = replymission[0].mission
+        } else {
+            mission = Mission.get(id)
         }
-        replymissionTotal=ReplyMission.countByBpunameAndStatus(bpuname,0)
-        [replymissionlist:replymission,replymissionTotal:replymissionTotal]
+        def allReplyInfo = ReplyMission.findAllByMission(mission, [sort: "date", order: "desc"])
+
+        [replymissionlist:replymission,allReplyInfo: allReplyInfo,mission:mission]
+    }
+    def unreadMissionReply(Long id) {
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def uid = session.user.id
+        def cid = session.company.id
+        def mission
+        def i
+        def replyInstance = ReplyMission.findAllByBpuidAndCidAndStatus(uid, cid, 0, [sort: "date", order: "desc"])
+        def count = replyInstance?.size()
+        if (!id && count != 0) {
+            mission = replyInstance[0].mission
+        } else if (!id && count == 0) {
+
+        } else {
+            mission = Mission.get(id)
+        }
+        def allReplyInfo = ReplyMission.findAllByMissionAndCid(mission, cid, [sort: "date", order: "desc"])
+        def myReplyInfo = ReplyMission.findAllByMissionAndCidAndBpuid(mission, cid, uid, [sort: "date", order: "desc"])
+        for (i = 0; i < myReplyInfo.size(); i++) {
+            myReplyInfo[i].status = 1
+        }
+
+        [replyInstance: replyInstance, allReplyInfo: allReplyInfo, count: count]
+    }
+    def tReplyMissionSave(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        def replyMissionInstance = new ReplyMission(params)
+        def missionInstance = Mission.get(id)
+        taskInstance.reply = 1
+        replyMissionInstance.tasks = missionInstance
+        replyMissionInstance.date = time.format(new Date())
+        replyMissionInstance.status = 0
+        if (!replyMissionInstance.save(flush: true)) {
+            render(view: "unread_comment", model: [id: params.id])
+            return
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: 'task.label', default: 'Task'), missionInstance.id])
+        redirect(action: "unread_comment", id: params.id)
     }
     def uploadImg(){
         def rs=[:]

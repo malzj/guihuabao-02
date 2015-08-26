@@ -120,7 +120,8 @@
                                     <div class="f-r">
                                         <a href="#" style="color:#40bdf5;font-size:20px;"  onclick="stop_Pro(event)"><i class="fa fa-edit tar_edit" title="目标分解"></i></a>
                                         <input type="hidden" value="${targetInfo.id}"  />
-                                        <g:link controller="front" action="targetDelete" id="${targetInfo.id}" style="color:#40bdf5;font-size:20px;" onclick="confirm('确定删除？');stop_Pro(event)"><i class="fa fa-trash-o tar_delete" title="删除目标"></i></g:link>
+                                        %{--<g:link controller="front"  action="targetDelete" id="${targetInfo.id}" style="color:#40bdf5;font-size:20px;" onclick="del();stop_Pro(event)"><i class="fa fa-trash-o tar_delete" title="删除目标"></i></g:link>--}%
+                                        <a href="" class="del" style="color:#40bdf5;font-size:20px;" onclick="stop_Pro(event)"><i class="fa fa-trash-o tar_delete" title="删除目标"></i></a>
                                     </div>
                                 </div>
 
@@ -418,7 +419,7 @@
                         </tr>
                         <tr>
                             <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">任务权重</th>
-                            <td width="75%"><input  name="percent" style="border:none;width:100%" id="mission_percent_edit" title="该字段不能为空且只能为数字！" type="number" /></td>
+                            <td width="75%"><input  name="percent" style="border:none;width:100%" id="mission_percent_edit" title="该字段不能为空且只能为不超过剩余权重的数字！" type="number" /></td>
 
                         </tr>
                         <tr>
@@ -657,13 +658,35 @@
                 return false;
                 } )
 
+        $('.del').click(function(){
+            if(confirm('确定要删除么？')) {
+                var tid = $(this).prev().val();
+
+                $.ajax({
+                    url: '${webRequest.baseUrl}/front/targetDelete',
+                    method: 'post',
+                    dataType: 'json',
+                    data: {target_id: tid},
+                    success: function (data) {
+                        location.reload();
+                            alert('删除成功！');
+                    },
+                    error: function () {
+                        alert('获取数据失败！')
+                    }
+
+                });
+            }else{
+                return false;
+            }
+             })
 
 
             //编辑任务
            function editclick() {
 
                 $(".mission_edit").click(function () {
-//                    var p=parseInt($('#r_per').html());
+                    var p=parseInt($('#r_per').html());
 
                     var mid = $(this).parent().next().html();
 
@@ -701,55 +724,59 @@
 
                 //提交任务更新
                 $('#save_mission_edit').click(function(){
+                    var r=parseInt($('#rp').html());
 
-//                    var z= /^[0-9]*$/;
-//                    if($('#mission_title_edit').val()==''){
-//                        $('#mission_title_edit').css('border-color','red');
-//                        return false;
-//                    }else{
-//                        $('#mission_title_edit').css('border-color','#d2d2d2');
-//                    }
-//                    if($('#mission_content_edit').val()==''){
-//                        $('#mission_content_edit').css('border-color','red');
-//                        return false;
-//                    }else{
-//                        $('#mission_content_edit').css('border-color','#d2d2d2');
-//                    }
-//                    if($('#playuid_edit').val()==''){
-//                        $('#playuid_edit').css('border-color','red');
-//                        return false;
-//                    }else{
-//                        $('#playuid_edit').css('border-color','#d2d2d2');
-//                    }
-//                    if($('.zhxr').html()==''){
-//                        $('.zhxr').next().css('border','1px solid red');
-//                        return false
-//                    }else{
-//                        $('.zhxr').next().css('border','none');
-//                    }
-//                    if($('#startdate_edit').val()==''){
-//                        $('#startdate_edit').css('border-color','red');
-//                        return false;
-//                    }else{
-//                        $('#startdate_edit').css('border-color','#d2d2d2');
-//                    }
-//                    if($('#enddate_edit').val()==''){
-//                        $('#enddate_edit').css('border-color','red');
-//                        return false;
-//                    }else{
-//                        $('#enddate_edit').css('border-color','#d2d2d2');
-//                    }
-//                    if($('#mission_percent_edit').val()==''){
-//
-//                        $('#mission_percent_edit').css('border','1px solid red');
-//                        return false;
-//                    }else if(!z.test($('#newmission_percent_edit').val())){
-//                        $('#newmission_percent_edit').css('border','1px solid red');
-//
-//                        return false
-//                    }else{
-//                        $('#mission_percent_edit').css('border','none');
-//                    }
+                    var p=parseInt($('#mission_percent_edit').val());
+                    var z= /^[0-9]*$/;
+                    if($('#mission_title_edit').val()==''){
+                        $('#mission_title_edit').css('border-color','red');
+                        return false;
+                    }else{
+                        $('#mission_title_edit').css('border-color','#d2d2d2');
+                    }
+                    if($('#mission_content_edit').val()==''){
+                        $('#mission_content_edit').css('border-color','red');
+                        return false;
+                    }else{
+                        $('#mission_content_edit').css('border-color','#d2d2d2');
+                    }
+////                    if($('#playuid_edit').val()==''){
+////                        $('#playuid_edit').css('border-color','red');
+////                        return false;
+////                    }else{
+////                        $('#playuid_edit').css('border-color','#d2d2d2');
+////                    }
+                    if($('.zhxr').html()==''){
+                        $('.zhxr').next().css('border','1px solid red');
+                        return false
+                    }else{
+                        $('.zhxr').next().css('border','none');
+                    }
+                    if($('#startdate_edit').val()==''){
+                        $('#startdate_edit').css('border-color','red');
+                        return false;
+                    }else{
+                        $('#startdate_edit').css('border-color','#d2d2d2');
+                    }
+                    if($('#enddate_edit').val()==''){
+                        $('#enddate_edit').css('border-color','red');
+                        return false;
+                    }else{
+                        $('#enddate_edit').css('border-color','#d2d2d2');
+                    }
+                    if($('#mission_percent_edit').val()==''){
+                        $('#mission_percent_edit').css('border','1px solid red');
+                        return false;
+                    }else if(!z.test($('#mission_percent_edit').val())){
+                        $('#mission_percent_edit').css('border','1px solid red');
+
+                        return false
+                    }else if(p>r||p<1){
+                        $('#mission_percent_edit').css('border','1px solid red');
+                        return false;
+                    }else{
+                        $('#mission_percent_edit').css('border','none');
+                    }
 
                     var mid=$(this).prev().val();
 
@@ -1042,6 +1069,8 @@
 
             //新建任务提交
                 $("#save_mission").click(function(){
+                    var r=parseInt($('#r_per').html());
+                    var p=parseInt($('#newmission_percent').val());
                     var z= /^[0-9]*$/;
                     if($('#newmission_title').val()==''){
                         $('#newmission_title').css('border-color','red');
@@ -1078,7 +1107,9 @@
                         return false;
                     }else if(!z.test($('#newmission_percent').val())){
                         $('#newmission_percent').css('border','1px solid red');
-
+                        return false
+                    }else if(p>r||p<1){
+                        $('#newmission_percent').css('border','1px solid red');
                         return false
                     }else{
                         $('#newmission_percent').css('border','none');
@@ -1181,7 +1212,7 @@
                 $('#all_var').html(tid);
                 var img=$(this).find('img:first-child').attr('src');
                 $('#img').attr('src',img);
-              
+
                 $('#select_img').css('display', 'block');
                 $('#select_img .ori img').click(function () {
                     var thisimg = $(this).attr('src');
@@ -1450,10 +1481,6 @@
                     }
                 })
             })
-//            $('#startdate,#enddate').click(function(){
-//                var h='<div style="height:500px"></div>';
-//                $('#newtargetdetail').append(h);
-//            })
             })
 
 
