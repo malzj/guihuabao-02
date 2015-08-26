@@ -76,11 +76,11 @@
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
-    <div class="col-xs-3" style="height:100%"></div>
+    <div class="col-xs-2" style="height:100%"></div>
     <g:render template="target_sider" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content" class="col-xs-9" style="padding-left:0;">
+    <section id="main-content" class="col-xs-10" style="padding-left:0;">
         <section class="wrapper">
             <div class="col-tb">
                 <div class="col-cell">
@@ -266,9 +266,7 @@
             <a><img  src="${resource(dir:'img/target-img',file:'7.png')}"/></a>
             <a><img  src="${resource(dir:'img/target-img',file:'8.png')}"/></a>
             <a><img  src="${resource(dir:'img/target-img',file:'9.png')}"/></a>
-            <a><img  src="${resource(dir:'img/target-img',file:'10.png')}"/></a>
-            <a><img  src="${resource(dir:'img/target-img',file:'11.png')}"/></a>
-            <a><img  src="${resource(dir:'img/target-img',file:'12.png')}"/></a>
+
 
         </div>
         <div class="f-r" style="margin-right: 30px;"><input type="button" class="btn" id="upimg" value="确认" style="width:80px;height:30px;line-height:16px;background:#03a9f4;color:#fff;"/></div>
@@ -1181,18 +1179,9 @@
             $('.select_img').click(function() {
                 var tid=$(this).parent().prev().val();
                 $('#all_var').html(tid);
-                $.ajax({
-                    url:'${webRequest.baseUrl}/front/showImg',
-                    type:'post',
-                    dataType:'json',
-                    data:{target_id:tid},
-                    success:function(data){
-                        $('#img').attr('src','/guihuabao/static/img/target-img/'+data.img);
-                    },
-                    error:function(){
-                        alert('获取数据失败！');
-                    }}
-                )
+                var img=$(this).find('img:first-child').attr('src');
+                $('#img').attr('src',img);
+              
                 $('#select_img').css('display', 'block');
                 $('#select_img .ori img').click(function () {
                     var thisimg = $(this).attr('src');
