@@ -1,7 +1,7 @@
 <aside class="col-xs-2" style="position:fixed;height:100%;">
     <div id="sidebar"  class="nav-collapse ">
         <div class="sidebar_object">
-            <i class="page"></i>
+            <i class="page report_icon"></i>
             报告
         </div>
         <!-- sidebar menu start-->

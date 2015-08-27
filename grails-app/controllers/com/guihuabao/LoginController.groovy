@@ -38,6 +38,7 @@ class LoginController {
     def userSave() {
         def userInstance = new User(params)
         def companyUser = new CompanyUser(params)
+        companyUser.img = "touxiang.jpg"
         if (!userInstance.save(flush: true)||!companyUser.save(flush: true)) {
             render(view: "userCreate", model: [userInstance: userInstance])
             return

@@ -2,7 +2,7 @@
 <aside class="col-xs-2" style="position:fixed;height:100%;padding-left:0;">
     <div id="sidebar"  class="nav-collapse " >
         <div class="sidebar_object">
-            <i class="page"></i>
+            <i class="page tar_icon"></i>
             目标
         </div>
         <!-- sidebar menu start-->
