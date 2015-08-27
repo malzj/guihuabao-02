@@ -8,6 +8,7 @@ class User {
     String address
     String username
     String password
+    String img
     Integer rid     //权限
     Date dateCreat
 
@@ -19,6 +20,7 @@ class User {
         address(nullable: true)
         username(nullable: true)
         password(nullable: true)
+        img(nullable: true)
         rid(nullable: true)
         dateCreat(nullable: true)
     }

@@ -1,7 +1,7 @@
 <aside class="col-xs-2" style="position:fixed;height:100%;">
     <div id="sidebar"  class="nav-collapse ">
         <div class="sidebar_object">
-            <i class="fa fa-edit"></i>
+            <i class="page apply_icon"></i>
             审批
         </div>
         <!-- sidebar menu start-->
