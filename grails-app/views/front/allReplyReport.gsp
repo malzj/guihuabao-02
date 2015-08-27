@@ -62,7 +62,7 @@
                 <div class="zhoubao col-xs-9">
                     <div class="top clearfix">
                         <div class="address f-l">
-                            ${zhoubaoReportInfo.username}第${zhoubaoReportInfo.week}周的工作报告
+                            ${zhoubaoReportInfo?.username}第${zhoubaoReportInfo?.week}周的工作报告
                         </div>
                     </div>
                     <div class="discuss clearfix">

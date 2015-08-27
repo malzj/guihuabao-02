@@ -1,7 +1,7 @@
 <aside class="col-xs-2" style="position:fixed;height:100%;">
     <div id="sidebar"  class="nav-collapse ">
         <div class="sidebar_object">
-            <i class="page"></i>
+            <i class="page task_icon"></i>
             任务
         </div>
         <!-- sidebar menu start-->
@@ -43,12 +43,12 @@
                 </g:link>
             </li>
             </g:if>
-            <li>
-                <g:link action="finishedTask" >
-                    <span>已完成任务</span>
-                    <em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)}</em>
-                </g:link>
-            </li>
+            %{--<li>--}%
+                %{--<g:link action="finishedTask" >--}%
+                    %{--<span>已完成任务</span>--}%
+                    %{--<em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndStatus(session.company.id,session.user.id,1)}</em>--}%
+                %{--</g:link>--}%
+            %{--</li>--}%
             %{--<li>--}%
                 %{--<g:link action="allTask" >--}%
                     %{--<span>全部任务</span>--}%

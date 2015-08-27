@@ -91,7 +91,7 @@
 
                             </g:if>
                             <g:else>
-                                <li><span class="mark"></span>没有任务！</li>
+                                <li><span class="mark"></span>暂无任务！</li>
                             </g:else>
                         </ul>
                         <ul class="e-list" style="display: none;">
@@ -111,7 +111,7 @@
 
                             </g:if>
                             <g:else>
-                                <li><span class="mark"></span>没有任务！</li>
+                                <li><span class="mark"></span>暂无任务！</li>
                             </g:else>
                         </ul>
                     </div>
@@ -139,7 +139,7 @@
 
                             </g:if>
                             <g:else>
-                                <li><span class="mark"></span>没有申请！</li>
+                                <li><span class="mark"></span>暂无申请！</li>
                             </g:else>
                         </ul>
                     </div>
@@ -167,7 +167,7 @@
 
                             </g:if>
                             <g:else>
-                                <li><span class="mark"></span>没有公告！</li>
+                                <li><span class="mark"></span>暂无公告！</li>
                             </g:else>
                         </ul>
                     </div>
@@ -195,7 +195,7 @@
 
                             </g:if>
                             <g:else>
-                                <li><span class="mark"></span>没有周报！</li>
+                                <li><span class="mark"></span>暂无周报！</li>
                             </g:else>
                         </ul>
                     </div>
@@ -214,7 +214,7 @@
                                     <li>
                                         <span class="mark"></span>
                                         <span class="sn">${i+1}</span>
-                                        <span class="title"><g:link action="companyNoticeIndex">${missionInfo.title}</g:link></span>
+                                        <span class="title"><g:link action="join_mission">${missionInfo.title}</g:link></span>
                                         <div class="right">
                                             <span class="date f-r">${missionInfo.dateCreate.format("yyyy-MM-dd")}</span>
                                         </div>
@@ -223,7 +223,7 @@
 
                             </g:if>
                             <g:else>
-                                <li><span class="mark"></span>没有周报！</li>
+                                <li><span class="mark"></span>暂无参与目标！</li>
                             </g:else>
                         </ul>
                     </div>

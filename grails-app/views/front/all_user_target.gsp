@@ -53,11 +53,11 @@
 <!--header end-->
 <!--sidebar start-->
 <div class="row">
-    <div class="col-xs-3" style="height:100%"></div>
+    <div class="col-xs-2" style="height:100%"></div>
     <g:render template="target_sider" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content" class="col-xs-9" style="padding-left:0;">
+    <section id="main-content" class="col-xs-10" style="padding-left:0;">
         <section class="wrapper">
             <div class="col-tb">
                 <div class="col-cell">
@@ -205,6 +205,7 @@
                     for (var i = 0; i < mission.length; i++) {
 
                         var s = (mission[i].status == '1') ? '完成' : '进行中';
+                        if(mission[i])
                         tar_mission += '     <li class="clearfix">' +
                                 ' <h2 style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务' + (i + 1) + '：<span style="color:#797979;">' + mission[i].title + '</span></h2>' +
 

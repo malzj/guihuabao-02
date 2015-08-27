@@ -44,27 +44,27 @@
                 <div class="m_box">
 
                     <header class="panel-heading clearfix">
-                        查看工具
-                        <g:link action="bookEdit" id="" class="btn btn-info" style="display:block;float:right;">修改</g:link>
-                        <g:link action="bookdelete" id="" class="btn btn-info" style="display:block;float:right;" onClick="return confirm('确定删除？');">删除</g:link>
+                        查看工具或案例
+                        <g:link action="toolEdit" id="" class="btn btn-info" style="display:block;float:right;">修改</g:link>
+                        <g:link action="toolDelete" id="" class="btn btn-info" style="display:block;float:right;" onClick="return confirm('确定删除？');">删除</g:link>
                     </header>
                     <table>
                         <tr>
                             <td>名称：</td>
-                            <td width="345"><g:fieldValue bean="${bookInstance}" field="bookName"/></td>
+                            <td width="345"><g:fieldValue bean="${toolInstance}" field="bookName"/></td>
                         </tr>
                         <tr>
                             <td>封面：</td>
                             <td>
-                                <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'images', file: '')}" /></div>
+                                <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'images', file: ''+toolInstance.toolImg+'')}" /></div>
                             </td>
                         </tr>
                         <tr>
                             <td></td>
                             <td>
                                 <g:link action="tools" class="btn btn-info">返回</g:link>
-                                <g:link action="toollistCreate" id="" class="btn btn-info">新建列表</g:link>
-                                <g:link action="syllabusList" id="" class="btn btn-info">列表内容</g:link>
+                                <g:link action="contentCreate" id="" class="btn btn-info">新建内容</g:link>
+                                <g:link action="toolContentList" id="" class="btn btn-info">内容列表</g:link>
                             </td>
                         </tr>
                     </table>

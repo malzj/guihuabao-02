@@ -38,6 +38,7 @@ class LoginController {
     def userSave() {
         def userInstance = new User(params)
         def companyUser = new CompanyUser(params)
+        companyUser.img = "touxiang.jpg"
         if (!userInstance.save(flush: true)||!companyUser.save(flush: true)) {
             render(view: "userCreate", model: [userInstance: userInstance])
             return
@@ -1042,8 +1043,9 @@ class LoginController {
     }
 
     //案例和工具
-    def tools(){
-
+    def tools(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        [toolInstanceList: HexuTool.list(params), toolInstanceTotal: HexuTool.count()]
     }
 
     //案例和工具新建
@@ -1169,5 +1171,10 @@ class LoginController {
         flash.message =message(code: 'default.created.message', args: [message(code: 'book.label', default: 'Book'), toolInstance.id])
         redirect(action: "toolShow", id:toolInstance.id, params: [bookName: toolInstance.toolName])
     }
-    def examples(){}
+    def toolContentList(){
+
+    }
+    def toolContentShow(){
+
+    }
 }

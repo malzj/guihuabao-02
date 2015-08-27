@@ -41,16 +41,16 @@
     <section id="main-content">
         <section class="wrapper mt80">
             <div class="hxzs_heading clearfix">
-                <h2>工具</h2>
-                <g:link action="bookCreate" class="btn btn-info" style="display:block;float:right;">新建工具</g:link>
+                <h2>工具和案例</h2>
+                <g:link action="toolCreate" class="btn btn-info" style="display:block;float:right;">新建工具或案例</g:link>
             </div>
             <div class="mt25">
-                <g:each in="${bookInstanceList}" status="i" var="bookInstance">
+                <g:each in="${toolInstanceList}" status="i" var="bookInstance">
                     <div class="zs_style">
-                        <g:link controller="login" action="toolShow" id="${bookInstance.id}">
-                            <img src="${resource(dir: 'images', file: ''+bookInstance.bookImg+'')}" height="195" width="235" />
+                        <g:link controller="login" action="toolShow" id="${toolInstanceList.id}">
+                            <img src="${resource(dir: 'images', file: ''+toolInstanceList.bookImg+'')}" height="195" width="235" />
                         </g:link>
-                        <span>${bookInstance.bookName}</span>
+                        <span>${toolInstanceList.bookName}</span>
                     </div>
                 </g:each>
                 <img src="${resource(dir: 'img', file: 'add.png')}" height="195" width="235" />

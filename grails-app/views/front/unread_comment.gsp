@@ -43,47 +43,103 @@
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
-        <div class="col-xs-3" style="height:100%"></div>
+        <div class="col-xs-2" style="height:100%"></div>
         <g:render template="target_sider" />
         <!--sidebar end-->
         <!--main content start-->
-        <section id="main-content" class="col-xs-9" style="padding-left: 0;">
-            <section class="wrapper">
-                <div class="col-tb">
-                    <div class="col-cell">
-                        <div class="toolkit">
-                            <span>未读的评论</span>
+        <section id="main-content" class="col-xs-10 row" style="padding-left: 0;">
+            <section class="wrapper wrapper_reset">
+                %{--<div class="col-tb">--}%
+                    %{--<div class="col-cell">--}%
+                        %{--<div class="toolkit">--}%
+                            %{--<span>未读的评论</span>--}%
 
+                        %{--</div>--}%
+                        %{--<div class="e-list-group" id="task" style="position:static;width:100%">--}%
+                            %{--<ul >--}%
+                                %{--<g:if test="${replymissionlist}">--}%
+                                    %{--<g:each in="${replymissionlist}" status="i" var="val">--}%
+                                        %{--<li >--}%
+                                            %{--<div class="reply_box"><div class="name">${val.puname}&nbsp;回复&nbsp;${val.bpuname}</div>--}%
+                                            %{--<p>${val.content}</p>--}%
+                                            %{--<span>${val.date}</span><a href="javascript:;" class="reply" data-info="${val.puid},${val.puname}">回复</a><span style="display:none;">${val.missionId}</span>--}%
+                                            %{--<div class="shuru"><span>回复&nbsp;${val.puname}</span>--}%
+                                            %{--<div class="rcontainer"></div>--}%
+                                            %{--</div></div>--}%
+
+                                        %{--</li>--}%
+                                    %{--</g:each>--}%
+
+                                %{--</g:if>--}%
+                                %{--<g:else>--}%
+                                    %{--<li>没有评论！</li>--}%
+                                %{--</g:else>--}%
+                            %{--</ul>--}%
+                            %{--<span style="display:none" id="var_all"></span>--}%
+                        %{--</div>--}%
+                        %{--<div class="pagination">--}%
+                            %{--<g:paginate total="${replymissionTotal}" params="[selected: selected]" />--}%
+                        %{--</div>--}%
+                    %{--</div>--}%
+
+                %{--</div>--}%
+                <div class="hxzs_content clearfix row">
+                    <div class="book_list col-xs-3">
+                        <h2>
+                            未读回复
+                        </h2>
+                        <ul class="zblist">
+                            <g:each in="${replymissionlist}" var="replyInfo">
+                                <li>
+                                    <g:link action="unread_comment" id="${replyInfo.missionId}">
+                                        <img src="" height="35" width="35" />
+                                        <div class="text">
+                                            <h4>${replyInfo.puname}回复了你(${replyInfo.mission.title})</h4>
+                                            <span>${replyInfo.date}</span>
+                                        </div>
+                                    </g:link>
+                                </li>
+                            </g:each>
+                        </ul>
+                    </div>
+                    <div class="zhoubao col-xs-9">
+                        <div class="top clearfix">
+                            <div class="address f-l">
+                                我的任务(${allReplyInfo.mission.title[0]})
+                            </div>
                         </div>
-                        <div class="e-list-group" id="task" style="position:static;width:100%">
-                            <ul >
-                                <g:if test="${replymissionlist}">
-                                    <g:each in="${replymissionlist}" status="i" var="val">
-                                        <li >
-                                            <div class="reply_box"><div class="name">${val.puname}&nbsp;回复&nbsp;${val.bpuname}</div>
-                                            <p>${val.content}</p>
-                                            <span>${val.date}</span><a href="javascript:;" class="reply" data-info="${val.puid},${val.puname}">回复</a><span style="display:none;">${val.missionId}</span>
-                                            <div class="shuru"><span>回复&nbsp;${val.puname}</span>
-                                            <div class="rcontainer"></div>
-                                            </div></div>
-
-                                        </li>
-                                    </g:each>
-
-                                </g:if>
-                                <g:else>
-                                    <li>没有评论！</li>
-                                </g:else>
-                            </ul>
-                            <span style="display:none" id="var_all"></span>
+                        <div class="discuss clearfix">
+                            <h4>反馈及评论</h4>
                         </div>
-                        <div class="pagination">
-                            <g:paginate total="${replymissionTotal}" params="[selected: selected]" />
+                        <div id="reply_container">
+                            <g:each in="${allReplyInfo}" var="replyInfo">
+                                <div class="reply_box">
+                                    <div class="name"><g:if test="${replyInfo.puid==session.user.id}">我</g:if><g:else>${replyInfo.puname}</g:else>&nbsp;回复&nbsp;<g:if test="${replyInfo.bpuid==session.user.id}">我</g:if><g:else>${replyInfo.bpuname}</g:else></div>
+                                    <p>${replyInfo.content}</p>
+                                    <span>${replyInfo.date}</span><g:if test="${replyInfo.puid!=session.user.id}"><a href="javascript:;" class="reply">回复</a></g:if>
+                                    <div class="shuru">
+                                        <span>回复&nbsp;${replyInfo.puname}</span>
+                                        <g:form url="[controller:'front',action:'tReplyMissionSave']">
+                                            <g:hiddenField name="id" value="${replyInfo?.missionId}"></g:hiddenField>
+                                            <g:hiddenField name="bpuid" value="${replyInfo.puid}"></g:hiddenField>
+                                            <g:hiddenField name="bpuname" value="${replyInfo.puname}"></g:hiddenField>
+                                            <g:hiddenField name="cid" value="${replyInfo.cid}"></g:hiddenField>
+                                            <g:hiddenField name="puid" value="${session.user.id}"></g:hiddenField>
+                                            <g:hiddenField name="puname" value="${session.user.username}"></g:hiddenField>
+                                            <div class="mt10">
+                                                <textarea name="content" class="rcontainer"></textarea>
+                                            </div>
+                                            <button class="fbtn btn-white mt10" type="submit">回复</button>
+                                            <input type="button" class="fbtn btn-white mt10  quxiao" value="取消">
+                                        </g:form>
+
+                                    </div>
+                                </div>
+                            </g:each>
                         </div>
                     </div>
 
                 </div>
-
             </section>
         </section>
         <!--main content end-->
@@ -139,64 +195,51 @@
 
         function replyclick() {
 
-            $(".reply").on("click", function () {
-                var mid=$(this).next().html();
-                alert(mid);
-                var info = $(this).attr("data-info")
-                var arr = info.split(",")
-                $(".shuru .rcontainer").empty()
-                $(".shuru").hide()
-                var html2 = ""
-                html2+='<form id="form2">'
-                html2+='<input type="hidden" name="bpuid" value="'+arr[0]+'" />'
-                html2+='<input type="hidden" name="bpuname" value="'+arr[1]+'" />'
-                html2+='<input type="hidden" name="puid" value="${session.user.id}" />'
-                html2+='<input type="hidden" name="puname" value="${session.user.name}" />'
-                html2+='<div class="mt10"><textarea name="content"></textarea></div>'
-                html2+='<a class="huifu fbtn btn-white mt10">回复</a><span style="display:none;">'+mid+'</span><a class="quxiao fbtn btn-white mt10 ml20">取消</a>'
-                html2+='</form>'
-                $(this).next().next().find('.rcontainer').html(html2);
-                $(this).next().next().slideDown()
-                replysubmit();
+
+            $(".zhoubao .reply_box .reply").click(function(){
+                $(this).next(".shuru").toggle();
             })
-
-        }
-
-        function replysubmit() {
             $(".quxiao").on("click", function () {
-                $(this).parent().parent().parent().slideUp();
-                $(".shuru .rcontainer").empty()
-            })
-            $(".huifu").click(function () {
-
-                var mid = $(this).next().html();
-                alert(mid);
-                var html2 = '';
-                $.ajax({
-                    url: '${webRequest.baseUrl}/front/replyMissionSave?mid=' + mid + '',
-                    dataType: "json",
-                    type: "POST",
-                    data: $("#form2").serialize(),
-                    success: function (data) {
-                        if (data.msg) {
-                            var re = data.replymission;
-                            alert("回复成功！");
-                            html2 += '<div class="reply_box"><div class="name">' + re.puname + '&nbsp;回复&nbsp;' + re.bpuname + '</div>'
-                            html2 += '<p>' + re.content + '</p>'
-                            html2 += '<span>' + re.date + '</span><a href="javascript:;" class="reply" data-info="' + re.puid + ',' + re.puname + '">回复</a>'
-                            html2 += '<div class="shuru"><span>回复&nbsp;' + re.puname + '</span>'
-                            html2 += '<div class="rcontainer"></div>'
-                            html2 += '</div></div>'
-                            $("#reply_container").prepend(html2);
-                            $('.shuru').slideUp()
-                        } else {
-                            alert("回复失败！")
-                        }
-                        replyclick();
-                    }
-                })
+                $('.shuru').slideUp();
+                $(".shuru .rcontainer").val('')
             })
         }
+
+        %{--function replysubmit() {--}%
+//            $(".quxiao").on("click", function () {
+//                $(this).parent().parent().parent().slideUp();
+//                $(".shuru .rcontainer").empty()
+//            })
+            %{--$(".huifu").click(function () {--}%
+
+                %{--var mid = $(this).next().html();--}%
+
+                %{--var html2 = '';--}%
+                %{--$.ajax({--}%
+                    %{--url: '${webRequest.baseUrl}/front/replyMissionSave?mid=' + mid + '',--}%
+                    %{--dataType: "json",--}%
+                    %{--type: "POST",--}%
+                    %{--data: $("#form2").serialize(),--}%
+                    %{--success: function (data) {--}%
+                        %{--if (data.msg) {--}%
+                            %{--var re = data.replymission;--}%
+                            %{--alert("回复成功！");--}%
+                            %{--html2 += '<div class="reply_box"><div class="name">' + re.puname + '&nbsp;回复&nbsp;' + re.bpuname + '</div>'--}%
+                            %{--html2 += '<p>' + re.content + '</p>'--}%
+                            %{--html2 += '<span>' + re.date + '</span><a href="javascript:;" class="reply" data-info="' + re.puid + ',' + re.puname + '">回复</a>'--}%
+                            %{--html2 += '<div class="shuru"><span>回复&nbsp;' + re.puname + '</span>'--}%
+                            %{--html2 += '<div class="rcontainer"></div>'--}%
+                            %{--html2 += '</div></div>'--}%
+                            %{--$("#reply_container").prepend(html2);--}%
+                            %{--$('.shuru').slideUp()--}%
+                        %{--} else {--}%
+                            %{--alert("回复失败！")--}%
+                        %{--}--}%
+                        %{--replyclick();--}%
+                    %{--}--}%
+                %{--})--}%
+            %{--})--}%
+//        }
 
 
     })

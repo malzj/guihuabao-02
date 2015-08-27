@@ -1,7 +1,7 @@
 <aside class="col-xs-2" style="position:fixed;height:100%">
     <div id="sidebar"  class="nav-collapse" >
         <div class="sidebar_object">
-            <i class="page"></i>
+            <i class="page ht_icon"></i>
             后台管理
         </div>
         <!-- sidebar menu start-->

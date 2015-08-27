@@ -45,35 +45,18 @@
         <section id="main-content" class="col-xs-10" style="padding-left: 0;">
             <section class="wrapper wrapper_reset">
                 <div class="hxzs_content clearfix row">
-                    <div class="book_list col-xs-3">
-                        <h2><g:fieldValue bean="${bookInstance}" field="bookName"/></h2>
-                        <div class="menu_side">
-                            <ul class="menu">
-
-                                <g:each status="i" in="${syllabusInstanceList}" var="syllabusInstance" >
-                                    <li>
-                                        <span>${syllabusInstance.syllabusName}</span>
-                                        <ul class="weeks <g:if test="${syllabusInstance.id==syllabus.id}">on</g:if>">
-                                            <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" var="chapterInstance">
-                                                <li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link action="chapterBook" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>
-                                            </g:each>
-                                        </ul>
-                                    </li>
-                                </g:each>
-                            </ul>
-                        </div>
-                    </div>
 
                     <div class="book_show col-xs-9 ">
                         <div class="top clearfix">
                             <div class="address f-l">
-                                工具>列表>内容
+                                工具>内容
                             </div>
                             <div class="pick_page f-r">
                                 %{--<a class="single_page"><i></i>单页</a>--}%
                                 %{--<a class="double_page"><i></i>双页</a>--}%
 
-                                上一页/下一页
+                                <g:if test="${offset.toInteger() != 0}"><g:link action="tool" id="${toolId}"  params="[offset:offset.toInteger()-1]"  class="pre_page ml25" >上一页</g:link> </g:if>
+                                <g:if test="${offset.toInteger() < contentsize.toInteger()+1}"> <g:link action="tool" id="${toolId}" params="[offset:offset.toInteger()+2]" class="next_page">下一页</g:link></g:if>
                             </div>
                         </div>
                         <div class="row" style="padding:0 15px;">
@@ -81,6 +64,7 @@
 
                     </div>
                 </div>
+            </div>
             </section>
             <!--main content end-->
 
