@@ -9,7 +9,7 @@ class ReplyMission {
     String bpuname  //被评人姓名
     Integer status
     String content
-    Date date
+    String date
     static belongsTo = [mission: Mission]
     static constraints = {
         cid(nullable: true)

@@ -2303,6 +2303,7 @@ class FrontController {
     def missionSave() {
         def rs = [:]
         def mission = new Mission(params)
+        mission.status='0'
         mission.hasvisited='0'
         mission.issubmit='0'
 
@@ -2790,9 +2791,10 @@ class FrontController {
         def rs = [:]
         def replyMissionInstance = new ReplyMission(params)
         def missionInstance = Mission.get(params.mid)
-        missionInstance.reply ='1'
+
         replyMissionInstance.mission = missionInstance
-        replyMissionInstance.date = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        replyMissionInstance.date =time.format(new Date())
         replyMissionInstance.cid = session.company.id
         replyMissionInstance.status =0
         if(!params.content){
@@ -2825,15 +2827,19 @@ class FrontController {
 
 
         replymission=ReplyMission.findAllByBpunameAndStatus(bpuname,0,[sort:"date",order: "desc"])
-
+        def count=replymission?.size()
         def mission
-        if (!id ) {
+        if (!id&&count!=0 ) {
             mission = replymission[0].mission
-        } else {
+        }else if (!id && count == 0) {
+
+        }else {
             mission = Mission.get(id)
         }
         def allReplyInfo = ReplyMission.findAllByMission(mission, [sort: "date", order: "desc"])
-
+        for(def r in allReplyInfo){
+            r.status='1'
+        }
         [replymissionlist:replymission,allReplyInfo: allReplyInfo,mission:mission]
     }
     def unreadMissionReply(Long id) {
@@ -2873,10 +2879,11 @@ class FrontController {
         }
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         def replyMissionInstance = new ReplyMission(params)
+
         def missionInstance = Mission.get(id)
-        taskInstance.reply = 1
-        replyMissionInstance.tasks = missionInstance
-        replyMissionInstance.date = time.format(new Date())
+
+        replyMissionInstance.mission = missionInstance
+        replyMissionInstance.date = time.format(new Date());
         replyMissionInstance.status = 0
         if (!replyMissionInstance.save(flush: true)) {
             render(view: "unread_comment", model: [id: params.id])

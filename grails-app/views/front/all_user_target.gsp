@@ -205,6 +205,7 @@
                     for (var i = 0; i < mission.length; i++) {
 
                         var s = (mission[i].status == '1') ? '完成' : '进行中';
+                        if(mission[i])
                         tar_mission += '     <li class="clearfix">' +
                                 ' <h2 style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务' + (i + 1) + '：<span style="color:#797979;">' + mission[i].title + '</span></h2>' +
 

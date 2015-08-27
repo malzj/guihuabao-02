@@ -90,7 +90,7 @@
                                                 <textarea name="content"></textarea>
                                             </div>
                                             <button class="fbtn btn-white mt10">回复</button>
-                                            <button class="fbtn btn-white mt10 ml20">取消</button>
+                                            <input type="button" class="fbtn btn-white mt10  quxiao" value="取消">
                                         </g:form>
                                     </div>
                                 </div>
@@ -148,6 +148,10 @@
             })
             $(".zhoubao .reply_box .reply").click(function(){
                 $(this).next(".shuru").toggle();
+            })
+            $(".quxiao").on("click", function () {
+                $('.shuru').slideUp();
+                $(".shuru .rcontainer").val('')
             })
         })
     </script>

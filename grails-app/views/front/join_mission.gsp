@@ -77,12 +77,8 @@
                                             <span class="title" data-task-id="${missionInfo.id}">${missionInfo.title}</span>
                                             <span class="status"><g:if test="${missionInfo.status=="1"}">已完成</g:if><g:else>未完成</g:else></span>
                                             <div class="right">
-                                                <span class="hsfinish"><a href="javascript:;" onclick="stop_Pro(event)" class="taskedit" data-id="${missionInfo.id}"><i class="fa <g:if test="${missionInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
-                                                %{--<span class="hsfinish"><g:link action="taskUpdate" id="${missionInfo.id}" ><i class="fa <g:if test="${missionInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
-                                                %{--<g:if test="${missionInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${missionInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
-
-                                                %{--<g:if test="${missionInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" data-id="${missionInfo.id}" data-version="${missionInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>--}%
-                                                <span class="date f-r">${missionInfo.overtime}</span>
+                                                <g:if test="${missionInfo.hasvisited=="2"}"><span class="hsfinish"><a href="javascript:;" onclick="stop_Pro(event)" class="taskedit" data-id="${missionInfo.id}"><i class="fa <g:if test="${missionInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span></g:if>
+                                            <span class="date f-r">${missionInfo.overtime}</span>
                                             </div>
                                         </li>
                                         </g:if>
@@ -275,7 +271,6 @@
                 type:'post',
                 success: function (data) {
                     alert('接受任务成功！');
-
                 },
                 error:function(){alert('获取信息失败1！');}
             });
@@ -369,6 +364,7 @@
         $(".taskclose").click(function(){
             $("#task").slideLeftHide(400);
             $("#task .task_content").empty();
+            location.reload();
         });
         $(".taskedit").click(function(){
             var id=$(this).attr("data-id");

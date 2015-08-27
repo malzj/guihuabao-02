@@ -105,7 +105,7 @@
                     <div class="zhoubao col-xs-9">
                         <div class="top clearfix">
                             <div class="address f-l">
-                                我的任务(${mission.title[0]})
+                                我的任务(${allReplyInfo.mission.title[0]})
                             </div>
                         </div>
                         <div class="discuss clearfix">
@@ -127,11 +127,12 @@
                                             <g:hiddenField name="puid" value="${session.user.id}"></g:hiddenField>
                                             <g:hiddenField name="puname" value="${session.user.username}"></g:hiddenField>
                                             <div class="mt10">
-                                                <textarea name="content"></textarea>
+                                                <textarea name="content" class="rcontainer"></textarea>
                                             </div>
-                                            <button class="fbtn btn-white mt10">回复</button>
-                                            <button class="fbtn btn-white mt10 ml20">取消</button>
+                                            <button class="fbtn btn-white mt10" type="submit">回复</button>
+                                            <input type="button" class="fbtn btn-white mt10  quxiao" value="取消">
                                         </g:form>
+
                                     </div>
                                 </div>
                             </g:each>
@@ -194,64 +195,51 @@
 
         function replyclick() {
 
-            $(".reply").on("click", function () {
-                var mid=$(this).next().html();
 
-                var info = $(this).attr("data-info")
-                var arr = info.split(",")
-                $(".shuru .rcontainer").empty()
-                $(".shuru").hide()
-                var html2 = ""
-                html2+='<form id="form2">'
-                html2+='<input type="hidden" name="bpuid" value="'+arr[0]+'" />'
-                html2+='<input type="hidden" name="bpuname" value="'+arr[1]+'" />'
-                html2+='<input type="hidden" name="puid" value="${session.user.id}" />'
-                html2+='<input type="hidden" name="puname" value="${session.user.name}" />'
-                html2+='<div class="mt10"><textarea name="content"></textarea></div>'
-                html2+='<a class="huifu fbtn btn-white mt10">回复</a><span style="display:none;">'+mid+'</span><a class="quxiao fbtn btn-white mt10 ml20">取消</a>'
-                html2+='</form>'
-                $(this).next().next().find('.rcontainer').html(html2);
-                $(this).next().next().slideDown()
-                replysubmit();
+            $(".zhoubao .reply_box .reply").click(function(){
+                $(this).next(".shuru").toggle();
             })
-
-        }
-
-        function replysubmit() {
             $(".quxiao").on("click", function () {
-                $(this).parent().parent().parent().slideUp();
-                $(".shuru .rcontainer").empty()
-            })
-            $(".huifu").click(function () {
-
-                var mid = $(this).next().html();
-
-                var html2 = '';
-                $.ajax({
-                    url: '${webRequest.baseUrl}/front/replyMissionSave?mid=' + mid + '',
-                    dataType: "json",
-                    type: "POST",
-                    data: $("#form2").serialize(),
-                    success: function (data) {
-                        if (data.msg) {
-                            var re = data.replymission;
-                            alert("回复成功！");
-                            html2 += '<div class="reply_box"><div class="name">' + re.puname + '&nbsp;回复&nbsp;' + re.bpuname + '</div>'
-                            html2 += '<p>' + re.content + '</p>'
-                            html2 += '<span>' + re.date + '</span><a href="javascript:;" class="reply" data-info="' + re.puid + ',' + re.puname + '">回复</a>'
-                            html2 += '<div class="shuru"><span>回复&nbsp;' + re.puname + '</span>'
-                            html2 += '<div class="rcontainer"></div>'
-                            html2 += '</div></div>'
-                            $("#reply_container").prepend(html2);
-                            $('.shuru').slideUp()
-                        } else {
-                            alert("回复失败！")
-                        }
-                        replyclick();
-                    }
-                })
+                $('.shuru').slideUp();
+                $(".shuru .rcontainer").val('')
             })
         }
+
+        %{--function replysubmit() {--}%
+//            $(".quxiao").on("click", function () {
+//                $(this).parent().parent().parent().slideUp();
+//                $(".shuru .rcontainer").empty()
+//            })
+            %{--$(".huifu").click(function () {--}%
+
+                %{--var mid = $(this).next().html();--}%
+
+                %{--var html2 = '';--}%
+                %{--$.ajax({--}%
+                    %{--url: '${webRequest.baseUrl}/front/replyMissionSave?mid=' + mid + '',--}%
+                    %{--dataType: "json",--}%
+                    %{--type: "POST",--}%
+                    %{--data: $("#form2").serialize(),--}%
+                    %{--success: function (data) {--}%
+                        %{--if (data.msg) {--}%
+                            %{--var re = data.replymission;--}%
+                            %{--alert("回复成功！");--}%
+                            %{--html2 += '<div class="reply_box"><div class="name">' + re.puname + '&nbsp;回复&nbsp;' + re.bpuname + '</div>'--}%
+                            %{--html2 += '<p>' + re.content + '</p>'--}%
+                            %{--html2 += '<span>' + re.date + '</span><a href="javascript:;" class="reply" data-info="' + re.puid + ',' + re.puname + '">回复</a>'--}%
+                            %{--html2 += '<div class="shuru"><span>回复&nbsp;' + re.puname + '</span>'--}%
+                            %{--html2 += '<div class="rcontainer"></div>'--}%
+                            %{--html2 += '</div></div>'--}%
+                            %{--$("#reply_container").prepend(html2);--}%
+                            %{--$('.shuru').slideUp()--}%
+                        %{--} else {--}%
+                            %{--alert("回复失败！")--}%
+                        %{--}--}%
+                        %{--replyclick();--}%
+                    %{--}--}%
+                %{--})--}%
+            %{--})--}%
+//        }
 
 
     })

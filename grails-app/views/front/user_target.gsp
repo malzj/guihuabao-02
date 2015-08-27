@@ -67,6 +67,7 @@
             border: 1px solid #D0D0D0;
         }
         .sub li { background: none;}
+        .disabled { pointer-events: none; }
     </style>
 </head>
 
@@ -206,7 +207,7 @@
                         <div class="f-r">
 
                             <button type="submit"  style="margin-right: 10px;" class="button" id="save_target">保存</button>
-                            <a class="button"  style="width:160px;line-height:32px;display:inline-block;text-align: center;" id="saf"  >保存并分解目标</a>
+                            <a class="button"  style="width:160px;line-height:32px;display:inline-block;text-align: center;cursor: pointer;" id="saf"  >保存并分解目标</a>
 
                         </div>
                     </li>
@@ -339,13 +340,14 @@
                     </tr>
                     <tr>
                         <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">任务权重</th>
-                        <td width="75%"><input  name="percent" style="border:none;width:100%" id="newmission_percent" class="nr" title="该字段不能为空且必须是不超过100的数字！"/></td>
+                        <td width="75%"><input  name="percent" style="border:none;width:100%" id="newmission_percent" class="nr" title="该字段不能为空且必须是不超过剩余权重的数字！"/></td>
 
                     </tr>
                     <tr>
                         <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
                         <td>
-                            进行中 <input name="status" value="0"  style="border:none;" type="hidden" id="newmission_status"  title="该字段不能为空！"/>
+                            %{--进行中 <input name="status" value="0"  style="border:none;" type="hidden" id="newmission_status"  title="该字段不能为空！"/>--}%
+                            新建
 
                         </td>
                     </tr>
@@ -426,12 +428,9 @@
 
                         </tr>
                         <tr>
-                            <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
+                            <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;line-height:40px;" >任务状态</th>
                             <td>
-                                <select name="status" style="border:none;" id="mission_status_edit" title="该字段不能为空！">
-                                    <option value="0" selected>进行中</option>
-                                    <option value="1">完成</option>
-                                </select>
+                                <input type="text" style="border:none;" readonly id="mission_status_edit"/>
 
                             </td>
                         </tr>
@@ -595,13 +594,22 @@
                         var missionlist=data.mission;
 
                         for(var i=0;i<missionlist.length;i++){
-                            var s=(missionlist[i].status=='1')?'完成':'进行中';
+                            var s='';
+                            if(missionlist[i].hasvisited=='0'&&missionlist[i].status=='0'){
+                                s='未查看';
+                            }else if(missionlist[i].hasvisited=='1'&&missionlist[i].status=='0'){
+                                s='已查看';
+                            }else if(missionlist[i].hasvisited=='2'&&missionlist[i].status=='0'){
+                                s='未完成';
+                            }else if(missionlist[i].hasvisited=='2'&&missionlist[i].status=='1'){
+                                s='已完成';
+                            }
                             html+=' <li class="clearfix">'+
                             '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
                             '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
-                                    '<a href="javascript:;"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit" ></i></a>'+
+                                    '<a href="javascript:;"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit" ></i><span style="display:none;">'+s+'</span></a>'+
                                     '<span style="display:none;" class="mis_id">'+missionlist[i].id+'</span>'+
-                                     '<a href="#" style="font-size:20px;" ><i class="fa fa-trash-o mission_delete"></i></a>'+
+                                     '<a href="javascript:;" style="font-size:20px;" ><i class="fa fa-trash-o mission_delete"></i></a>'+
                             '</div>'+
                             '</li>'+
                             '<li class="clearfix">'+
@@ -636,6 +644,9 @@
                         $('#issubmit').html(issubmit);
                         if(target.issubmit=='1'){
                             $('#submit').attr('disabled',true);
+                            $('#newmission').addClass('disabled');
+                            $('.mission_edit').addClass('disabled');
+                            $('.mission_delete').addClass('disabled');
                         }
                         var percents=$('#tar_fj input[name="percent"]');
 
@@ -649,9 +660,13 @@
                         $('#r_per').html(r_per);
                         if(r_per==0){
                             $('#submit').attr('disabled',false);
+                            $('#newmission').addClass('disabled');
                         }
                         if(target.issubmit=='1'){
                             $('#submit').attr('disabled',true);
+                            $('#newmission').addClass('disabled');
+                            $('.mission_edit').addClass('disabled');
+                            $('.mission_delete').addClass('disabled');
                         }
                         editclick();
                     },error:function(){alert("获取数据失败");}});
@@ -689,17 +704,25 @@
            function editclick() {
 
                 $(".mission_edit").click(function () {
+                    var s=$(this).next().html();
                     var p=parseInt($('#r_per').html());
-
                     var mid = $(this).parent().next().html();
-
                     $.ajax({
                         url: '${webRequest.baseUrl}/front/mshow',
                         type: 'post',
                         dataType: 'json',
                         data: {mid: mid},
                         success: function (data) {
-                            var status=(data.mission.status=='1')?'已完成':'进行中';
+//                            var s='';
+//                            if(mission[i].hasvisited=='0'&&mission[i].status=='0'){
+//                                s='未查看';
+//                            }else if(mission[i].hasvisited=='1'&&mission[i].status=='0'){
+//                                s='已查看';
+//                            }else if(mission[i].hasvisited=='2'&&mission[i].status=='0'){
+//                                s='未完成';
+//                            }else if(mission[i].hasvisited=='2'&&mission[i].status=='1'){
+//                                s='已完成';
+//                            }
                             var mission = data.mission;
                             var target = data.target;
                             $('#target_id_edit').val(target.id);
@@ -709,7 +732,7 @@
                             $('#startdate_edit').val(mission.begintime);
                             $('#enddate_edit').val(mission.overtime);
                             $('#mission_percent_edit').val(mission.percent);
-                            $('#mission_status_edit').find('option[value='+mission.status+']').attr('selected',true);
+                            $('#mission_status_edit').val(s);
                             $('#mid').val(mission.id);
                             $('#mission_edit_detail').css('display', 'block');
                             p+=mission.percent;
@@ -792,7 +815,7 @@
                     var begintime=$('#startdate_edit').val();
                     var overtime=$('#enddate_edit').val();
                     var percent=$('#mission_percent_edit').val();
-                    var status=$('#mission_status_edit option:selected').val();
+
 
                     var html="";
 
@@ -800,7 +823,7 @@
                         url:'${webRequest.baseUrl}/front/mupdate',
                         type: 'post',
                         dataType: 'json',
-                        data: {mid: mid,title:title,content:content,playname:playname,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent,status:status},
+                        data: {mid: mid,title:title,content:content,playname:playname,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent},
                         success: function (data) {
                              $('#tar_fj ul').empty();
 
@@ -810,13 +833,22 @@
                             var size= data.missionSize
 
                             for(var i=0;i<missionlist.length;i++){
-                                var status=(missionlist[i].status=='1')?'已完成':'进行中';
+                                var s='';
+                                if(missionlist[i].hasvisited=='0'&&missionlist[i].status=='0'){
+                                    s='未查看';
+                                }else if(missionlist[i].hasvisited=='1'&&missionlist[i].status=='0'){
+                                    s='已查看';
+                                }else if(missionlist[i].hasvisited=='2'&&missionlist[i].status=='0'){
+                                    s='未完成';
+                                }else if(missionlist[i].hasvisited=='2'&&missionlist[i].status=='1'){
+                                    s='已完成';
+                                }
                                 html+=' <li class="clearfix">'+
                                         '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
                                         '<div class="f-l on" style="font-size: 20px;margin-top:7px;">'+
-                                        '<a href="javascript:;"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit" ></i></a>'+
+                                        '<a href="javascript:;"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit" ></i><span style="display:none">'+s+'</span></a>'+
                                         '<span style="display:none;">'+missionlist[i].id+'</span>'+
-                                        '<a href="#" style="font-size:20px;" ><i class="fa fa-trash-o mission_delete"></i></a>'+
+                                        '<a href="javascript:;" style="font-size:20px;" ><i class="fa fa-trash-o mission_delete"></i></a>'+
                                         '</div>'+
                                         '</li>'+
                                         '<li class="clearfix">'+
@@ -839,7 +871,7 @@
                                         ' <tr>'+
                                         ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>'+
                                         ' <td>'+
-                                        '<span>'+status+'</span>'+
+                                        '<span>'+s+'</span>'+
                                         '</td>'+
                                         '</tr>'+
                                         '</table>'+
@@ -852,11 +884,17 @@
                             $('#r_per').html(data.r_per);
                             if($('#r_per').html()==0){
                                 $('#submit').attr('disabled',false);
+                                $('#newmission').addClass('disabled');
                             }else{
                                 $('#submit').attr('disabled',true);
+
                             }
                             if(target.issubmit=='1'){
                                 $('#submit').attr('disabled',true);
+                                $('#newmission').addClass('disabled');
+                                $('.mission_edit').addClass('disabled');
+                                $('.mission_delete').addClass('disabled');
+
                             }
 //
                             $('#mission_edit_detail').hide();
@@ -894,6 +932,7 @@
                             $('#r_per').html(data.r_per);
                             if( $('#r_per').html()==0){
                                 $('#submit').attr('disabled',false);
+                                $('#newmission').addClass('disabled');
                             }else{
                                 $('#submit').attr('disabled',true);
                             }
@@ -988,17 +1027,19 @@
 
                             for(var i=0;i<mission.length;i++){
 
-                                var s=(mission[i].status=='1')?'完成':'进行中';
-                                var hasvisited=(mission[i].hasvisited=='1')?'已阅读':'未读';
-                                if(mission[i].hasvisited=='1'){
-                                    hasvisited='已阅读';
-                                }else if(mission[i].hasvisited=='0'){
-                                    hasvisited='未读';
-                                }else{
-                                    hasvisited='接受';
+                                var s='';
+                                if(mission[i].hasvisited=='0'&&mission[i].status=='0'){
+                                    s='未查看';
+                                }else if(mission[i].hasvisited=='1'&&mission[i].status=='0'){
+                                    s='已查看';
+                                }else if(mission[i].hasvisited=='2'&&mission[i].status=='0'){
+                                    s='未完成';
+                                }else if(mission[i].hasvisited=='2'&&mission[i].status=='1'){
+                                    s='已完成';
                                 }
+
                             tar_mission+='     <li class="clearfix">'+
-                            ' <h2 class="clearfix" style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务'+(i+1)+'：<span style="color:#797979;">'+mission[i].title+'</span><span style="font-size:20px;margin-left: 16px;">'+hasvisited+'</span><div class="discuss f-r comment1"><span class="id" style="display:none;">'+mission[i].id+'</span><span>反馈及评论</span></div></h2>'+
+                            ' <h2 class="clearfix" style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务'+(i+1)+'：<span style="color:#797979;">'+mission[i].title+'</span><span style="font-size:20px;margin-left: 16px;"></span><div class="discuss f-r comment1"><span class="id" style="display:none;">'+mission[i].id+'</span><span>反馈及评论</span></div></h2>'+
 
                             '<table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">'+
                             '<tr>'+
@@ -1129,7 +1170,7 @@
                     var begintime=$('#startdate_mission').val();
                     var overtime=$('#enddate_mission').val();
                     var percent=$('#newmission_percent').val();
-                    var status=$('#newmission_status').val();
+
 
 
                     $.ajax({
@@ -1139,13 +1180,23 @@
                         data:{target_id:target_id,title:title,content:content,playname:playname,playbid:playbid,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent,status:status},
                         success:function(data){
                             var target=data.target;
-                            var status=(data.mission.status=='1')?'已完成':'进行中';
+                            var mission=data.mission;
+                            var s='';
+                            if(mission.hasvisited=='0'&&mission.status=='0'){
+                                s='未查看';
+                            }else if(mission.hasvisited=='1'&&mission.status=='0'){
+                                s='已查看';
+                            }else if(mission.hasvisited=='2'&&mission.status=='0'){
+                                s='未完成';
+                            }else if(mission.hasvisited=='2'&&mission.status=='1'){
+                                s='已完成';
+                            }
                             var html=' <li class="clearfix">'+
                                     '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(data.target.mission.length)+'：<span style="color:#797979;">'+data.mission.title+'</span></h2>'+
                                     '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
-                                    '<a href="#"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit"></i></a>'+
+                                    '<a href="javascript:;"  style="font-size:20px;margin-right:5px;"><i class="fa fa-edit mission_edit"></i><span style="display:none;">'+s+'</span></a>'+
                                     '<span style="display:none;">'+data.mission.id+'</span>'+
-                                    '<a href="#" style="font-size:20px;"><i class="fa fa-trash-o mission_delete"></i></a>'+
+                                    '<a href="javascript:;" style="font-size:20px;"><i class="fa fa-trash-o mission_delete"></i></a>'+
                                     '</div>'+
                                     '</li>'+
                                     '<li class="clearfix">'+
@@ -1168,7 +1219,7 @@
                                     ' <tr>'+
                                     ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>'+
                                     ' <td>'+
-                                    '<span>'+status+'</span>'+
+                                    '<span>'+s+'</span>'+
                                     '</td>'+
                                     '</tr>'+
                                     '</table>'+
@@ -1179,9 +1230,13 @@
                             $('#r_per').html(data.r_per);
                             if($('#r_per').html()==0){
                                 $('#submit').attr('disabled',false);
+                                $('#newmission').addClass('disabled');
                             }
                             if(target.issubmit=='1'){
                                 $('#submit').attr('disabled',true);
+                                $('#newmission').addClass('disabled');
+                                $('.mission_edit').addClass('disabled');
+                                $('.mission_delete').addClass('disabled');
                             }
                             $("#newmissiondetail").css('display','none');
                             editclick();
