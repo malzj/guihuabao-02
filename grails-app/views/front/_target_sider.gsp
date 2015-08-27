@@ -15,13 +15,17 @@
                 <li> <g:link controller="front" action="user_target"  class="dcjq-parent">负责的目标<em class="f-r">${com.guihuabao.Target.countByCidAndFzuidAndStatus(session.user.cid,session.user.id,0)}</em></g:link></li>
                 <li> <g:link controller="front" action="join_mission"  class="dcjq-parent">参与的任务<em class="f-r">${com.guihuabao.Mission.countByPlaynameAndStatusAndIssubmit(session.user.name,0,1)}</em></g:link></li>
             </ul>
+
         </li>
+        <g:if test="${session.user.pid==1||session.user.pid==2}">
         <li>
+
             <g:link controller="front" action="xsTarget">
                 <span>下属目标</span>
                 %{--<span class="dcjq-icon"></span>--}%
             </g:link>
         </li>
+        </g:if>
         <li class="sub-menu dcjq-parent-li">
                     <a class="dcjq-parent" href="javascript:;">
                     <span>已完成目标</span>
@@ -40,7 +44,7 @@
             </li>
             <li>
                 <g:link controller="front" action="unread_comment">
-                    <span>未读评论</span><em class="f-r">${com.guihuabao.ReplyMission.countByBpunameAndStatus(session.user.name,0)}</em>
+                    <span>未读回复</span><em class="f-r">${com.guihuabao.ReplyMission.countByBpunameAndStatus(session.user.name,0)}</em>
                 </g:link>
             </li>
         </ul>
