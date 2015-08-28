@@ -18,22 +18,21 @@
 <meta name="robots" content="index,follow">
 <meta name="application-name" content="guihuabao.cn">
 <link rel="shortcut icon" href="/favicon.ico">
-<link type="text/css" rel="stylesheet" href="css/base.css" />
-<link type="text/css" rel="stylesheet" href="css/function.css"  />
-<script src="js/respond/respond.min.js"></script>
-<link href="/js/respond/respond-proxy.html" id="respond-proxy" rel="respond-proxy"/>
-<link href="/js/respond/respond.proxy.gif" id="respond-redirect" rel="respond-redirect"/>
-
-<script src="js/respond/respond.proxy.js"></script>
+<link type="text/css" rel="stylesheet" href="${resource(dir: 'index/css/', file: 'base.css')}" />
+<link type="text/css" rel="stylesheet" href="${resource(dir: 'index/css/', file: 'function.css')}"  />
+<script src="${resource(dir: 'index/js/respond/', file: 'respond.min.js')}"></script>
+<link href="${resource(dir: 'index/js/respond/', file: 'respond-proxy.html')}" id="respond-proxy" rel="respond-proxy"/>
+<link href="${resource(dir: 'index/js/respond/', file: 'respond.proxy.gif')}" id="respond-redirect" rel="respond-redirect"/>
+<script src="${resource(dir: 'index/js/respond/', file: 'respond.proxy.js')}"></script>
 <!--[if IE 6]>
-<script src="js/DD_belatedPNG.js" tppabs="http://www.eteams.cn/js/DD_belatedPNG.js"></script>
+<script src="${resource(dir: 'index/js/', file: 'DD_belatedPNG.js')}"></script>
 <script>
 	document.execCommand("BackgroundImageCache", false, true);
     DD_belatedPNG.fix('.png');
 </script>
 <![endif]-->
-<!--[if lt IE 9]>
-<script src="js/html5shiv.min.js" tppabs="http://www.eteams.cn/js/html5shiv.min.js"></script>
+    <!--[if lt IE 9]>
+<script src="${resource(dir: 'index/js/', file: 'html5shiv.min.js')}"></script>
 <![endif]-->
 </head>
 <body>
@@ -43,19 +42,19 @@
 
 <div class="site-head site-head-fixed">
 	<div class="head-inner">
-		<div class="eteams fl"><a href="index.gsp" class="eteams-link"></a></div>
+		<div class="eteams fl"><g:link controller="show" action="index" class="eteams-link"></g:link></div>
 		<ul class="site-nav fl">
 			<li class="nav-item">
-				<a name="index" class="nav-link" href="index.gsp">首页</a>
+				<g:link name="index" class="nav-link" controller="show" action="index">首页</g:link>
 			</li>
 			<li class="nav-item">
-				<a name="product" class="nav-link  nav-link-cur" href="function.gsp">功能</a>
+				<g:link name="product" class="nav-link  nav-link-cur" controller="show" action="function">功能</g:link>
 			</li>
 			<li class="nav-item">
-				<a name="mobile" class="nav-link" href="mobile.gsp">移动</a>
+				<g:link name="mobile" class="nav-link" controller="show" action="mobile">移动</g:link>
 			</li>
 			<li class="nav-item">
-				<a name="cooperation" class="nav-link" href="">支持</a>
+				<g:link name="cooperation" class="nav-link" controller="show" action="">支持</g:link>
 			</li>
 			
 		</ul>
@@ -66,7 +65,7 @@
 	</div>
 </div>
 <div id="wrapper" class="clearfix">
-	<div  class="content" style="background:url(img/bg1.png) no-repeat;margin-top:80px;">
+	<div  class="content" style="background:url(${resource(dir: 'index/img/', file: 'bg1.png')}) no-repeat;margin-top:80px;">
 		<div class="center_content clearfix">
 			<div class="text fl" style="color:#fff;">
 				<h2>科学合理的目标设计</h2>
@@ -76,14 +75,14 @@
 				<a href="javascript:;"  class="button" >了解更多内容</a>
 			</div>
 			<div class="fr img">
-				<img src="img/computer1.png" alt="computer"/>
+				<img src="${resource(dir: 'index/img/', file: 'computer1.png')}" alt="computer"/>
 			</div>
 		</div>
 	</div>
 	<div  class="clearfix content" >
 		<div class="center_content clearfix">
 			<div class="fl img clearfix">
-				<img src="img/computer2.png" alt="computer" class="fr"/>
+				<img src="${resource(dir: 'index/img/', file: 'computer2.png')}" alt="computer" class="fr"/>
 			</div>
 			<div class="text fr">
 				<h2>目标驱动的任务管控</h2>
@@ -95,7 +94,7 @@
 			</div>
 		</div>
 	</div>
-	<div  class="clearfix content" style="background:url(img/bg3.png) no-repeat;">
+	<div  class="clearfix content" style="background:url(${resource(dir: 'index/img/', file: 'bg3.png')}) no-repeat;">
 		<div class="center_content clearfix">
 			<div class="text fl">
 				<h2>行云流水的团队协作</h2>
@@ -105,14 +104,14 @@
 				<a href="javascript:;"  class="button white" >了解更多内容</a>
 			</div>
 			<div class="fr img">
-				<img src="img/computer3.png" alt="computer"/>
+				<img src="${resource(dir: 'index/img/', file: 'computer3.png')}" alt="computer"/>
 			</div>
 		</div>
 	</div>
-	<div  class="clearfix content" style="background:url(img/bg4.png) no-repeat;">
+	<div  class="clearfix content" style="background:url(${resource(dir: 'index/img/', file: 'bg4.png')}) no-repeat;">
 		<div class="center_content clearfix">
 			<div class="fl img clearfix">
-				<img src="img/computer4.png" alt="computer" class="fr"/>
+				<img src="${resource(dir: 'index/img/', file: 'computer4.png')}" alt="computer" class="fr"/>
 			</div>
 			<div class="text fr" style="color:#fff;">
 				<h2>目标驱动的任务管控</h2>
@@ -124,7 +123,7 @@
 			</div>
 		</div>
 	</div>
-	<div  class="clearfix content" style="background:url(img/bg3.png) no-repeat;">
+	<div  class="clearfix content" style="background:url(${resource(dir: 'index/img/', file: 'bg3.png')}) no-repeat;">
 		<div class="center_content clearfix">
 			<div class="text fl">
 				<h2>精彩纷呈的知识成果</h2>
@@ -134,7 +133,7 @@
 				<a href="javascript:;"  class="button white" >了解更多内容</a>
 			</div>
 			<div class="fr img">
-				<img src="img/computer5.png" alt="computer"/>
+				<img src="${resource(dir: 'index/img/', file: 'computer5.png')}" alt="computer"/>
 			</div>
 		</div>
 	</div>
@@ -169,11 +168,11 @@
 		<div class="erweimas fl">
 			<h2>下载规划宝移动端</h2>
 			<div class="erweima fl">
-				<img src="img/erweima.png" alt="二维码"/> 
+				<img src="${resource(dir: 'index/img/', file: 'erweima.png')}" alt="二维码"/>
 				<p>iphone客户端下载</p>
 			</div>
 			<div class="erweima fl">
-				<img src="img/erweima.png" alt="二维码"/> 
+				<img src="${resource(dir: 'index/img/', file: 'erweima.png')}" alt="二维码"/>
 				<p>Android客户端下载</p>
 			</div>
 		</div>
@@ -182,10 +181,10 @@
 <div id="bottom">
 	<p>Copyright © 2012 IZP Technologies Co.,Ltd. All Rights Reserved.京ICP备13047936号-3&nbsp;京公网安备</p>
 	<ul class="clearfix">
-		<li><img src="img/icon1.png" alt="icon"/></li>
-		<li><img src="img/icon2.png" alt="icon"/></li>
-		<li><img src="img/icon3.png" alt="icon"/></li>
-		<li><img src="img/icon4.png" alt="icon"/></li>
+		<li><img src="${resource(dir: 'index/img/', file: 'icon1.png')}" alt="icon"/></li>
+		<li><img src="${resource(dir: 'index/img/', file: 'icon2.png')}" alt="icon"/></li>
+		<li><img src="${resource(dir: 'index/img/', file: 'icon3.png')}" alt="icon"/></li>
+		<li><img src="${resource(dir: 'index/img/', file: 'icon4.png')}" alt="icon"/></li>
 	</ul>
 </div>
 <style type="text/css">
@@ -205,7 +204,7 @@ ul{list-style:none;}
 <div class="slides">
 	<ul class="slideul">
         <li class="kefu">
-        	<img src="img/side.png" alt="">
+        	<img src="${resource(dir: 'index/img/', file: 'side.png')}" alt="">
         	<ul class="kefulist">
             	<li><a href="http://wpa.qq.com/msgrd?v=3&uin=1114774100&Site=qq&Menu=yes">在线客服一</a></li>
                 <li><a href="http://wpa.qq.com/msgrd?v=3&uin=848215697&Site=qq&Menu=yes">在线客服二</a></li>
@@ -214,7 +213,7 @@ ul{list-style:none;}
         </li>
     </ul>
 </div>
-<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="${resource(dir: 'index/js/', file: 'jquery-1.9.1.min.js')}"></script>
 <script type="text/javascript">
 $(function(){
 	//Sldie

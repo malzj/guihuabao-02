@@ -1,0 +1,34 @@
+/* ¹¦ÄÜcss */
+/*mobile css */
+body{color:#000;width:100%;font-weight:normal;}
+.clearfix{clear:both;content:'';display:block;}
+#wrapper{width:100%;}
+.content{width:100%;height:600px;}
+.content .text{margin-top:154px;width:435px;}
+.content .img{margin-top:100px;}
+.content h2{font-size:28px;font-weight:normal;margin:0 0 30px 0;}
+.content .button{display:block;width:140px;height:46px;background:none;border-radius:3px;margin-top:26px;}
+.content a{color:#fff;line-height:46px;border:none;text-align:center;text-decoration:none;border:1px solid #fff;}
+.content .white{border:1px solid #000;color:#000;}
+.center_content{width:1200px;margin:0 auto;}
+
+
+
+
+#footer{width:100%;height:286px;background:#333;}
+#footer-content{width:80%;margin:0px auto;}
+#footer-content dl{width:15%;}
+#footer-content dt{margin-top:54px;color:#cecece;font-size:20px;}
+#footer-content dd{margin-top:20px;color:#656565;}
+#footer-content h2{font-size:20px;color:#cecece;margin-top:54px;font-weight:normal;}
+#footer-content img{width:105px;height:105px;}
+#footer-content .erweimas{width:40%;}
+#footer-content .erweima{margin:20px 50px 0 0;}
+#footer-content .erweima img{margin-bottom:10px;}
+#footer-content .erweima p{color:#656565;}
+
+
+#bottom{width:100%;height:116px;background:#000;}
+#bottom p{width:660px;margin:0 auto;color:#aaa;text-align:center;display:block;padding-top:32px;}
+#bottom ul{width:210px;margin:0 auto;}
+#bottom li{list-style:none;float:left;width:32px;height:32px;margin:20px 10px;}
