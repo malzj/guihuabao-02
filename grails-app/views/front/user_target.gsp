@@ -68,6 +68,7 @@
         }
         .sub li { background: none;}
         .disabled { pointer-events: none; }
+       input[type=text]:focus,textarea:focus{border-color:#03a9f4;}
     </style>
 </head>
 
@@ -1425,9 +1426,10 @@
                             $('#bpuid').val(data.mission.playuid);
                             $('#bpuname').val(data.mission.playname);
                             $.each(data.replymission,function(i,val){
+                                var bp=val.bpuname;
                                 html2+='<div class="reply_box"><div class="name">'+val.puname+'&nbsp;回复&nbsp;'+val.bpuname+'</div>'
                                 html2+='<p>'+val.content+'</p>'
-                                html2+='<span>'+val.date+'</span><a href="javascript:;" class="reply" data-info="'+val.puid+','+val.puname+'">回复</a>'
+                                html2+='<span>'+val.date+'</span><g:if test="${bp==session.user.name}"><a href="javascript:;" class="reply" data-info="'+val.puid+','+val.puname+'">回复</a></g:if>'
                                 html2+='<div class="shuru"><span>回复&nbsp;'+val.puname+'</span>'
                                 html2+='<div class="rcontainer"></div>'
                                 html2+='</div></div>'
@@ -1498,7 +1500,7 @@
                                 alert("回复成功！");
                                 html2 += '<div class="reply_box"><div class="name">' + re.puname + '&nbsp;回复&nbsp;' + re.bpuname + '</div>'
                                 html2 += '<p>' + re.content + '</p>'
-                                html2 += '<span>' + re.date + '</span><a href="javascript:;" class="reply" data-info="' + re.puid + ',' + re.puname + '">回复</a>'
+                                html2 += '<span>' + re.date + '</span><g:if test="${bp==session.user.name}"><a href="javascript:;" class="reply" data-info="' + re.puid + ',' + re.puname + '">回复</a></g:if>'
                                 html2 += '<div class="shuru"><span>回复&nbsp;' + re.puname + '</span>'
                                 html2 += '<div class="rcontainer"></div>'
                                 html2 += '</div></div>'
@@ -1523,10 +1525,12 @@
                     success: function(data) {
                         if(data.msg){
                             var re=data.replymission;
+                            var bp=re.bpuname;
+                            alert(bp);
                             alert("回复成功！");
                             html2+='<div class="reply_box"><div class="name">'+re.puname+'&nbsp;回复&nbsp;'+re.bpuname+'</div>'
                             html2+='<p>'+re.content+'</p>'
-                            html2+='<span>'+re.date+'</span><a href="javascript:;" class="reply" data-info="'+re.puid+','+re.puname+'">回复</a>'
+                            html2+='<span>'+re.date+'</span><g:if test="${bp==session.user.name}"><a href="javascript:;" class="reply" data-info="'+re.puid+','+re.puname+'">回复</a></g:if>'
                             html2+='<div class="shuru"><span>回复&nbsp;'+re.puname+'</span>'
                             html2+='<div class="rcontainer"></div>'
                             html2+='</div></div>'

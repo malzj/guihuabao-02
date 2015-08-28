@@ -2796,7 +2796,7 @@ class FrontController {
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         replyMissionInstance.date =time.format(new Date())
         replyMissionInstance.cid = session.company.id
-        replyMissionInstance.status =0
+        replyMissionInstance.status = 0
         if(!params.content){
             rs.msg = false
         }else {
@@ -2817,11 +2817,13 @@ class FrontController {
     def unread_comment(Long id){
         def user = session.user
         def company = session.company
+
         if (!user && !company) {
             redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
             return
         }
-
+        def uid=user.id
+        def cid=company.id
         def bpuname=user.name
         def replymission
 
@@ -2837,8 +2839,9 @@ class FrontController {
             mission = Mission.get(id)
         }
         def allReplyInfo = ReplyMission.findAllByMission(mission, [sort: "date", order: "desc"])
-        for(def r in allReplyInfo){
-            r.status='1'
+        def myReplyInfo = ReplyMission.findAllByMissionAndCidAndBpuid(mission, cid, uid, [sort: "date", order: "desc"])
+        for(def i=0;i<myReplyInfo.size();i++){
+            myReplyInfo[i].status=1
         }
         [replymissionlist:replymission,allReplyInfo: allReplyInfo,mission:mission]
     }
@@ -2871,6 +2874,7 @@ class FrontController {
         [replyInstance: replyInstance, allReplyInfo: allReplyInfo, count: count]
     }
     def tReplyMissionSave(Long id){
+
         def user = session.user
         def company = session.company
         if(!user&&!company){
@@ -2886,12 +2890,12 @@ class FrontController {
         replyMissionInstance.date = time.format(new Date());
         replyMissionInstance.status = 0
         if (!replyMissionInstance.save(flush: true)) {
-            render(view: "unread_comment", model: [id: params.id])
+            render(view: "unread_comment", model: [id: id])
             return
         }
 
-        flash.message = message(code: 'default.created.message', args: [message(code: 'task.label', default: 'Task'), missionInstance.id])
-        redirect(action: "unread_comment", id: params.id)
+        flash.message = message(code: 'default.created.message', args: [message(code: 'mission.label', default: 'Mission'), missionInstance.id])
+        redirect(action: "unread_comment", id: id)
     }
     def uploadImg(){
         def rs=[:]
