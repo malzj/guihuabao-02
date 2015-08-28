@@ -68,6 +68,7 @@
         }
         .sub li { background: none;}
         .disabled { pointer-events: none; }
+       input[type=text]:focus,textarea:focus{border-color:#03a9f4;}
     </style>
 </head>
 

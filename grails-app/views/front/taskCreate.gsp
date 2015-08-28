@@ -29,6 +29,9 @@
 
     <link href="${resource(dir: 'css', file: 'context.standalone.css')}" rel="stylesheet">
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">
+    <style type="text/css">
+    input[type=text]:focus,textarea:focus{border-color:#03a9f4;}
+    </style>
 </head>
 
 <body>
