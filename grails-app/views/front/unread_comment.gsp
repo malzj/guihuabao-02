@@ -125,7 +125,7 @@
                                             <g:hiddenField name="bpuname" value="${replyInfo.puname}"></g:hiddenField>
                                             <g:hiddenField name="cid" value="${replyInfo.cid}"></g:hiddenField>
                                             <g:hiddenField name="puid" value="${session.user.id}"></g:hiddenField>
-                                            <g:hiddenField name="puname" value="${session.user.username}"></g:hiddenField>
+                                            <g:hiddenField name="puname" value="${session.user.name}"></g:hiddenField>
                                             <div class="mt10">
                                                 <textarea name="content" class="rcontainer"></textarea>
                                             </div>
