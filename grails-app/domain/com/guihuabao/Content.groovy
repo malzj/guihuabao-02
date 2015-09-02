@@ -2,9 +2,9 @@ package com.guihuabao
 
 class Content {
 
-    String title
-    String introduction
-    Date dateCreate
+    String title    //标题
+    String introduction     //介绍
+    Date dateCreate     //创建时间
     static belongsTo = [chapter: Chapter]
     static constraints = {
         title(nullable: true)
