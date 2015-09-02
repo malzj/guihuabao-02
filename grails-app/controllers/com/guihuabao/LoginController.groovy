@@ -1045,6 +1045,7 @@ class LoginController {
     //案例和工具
     def tools(Integer max){
         params.max = Math.min(max ?: 10, 100)
+        def toolInstanceList = HexuTool.list(params)
         [toolInstanceList: HexuTool.list(params), toolInstanceTotal: HexuTool.count()]
     }
 
@@ -1092,7 +1093,7 @@ class LoginController {
         def  filePath
         def  fileName
 
-        MultipartFile f = request.getFile('bookImg1')
+        MultipartFile f = request.getFile('toolImg')
         if(!f.empty) {
             def date= new Date().getTime()
             Random random =new Random()
@@ -1145,7 +1146,7 @@ class LoginController {
     def toolSave(){
         def toolInstance = new HexuTool(params)
         def  fileName
-        MultipartFile f = request.getFile('bookImg')
+        MultipartFile f = request.getFile('toolImg')
         if(!f.empty) {
 
             def date= new Date().getTime()
@@ -1171,10 +1172,33 @@ class LoginController {
         flash.message =message(code: 'default.created.message', args: [message(code: 'book.label', default: 'Book'), toolInstance.id])
         redirect(action: "toolShow", id:toolInstance.id, params: [bookName: toolInstance.toolName])
     }
-    def toolContentList(){
+    def toolContentCreate(Long id){
+        [contentInstance: new ToolContent(params),toolId:id]
+    }
+    def toolContentSave(){
+        def contentInstance = new ToolContent(params)
+        contentInstance.hexutools=HexuTool.get(params.toolId)
+        contentInstance.dateCreate=new Date()
+        if (!contentInstance.save(flush: true)) {
+            render(view: "create", model: [contentInstance: contentInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: 'content.label', default: 'Content'), contentInstance.id])
+        redirect(action: "toolContentShow", id: contentInstance.id)
 
     }
-    def toolContentShow(){
+    def toolContentShow(Long id) {
+        def content = Content.get(id)
+        if (!content) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'syllabus.label', default: 'Syllabus'), id])
+            redirect(action: "syllabusList")
+            return
+        }
+
+        [content: content]
+    }
+    def toolContentList(){
 
     }
 }

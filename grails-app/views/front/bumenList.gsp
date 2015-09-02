@@ -75,6 +75,9 @@
                         </tr>
                     </g:each>
                 </table>
+                <div class="pagination">
+                    <g:paginate total="${bumenInstanceTotal}" />
+                </div>
             </div>
         </section>
         <!--main content end-->
