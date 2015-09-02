@@ -10,9 +10,9 @@ class Target {
     String title            //标题
     Integer percent         //权重
     String img              //图片
-    String status           //状态
+    String status           //状态0未完成1已完成
     String targetzj         //目标总结
-    String issubmit         //是否下发
+    String issubmit         //是否下发0下发1未下发
     static hasMany = [mission:Mission]
     static constraints = {
         cid(nullable: true)

@@ -1,102 +1,452 @@
 package com.guihuabao
 
+import grails.converters.JSON
 import org.springframework.dao.DataIntegrityViolationException
+
+import java.text.SimpleDateFormat
 
 class TargetController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index() {
-        redirect(action: "list", params: params)
-    }
+    def myTargetList(){
+        def rs=[:]
+        def cid=params.cid
+        def uid=params.uid
 
-    def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        [targetInstanceList: Target.list(params), targetInstanceTotal: Target.count()]
-    }
-
-    def create() {
-        [targetInstance: new Target(params)]
-    }
-
-    def save() {
-        def targetInstance = new Target(params)
-        if (!targetInstance.save(flush: true)) {
-            render(view: "create", model: [targetInstance: targetInstance])
-            return
+        params.max = 5
+        params<<[sort:"dateCreate",order: "desc"]
+        def offset = 0;
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
         }
-
-        flash.message = message(code: 'default.created.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
-        redirect(action: "show", id: targetInstance.id)
+        params<<[offset:offset]
+        def targetsize=Target.countByFzuidAndCidAndStatus(uid,cid,0)
+        def offse=params.offset.toInteger()
+        if(targetsize>offse) {
+            def targetlist = Target.findAllByFzuidAndCidAndStatus(uid, cid, 0, params)
+            if (targetlist) {
+                rs.result = true
+                rs.targetlist = targetlist
+            } else {
+                rs.result = false
+                rs.msg = "已加载所有数据"
+            }
+        }else{
+            rs.result = false
+            rs.msg = "已加载所有数据"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
+    def targetSave(){
+        def rs=[:]
+        def targetInstance=new Target(params)
+        targetInstance.dateCreate=new Date()
+        targetInstance.img='1.png'
+        targetInstance.issubmit=0
+        targetInstance.status=0
+        targetInstance.percent=0
+        if(!targetInstance.save(flush: true)){
+            rs.result=false
+            rs.msg="保存失败"
 
-    def show(Long id) {
-        def targetInstance = Target.get(id)
+        }else {
+            rs.result=true
+            rs.msg="保存成功"
+            rs.target=targetInstance
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+
+
+    }
+    def targetDelete(){
+        def rs=[:]
+        def id=params.id
+        def cid=params.cid
+        def targetInstance=Target.findByIdAndCid(id,cid)
         if (!targetInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "list")
+            rs.result=false
+            rs.msg='删除失败！'
             return
-        }
+        }else {
 
-        [targetInstance: targetInstance]
-    }
-
-    def edit(Long id) {
-        def targetInstance = Target.get(id)
-        if (!targetInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [targetInstance: targetInstance]
-    }
-
-    def update(Long id, Long version) {
-        def targetInstance = Target.get(id)
-        if (!targetInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "list")
-            return
-        }
-
-        if (version != null) {
-            if (targetInstance.version > version) {
-                targetInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                        [message(code: 'target.label', default: 'Target')] as Object[],
-                        "Another user has updated this Target while you were editing")
-                render(view: "edit", model: [targetInstance: targetInstance])
-                return
+            try {
+                targetInstance.delete(flush: true)
+                rs.result = true
+                rs.msg = '删除成功！'
+            }
+            catch (DataIntegrityViolationException e) {
+                rs.result = false
+                rs.msg = '删除失败！'
             }
         }
-
-        targetInstance.properties = params
-
-        if (!targetInstance.save(flush: true)) {
-            render(view: "edit", model: [targetInstance: targetInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
-        redirect(action: "show", id: targetInstance.id)
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
+    def targetDetail(){
+        def rs=[:]
+        def id=params.id
+        def cid=params.cid
+        def targetInstance=Target.findByIdAndCid(id,cid)
+        if(!targetInstance){
+            rs.result=false
+            rs.msg="获取数据失败！"
+        }else{
+            rs.result=true
+            rs.target=targetInstance
+            def missionlist=targetInstance.mission
+            rs.missionlist=missionlist
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def targetUpdate(){
+        def rs=[:]
+        def id=params.id
+        def cid=params.cid
+        def targetInstance=Target.findByIdAndCid(id,cid)
+        if(!targetInstance){
+            rs.result=false
+            rs.msg="获取数据失败！"
+        }else {
+            targetInstance.properties = params
+            if(!targetInstance.save(flush: true)){
+                rs.result=false
+                rs.msg="编辑失败！"
+            }else{
+                rs.result=true
+                rs.msg="编辑成功！"
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def missionSave(){
+        def rs=[:]
+        def tid=params.tid
+        def targetInstance=Target.get(tid)
+        def missionInstance=new Mission(params)
+        missionInstance.status=0
+        missionInstance.issubmit=0
+        missionInstance.hasvisited=0
+        missionInstance.dateCreate=new Date()
+        missionInstance.reply=0
+        missionInstance.target=targetInstance
+        if(!missionInstance.save(flush: true)){
+            rs.result=false
+            rs.msg="保存失败!"
+        }else {
+            rs.result=true
+            rs.msg="保存成功!"
+            rs.mission=missionInstance
+            rs.tid=tid
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
 
-    def delete(Long id) {
-        def targetInstance = Target.get(id)
-        if (!targetInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "list")
-            return
-        }
 
-        try {
-            targetInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "list")
+    }
+    def missionDelete(){
+        def rs=[:]
+        def id=params.id
+        def missionInstance=Mission.get(id)
+        if (!missionInstance) {
+            rs.result=false
+            rs.msg='删除失败！'
+
+        }else {
+
+            try {
+                missionInstance.delete(flush: true)
+                rs.result = true
+                rs.msg = '删除成功！'
+                def tid=missionInstance.target.id
+                rs.tid=tid
+            }
+            catch (DataIntegrityViolationException e) {
+                rs.result = false
+                rs.msg = '删除失败！'
+            }
         }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'target.label', default: 'Target'), id])
-            redirect(action: "show", id: id)
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def missionShow(){
+        def rs=[:]
+        def mid=params.mid
+        def missionInstance=Mission.findById(mid)
+        if(!missionInstance){
+            rs.result=false
+            rs.msg="获取数据失败！"
+        }else{
+            rs.result=true
+            rs.mission=missionInstance
         }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def missionUpdate(){
+        def rs=[:]
+        def id=params.id
+        def missionInstance=Mission.get(id)
+        if (!missionInstance) {
+            rs.result=false
+            rs.msg='编辑失败！'
+
+        }else{
+            missionInstance.properties=params
+            if(!missionInstance.save(flush: true)){
+                rs.result=false
+                rs.msg="编辑失败！"
+            }else{
+                rs.result=true
+                rs.msg="编辑成功！"
+                def tid=missionInstance.target.id
+                rs.tid=tid
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def missionComment(){
+        def rs=[:]
+        def mid=params.mid
+        def missionInstance=Mission.get(mid)
+        params<<[sort:"date",order: "desc"]
+        if(!missionInstance){
+            rs.result=false
+            rs.msg="获取数据失败！"
+        }else {
+            def comments =ReplyMission.findAllByMission(missionInstance,params)
+            rs.comments=comments
+            rs.result=true
+
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def commentSave(){
+        def rs=[:]
+        def mid=params.mid
+        def missionInstance=Mission.get(mid)
+        if(!missionInstance){
+            rs.result=false
+            rs.msg="保存失败！"
+        }else {
+            def replymissionInstance = new ReplyMission(params)
+            replymissionInstance.status = 0
+            SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            replymissionInstance.date=time.format(new Date())
+            missionInstance.reply = 1
+            replymissionInstance.mission = missionInstance
+            if (!replymissionInstance.save(flush: true)) {
+                rs.result = false
+                rs.msg = "保存失败!"
+            } else {
+                rs.result = true
+                rs.msg = "保存成功!"
+                rs.replymission=replymissionInstance
+
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def join_mission(){
+        def rs=[:]
+        def uid=params.uid
+        params.max = 5
+        params<<[sort:"dateCreate",order: "desc"]
+        def offset = 0;
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
+        }
+        params<<[offset:offset]
+        def joinmissionsize=Mission.countByPlayuidAndStatus(uid,0)
+        def offse=params.offset.toInteger()
+        if(joinmissionsize>offse) {
+            def joinmissionlist = Mission.findAllByPlayuidAndStatus(uid, 0, params)
+            if(joinmissionlist){
+                rs.result=true
+                rs.joinmissionlist=joinmissionlist
+            }else{
+                rs.result = false
+                rs.msg="已加载所有数据"
+            }
+        }else {
+            rs.result = false
+            rs.msg="已加载所有数据"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def hasFinishedTarget(){
+        def rs=[:]
+        def cid=params.cid
+        def uid=params.uid
+
+        params.max = 5
+        params<<[sort:"dateCreate",order: "desc"]
+        def offset = 0;
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
+        }
+        params<<[offset:offset]
+        def targetsize=Target.countByFzuidAndCidAndStatus(uid,cid,1)
+        def offse=params.offset.toInteger()
+        if(targetsize>offse) {
+            def targetlist = Target.findAllByFzuidAndCidAndStatus(uid, cid, 1, params)
+            if (targetlist) {
+                rs.result = true
+                rs.targetlist = targetlist
+            } else {
+                rs.result = false
+                rs.msg = "已加载所有数据"
+            }
+        }else{
+            rs.result = false
+            rs.msg = "已加载所有数据"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def hasFinishedMission(){
+        def rs=[:]
+        def uid=params.uid
+        params.max = 5
+        params<<[sort:"dateCreate",order: "desc"]
+        def offset = 0;
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
+        }
+        params<<[offset:offset]
+        def hasfinishedmissionsize=Mission.countByPlayuidAndStatus(uid,1)
+        def offse=params.offset.toInteger()
+        if(hasfinishedmissionsize>offse) {
+            def hasfinishedmissionlist = Mission.findAllByPlayuidAndStatus(uid, 1, params)
+            if(hasfinishedmissionlist){
+                rs.result=true
+                rs.hasfinishedmissionlist=hasfinishedmissionlist
+            }else{
+                rs.result = false
+                rs.msg="已加载所有数据"
+            }
+        }else {
+            rs.result = false
+            rs.msg="已加载所有数据"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def allTarget(){
+        def rs=[:]
+        def cid=params.cid
+        def uid=params.uid
+
+        params.max = 5
+        params<<[sort:"dateCreate",order: "desc"]
+        def offset = 0;
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
+        }
+        params<<[offset:offset]
+        def targetsize=Target.countByFzuidAndCid(uid,cid)
+        def offse=params.offset.toInteger()
+        if(targetsize>offse) {
+            def targetlist = Target.findAllByFzuidAndCidAnd(uid, cid, params)
+            if (targetlist) {
+                rs.result = true
+                rs.targetlist = targetlist
+            } else {
+                rs.result = false
+                rs.msg = "已加载所有数据"
+            }
+        }else{
+            rs.result = false
+            rs.msg = "已加载所有数据"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def unreadComment(){
+        def rs=[:]
+        def mid=params.mid
+        def uid=params.uid
+        params<<[sort:"date",order: "desc"]
+        def missionInstance=Mission.get(mid)
+        if(!missionInstance){
+            rs.result=false
+            rs.msg="获取数据失败！"
+        }else {
+            def unreadcomment = ReplyMission.findAllByMissionAndBpuidAndStatus(missionInstance,uid,0,params)
+            if(!unreadcomment){
+                rs.result=false
+                rs.msg="获取数据失败！"
+            }else {
+                rs.unreadcomment = unreadcomment
+                rs.result = true
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def changeCommentStatus(){
+        def rs=[:]
+        def mid=params.mid
+        def uid=params.uid
+        def missionInstance=Mission.get(mid)
+        if(!missionInstance){
+            rs.result=false
+            rs.msg="获取数据失败！"
+        }else {
+            def unreadcomment = ReplyMission.findAllByMissionAndBpuidAndStatus(missionInstance,uid,0,params)
+            if(!unreadcomment){
+                rs.result=false
+                rs.msg="获取数据失败！"
+            }else {
+               for(def r in unreadcomment){
+                   r.status=1
+               }
+                rs.result = true
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
 }

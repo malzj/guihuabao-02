@@ -1,10 +1,10 @@
 package com.guihuabao
 
 class Bumen {
-    String name
-    String remark
-    String cid
-    Date dateCreate
+    String name     //部门名称
+    String remark   //备注
+    String cid      //公司id
+    Date dateCreate     //创建时间
 
     static constraints = {
         name(nullable:true)

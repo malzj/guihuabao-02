@@ -1,17 +1,17 @@
 package com.guihuabao
 
 class CompanyUser {
-    String username
-    String password
-    Integer cid
-    Integer rid
-    Integer pid //角色 boss 经理  员工
-    String name
-    String img
-    String sex
-    String phone
+    String username     //用户名
+    String password     //密码
+    Integer cid         //公司id
+    Integer rid         //权限id
+    Integer pid //角色 决策 管理  执行
+    String name     //真实姓名
+    String img      //头像
+    String sex      //性别
+    String phone       //电话
     Integer bid //部门
-    Date dateCreat
+    Date dateCreat  //创建时间
 
     static constraints = {
         username(nullable: true)
