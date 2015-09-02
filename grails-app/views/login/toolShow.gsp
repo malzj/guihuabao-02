@@ -63,8 +63,8 @@
                             <td></td>
                             <td>
                                 <g:link action="tools" class="btn btn-info">返回</g:link>
-                                <g:link action="toolContentCreate" id="" class="btn btn-info">新建内容</g:link>
-                                <g:link action="toolContentList" id="" class="btn btn-info">内容列表</g:link>
+                                <g:link action="toolContentCreate" id="${toolInstance.id}" class="btn btn-info">新建内容</g:link>
+                                <g:link action="toolContentList" id="${toolInstance.id}" class="btn btn-info">内容列表</g:link>
                             </td>
                         </tr>
                     </table>

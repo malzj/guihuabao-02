@@ -1177,6 +1177,7 @@ class LoginController {
     }
     def toolContentSave(){
         def contentInstance = new ToolContent(params)
+        def id = params.toolId
         contentInstance.hexutools=HexuTool.get(params.toolId)
         contentInstance.dateCreate=new Date()
         if (!contentInstance.save(flush: true)) {
@@ -1189,16 +1190,23 @@ class LoginController {
 
     }
     def toolContentShow(Long id) {
-        def content = Content.get(id)
-        if (!content) {
+        def toolContentInstance = ToolContent.get(id)
+        if (!toolContentInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'syllabus.label', default: 'Syllabus'), id])
             redirect(action: "syllabusList")
             return
         }
 
-        [content: content]
+        [toolContentInstance: toolContentInstance,toolId: toolContentInstance.hexutools.id]
     }
-    def toolContentList(){
+    def toolContentList(Long id){
+        def toolContentInstanceList = ToolContent.findAllByHexutools(HexuTool.get(id))
+        if (!toolContentInstanceList) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'syllabus.label', default: 'Syllabus'), id])
+            redirect(action: "syllabusList")
+            return
+        }
 
+        [toolContentInstanceList: toolContentInstanceList]
     }
 }

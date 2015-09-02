@@ -55,7 +55,7 @@
                         ${toolContentInstance.introduction}
                     </div>
                     <div id="content_btn">
-                        <g:link action="toolContentList" id="${toolContentInstance.HexuTool.id}" class="btn btn-info">返回</g:link>
+                        <g:link action="toolContentList" id="${toolContentInstance.hexutools.id}" class="btn btn-info">返回</g:link>
                     </div>
                 </div>
             </div>
