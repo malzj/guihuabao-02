@@ -67,14 +67,14 @@
                         </tr>
                         <tr>
                             <td>部门：</td>
-                            <td>${fieldValue(bean: companyUserInstance, field: "bid")}</td>
+                            <td>${com.guihuabao.Bumen.findById(companyUserInstance.bid)?.name}</td>
                         </td>
                         </tr>
                         <tr>
                             <td>
                                 角色：
                             </td>
-                            <td>${fieldValue(bean: companyUserInstance, field: "pid")}</td>
+                            <td>${com.guihuabao.Persona.findById(companyUserInstance.pid)?.name}</td>
                         </tr>
                         <tr>
                             <td>

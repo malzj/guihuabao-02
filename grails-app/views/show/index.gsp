@@ -20,21 +20,21 @@
 <meta name="robots" content="index,follow">
 <meta name="application-name" content="guihuabao.cn">
 <link rel="shortcut icon" href="/favicon.ico">
-<link type="text/css" rel="stylesheet" href="css/base.css" tppabs="http://www.eteams.cn/css/base.css" />
-<link type="text/css" rel="stylesheet" href="css/index.css" tppabs="http://www.eteams.cn/css/index.css" />
-<script src="js/respond/respond.min.js" tppabs="http://www.eteams.cn/js/respond/respond.min.js"></script>
-<link href="js/respond/respond-proxy.html" id="respond-proxy" rel="respond-proxy"/>
-<link href="js/respond/respond.proxy.gif" id="respond-redirect" rel="respond-redirect"/>
-<script src="js/respond/respond.proxy.js" tppabs="http://www.eteams.cn/js/respond/respond.proxy.js"></script>
+<link type="text/css" rel="stylesheet" href="${resource(dir: 'index/css/', file: 'base.css')}" />
+<link type="text/css" rel="stylesheet" href="${resource(dir: 'index/css/', file: 'index.css')}" />
+<script src="${resource(dir: 'index/js/respond/', file: 'respond.min.js')}"></script>
+<link href="${resource(dir: 'index/js/respond/', file: 'respond-proxy.html')}" id="respond-proxy" rel="respond-proxy"/>
+<link href="${resource(dir: 'index/js/respond/', file: 'respond.proxy.gif')}" id="respond-redirect" rel="respond-redirect"/>
+<script src="${resource(dir: 'index/js/respond/', file: 'respond.proxy.js')}"></script>
 <!--[if IE 6]>
-<script src="js/DD_belatedPNG.js" tppabs="http://www.eteams.cn/js/DD_belatedPNG.js"></script>
+<script src="${resource(dir: 'index/js/', file: 'DD_belatedPNG.js')}"></script>
 <script>
 	document.execCommand("BackgroundImageCache", false, true);
     DD_belatedPNG.fix('.png');
 </script>
 <![endif]-->
 <!--[if lt IE 9]>
-<script src="js/html5shiv.min.js" tppabs="http://www.eteams.cn/js/html5shiv.min.js"></script>
+<script src="${resource(dir: 'index/js/', file: 'html5shiv.min.js')}"></script>
 <![endif]-->
 </head>
 <body class="home">
@@ -44,19 +44,19 @@
 
 <div class="site-head site-head-fixed">
 	<div class="head-inner">
-		<div class="eteams fl"><a href="index.gsp" class="eteams-link"></a></div>
+		<div class="eteams fl"><g:link controller="show" action="index" class="eteams-link"></g:link></div>
 		<ul class="site-nav fl">
 			<li class="nav-item">
-				<a name="index" class="nav-link nav-link-cur" href="index.gsp">首页</a>
+				<g:link class="nav-link nav-link-cur" controller="show" action="index">首页</g:link>
 			</li>
 			<li class="nav-item">
-				<a name="product" class="nav-link" href="function.gsp">功能</a>
+				<g:link class="nav-link" controller="show" action="function">功能</g:link>
 			</li>
 			<li class="nav-item">
-				<a name="mobile" class="nav-link" href="mobile.gsp">移动</a>
+				<g:link class="nav-link" controller="show" action="mobile">移动</g:link>
 			</li>
 			<li class="nav-item">
-				<a name="cooperation" class="nav-link" href="">支持</a>
+				<g:link class="nav-link" controller="show" action="">支持</g:link>
 			</li>
 		</ul>
 		<div class="user-btns fr">
@@ -73,9 +73,9 @@
 				<span class="prev_bg"></span>
 				<span class="next_bg"></span>
 				<ul>
-					<li style="filter:alpha(opacity=100); opacity:1"><a href="#"><img src="img/bg_sec1.png" alt=""/></a></li>
-					<li><a><img src="img/bg_sec1.png" alt=""/></a></li>
-					<li><a><img src="img/bg_sec1.png" alt=""/></a></li>
+					<li style="filter:alpha(opacity=100); opacity:1"><a href="#"><img src="${resource(dir: 'index/img/', file: 'bg_sec1.png')}" alt=""/></a></li>
+					<li><a><img src="${resource(dir: 'index/img/', file: 'bg_sec1.png')}" alt=""/></a></li>
+					<li><a><img src="${resource(dir: 'index/img/', file: 'bg_sec1.png')}" alt=""/></a></li>
 				</ul>
 			</div>
 		</div>
@@ -86,19 +86,19 @@
 				<div class="hm-mod-feature hm-mod-feature-acitve">
 					<div class="feature-list">
 						<a class="list-item list-first-size" href="" tppabs="">
-							<img src="img/bg_aim.png" width="651" height="270" />
+							<img src="${resource(dir: 'index/img/', file: 'bg_aim.png')}" width="651" height="270" />
 						</a>
 						<a class="list-item ml15" href="" tppabs="">
-							<img src="img/bg_task.png" width="318" height="270" />
+							<img src="${resource(dir: 'index/img/', file: 'bg_task.png')}" width="318" height="270" />
 						</a>
 						<a class="list-item" href="" tppabs="">
-							<img src="img/bg_repot.png" width="318" height="270" />
+							<img src="${resource(dir: 'index/img/', file: 'bg_repot.png')}" width="318" height="270" />
 						</a>
 						<a class="list-item ml15" href="" tppabs="">
-							<img src="img/bg_know.png" width="318" height="270" />
+							<img src="${resource(dir: 'index/img/', file: 'bg_know.png')}" width="318" height="270" />
 						</a>
 						<a class="list-item ml15" href="" tppabs="">
-							<img src="img/bg_no.png" width="318" height="270" />
+							<img src="${resource(dir: 'index/img/', file: 'bg_no.png')}" width="318" height="270" />
 						</a>
 					</div>
 				</div>
@@ -106,7 +106,7 @@
 		</div>
 		<!-- 第三屏 -->
 		<div class="section hm-sec3">
-			<div class="sec-content">
+			<div class="sec-content" style="top:35%;">
 				<div class="zs-introduct">
 					<div class="title">协作之上，是更有意义的企业管理</div>
 					<p>目标、任务、权责清晰划分，人员、流程清楚明了，日期、标准精确标明，每一位员工都知道自己在什么时间应该将什么任务按照什么样的标准完成至何种程度。<br />
@@ -129,7 +129,7 @@
 							<li>
 								<p>无论是个人管理还是团队协作，规划宝的友好、易用性都超乎自己的想象，工作量、进度清晰明了，让你有一种欲望想去完成工作。</p>
 								<div class="person">
-									<img src="img/per1.png" height="36" width="36" />
+									<img src="${resource(dir: 'index/img/', file: 'per1.png')}" height="36" width="36" />
 									<div class="person-info">
 										<h3>邱亮</h3>
 										<span>貔貅交易所</span>
@@ -139,7 +139,7 @@
 							<li>
 								<p>规划宝确实好用。以前我再公司用的要么使用太复杂难以坚持推广，要么部署繁琐，现在方便了，再也不用烦恼了。</p>
 								<div class="person">
-									<img src="img/per2.png" height="36" width="36" />
+									<img src="${resource(dir: 'index/img/', file: 'per2.png')}" height="36" width="36" />
 									<div class="person-info">
 										<h3>赵轶峰</h3>
 										<span>杭州九州方圆</span>
@@ -149,7 +149,7 @@
 							<li>
 								<p>在合理安排任务目标方面，规划宝是不二之选。工作从此变得条理清晰，轻松快乐。</p>
 								<div class="person">
-									<img src="img/per3.png" height="36" width="36" />
+									<img src="${resource(dir: 'index/img/', file: 'per3.png')}" height="36" width="36" />
 									<div class="person-info">
 										<h3>吴长城</h3>
 										<span>新的课堂</span>
@@ -218,15 +218,15 @@
 		</div>
 	</div>
 </body>
-<script type="text/javascript" src="js/jquery-1.9.1.min.js" tppabs="http://www.eteams.cn/js/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="js/jquery.easing.min.js" tppabs="http://www.eteams.cn/js/jquery.easing.min.js"></script>
-<script type="text/javascript" src="js/jquery.fullPage.min.js" tppabs="http://www.eteams.cn/js/jquery.fullPage.min.js"></script>
-<script type="text/javascript" src="js/jquery.mousewheel.min.js" tppabs="http://www.eteams.cn/js/jquery.mousewheel.min.js"></script>
-<script type="text/javascript" src="js/main.js" tppabs="http://www.eteams.cn/js/main.js"></script>
-<script type="text/javascript" src="js/index_scr.js" tppabs="http://www.eteams.cn/js/index_scr.js"></script>
-<script type="text/javascript" src="js/index.js" tppabs="http://www.eteams.cn/js/index.js"></script>
-<script type="text/javascript" src="js/banner.js"></script>
-<script type="text/javascript" src="js/bxCarousel.js"></script>
+<script type="text/javascript" src="${resource(dir: 'index/js/', file: 'jquery-1.9.1.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'index/js/', file: 'jquery.easing.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'index/js/', file: 'jquery.fullPage.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'index/js/', file: 'jquery.mousewheel.min.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'index/js/', file: 'main.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'index/js/', file: 'index_scr.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'index/js/', file: 'index.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'index/js/', file: 'banner.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'index/js/', file: 'bxCarousel.js')}"></script>
 <script type="text/javascript">
 $(function(){
 	$('#demo2').bxCarousel({

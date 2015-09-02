@@ -66,12 +66,12 @@
                 <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                     <td>${fieldValue(bean: companyUserInstance, field: "id")}</td>
 
-                    <td><g:link controller="front" action="companyUserShow" id="${companyUserInstance?.id}">${fieldValue(bean: companyUserInstance, field: "name")}</g:link></td>
+                    <td><g:link controller="front" action="companyUserShow" id="${companyUserInstance?.id}">${companyUserInstance.name}</g:link></td>
 
                     <td>${companyUserInstance.phone}</td>
                     <td>${com.guihuabao.Company.findById(companyUserInstance.cid).companyname}</td>
-                    <td>${com.guihuabao.Bumen.findById(companyUserInstance.bid).name}</td>
-                    <td>${com.guihuabao.Persona.findById(companyUserInstance.pid).name}</td>
+                    <td>${com.guihuabao.Bumen.findById(companyUserInstance.bid)?.name}</td>
+                    <td>${com.guihuabao.Persona.findById(companyUserInstance.pid)?.name}</td>
                     <td>
                         <g:link action="companyUserShow" id="${companyUserInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
                         <g:link action="companyUserEdit" id="${companyUserInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>

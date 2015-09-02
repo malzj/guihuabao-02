@@ -19,22 +19,21 @@
 <meta name="robots" content="index,follow">
 <meta name="application-name" content="guihuabao.cn">
 <link rel="shortcut icon" href="/favicon.ico">
-<link type="text/css" rel="stylesheet" href="css/base.css" tppabs="http://www.eteams.cn/css/base.css" />
-<link type="text/css" rel="stylesheet" href="css/mobile.css"  />
-<script src="js/respond/respond.min.js"></script>
-<link href="/js/respond/respond-proxy.html" id="respond-proxy" rel="respond-proxy"/>
-<link href="/js/respond/respond.proxy.gif" id="respond-redirect" rel="respond-redirect"/>
-
-<script src="js/respond/respond.proxy.js"></script>
+<link type="text/css" rel="stylesheet" href="${resource(dir: 'index/css/', file: 'base.css')}" />
+<link type="text/css" rel="stylesheet" href="${resource(dir: 'index/css/', file: 'mobile.css')}"  />
+<script src="${resource(dir: 'index/js/respond/', file: 'respond.min.js')}"></script>
+<link href="${resource(dir: 'index/js/respond/', file: 'respond-proxy.html')}" id="respond-proxy" rel="respond-proxy"/>
+<link href="${resource(dir: 'index/js/respond/', file: 'respond.proxy.gif')}" id="respond-redirect" rel="respond-redirect"/>
+<script src="${resource(dir: 'index/js/respond/', file: 'respond.proxy.js')}"></script>
 <!--[if IE 6]>
-<script src="js/DD_belatedPNG.js"></script>
+<script src="${resource(dir: 'index/js/', file: 'DD_belatedPNG.js')}"></script>
 <script>
 	document.execCommand("BackgroundImageCache", false, true);
     DD_belatedPNG.fix('.png');
 </script>
 <![endif]-->
-<!--[if lt IE 9]>
-<script src="js/html5shiv.min.js"></script>
+    <!--[if lt IE 9]>
+<script src="${resource(dir: 'index/js/', file: 'html5shiv.min.js')}"></script>
 <![endif]-->
 </head>
 <body>
@@ -44,22 +43,22 @@
 
 <div class="site-head site-head-fixed">
 	<div class="head-inner">
-		<div class="eteams fl"><a href="index.gsp" class="eteams-link"></a></div>
-		<ul class="site-nav fl">
-			<li class="nav-item">
-				<a name="index" class="nav-link" href="index.gsp">首页</a>
-			</li>
-			<li class="nav-item">
-				<a name="product" class="nav-link" href="function.gsp">功能</a>
-			</li>
-			<li class="nav-item">
-				<a name="mobile" class="nav-link nav-link-cur" href="mobile.gsp">移动</a>
-			</li>
-			<li class="nav-item">
-				<a name="cooperation" class="nav-link" href="">支持</a>
-			</li>
-			
-		</ul>
+        <div class="eteams fl"><g:link controller="show" action="index" class="eteams-link"></g:link></div>
+        <ul class="site-nav fl">
+            <li class="nav-item">
+                <g:link name="index" class="nav-link" controller="show" action="index">首页</g:link>
+            </li>
+            <li class="nav-item">
+                <g:link name="product" class="nav-link" controller="show" action="function">功能</g:link>
+            </li>
+            <li class="nav-item">
+                <g:link name="mobile" class="nav-link nav-link-cur" controller="show" action="mobile">移动</g:link>
+            </li>
+            <li class="nav-item">
+                <g:link name="cooperation" class="nav-link" controller="show" action="">支持</g:link>
+            </li>
+
+        </ul>
 		<div class="user-btns fr">
 			<a class="btn-login" href="http://www.guihuabao.cn/guihuabao/front">登录</a>
 			
@@ -75,14 +74,14 @@
 			<div class="clearfix download">
 				<div id="buttons" class="fl">
 					<a>
-					<div id="android" class="button"><img src='img/download.png' align="download" />Android版</div>
+					<div id="android" class="button"><img src='${resource(dir: 'index/img/', file: 'download.png')}' align="download" />Android版</div>
 					</a>
 					<a>
-					<div id="apple" class="button"><img src='img/download.png' align="download" />iphone版</div>
+					<div id="apple" class="button"><img src='${resource(dir: 'index/img/', file: 'download.png')}' align="download" />iphone版</div>
 					</a>
 				</div>
 				<div id="erweima" class="fr">
-					<img src="img/erweima.png"  alt="二维码"/>
+					<img src="${resource(dir: 'index/img/', file: 'erweima.png')}"  alt="二维码"/>
 					<p>扫一扫，直接下载到手机</p>
 				</div>
 			</div>
@@ -102,30 +101,30 @@ ul{list-style:none;}
 .slides .slideul>li ul.kefulist li a{display:block;width:90px;height:30px;line-height:30px;background:#09c2ff;color:#fff;text-align:center;text-decoration:none;}
 .slides .slideul>li ul.kefulist li a:hover{text-decoration:none;}
 </style>
-	<!--客服侧边栏-->
+<!--客服侧边栏-->
 <div class="slides">
-	<ul class="slideul">
+    <ul class="slideul">
         <li class="kefu">
-        	<img src="img/side.png" alt="">
-        	<ul class="kefulist">
-            	<li><a href="http://wpa.qq.com/msgrd?v=3&uin=1114774100&Site=qq&Menu=yes">在线客服一</a></li>
+            <img src="${resource(dir: 'index/img/', file: 'side.png')}" alt="">
+            <ul class="kefulist">
+                <li><a href="http://wpa.qq.com/msgrd?v=3&uin=1114774100&Site=qq&Menu=yes">在线客服一</a></li>
                 <li><a href="http://wpa.qq.com/msgrd?v=3&uin=848215697&Site=qq&Menu=yes">在线客服二</a></li>
                 <li><a href="http://wpa.qq.com/msgrd?v=3&uin=1114774100&Site=qq&Menu=yes">在线客服三</a></li>
             </ul>
         </li>
     </ul>
 </div>
-<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="${resource(dir: 'index/js/', file: 'jquery-1.9.1.min.js')}"></script>
 <script type="text/javascript">
-$(function(){
-	//Sldie
-	$(".slides .kefu").mouseenter(function(){
-		$(this).find(".kefulist").fadeIn();
-	});
-	$(".slides .kefu").mouseleave(function(){
-		$(this).find(".kefulist").fadeOut();
-	});
-});
+    $(function(){
+        //Sldie
+        $(".slides .kefu").mouseenter(function(){
+            $(this).find(".kefulist").fadeIn();
+        });
+        $(".slides .kefu").mouseleave(function(){
+            $(this).find(".kefulist").fadeOut();
+        });
+    });
 </script>
 
 </body>

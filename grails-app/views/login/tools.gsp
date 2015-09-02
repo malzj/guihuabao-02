@@ -45,12 +45,12 @@
                 <g:link action="toolCreate" class="btn btn-info" style="display:block;float:right;">新建工具或案例</g:link>
             </div>
             <div class="mt25">
-                <g:each in="${toolInstanceList}" status="i" var="bookInstance">
+                <g:each in="${toolInstanceList}" status="i" var="toolInstance">
                     <div class="zs_style">
-                        <g:link controller="login" action="toolShow" id="${toolInstanceList.id}">
-                            <img src="${resource(dir: 'images', file: ''+toolInstanceList.bookImg+'')}" height="195" width="235" />
+                        <g:link controller="login" action="toolShow" id="${toolInstance.id}">
+                            <img src="${resource(dir: 'images', file: ''+toolInstance.toolImg+'')}" height="195" width="235" />
                         </g:link>
-                        <span>${toolInstanceList.bookName}</span>
+                        <span>${toolInstance.toolName}</span>
                     </div>
                 </g:each>
                 <img src="${resource(dir: 'img', file: 'add.png')}" height="195" width="235" />

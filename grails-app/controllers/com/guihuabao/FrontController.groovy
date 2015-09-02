@@ -72,7 +72,7 @@ class FrontController {
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
         def now = time.format(current)
         def order = [sort:"dateCreate",order: "desc"]
-        def targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,uid,0,[max: 3,sort:"dateCreate",order: "desc"])
+        def targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,uid,0,[max: 4,sort:"dateCreate",order: "desc"])
         def missionInstance = Mission.findAllByPlaynameAndStatus(uname, '0', [max: 3,sort:"dateCreate",order: "desc"])
         def todayTaskInstance = Task.findAllByCidAndPlayuidAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(cid,uid,0,now,now,order)//今天任务
         def taskInstance = Task.findAllByCidAndPlayuidAndStatusAndOvertimeGreaterThanEquals(cid,uid,0,now,[sort:"overtime",order:"asc"])//即将到期
@@ -1224,7 +1224,6 @@ class FrontController {
     //申请
     //申请列表
     def apply(Integer max){
-//        yanzheng()
         def user = session.user
         def company = session.company
         if(!user&&!company){
@@ -2010,7 +2009,7 @@ class FrontController {
         redirect(action: "companyNoticeShow", id: companyNoticeInstance.id)
     }
 
-    def companyNoticeShow(Long id,Long version){
+    def companyNoticeShow(Long id){
         def user = session.user
         def company = session.company
         if(!user&&!company){

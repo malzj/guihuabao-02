@@ -40,7 +40,7 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper mt80">
-            <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'contentSave']" method="post"  enctype= "multipart/form-data">
+            <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'toolContentSave']" method="post"  enctype= "multipart/form-data">
 
                 <div class="hxzs_heading clearfix">
                     %{--<header class="panel-heading">--}%
@@ -49,7 +49,7 @@
                     %{--</header>--}%
 
                 </div>
-                <g:hiddenField name="chapterId" value="${chapterId}"></g:hiddenField>
+                <g:hiddenField name="toolId" value="${toolId}"></g:hiddenField>
                 <div class="mt25">
                     <div class="form-group">
                         <label class="col-lg-3 col-sm-3 control-label">标题：</label>

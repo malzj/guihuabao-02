@@ -75,8 +75,8 @@
 
 
                                 <td>${fieldValue(bean: userInstance, field: "phone")}</td>
-                                <td>${com.guihuabao.Company.findById(userInstance.cid).companyname}</td>
-                                <td>${com.guihuabao.Role.findById(userInstance.rid).rolename}</td>
+                                <td>${com.guihuabao.Company.findById(userInstance.cid)?.companyname}</td>
+                                <td>${com.guihuabao.Role.findById(userInstance.rid)?.rolename}</td>
                                 <td>${fieldValue(bean: userInstance, field: "address")}</td>
 
 
