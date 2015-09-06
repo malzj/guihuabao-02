@@ -88,7 +88,16 @@
                             <button id="view" class="rbtn btn-blue ml25">预览</button>
                         </div>
                     </div>
-
+                    <form id="form1" method="post"  enctype= "multipart/form-data">
+                        <g:hiddenField name="id" value="${myReportInfo?.id}" />
+                        <g:hiddenField name="version" value="${myReportInfo?.version}" />
+                        <g:hiddenField name="uid" value="${session.user.id}" />
+                        <g:hiddenField name="username" value="${session.user.username}" />
+                        <g:hiddenField name="cid" value="${session.company.id}" />
+                        <g:hiddenField name="bid" value="${session.user.bid}" />
+                        <g:hiddenField name="year" value="${year}" />
+                        <g:hiddenField name="month" value="${month}" />
+                        <g:hiddenField name="week" value="${week}" />
                         <div class="hang">
                             <h4 class="chx">本周工作成效</h4>
                             <textarea id="performance" name="performance" placeholder="1......2......3......4......5......">${myReportInfo?.performance}</textarea>
@@ -105,12 +114,15 @@
                             <h4 class="hz">部门协同合作</h4>
                             <textarea id="cooperate" name="cooperate">${myReportInfo?.cooperate}</textarea>
                         </div>
+
+                    </form>
                     <g:form url="[controller:'front',action:'reportUpdate']" method="post"  enctype= "multipart/form-data">
                         <g:hiddenField name="id" value="${myReportInfo?.id}" />
                         <g:hiddenField name="version" value="${myReportInfo?.version}" />
+                        <g:hiddenField name="uid" value="${session.user.id}" />
+                        <g:hiddenField name="username" value="${session.user.username}" />
                         <g:hiddenField name="cid" value="${session.company.id}" />
                         <g:hiddenField name="bid" value="${session.user.bid}" />
-
                         <div class="hang">
                             <span class="f-l">附件：</span><div class="xuxian"><input type="file" name="file1" value="" /><span><a href="${resource(dir: 'uploadfile', file: ''+myReportInfo?.uploadFile+'')}">${myReportInfo?.uploadFile}</a></span></div>
                         </div>
@@ -183,9 +195,12 @@
             $(".zhoubao textarea").bind("blur",function(){
                 var name=$(this).attr("name")
                 var value=$(this).val()
-
+                var c=$("#form1").serialize();
+//            console.log(c+"111111111111111111111111111")
                 $.ajax({
-                    url:'${webRequest.baseUrl}/front/reportSave?id=${myReportInfo?.id}&version=${myReportInfo?.version}&uid=${session.user.id}&username=${session.user.username}&cid=${session.company.id}&year=${year}&month=${month}&week=${week}&'+name+'='+encodeURI(value),
+                    type: "POST",
+                    url:'${webRequest.baseUrl}/front/reportSave',     //?id=${myReportInfo?.id}&version=${myReportInfo?.version}&uid=${session.user.id}&username=${session.user.username}&cid=${session.company.id}&year=${year}&month=${month}&week=${week}&'+name+'='+encodeURI(value),
+                    data:$("#form1").serialize(),
                     dataType: "jsonp",
                     jsonp: "callback",
                     success: function (data) {

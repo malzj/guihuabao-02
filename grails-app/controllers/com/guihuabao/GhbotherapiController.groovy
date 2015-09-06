@@ -354,25 +354,20 @@ class GhbotherapiController {
     def myReport(){
         def rs = [:]
         def date
-        def n_year
-        def n_month
-        def n_week
+        def date1
         DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-        if(params.predate&&params.preyear&&params.premonth&&params.preweek){
-            date = params.predate
-            n_year=params.preyear
-            n_month=params.premonth
-            n_week=params.preweek
+        if(params.prevweek){
+            date = params.prevweek
         }else{
             date = dayFormat.format(new Date())
-            def month_week = weekJudge(date)
-            n_year=month_week.year
-            n_month=month_week.month
-            n_week=month_week.nowweek
         }
         def i
         def uid = params.userId
         def cid = params.cid
+        def month_week = weekJudge(date)
+        def n_year=month_week.year
+        def n_month=month_week.month
+        def n_week=month_week.nowweek
 
         def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(uid,cid,n_year,n_month,n_week)
         def replyInstance = ReplyReport.findAllByZhoubaoAndCidAndBpuid(myReportInfo,cid,uid,[sort: "date",order: "desc"])
@@ -380,17 +375,18 @@ class GhbotherapiController {
         for(i=0;i<ureadReply.size();i++){
             ureadReply[i].status=1
         }
+        if(myReportInfo){
+            date1 = myReportInfo.dateCreate
+        }else{
+            date1 = dayFormat.parse(date)
+        }
+
         Calendar calendar = new GregorianCalendar();
-        def day = dayFormat.parse(date)
+        def day = date1
         calendar.clear();
         calendar.setTime(day);
         calendar.add(Calendar.DATE,-7)
-        def date1 = dayFormat.format(calendar.getTime())
-        def pre_week = weekJudge(date1)
-        rs.predate = date1
-        rs.preyear = pre_week.year
-        rs.premonth = pre_week.month
-        rs.preweek = pre_week.nowweek
+        rs.prevweek = dayFormat.format(calendar.getTime())
         if(myReportInfo){
             rs.result = true
             rs.myReportInfo = myReportInfo
@@ -667,8 +663,6 @@ class GhbotherapiController {
             for (def i=0;i<replyInstance.size();i++){
                 def info= [:]
                 info.allInfo=replyInstance.get(i)
-                info.year = replyInstance.get(i).zhoubao.year
-                info.month = replyInstance.get(i).zhoubao.month
                 info.week= replyInstance.get(i).zhoubao.week
                 replyInfo<<info
             }
@@ -723,8 +717,6 @@ class GhbotherapiController {
             for (def i=0;i<replyInstance.size();i++){
                 def info= [:]
                 info.allInfo=replyInstance.get(i)
-                info.year = replyInstance.get(i).zhoubao.year
-                info.month = replyInstance.get(i).zhoubao.month
                 info.week= replyInstance.get(i).zhoubao.week
                 replyInfo<<info
             }
