@@ -14,6 +14,7 @@ class Target {
     String remindstatus //完成提醒状态提醒上级（未完成0,已完成1,上级已查看2）
     String targetzj         //目标总结
     String issubmit         //是否下发0下发1未下发
+    String isedit           //是否可以编辑
     static hasMany = [mission:Mission]
     static constraints = {
         cid(nullable: true)
@@ -28,5 +29,6 @@ class Target {
         status(nullable:true)
         targetzj(nullable:true)
         issubmit(nullable:true)
+        isedit(nullable:true)
     }
 }

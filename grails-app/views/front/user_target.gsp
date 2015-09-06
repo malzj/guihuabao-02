@@ -345,6 +345,19 @@
 
                     </tr>
                     <tr>
+                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">紧急程度</th>
+                        <td width="75%">
+                            <select id="newmission_playstatus">
+                                <option value="1" selected>紧急且重要</option>
+                                <option value="2">紧急不重要</option>
+                                <option value="3">重要不紧急</option>
+                                <option value="4">不重要不紧急</option>
+                            </select>
+
+                        </td>
+
+                    </tr>
+                    <tr>
                         <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>
                         <td>
                             %{--进行中 <input name="status" value="0"  style="border:none;" type="hidden" id="newmission_status"  title="该字段不能为空！"/>--}%
@@ -428,6 +441,16 @@
                             <td width="75%"><input  name="percent" style="border:none;width:100%" id="mission_percent_edit" title="该字段不能为空且只能为不超过剩余权重的数字！" type="number" /></td>
 
                         </tr>
+                        <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">紧急程度</th>
+                        <td width="75%">
+                            <select id="mission_playstatus_edit">
+                                <option value="1" selected>紧急且重要</option>
+                                <option value="2">紧急不重要</option>
+                                <option value="3">重要不紧急</option>
+                                <option value="4">不重要不紧急</option>
+                            </select>
+
+                        </td>
                         <tr>
                             <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;line-height:40px;" >任务状态</th>
                             <td>
@@ -643,9 +666,14 @@
 
                         $("#tar_fj ul").append(html);
                         $('#issubmit').html(issubmit);
-                        if(target.issubmit=='1'){
-                            $('#submit').attr('disabled',true);
-                            $('#newmission').addClass('disabled');
+//                        if(target.issubmit=='1'){
+//                            $('#submit').attr('disabled',true);
+////                            $('#newmission').addClass('disabled');
+////                            $('.mission_edit').addClass('disabled');
+////                            $('.mission_delete').addClass('disabled');
+//                        }
+                        if(target.isedit=='1'){
+
                             $('.mission_edit').addClass('disabled');
                             $('.mission_delete').addClass('disabled');
                         }
@@ -665,9 +693,9 @@
                         }
                         if(target.issubmit=='1'){
                             $('#submit').attr('disabled',true);
-                            $('#newmission').addClass('disabled');
-                            $('.mission_edit').addClass('disabled');
-                            $('.mission_delete').addClass('disabled');
+//                            $('#newmission').addClass('disabled');
+//                            $('.mission_edit').addClass('disabled');
+//                            $('.mission_delete').addClass('disabled');
                         }
                         editclick();
                     },error:function(){alert("获取数据失败");}});
@@ -687,8 +715,12 @@
                     dataType: 'json',
                     data: {target_id: tid},
                     success: function (data) {
-                        location.reload();
+                        if(rs.msg) {
+                            location.reload();
                             alert('删除成功！');
+                        }else{
+                            alert('获取数据失败！');
+                        }
                     },
                     error: function () {
                         alert('获取数据失败！')
@@ -816,7 +848,7 @@
                     var begintime=$('#startdate_edit').val();
                     var overtime=$('#enddate_edit').val();
                     var percent=$('#mission_percent_edit').val();
-
+                    var playstatus=$('#mission_playstatus_edit option:selected').val();
 
                     var html="";
 
@@ -824,7 +856,7 @@
                         url:'${webRequest.baseUrl}/front/mupdate',
                         type: 'post',
                         dataType: 'json',
-                        data: {mid: mid,title:title,content:content,playname:playname,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent},
+                        data: {mid: mid,title:title,content:content,playname:playname,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent,playstatus:playstatus},
                         success: function (data) {
                              $('#tar_fj ul').empty();
 
@@ -892,9 +924,9 @@
                             }
                             if(target.issubmit=='1'){
                                 $('#submit').attr('disabled',true);
-                                $('#newmission').addClass('disabled');
-                                $('.mission_edit').addClass('disabled');
-                                $('.mission_delete').addClass('disabled');
+//                                $('#newmission').addClass('disabled');
+//                                $('.mission_edit').addClass('disabled');
+//                                $('.mission_delete').addClass('disabled');
 
                             }
 //
@@ -1171,14 +1203,14 @@
                     var begintime=$('#startdate_mission').val();
                     var overtime=$('#enddate_mission').val();
                     var percent=$('#newmission_percent').val();
-
+                    var playstatus=$('#newmission_playstatus option:selected').val();
 
 
                     $.ajax({
                         url:'${webRequest.baseUrl}/front/missionSave',
                         type:'post',
                         dataType:'json',
-                        data:{target_id:target_id,title:title,content:content,playname:playname,playbid:playbid,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent,status:status},
+                        data:{target_id:target_id,title:title,content:content,playname:playname,playbid:playbid,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent,status:status,playstatus:playstatus},
                         success:function(data){
                             var target=data.target;
                             var mission=data.mission;
@@ -1233,12 +1265,12 @@
                                 $('#submit').attr('disabled',false);
                                 $('#newmission').addClass('disabled');
                             }
-                            if(target.issubmit=='1'){
-                                $('#submit').attr('disabled',true);
-                                $('#newmission').addClass('disabled');
-                                $('.mission_edit').addClass('disabled');
-                                $('.mission_delete').addClass('disabled');
-                            }
+//                            if(target.issubmit=='1'){
+//                                $('#submit').attr('disabled',true);
+//                                $('#newmission').addClass('disabled');
+//                                $('.mission_edit').addClass('disabled');
+//                                $('.mission_delete').addClass('disabled');
+//                            }
                             $("#newmissiondetail").css('display','none');
                             editclick();
                         },
