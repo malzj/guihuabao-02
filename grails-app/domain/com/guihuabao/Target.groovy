@@ -13,6 +13,7 @@ class Target {
     String status           //状态0未完成1已完成
     String targetzj         //目标总结
     String issubmit         //是否下发0下发1未下发
+    String isedit           //是否可以编辑
     static hasMany = [mission:Mission]
     static constraints = {
         cid(nullable: true)
@@ -27,5 +28,6 @@ class Target {
         status(nullable:true)
         targetzj(nullable:true)
         issubmit(nullable:true)
+        isedit(nullable:true)
     }
 }

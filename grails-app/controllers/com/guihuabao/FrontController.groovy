@@ -2140,6 +2140,7 @@ class FrontController {
     }
 
     def targetSave(){
+        def msg
         def user = session.user
         def company = session.company
         if(!user&&!company){
@@ -2152,17 +2153,21 @@ class FrontController {
         targetInstance.status = '0'
         targetInstance.percent = 0
         targetInstance.issubmit='0'
-
+        targetInstance.isedit='0'
         targetInstance.dateCreate = new Date()
 
 
         if (!targetInstance.save(flush: true)) {
             render(model: [targetInstance: targetInstance])
+            msg=false
             return
+        }else{
+             msg=true
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
         redirect(action: "user_target", id: targetInstance.id)
+        [msg:msg]
     }
     //目标保存并分解
     def targetSaveAndSplit() {
@@ -2307,6 +2312,9 @@ class FrontController {
         mission.issubmit='0'
 
         def targetInstance = Target.get(params.target_id)
+        if(targetInstance.issubmit=='1'){
+            mission.issubmit='1'
+        }
 
         mission.target = targetInstance
         mission.save()
@@ -2342,8 +2350,29 @@ class FrontController {
        def mission=Mission.get(params.mid)
        if(!mission){
            rs.msg=false
+
        }else{
-           mission.hasvisited='2'
+           rs.msg=true
+           mission.hasvisited=2
+           if(!mission.save()){
+               rs.msg=false
+           }else {
+               def target = mission.target
+               def missionlist = target.mission
+
+               def sum = 0
+               for (def m in missionlist) {
+                   println(m.hasvisited)
+                   if (m.hasvisited =='2') {
+
+                       sum += 1
+                   }
+               }
+
+               if (sum == missionlist.size()) {
+                   target.isedit = 1
+               }
+           }
        }
        if (params.callback) {
            render "${params.callback}(${rs as JSON})"
@@ -2457,9 +2486,9 @@ class FrontController {
         }
         def r_per=100-sum
         if (target.percent == 100) {
-            target.status = '1'
+            target.status = 1
         }else{
-            target.status = '0'
+            target.status = 0
         }
         rs.msg = true
         rs.target = target
@@ -2607,6 +2636,7 @@ class FrontController {
             missionInstance = Mission.findAllByPlaynameAndStatus(playname, 0, params)
             missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, 0)
         } else {
+            params<<[sort:"dateCreate",order: "desc"]
             missionInstance = Mission.findAllByPlaynameAndStatus( playname, '0', params)
             missionInstanceTotal = Mission.countByPlaynameAndStatus( playname, 0)
       }
@@ -2631,7 +2661,9 @@ class FrontController {
         }else {
             def target = mission.target
             def replymission=mission.replymission
-            mission.hasvisited='1'
+            if(mission.hasvisited!='2') {
+                mission.hasvisited = '1'
+            }
             def fzname = com.guihuabao.CompanyUser.findById(target.fzuid).name
 
             for(def r in replymission){
@@ -2727,7 +2759,7 @@ class FrontController {
         [targetInstance: targetInstance, targetInstanceTotal: targetInstanceTotal, bumenInstance: bumenInstance, selected: selected]
     }
 
-    def TargetUserList() {
+    def targetUserList() {
         def user = session.user
         def company = session.company
         if (!user && !company) {
@@ -2780,6 +2812,11 @@ class FrontController {
             def target=mission.target
             mission.status=1
             target.percent+=mission.percent
+            if(target.percent==100){
+                target.status=1
+            }else{
+                target.status=0
+            }
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"

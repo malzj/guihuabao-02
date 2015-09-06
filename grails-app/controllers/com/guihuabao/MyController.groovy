@@ -387,12 +387,17 @@ class MyController {
         def uid=params.uid
         def cid=params.cid
         def companyuserInstance=CompanyUser.findByIdAndCid(uid,cid)
+
         if(!companyuserInstance){
             rs.result=false
             rs.msg="获取数据失败！"
         }else{
+            def bumen=Bumen.findById(companyuserInstance.bid).name
+            def pname=Persona.findById(companyuserInstance.pid).name
             rs.result=true
             rs.user=companyuserInstance
+            rs.bumen=bumen
+            rs.pname=pname
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
