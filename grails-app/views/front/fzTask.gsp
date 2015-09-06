@@ -89,6 +89,7 @@
                                             %{--<span class="hsfinish"><g:link action="taskUpdate" id="${fzAllTaskInfo.id}" params="[version: fzAllTaskInfo.version]"><i class="fa <g:if test="${fzAllTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
                                             %{--<g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${fzAllTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
 
+                                            <g:if test="${fzAllTaskInfo.lookstatus.toInteger()!=2}"><span class="edit"><a href="javascript:;" class="taskxg" onclick="stop_Pro(event)"><i class="fa fa-pencil"></i>修改任务</a></span></g:if>
                                             <g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" onclick="confirm('确定删除？');stop_Pro(event)" class="taskdelete" data-id="${fzAllTaskInfo.id}" data-version="${fzAllTaskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
                                             <span class="date f-r">${fzAllTaskInfo.overtime}</span>
                                         </div>
@@ -129,6 +130,7 @@
                 </div>
                 <g:hiddenField name="taskid" id="taskid" ></g:hiddenField>
                 <g:hiddenField name="version" id="version" ></g:hiddenField>
+                <button id="taskedi" class="rbtn btn-blue ml25 mt10" style="display: none;">修改任务</button>
                 <div class="discuss clearfix">
                     <h4>反馈及评论</h4>
                     <form id="form1">
@@ -147,6 +149,72 @@
                 </div>
             </div>
             <!--任务详情 end-->
+            <!--弹层 start-->
+            <div class="popup_box">
+                <div class="m_box">
+                    <header class="panel-heading">
+                        <span>修改任务</span>
+                        <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
+                    </header>
+                    <g:form id="taskcreate" name="taskcreate" url="[controller:'front',action:'taskInfoUpdate']">
+                        <input type="hidden" id="taid" name="id" value="" />
+                        <input type="hidden" id="tversion" name="version" value="" />
+                        <div class="r-title">
+                            <div class="r-title-con f-l">任务</div>
+                            <div class="r-title-jinji f-l">
+                                <i></i><span class="r-chd">紧急程度</span>
+                                <input type="hidden" id="playstatus" name="playstatus" />
+                                <ul class="r-jinji-down">
+                                    <li><a data-playstatus="1"><i class="clock-red"></i>紧急且重要</a></li>
+                                    <li><a data-playstatus="2"><i class="clock-yellow"></i>紧急不重要</a></li>
+                                    <li><a data-playstatus="3"><i class="clock-green"></i>重要不紧急</a></li>
+                                    <li><a data-playstatus="4"><i class="clock-blue"></i>不重要不紧急</a></li>
+                                </ul>
+                            </div>
+                            <span id="taskcreate-playstatus" style="color: red;position: absolute;left:250px"></span>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" placeholder="一句话描述任务" class="size" name="title" /><span id="taskcreate-title" style="color: red"></span>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" placeholder="添加任务详情" class="size" name="content" /><span id="taskcreate-content" style="color: red"></span>
+                        </div>
+                        <div class="control-group">
+                            <table>
+                                <tr>
+                                    <td>负责人</td>
+                                    <td>
+                                        ${session.user.name}
+                                        <g:hiddenField name="fzuid" value="${session.user.id}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>执行人</td>
+                                    <td>
+                                        <input type="hidden" id="playuid" name="playuid" value="" />
+                                        <input type="hidden" id="playbid" name="playbid" value="" />
+                                        <input type="hidden" id="playname" name="playname" value="" />
+                                        <div id="zhxr">
+                                            <a id="playman"></a>
+                                            <span id="cnplayname"></span>
+                                            <span id="taskcreate-playuid" style="color: red"></span>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>起止日期</td>
+                                    <td><input id="startdate" name="bigentime" value="" readonly="" type="text">-<input id="enddate" name="overtime" value="" readonly="" type="text"><span id="taskcreate-bigentime" style="color: red"></span><span class="taskcreate-overtime" style="color: red"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="control-group">
+                            <button type="submit" class="btn btn-info f-r">提交</button>
+                        </div>
+                    </g:form>
+                </div>
+            </div>
+            <!--任务详情 start-->
         </section>
     </section>
     <!--main content end-->
@@ -256,6 +324,7 @@
             $("#id").val(taskid);
             $("#bpuid").val(fzuid);
             $("#bpuname").val(fzname);
+            $("#taskedi").hide();
             $.ajax({
                 url:'${webRequest.baseUrl}/front/taskShow?id='+taskid+'&version='+version,
                 dataType: "jsonp",
@@ -293,6 +362,9 @@
                             html2+='<div class="rcontainer"></div>'
                             html2+='</div></div>'
                         })
+                        if(data.taskInfo.lookstatus != 2){
+                            $("#taskedi").show();
+                        }
                         $("#task .task_content").empty();
                         $("#reply_container").empty();
                         $("#task .task_content").append(html);
@@ -404,6 +476,170 @@
                     }
                 }
             })
+        })
+        //任务修改
+        $(".taskxg").click(function(){
+            var taskid = $(this).parent().parent().parent().attr("data-task-id");
+            var version = $(this).parent().parent().parent().attr("data-task-version");
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid+'&version='+version,
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (data) {
+                    // 去渲染界面
+                    if(data.msg){
+                        var playstatus
+                        var pstatus
+                        var status = (data.taskInfo.status=="1")?"已完成":"未完成";
+                        if(data.taskInfo.playstatus==1){
+                            playstatus="紧急且重要";
+                            pstatus="clock-red"
+                        }else if(data.taskInfo.playstatus==2){
+                            playstatus=" 紧急不重要";
+                            pstatus="clock-yellow"
+                        }else if(data.taskInfo.playstatus==3){
+                            playstatus=" 重要不紧急";
+                            pstatus="clock-green"
+                        }else if(data.taskInfo.playstatus==4){
+                            playstatus=" 不重要不紧急";
+                            pstatus="clock-blue"
+                        }
+                        $(".popup_box .r-title-jinji>i").addClass(pstatus);
+                        $(".popup_box .r-title-jinji .r-chd").html(playstatus);
+                        $("input[name=title]").val(data.taskInfo.title);
+                        $("input[name=content]").val(data.taskInfo.content);
+                        $("#taid").val(taskid);
+                        $("#tversion").val(version);
+                        $("#playstatus").val(data.taskInfo.playstatus);
+                        $("#playuid").val(data.taskInfo.playuid);
+                        $("#playbid").val(data.taskInfo.playbid);
+                        $("#playname").val(data.taskInfo.playname);
+                        $("#startdate").val(data.taskInfo.bigentime);
+                        $("#enddate").val(data.taskInfo.overtime+" "+data.taskInfo.overhour);
+                        $("#cnplayname").html(data.taskInfo.playname);
+
+                    }else{
+                        alert("信息读取失败！");
+                    }
+                }
+            })
+            $(".popup_box").css("display","block");
+        });
+        $("#taskedi").click(function(){
+            var taskid = $("#taskid").val();
+            var version = $("#version").val();
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/taskShow?id='+taskid+'&version='+version,
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function (data) {
+                    // 去渲染界面
+                    if(data.msg){
+                        var playstatus
+                        var pstatus
+                        var status = (data.taskInfo.status=="1")?"已完成":"未完成";
+                        if(data.taskInfo.playstatus==1){
+                            playstatus="紧急且重要";
+                            pstatus="clock-red"
+                        }else if(data.taskInfo.playstatus==2){
+                            playstatus=" 紧急不重要";
+                            pstatus="clock-yellow"
+                        }else if(data.taskInfo.playstatus==3){
+                            playstatus=" 重要不紧急";
+                            pstatus="clock-green"
+                        }else if(data.taskInfo.playstatus==4){
+                            playstatus=" 不重要不紧急";
+                            pstatus="clock-blue"
+                        }
+                        $(".popup_box .r-title-jinji>i").addClass(pstatus);
+                        $(".popup_box .r-title-jinji .r-chd").html(playstatus);
+                        $("input[name=title]").val(data.taskInfo.title);
+                        $("input[name=content]").val(data.taskInfo.content);
+                        $("#taid").val(taskid);
+                        $("#tversion").val(version);
+                        $("#playstatus").val(data.taskInfo.playstatus);
+                        $("#playuid").val(data.taskInfo.playuid);
+                        $("#playbid").val(data.taskInfo.playbid);
+                        $("#playname").val(data.taskInfo.playname);
+                        $("#startdate").val(data.taskInfo.bigentime);
+                        $("#enddate").val(data.taskInfo.overtime+" "+data.taskInfo.overhour);
+                        $("#cnplayname").html(data.taskInfo.playname);
+
+                    }else{
+                        alert("信息读取失败！");
+                    }
+                }
+            })
+            $(".popup_box").css("display","block");
+        });
+
+        $(".popup_box .r-jinji-down a").click(function(){
+            var playstatus=$(this).attr("data-playstatus");
+            var playstatuscn=$(this).html();
+            var status
+            $("#playstatus").val(playstatus);
+            if(playstatus==1){
+                status="clock-red"
+            }else if(playstatus==2){
+                status="clock-yellow"
+            }else if(playstatus==3){
+                status="clock-green"
+            }else if(playstatus==4){
+                status="clock-blue"
+            }
+            $(".popup_box .r-title-jinji>i").removeClass();
+            $(".popup_box .r-title-jinji>i").addClass(status);
+            $(".popup_box .r-title-jinji .r-chd").html(playstatuscn);
+            $(".popup_box .r-title-jinji").removeClass("active");
+        });
+
+        $(".close").click(function(){
+            $(".popup_box").css("display","none");
+        });
+        context.init({preventDoubleContext: false});
+        <g:if test="${session.user.pid==1}">
+        context.attach('#playman', [
+            {header: '部门'},
+            <g:each in="${bumenInstance}" var="bumenInfo">
+            {text: '${bumenInfo.name}', subMenu: [
+                {header: '员工'},
+                <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
+                {text: '${userInfo.name}', href: '#', action: function(e){
+                    $("#playuid").val(${userInfo.id});
+                    $("#playbid").val(${userInfo.bid});
+                    $("#playname").val("${userInfo.name}");
+                    $(".dropdown-menu").hide();
+                    $("#cnplayname").html('${userInfo.name}');
+                }},
+                </g:each>
+            ]},
+            </g:each>
+        ]);
+        </g:if>
+        <g:elseif test="${session.user.pid==2}">
+        context.attach('#playman', [
+            {header: '员工'},
+            <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
+            {text: '${userInfo.name}', href: '#', action: function(e){
+                $("#playuid").val(${userInfo.id});
+                $("#playbid").val(${userInfo.bid});
+                $("#playname").val("${userInfo.name}");
+                $(this).hide();
+                $("#cnplayname").html("${userInfo.name}");
+            }},
+            </g:each>
+        ]);
+        </g:elseif>
+        <g:else>
+        $("#playuid").val(${session.user.id});
+        $("#playbid").val(${session.user.bid});
+        $("#playname").val("${session.user.name}");
+        $("#cnplayname").html("${session.user.name}");
+        </g:else>
+        $(".popup_box .r-title-jinji").mouseenter(function(){
+            $(this).addClass("active");
+        }).mouseleave(function(){
+            $(this).removeClass("active");
         })
         $(".taskclose").click(function(){
             $("#task").slideLeftHide(400);

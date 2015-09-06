@@ -1007,7 +1007,7 @@ class FrontController {
     def reportSave(Long id, Long version){
         def myReportInfo
         def rs =[:]
-
+        def a = params
         if (!id) {
             myReportInfo = new Zhoubao(params)
             myReportInfo.dateCreate = new Date()
@@ -1547,7 +1547,57 @@ class FrontController {
 
         redirect(action: "taskCreate", id: taskInstance.id)
     }
+    //任务信息修改
+    def taskInfoUpdate(Long id, Long version){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def taskInfoInstance = Task.get(id)
 
+        if (!taskInfoInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "fzTask")
+            return
+        }
+
+        if (version != null) {
+            if (taskInfoInstance.version > version) {
+                taskInfoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'task.label', default: 'Task')] as Object[],
+                        "Another user has updated this User while you were editing")
+                render(view: "fzTask", model: [companyUserInstance: taskInfoInstance])
+                return
+            }
+        }
+
+        taskInfoInstance.properties = params
+        def overdate = params.overtime.split(" ")
+        def uid = session.user.id
+        taskInfoInstance.cid = session.company.id
+        taskInfoInstance.fzuid = uid
+        taskInfoInstance.fzname = session.user.name
+        taskInfoInstance.overtime = overdate[0]
+        taskInfoInstance.overhour = overdate[1]
+        taskInfoInstance.status = 0
+        if(params.playuid==uid.toString()){
+            taskInfoInstance.lookstatus = 2
+        }
+        taskInfoInstance.remindstatus = 0
+
+        taskInfoInstance.dateCreate = new Date()
+
+        if (!taskInfoInstance.save(flush: true)) {
+            render(view: "fzTask", model: [companyUserInstance: taskInfoInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'task.label', default: 'Task'), taskInfoInstance.id])
+        redirect(action: "fzTask")
+    }
+    //任务状态修改
     def taskUpdate(Long id, Long version){
         def taskInstance = Task.findByIdAndCid(id,session.company.id)
         def rs = [:]
