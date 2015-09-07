@@ -78,7 +78,7 @@
                                 <td></td>
                                 <td>
                                     <button type="submit" class="btn btn-info">保存</button>
-                                    <button class="btn btn-info">返回</button>
+                                    <g:link action="tools" class="btn btn-info">返回</g:link>
                                 </td>
                             </tr>
                         </table>

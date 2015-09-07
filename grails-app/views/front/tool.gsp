@@ -54,9 +54,10 @@
                             <div class="pick_page f-r">
                                 %{--<a class="single_page"><i></i>单页</a>--}%
                                 %{--<a class="double_page"><i></i>双页</a>--}%
-
+                                <g:if test="${contentsize.toInteger() != 0&&contentsize.toInteger() != 1}">
                                 <g:if test="${offset.toInteger() != 0}"><g:link action="tool" id="${toolId}"  params="[offset:offset.toInteger()-1]"  class="pre_page ml25" >上一页</g:link> </g:if>
-                                <g:if test="${offset.toInteger() < contentsize.toInteger()+1}"> <g:link action="tool" id="${toolId}" params="[offset:offset.toInteger()+2]" class="next_page">下一页</g:link></g:if>
+                                <g:if test="${offset.toInteger() < contentsize.toInteger()/2}"> <g:link action="tool" id="${toolId}" params="[offset:offset.toInteger()+1]" class="next_page">下一页</g:link></g:if>
+                                </g:if>
                             </div>
                         </div>
                         <div class="row" style="padding:0 15px;">

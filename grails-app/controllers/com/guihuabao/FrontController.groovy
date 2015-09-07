@@ -455,8 +455,8 @@ class FrontController {
             return
         }
         params.max = Math.min(max ?: 10, 100)
-        def exampleInstanceList = HexuTool.findAllByStyle(1,params)
-        def exampleInstanceTotal = HexuTool.countByStyle(1)
+        def exampleInstanceList = HexuTool.findAllByStyle(2,params)
+        def exampleInstanceTotal = HexuTool.countByStyle(2)
         [exampleInstanceList: exampleInstanceList, exampleInstanceTotal: exampleInstanceTotal]
     }
     //案例内容
@@ -474,8 +474,9 @@ class FrontController {
             offset =params.offset
         }
         params<<[offset:offset]
+        params<<[sort:"id", order:"asc"]
         def hxtool = HexuTool.findByIdAndStyle(id,2)
-        def contentlist = ToolContent.findAllByHexutools(hxtool,[sort:"id", order:"asc"])
+        def contentlist = ToolContent.findAllByHexutools(hxtool,params)
         def contentsize= ToolContent.countByHexutools(hxtool)
         def content=""
 

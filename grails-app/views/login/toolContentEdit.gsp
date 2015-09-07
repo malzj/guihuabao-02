@@ -40,37 +40,28 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper mt80">
-            <div class="middle_content">
-                <div class="m_box">
-
-                    <header class="panel-heading clearfix">
-                        查看工具或案例
-                        <g:link action="toolEdit" id="${toolInstance.id}" class="btn btn-info" style="display:block;float:right;">修改</g:link>
-                        <g:link action="toolDelete" id="${toolInstance.id}" class="btn btn-info" style="display:block;float:right;" onClick="return confirm('确定删除？');">删除</g:link>
-                    </header>
-                    <table>
-                        <tr>
-                            <td>名称：</td>
-                            <td width="345"><g:fieldValue bean="${toolInstance}" field="toolName"/></td>
-                        </tr>
-                        <tr>
-                            <td>封面：</td>
-                            <td>
-                                <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'images', file: ''+toolInstance.toolImg+'')}" /></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <g:link action="tools" class="btn btn-info">返回</g:link>
-                                <g:link action="toolContentCreate" id="${toolInstance.id}" class="btn btn-info">新建内容</g:link>
-                                <g:link action="toolContentList" id="${toolInstance.id}" class="btn btn-info">内容列表</g:link>
-                            </td>
-                        </tr>
-                    </table>
+            <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'toolContentUpdate']" method="post"  enctype= "multipart/form-data">
+                <g:hiddenField name="id" value="${toolContentInstance?.id}" />
+                <g:hiddenField name="version" value="${toolContentInstance?.version}" />
+                <div class="hxzs_heading clearfix">
+                    <h2><g:fieldValue bean="${toolContentInstance}" field="title"/></h2>
+                    <button type="submit" class="btn btn-info f-r">保存</button>
                 </div>
-            </div>
+                <div class="mt25">
+                    <div class="form-group">
+                        <label class="col-lg-3 col-sm-3 control-label">标题：</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" type="text" name="title" value="${toolContentInstance.title}" />
+                        </div>
+                    </div>
+                    <div class="textarea">
+                        <textarea id="editor_id" name="introduction" style="width:100%;height:500px;">${toolContentInstance.introduction}</textarea>
+                    </div>
+
+                </div>
+            </g:form>
         </section>
+        <!--main content end-->
 
     </section>
 
@@ -97,35 +88,31 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
 
-    %{--<script>--}%
+    <!--keditor js-->
+    <script charset="utf-8" src="${resource(dir: 'keditor', file: 'kindeditor.js')}"></script>
+    <script charset="utf-8" src="${resource(dir: 'keditor/lang', file: 'zh_CN.js')}"></script>
+    <script>
 
-    %{--//owl carousel--}%
+        KindEditor.ready(function(K) {
+            var editor1 = K.create('textarea[name="introduction"]', {
+//                cssPath : '../plugins/code/prettify.css',
+                cssPath : '${resource(dir: 'keditor/plugins/code', file: 'prettify.css')}',
+//                uploadJson : '../jsp/upload_json.jsp',
+                uploadJson : '../upload/',
+//                fileManagerJson : '../jsp/file_manager_json.jsp',
+                fileManagerJson : '${resource(dir: 'keditor/jsp', file: 'file_manager_json.jsp')}',
+                allowFileManager : true,
+                afterCreate : function() {
+                    this.sync();
+//                    document.forms['example'].submit();
+                },
+                afterBlur:function(){
+                    this.sync();
+//                    document.forms['example'].submit();
+                }
+            })
 
-    %{--$(document).ready(function() {--}%
-    %{--$("#owl-demo").owlCarousel({--}%
-    %{--navigation : true,--}%
-    %{--slideSpeed : 300,--}%
-    %{--paginationSpeed : 400,--}%
-    %{--singleItem : true,--}%
-    %{--autoPlay:true--}%
-
-    %{--});--}%
-    %{--});--}%
-
-    %{--//custom select box--}%
-
-    %{--$(function(){--}%
-    %{--$('select.styled').customSelect();--}%
-    %{--});--}%
-
-    %{--</script>--}%
-    <!--上传图片预览 js-->
-    <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
-    <script type="text/javascript">
-        window.onload = function () {
-            new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
-        }
+        });
     </script>
-
 </body>
 </html>

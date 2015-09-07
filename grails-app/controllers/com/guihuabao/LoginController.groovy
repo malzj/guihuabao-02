@@ -1073,7 +1073,7 @@ class LoginController {
         }
     }
     def toolEdit(Long id){
-        def toolInstance = Book.get(id)
+        def toolInstance = HexuTool.get(id)
         [toolInstance: toolInstance]
     }
 
@@ -1093,7 +1093,7 @@ class LoginController {
         def  filePath
         def  fileName
 
-        MultipartFile f = request.getFile('toolImg')
+        MultipartFile f = request.getFile('file1')
         if(!f.empty) {
             def date= new Date().getTime()
             Random random =new Random()
@@ -1134,7 +1134,7 @@ class LoginController {
 
 
         if (!toolInstance.save(flush: true)) {
-            render(view: "toolEdit", model: [bookInstance: toolInstance])
+            render(view: "toolEdit", model: [bookInstance: toolInstance,id: toolInstance.id])
             return
         }
 
@@ -1201,12 +1201,63 @@ class LoginController {
     }
     def toolContentList(Long id){
         def toolContentInstanceList = ToolContent.findAllByHexutools(HexuTool.get(id))
-        if (!toolContentInstanceList) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'syllabus.label', default: 'Syllabus'), id])
-            redirect(action: "syllabusList")
+
+        [toolContentInstanceList: toolContentInstanceList,toolId: id]
+    }
+    def toolContentEdit(Long id){
+        def toolContentInstance = ToolContent.get(id)
+        if (!toolContentInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), id])
+            redirect(action: "list")
+            return
+        }
+        [toolContentInstance: toolContentInstance]
+
+    }
+    def toolContentUpdate(Long id,Long version){
+        def toolContentInstance = ToolContent.get(id)
+        if (!toolContentInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), id])
+            redirect(action: "toolContentList")
             return
         }
 
-        [toolContentInstanceList: toolContentInstanceList]
+        if (version != null) {
+            if (toolContentInstance.version > version) {
+                toolContentInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'content.label', default: 'Content')] as Object[],
+                        "Another user has updated this Content while you were editing")
+                render(view: "toolContentEdit", model: [toolContentInstance: toolContentInstance])
+                return
+            }
+        }
+
+        toolContentInstance.properties = params
+
+        if (!toolContentInstance.save(flush: true)) {
+            render(view: "toolContentEdit", model: [toolContentInstance: toolContentInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'content.label', default: 'Content'), toolContentInstance.id])
+        redirect(action: "toolContentShow", id: toolContentInstance.id)
+    }
+    def toolContentDelete(Long id){
+        def toolContentInstance = ToolContent.get(id)
+        if (!toolContentInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), id])
+            redirect(action: "toolContentList",id: toolContentInstance.hexutools.id)
+            return
+        }
+
+        try {
+            toolContentInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'content.label', default: 'Content'), id])
+            redirect(action: "toolContentList",id: toolContentInstance.hexutools.id)
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'content.label', default: 'Content'), id])
+            redirect(action: "toolContentShow", id: id)
+        }
     }
 }
