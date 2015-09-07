@@ -491,8 +491,7 @@ class FrontController {
         [content:content,contentsize:contentsize,toolId:id,offset: offset]
     }
     //工具列表
-    def
-    hxtools(Integer max){
+    def hxtools(Integer max){
         def user = session.user
         def company = session.company
         if(!user&&!company){
