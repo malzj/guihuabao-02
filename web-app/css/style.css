@@ -5508,14 +5508,40 @@ a.guest-on i {
 /*right side bar*/
 
 .sb-slidebar {
-    background-color: rgba(42, 53, 66, 1) !important;
-    margin-top: 60px;
+    background-color: #fff !important;
+    margin-top: 111px;
+    padding: 54px 50px 0;
     color:#aeb2b7;
+    box-shadow: -5px 0px 4px 0px #D5D5D2;
+    -moz-box-shadow: -5px 0px 4px 0px #D5D5D2;
 }
+
+.sb-slidebar .soline{
+    border-bottom: 1px solid #dfdddd;
+    margin-bottom: 10px;
+}
+
 .sb-slidebar .side-title {
-    padding: 10px 15px;
+    /*padding: 10px 15px;*/
     text-transform: uppercase;
-    color: #FF6C60;
+    color: #2a2a2a;
+    height: 50px;
+    line-height:50px;
+    font-size: 20px;
+}
+
+.sb-slidebar .syl-title{
+    font-size: 18px;
+    color: #27bdff;
+    cursor: pointer;
+}
+
+.sb-slidebar .clomenu{
+    height: 50px;
+    line-height:50px;
+    font-size: 14px;
+    padding-right: 28px;
+    background: url("../images/clomenu.png") no-repeat 62px 16px;
 }
 
 .sb-toggle-right {
@@ -5538,13 +5564,20 @@ a.guest-on i {
 
 .quick-chat-list li {
     padding: 10px 15px;
-    border-bottom: 1px dashed #35404d;
-    cursor: pointer;
+    /*border-bottom: 1px dashed #35404d;*/
+    /*cursor: pointer;*/
+}
+.quick-chat-list .char-title{
+    margin-top: 10px;
+    margin-left: 45px;
 }
 
-.quick-chat-list li:hover {
-    background: #35404d;
+.quick-chat-list .char-title li a{
+    color:#2a2a2a;
 }
+/*.quick-chat-list li:hover {*/
+    /*background: #35404d;*/
+/*}*/
 
 .quick-chat-list li .media-object {
     border-radius: 50%;
