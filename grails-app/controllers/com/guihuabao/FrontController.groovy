@@ -491,7 +491,8 @@ class FrontController {
         [content:content,contentsize:contentsize,toolId:id,offset: offset]
     }
     //工具列表
-    def hxtools(Integer max){
+    def
+    hxtools(Integer max){
         def user = session.user
         def company = session.company
         if(!user&&!company){
@@ -2229,6 +2230,7 @@ class FrontController {
         targetInstance.cid = session.company.id
         targetInstance.img = '1.png'
         targetInstance.status = '0'
+        targetInstance.ischeck='0'
         targetInstance.percent = 0
         targetInstance.dateCreate = new Date()
 

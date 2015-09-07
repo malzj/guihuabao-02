@@ -14,8 +14,8 @@
                 </g:link>
             </div>
             <ul class="sub db">
-                <li><g:link action="fzTask" >负责的任务<em class="f-r">${com.guihuabao.Task.countByCidAndFzuid(session.company.id,session.user.id)}</em></g:link></li>
-                <li><g:link action="cyTask" >参与的任务<em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndLookstatus(session.company.id,session.user.id,2)}</em></g:link></li>
+                <li><g:link action="fzTask" >负责的任务<em class="f-r">${com.guihuabao.Task.countByCidAndFzuidAndStatus(session.company.id,session.user.id,0)}</em></g:link></li>
+                <li><g:link action="cyTask" >参与的任务<em class="f-r">${com.guihuabao.Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,2,0)}</em></g:link></li>
             </ul>
             </li>
             <li>

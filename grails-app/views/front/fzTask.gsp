@@ -89,8 +89,11 @@
                                             %{--<span class="hsfinish"><g:link action="taskUpdate" id="${fzAllTaskInfo.id}" params="[version: fzAllTaskInfo.version]"><i class="fa <g:if test="${fzAllTaskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
                                             %{--<g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${fzAllTaskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
 
-                                            <g:if test="${fzAllTaskInfo.lookstatus.toInteger()!=2}"><span class="edit"><a href="javascript:;" class="taskxg" onclick="stop_Pro(event)"><i class="fa fa-pencil"></i>修改任务</a></span></g:if>
-                                            <g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" onclick="confirm('确定删除？');stop_Pro(event)" class="taskdelete" data-id="${fzAllTaskInfo.id}" data-version="${fzAllTaskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
+                                            <g:if test="${fzAllTaskInfo.fzuid.toInteger()==session.user.id}">
+                                                <g:if test="${fzAllTaskInfo.lookstatus.toInteger()!=2}"><span class="edit"><a href="javascript:;" class="taskxg" onclick="stop_Pro(event)"><i class="fa fa-pencil"></i>修改任务</a></span>
+                                                <span class="del"><a href="javascript:;" onclick="confirm('确定删除？');stop_Pro(event)" class="taskdelete" data-id="${fzAllTaskInfo.id}" data-version="${fzAllTaskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span>
+                                                </g:if>
+                                            </g:if>
                                             <span class="date f-r">${fzAllTaskInfo.overtime}</span>
                                         </div>
                                     </li>

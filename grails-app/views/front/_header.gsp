@@ -50,7 +50,7 @@
                         </g:if>
                         <g:if test="${otargetcount!=0}">
                         <li>
-                            <g:link action="messageTargetOver" >
+                            <g:link action="user_target" >
                                 目标到期提醒
                                 <em class="f-r">${otargetcount}</em>
                             </g:link>
