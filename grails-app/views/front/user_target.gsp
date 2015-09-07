@@ -692,6 +692,8 @@
                         if(r_per==0){
                             $('#submit').attr('disabled',false);
                             $('#newmission').addClass('disabled');
+                        }else{
+                            $('#newmission').removeClass('disabled');
                         }
                         if(target.issubmit=='1'){
                             $('#submit').attr('disabled',true);
@@ -922,7 +924,7 @@
                                 $('#newmission').addClass('disabled');
                             }else{
                                 $('#submit').attr('disabled',true);
-
+                                $('#newmission').removeClass('disabled');
                             }
                             if(target.issubmit=='1'){
                                 $('#submit').attr('disabled',true);
@@ -965,11 +967,15 @@
                             }
 
                             $('#r_per').html(data.r_per);
-                            if( $('#r_per').html()==0){
+
+                            if( $('#r_per').html()=='0'){
+
                                 $('#submit').attr('disabled',false);
                                 $('#newmission').addClass('disabled');
                             }else{
+
                                 $('#submit').attr('disabled',true);
+                                $('#newmission').removeClass('disabled');
                             }
 
                         },
@@ -1266,6 +1272,8 @@
                             if($('#r_per').html()==0){
                                 $('#submit').attr('disabled',false);
                                 $('#newmission').addClass('disabled');
+                            }else{
+                                $('#newmission').removeClass('disabled');
                             }
 //                            if(target.issubmit=='1'){
 //                                $('#submit').attr('disabled',true);
