@@ -31,10 +31,11 @@
             <%def newapplycount = com.guihuabao.Apply.countByApprovaluidAndCidAndApplystatus(session.user.id,session.company.id,0)%>
             <%def applycount = com.guihuabao.Apply.countByApplyuidAndCidAndRemindstatus(session.user.id,session.company.id,1)%>
             <%def taskreplycount = com.guihuabao.ReplyTask.countByBpuidAndCidAndStatus(session.user.id,session.company.id,0)%>
-            <%def utargetcount = com.guihuabao.ReplyMission.countByBpunameAndStatus(session.user.name,0)%>
-            <%def finishtargetcount = com.guihuabao.ReplyMission.countByBpunameAndStatus(session.user.name,0)%>
-            <%def cytargetcount = com.guihuabao.Mission.countByPlaynameAndHasvisitedAndIssubmit(session.user.name, 0,1)%><!--参与目标提醒-->
-            <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount+taskreplycount+utargetcount%>
+            <%def utargetcount = com.guihuabao.ReplyMission.countByBpunameAndStatus(session.user.name,0)%><!--未读目标回复提醒-->
+            %{--<%def targettaskcount = com.guihuabao.Target.countByBpunameAndStatus(session.user.name,1,0)%><!--目标任务完成提醒-->--}%
+            <%def finishtargetcount = com.guihuabao.Target.countByCidAndFzuidAndStatusAndIscheck(session.company.id,session.user.id,1,0)%><!--目标完成提醒-->
+            <%def cytargetcount = com.guihuabao.Mission.countByPlaynameAndHasvisitedAndIssubmit(session.user.name, 0,1)%><!--未读目标任务提醒-->
+            <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount+taskreplycount+utargetcount+finishtargetcount+cytargetcount%>
             <ul>
                 <li class="msg">
                     <a href="javascript:;"><i class="fa fa-bell"></i>消息<g:if test="${allcount!=0}"><span class="tsh bg-important">${allcount}</span></g:if></a>
@@ -108,6 +109,22 @@
                                 <g:link action="join_mission" >
                                     未读目标任务
                                     <em class="f-r">${cytargetcount}</em>
+                                </g:link>
+                            </li>
+                        </g:if>
+                        %{--<g:if test="${targettaskcount!=0}">--}%
+                            %{--<li>--}%
+                                %{--<g:link action="join_mission" >--}%
+                                    %{--目标任务完成--}%
+                                    %{--<em class="f-r">${targettaskcount}</em>--}%
+                                %{--</g:link>--}%
+                            %{--</li>--}%
+                        %{--</g:if>--}%
+                        <g:if test="${finishtargetcount!=0}">
+                            <li>
+                                <g:link action="hasfinished_target" >
+                                    目标完成提醒
+                                    <em class="f-r">${finishtargetcount}</em>
                                 </g:link>
                             </li>
                         </g:if>
