@@ -11,7 +11,7 @@ class Target {
     Integer percent         //权重
     String img              //图片
     String status           //状态0未完成1已完成
-    String remindstatus //完成提醒状态提醒上级（未完成0,已完成1,上级已查看2）
+    String ischeck          //完成的目标是否查看过了（未查看0，已查看1）
     String targetzj         //目标总结
     String issubmit         //是否下发0下发1未下发
     String isedit           //是否可以编辑
@@ -30,5 +30,6 @@ class Target {
         targetzj(nullable:true)
         issubmit(nullable:true)
         isedit(nullable:true)
+        ischeck(nullable:true)
     }
 }

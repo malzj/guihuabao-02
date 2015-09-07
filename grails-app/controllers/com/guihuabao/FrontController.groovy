@@ -2204,6 +2204,7 @@ class FrontController {
         targetInstance.percent = 0
         targetInstance.issubmit='0'
         targetInstance.isedit='0'
+        targetInstance.ischeck='0'
         targetInstance.dateCreate = new Date()
 
 
@@ -2253,14 +2254,15 @@ class FrontController {
         def targetInstance = Target.get(tid)
         if (!targetInstance) {
            rs.msg=false
-        }
+        }else {
 
-        try {
-            targetInstance.delete(flush: true)
-            rs.msg=true
-        }
-        catch (DataIntegrityViolationException e) {
-           rs.msg=false
+            try {
+                targetInstance.delete(flush: true)
+                rs.msg = true
+            }
+            catch (DataIntegrityViolationException e) {
+                rs.msg = false
+            }
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
@@ -2321,6 +2323,7 @@ class FrontController {
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
         }else{
+            params<<[sort:"dateCreate",order: "desc"]
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
         }
@@ -2455,6 +2458,29 @@ class FrontController {
         rs.target=targetInstance
         rs.mission=targetInstance.mission
         rs.fzname=fzname
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def ischeck(){
+        def rs = [:]
+        def tid = params.target_id
+        def targetInstance = Target.get(tid)
+        if(!targetInstance){
+            rs.msg=false
+        }else {
+            def fzname = com.guihuabao.CompanyUser.findById(targetInstance.fzuid).name
+            targetInstance.ischeck=1
+            if(!targetInstance.save(flush: true)){
+                rs.msg=false
+            }else {
+                rs.msg=true
+                rs.target = targetInstance
+                rs.mission = targetInstance.mission
+                rs.fzname = fzname
+            }
+        }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
