@@ -33,6 +33,7 @@
             <%def taskreplycount = com.guihuabao.ReplyTask.countByBpuidAndCidAndStatus(session.user.id,session.company.id,0)%>
             <%def utargetcount = com.guihuabao.ReplyMission.countByBpunameAndStatus(session.user.name,0)%>
             <%def finishtargetcount = com.guihuabao.ReplyMission.countByBpunameAndStatus(session.user.name,0)%>
+            <%def cytargetcount = com.guihuabao.Mission.countByPlaynameAndHasvisitedAndIssubmit(session.user.name, 0,1)%><!--参与目标提醒-->
             <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount+taskreplycount+utargetcount%>
             <ul>
                 <li class="msg">
@@ -99,6 +100,14 @@
                                 <g:link action="unread_comment" >
                                     未读目标回复
                                     <em class="f-r">${utargetcount}</em>
+                                </g:link>
+                            </li>
+                        </g:if>
+                        <g:if test="${cytargetcount!=0}">
+                            <li>
+                                <g:link action="join_mission" >
+                                    未读目标任务
+                                    <em class="f-r">${cytargetcount}</em>
                                 </g:link>
                             </li>
                         </g:if>
