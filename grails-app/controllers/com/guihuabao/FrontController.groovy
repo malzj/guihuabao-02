@@ -1770,6 +1770,8 @@ class FrontController {
         infos.finished = Task.countByCidAndFzuidAndStatus(cid,uid,1)
         infos.unfinished = Task.countByCidAndFzuidAndStatus(cid,uid,0)
 
+        def bumenInstance = Bumen.findAllByCid(session.company.id)
+
         if(selected=="1"){//已完成
             fzTaskInstance = Task.findAllByCidAndFzuidAndStatus(cid,uid,1,params)
             fzTaskInstanceTotal = infos.finished
@@ -1783,7 +1785,7 @@ class FrontController {
             fzTaskInstance = Task.findAllByCidAndFzuid(cid,uid,params)
             fzTaskInstanceTotal = Task.countByCidAndFzuid(cid,uid)
         }
-        [fzTaskInstance: fzTaskInstance,fzTaskInstanceTotal: fzTaskInstanceTotal,selected: selected,infos: infos]
+        [fzTaskInstance: fzTaskInstance,fzTaskInstanceTotal: fzTaskInstanceTotal,bumenInstance: bumenInstance,selected: selected,infos: infos]
     }
     //参与任务
     def cyTask(Integer max){
@@ -2227,6 +2229,7 @@ class FrontController {
         targetInstance.cid = session.company.id
         targetInstance.img = '1.png'
         targetInstance.status = '0'
+        targetInstance.ischeck='0'
         targetInstance.percent = 0
         targetInstance.dateCreate = new Date()
 
