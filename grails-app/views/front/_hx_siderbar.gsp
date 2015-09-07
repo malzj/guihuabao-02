@@ -12,6 +12,14 @@
                         <span>知识</span>
                         %{--<span class="dcjq-icon"></span>--}%
                     </g:link>
+                    <g:link controller="front" action="hxhelper">
+                        <span>工具</span>
+                    %{--<span class="dcjq-icon"></span>--}%
+                    </g:link>
+                    <g:link controller="front" action="hxhelper">
+                        <span>案例</span>
+                    %{--<span class="dcjq-icon"></span>--}%
+                    </g:link>
                 </div>
             </li>
             <li class="sub-menu dcjq-parent-li">
