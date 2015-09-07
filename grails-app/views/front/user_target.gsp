@@ -145,7 +145,9 @@
                             <span style="display: none;" id="all_var"></span>
 
                         </div>
-
+                        <div class="pagination">
+                            <g:paginate total="${targetInstanceTotal}"/>
+                        </div>
 
 
                     </div>

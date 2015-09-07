@@ -93,7 +93,7 @@
                             <span style="display:none" id="var_all"></span>
                         </div>
                         <div class="pagination">
-                            <g:paginate total="${missionInstanceTotal}" params="[selected: selected]" />
+                            <g:paginate total="${missionInstanceTotal}"/>
                         </div>
                     </div>
 

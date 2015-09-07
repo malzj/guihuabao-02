@@ -2808,7 +2808,7 @@ class FrontController {
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid, fzuid, 0, params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid, fzuid, 0)
         }
-        [targetInstance: targetInstance, targetInstanceTotal: targetInstanceTotal, bumenInstance: bumenInstance, selected: selected]
+        [targetInstance: targetInstance, targetInstanceTotal: targetInstanceTotal, bumenInstance: bumenInstance,uid:fzuid,cid:cid, selected: selected]
     }
 
     def targetUserList() {

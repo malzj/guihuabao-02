@@ -111,7 +111,9 @@
 
 
                         </div>
-
+                        <div class="pagination">
+                            <g:paginate total="${targetInstanceTotal}"/>
+                        </div>
 
 
                     </div>
