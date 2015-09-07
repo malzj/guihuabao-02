@@ -2840,7 +2840,7 @@ class FrontController {
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid, fzuid, 0, params, order2)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid, fzuid, 0, order2)
         } else {
-            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid, fzuid, 0, params)
+            targetInstance = Target.findAllByCidAndFzuidAndStatus(cid, fzuid, 0, params,order2)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid, fzuid, 0)
         }
         [targetInstance: targetInstance, targetInstanceTotal: targetInstanceTotal, bumenInstance: bumenInstance,uid:fzuid,cid:cid, selected: selected]

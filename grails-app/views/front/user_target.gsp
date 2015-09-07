@@ -141,9 +141,7 @@
                             </div>
                             </g:each>
 
-                            <div class="pagination">
-                                <g:paginate total="${targetInstanceTotal}" />
-                            </div>
+
 
                             <span style="display: none;" id="var_all"></span>
                             <span style="display: none;" id="all_var"></span>
@@ -329,11 +327,16 @@
                                             </li>
                                         </g:each>
                                     </g:if>
-                                    <g:else>
+                                    <g:elseif test="${session.user.pid==2}">
                                          <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
                                              <span style="display:none">${session.user.bid}</span>
                                              <li  class="dropdown"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
                                          </g:each>
+                                    </g:elseif>
+
+                                    <g:else>
+                                        <span style="display:none">${session.user.bid}</span>
+                                        <li  class="dropdown"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>
                                     </g:else>
                                 </ul>
 
@@ -426,11 +429,15 @@
                                                 </li>
                                             </g:each>
                                         </g:if>
-                                        <g:else>
+                                        <g:elseif test="${session.user.pid==2}">
                                             <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
                                                 <span style="display:none">${session.user.bid}</span>
                                                 <li  class="dropdown "><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
                                             </g:each>
+                                        </g:elseif>
+                                        <g:else>
+                                            <span style="display:none">${session.user.bid}</span>
+                                            <li  class="dropdown"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>
                                         </g:else>
                                     </ul>
 
@@ -696,6 +703,8 @@
                         if(r_per==0){
                             $('#submit').attr('disabled',false);
                             $('#newmission').addClass('disabled');
+                        }else{
+                            $('#newmission').removeClass('disabled');
                         }
                         if(target.issubmit=='1'){
                             $('#submit').attr('disabled',true);
@@ -926,7 +935,7 @@
                                 $('#newmission').addClass('disabled');
                             }else{
                                 $('#submit').attr('disabled',true);
-
+                                $('#newmission').removeClass('disabled');
                             }
                             if(target.issubmit=='1'){
                                 $('#submit').attr('disabled',true);
@@ -969,11 +978,15 @@
                             }
 
                             $('#r_per').html(data.r_per);
-                            if( $('#r_per').html()==0){
+
+                            if( $('#r_per').html()=='0'){
+
                                 $('#submit').attr('disabled',false);
                                 $('#newmission').addClass('disabled');
                             }else{
+
                                 $('#submit').attr('disabled',true);
+                                $('#newmission').removeClass('disabled');
                             }
 
                         },
@@ -1270,6 +1283,8 @@
                             if($('#r_per').html()==0){
                                 $('#submit').attr('disabled',false);
                                 $('#newmission').addClass('disabled');
+                            }else{
+                                $('#newmission').removeClass('disabled');
                             }
 //                            if(target.issubmit=='1'){
 //                                $('#submit').attr('disabled',true);

@@ -62,7 +62,7 @@
                 <div class="col-tb">
                     <div class="col-cell">
                         <div class="toolkit">
-                            <span>我的目标</span>
+                            <span>下属目标</span>
                             <div class="shaixuan">
                                 <a class="task-order">排序<i class="fa fa-caret-down"></i></a>
                                 <ul>
@@ -77,7 +77,7 @@
 
                                 </ul>
                             </div>
-                            <a href="#" id="newtarget" class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
+
                         </div>
                         <div class="content">
                             <div style="margin-top:20px;" class="clearfix">
@@ -182,6 +182,7 @@
 <script src="${resource(dir: 'js', file: 'respond.min.js')}" ></script>
 
 <!--common script for all pages-->
+<script src="${resource(dir: 'js', file: 'slidebars.min.js')}"></script>
 <script src="${resource(dir: 'js', file: 'common-scripts.js')}"></script>
 
     <script>

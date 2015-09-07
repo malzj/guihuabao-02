@@ -77,7 +77,7 @@
 
                             </ul>
                         </div>
-                        <a href="#" id="newtarget" class="f-r"><i class="fa fa-plus-circle"></i>新建目标</a>
+
                     </div>
                     <div class="content">
                         <div style="margin-top:20px;" class="clearfix">
