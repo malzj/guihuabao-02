@@ -109,6 +109,13 @@
                         <a class="copy_icon"></a>
                     </div>
                     <div class="task_content">
+                        <div class="task_line"><span class="title con"></span></div>
+                        <div class="task_line"><span class="content con"></span></div>
+                        <div class="task_line"><span>指派人：</span><span class="font_blue fzname con"></span></div>
+                        <div class="task_line"><span>执行人：</span><span class="font_blue playname con"></span></div>
+                        <div class="task_line"><span>起始日：</span><span class="font_blue startdate con"></span></div>
+                        <div class="task_line"><span>终止日：</span><span class="font_blue overdate con"></span></div>
+                        <div class="task_line"><span>任务状态：</span><span class="font_blue status con"></span></div>
                     </div>
                     %{--<g:hiddenField name="taskid" id="taskid" ></g:hiddenField>--}%
                     %{--<g:hiddenField name="version" id="version" ></g:hiddenField>--}%
@@ -221,7 +228,7 @@
             var mid = $(this).find('span:first').html();
             $('#var_all').html(mid);
             $.ajax({
-                url:'${webRequest.baseUrl}/front/mhasvisited?mid='+mid,
+                url:'${webRequest.baseUrl}/front/mhasvisited?mid='+mid+'',
                 dataType: "json",
                 type:'post',
                 success: function (data) {
@@ -231,13 +238,21 @@
                         var html2="";
                         var status = (data.mission.status=='1')?"已完成":"进行中";
                         var fzuid=data.target.fzuid;
-                        html+='<div class="task_line"><span class="title">'+data.mission.title+'</span></div>';
-                        html+='<div class="task_line"><span class="content">'+data.mission.content+'</span></div>';
-                        html+='<div class="task_line"><span>指派人：</span><span class="font_blue">'+data.fzname+'</span></div>';
-                        html+='<div class="task_line"><span>执行人：</span><span class="font_blue">'+data.mission.playname+'</span></div>';
-                        html+='<div class="task_line"><span>起始日：</span><span>'+data.mission.begintime+'</span></div>';
-                        html+='<div class="task_line"><span>终止日：</span><span>'+data.mission.overtime+'</span></div>';
-                        html+='<div class="task_line"><span>任务状态：</span><span class="font_blue">'+status+'</span></div>';
+                        $('.task_line .title').html(data.mission.title);
+                        $('.task_line .content').html(data.mission.content);
+                        $('.task_line .fzname').html(data.fzname);
+                        $('.task_line .playname').html(data.mission.playname);
+                        $('.task_line .startdate').html(data.mission.begintime);
+                        $('.task_line .overdate').html(data.mission.overtime);
+                        $('.task_line .status').html(status);
+//                        html+='<div class="task_line"><span class="title">'+data.mission.title+'</span></div>';
+//                        html+='<div class="task_line"><span class="content">'+data.mission.content+'</span></div>';
+//                        html+='<div class="task_line"><span>指派人：</span><span class="font_blue">'+data.fzname+'</span></div>';
+//                        html+='<div class="task_line"><span>执行人：</span><span class="font_blue">'+data.mission.playname+'</span></div>';
+//                        html+='<div class="task_line"><span>起始日：</span><span>'+data.mission.begintime+'</span></div>';
+//                        html+='<div class="task_line"><span>终止日：</span><span>'+data.mission.overtime+'</span></div>';
+//                        html+='<div class="task_line"><span>任务状态：</span><span class="font_blue">'+status+'</span></div>';
+
                         $('#bpuid').val(data.target.fzuid);
                         $('#bpuname').val(data.fzname);
                     $.each(data.replymission,function(i,val){
@@ -248,8 +263,8 @@
                         html2+='<div class="rcontainer"></div>'
                         html2+='</div></div>'
                     })
-                    $("#task .task_content").empty();
-                    $("#reply_container").empty();
+//                    $("#task .task_content .task_line .con").empty();
+//                    $("#reply_container").empty();
                     $("#task .task_content").append(html);
                     $("#reply_container").append(html2);
                     replyclick();

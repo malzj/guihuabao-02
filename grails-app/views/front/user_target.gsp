@@ -327,11 +327,16 @@
                                             </li>
                                         </g:each>
                                     </g:if>
-                                    <g:else>
+                                    <g:elseif test="${session.user.pid==2}">
                                          <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
                                              <span style="display:none">${session.user.bid}</span>
                                              <li  class="dropdown"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
                                          </g:each>
+                                    </g:elseif>
+
+                                    <g:else>
+                                        <span style="display:none">${session.user.bid}</span>
+                                        <li  class="dropdown"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>
                                     </g:else>
                                 </ul>
 
@@ -424,11 +429,15 @@
                                                 </li>
                                             </g:each>
                                         </g:if>
-                                        <g:else>
+                                        <g:elseif test="${session.user.pid==2}">
                                             <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
                                                 <span style="display:none">${session.user.bid}</span>
                                                 <li  class="dropdown "><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
                                             </g:each>
+                                        </g:elseif>
+                                        <g:else>
+                                            <span style="display:none">${session.user.bid}</span>
+                                            <li  class="dropdown"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>
                                         </g:else>
                                     </ul>
 
