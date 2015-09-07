@@ -198,8 +198,8 @@
             $(".panel-content ul li:eq(0) span").html(applyType)
             $(".panel-content ul li:eq(1) span").html(approvalusername)
             $(".panel-content ul li:eq(2) span").html(applyContent)
-            $(".panel-content ul li:eq(3) span").html(applyStauts)
-            $(".panel-content ul li:eq(4) span").html(applyDate)
+            $(".panel-content ul li:eq(3) span").html(applyDate)
+            $(".panel-content ul li:eq(4) span").html(applyStauts)
             $("#approvetext").val(approvetext)
             $("#applydetails").css("display","block");
         })

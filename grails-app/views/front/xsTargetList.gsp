@@ -53,11 +53,11 @@
     <!--header end-->
     <!--sidebar start-->
     <div class="row">
-        <div class="col-xs-3" style="height:100%"></div>
+        <div class="col-xs-2" style="height:100%"></div>
         <g:render template="target_sider" />
         <!--sidebar end-->
         <!--main content start-->
-        <section id="main-content" class="col-xs-9" style="padding-left:0;">
+        <section id="main-content" class="col-xs-10" style="padding-left:0;">
             <section class="wrapper">
                 <div class="col-tb">
                     <div class="col-cell">
@@ -111,7 +111,9 @@
 
 
                             </div>
-
+                            <div class="pagination">
+                                <g:paginate total="${targetInstanceTotal}" params="[selected: selected,uid:uid,cid:cid]"/>
+                            </div>
 
 
                         </div>
@@ -174,7 +176,13 @@
     <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
     <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
 
+<script class="include" type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dcjqaccordion.2.7.js')}"></script>
+<script src="${resource(dir: 'js', file: 'jquery.scrollTo.min.js')}"></script>
+<script src="${resource(dir: 'js', file: 'jquery.nicescroll.js')}" type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'respond.min.js')}" ></script>
 
+<!--common script for all pages-->
+<script src="${resource(dir: 'js', file: 'common-scripts.js')}"></script>
 
     <script>
     $(document).ready(function() {

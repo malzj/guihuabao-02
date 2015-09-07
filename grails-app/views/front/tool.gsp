@@ -46,7 +46,7 @@
             <section class="wrapper wrapper_reset">
                 <div class="hxzs_content clearfix row">
 
-                    <div class="book_show col-xs-9 ">
+                    <div class="book_show col-xs-12">
                         <div class="top clearfix">
                             <div class="address f-l">
                                 工具>内容
@@ -56,7 +56,7 @@
                                 %{--<a class="double_page"><i></i>双页</a>--}%
 
                                 <g:if test="${offset.toInteger() != 0}"><g:link action="tool" id="${toolId}"  params="[offset:offset.toInteger()-1]"  class="pre_page ml25" >上一页</g:link> </g:if>
-                                <g:if test="${offset.toInteger() < contentsize.toInteger()+1}"> <g:link action="tool" id="${toolId}" params="[offset:offset.toInteger()+2]" class="next_page">下一页</g:link></g:if>
+                                <g:if test="${offset.toInteger() < contentsize.toInteger()+1}"> <g:link action="tool" id="${toolId}" params="[offset:offset.toInteger()+1]" class="next_page">下一页</g:link></g:if>
                             </div>
                         </div>
                         <div class="row" style="padding:0 15px;">

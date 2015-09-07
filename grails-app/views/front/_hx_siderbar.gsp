@@ -22,7 +22,22 @@
                     </g:link>
                 </div>
             </li>
-
+            <li class="sub-menu dcjq-parent-li">
+                <div>
+                    <g:link controller="front" action="hxtools">
+                        <span>工具</span>
+                    %{--<span class="dcjq-icon"></span>--}%
+                    </g:link>
+                </div>
+            </li>
+        <li class="sub-menu dcjq-parent-li">
+            <div>
+                <g:link controller="front" action="hxexample">
+                    <span>案例</span>
+                %{--<span class="dcjq-icon"></span>--}%
+                </g:link>
+            </div>
+        </li>
         </ul>
     </div>
 </aside>

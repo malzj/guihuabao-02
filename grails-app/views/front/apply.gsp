@@ -230,8 +230,8 @@
             $(".panel-content ul li:eq(0) span").html(applyType)
             $(".panel-content ul li:eq(1) span").html(approvalusername)
             $(".panel-content ul li:eq(2) span").html(applyContent)
-            $(".panel-content ul li:eq(3) span").html(applyStauts)
-            $(".panel-content ul li:eq(4) span").html(applyDate)
+            $(".panel-content ul li:eq(3) span").html(applyDate)
+            $(".panel-content ul li:eq(4) span").html(applyStauts)
             $(".panel-content ul li:eq(5) span").html(approvetext)
             $.ajax({
                 url:'${webRequest.baseUrl}/front/applyRemindUpdate?id='+encodeURI(applyId)+'&version='+encodeURI(version)+'&applyremind=1',

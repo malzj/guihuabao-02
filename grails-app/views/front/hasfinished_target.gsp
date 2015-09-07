@@ -87,7 +87,7 @@
                                 <div class="tar_whole f-l">
                                     <input type="hidden" value="${targetInfo.id}"  />
                                     <div class="tar_title clearfix" >
-                                        <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
+                                        <a class="select_img" ><img class="f-l" src="${resource(dir:'img/target-img',file:'1.png')}" title="更换图片"/></a>
                                         <div class="f-l" style="margin-left:10px;">
 
                                             <h2 style="font-size:20px;margin:4px;color:#40bdf5;">${targetInfo.title}</h2>
@@ -112,7 +112,9 @@
 
                         </div>
 
-
+                        <div class="pagination">
+                            <g:paginate total="${targetInstanceTotal}"/>
+                        </div>
 
                     </div>
 
@@ -176,6 +178,14 @@
 <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
 <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
 
+<script class="include" type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dcjqaccordion.2.7.js')}"></script>
+<script src="${resource(dir: 'js', file: 'jquery.scrollTo.min.js')}"></script>
+<script src="${resource(dir: 'js', file: 'jquery.nicescroll.js')}" type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'respond.min.js')}" ></script>
+
+<!--common script for all pages-->
+<script src="${resource(dir: 'js', file: 'slidebars.min.js')}"></script>
+<script src="${resource(dir: 'js', file: 'common-scripts.js')}"></script>
 
 
 <script>
@@ -190,56 +200,56 @@
             var tid = $(this).find('input:first').val();
             $('#var_all').html(tid);
             $.ajax({
-                url: '${webRequest.baseUrl}/front/tshow',
+                url: '${webRequest.baseUrl}/front/ischeck',
                 method: 'post',
                 dataType: 'json',
                 data: {target_id: tid},
                 success: function (data) {
+                    if(data.msg) {
+                        $('#detail_title').html(data.target.title);
+                        $('#detail_content').html(data.target.content);
+                        $('#detail_fz').html(data.fzname)
+                        $('#detail_btime').html(data.target.begintime);
+                        $('#detail_etime').html(data.target.etime);
+                        $('#target_zj').html(data.target.targetzj);
+                        var mission = data.mission;
 
-                    $('#detail_title').html(data.target.title);
-                    $('#detail_content').html(data.target.content);
-                    $('#detail_fz').html(data.fzname)
-                    $('#detail_btime').html(data.target.begintime);
-                    $('#detail_etime').html(data.target.etime);
-                    $('#target_zj').html(data.target.targetzj);
-                    var mission = data.mission;
+                        for (var i = 0; i < mission.length; i++) {
 
-                    for (var i = 0; i < mission.length; i++) {
+                            var s = (mission[i].status == '1') ? '完成' : '进行中';
+                            tar_mission += '     <li class="clearfix">' +
+                                    ' <h2 style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务' + (i + 1) + '：<span style="color:#797979;">' + mission[i].title + '</span></h2>' +
 
-                        var s = (mission[i].status == '1') ? '完成' : '进行中';
-                        tar_mission += '     <li class="clearfix">' +
-                                ' <h2 style="padding:0 20px 10px 0;margin: 0;font-size: 20px;color:#03a9f4">任务' + (i + 1) + '：<span style="color:#797979;">' + mission[i].title + '</span></h2>' +
+                                    '<table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">' +
+                                    '<tr>' +
+                                    ' <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>' +
+                                    '<td width="75%"><span>' + mission[i].playname + '</span></td>' +
+                                    '</tr>' +
+                                    ' <tr>' +
+                                    ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>' +
+                                    ' <td>' +
+                                    '<span>' + mission[i].percent + '</span>' +
+                                    ' </td>' +
+                                    ' </tr>' +
+                                    ' </table>' +
+                                    ' <table class="table table-bordered f-l" style="border-spacing: 0;width:49%;">' +
+                                    ' <tr>' +
+                                    '<th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>' +
+                                    ' <td width="75%"><span>' + mission[i].begintime + '</span>—<span>' + mission[i].overtime + '</span></td>' +
+                                    '</tr>' +
+                                    ' <tr>' +
+                                    '<th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>' +
+                                    '<td>' +
+                                    ' <span>' + s + '</span>' +
+                                    '</td>' +
+                                    '</tr>' +
+                                    '</table>' +
+                                    '</li>';
 
-                                '<table class="table table-bordered f-l" style="border-spacing: 0;margin-right: 20px;width:48%">' +
-                                '<tr>' +
-                                ' <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>' +
-                                '<td width="75%"><span>' + mission[i].playname + '</span></td>' +
-                                '</tr>' +
-                                ' <tr>' +
-                                ' <th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务权重</th>' +
-                                ' <td>' +
-                                '<span>' + mission[i].percent + '</span>' +
-                                ' </td>' +
-                                ' </tr>' +
-                                ' </table>' +
-                                ' <table class="table table-bordered f-l" style="border-spacing: 0;width:49%;">' +
-                                ' <tr>' +
-                                '<th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;">起止日</th>' +
-                                ' <td width="75%"><span>' + mission[i].begintime + '</span>—<span>' + mission[i].overtime + '</span></td>' +
-                                '</tr>' +
-                                ' <tr>' +
-                                '<th style="text-align:center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;" >任务状态</th>' +
-                                '<td>' +
-                                ' <span>' + s + '</span>' +
-                                '</td>' +
-                                '</tr>' +
-                                '</table>' +
-                                '</li>';
+                        }
+                        $("#tar_detail .rwfj").append(tar_mission);
 
                     }
-                    $("#tar_detail .rwfj").append(tar_mission);
-
-
                 }, error: function () {
                     alert("获取数据失败5")
                 }

@@ -111,7 +111,9 @@
 
 
                         </div>
-
+                        <div class="pagination">
+                            <g:paginate total="${targetInstanceTotal}"/>
+                        </div>
 
 
                     </div>
@@ -175,7 +177,13 @@
 <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
 <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
 
+<script class="include" type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dcjqaccordion.2.7.js')}"></script>
+<script src="${resource(dir: 'js', file: 'jquery.scrollTo.min.js')}"></script>
+<script src="${resource(dir: 'js', file: 'jquery.nicescroll.js')}" type="text/javascript"></script>
+<script src="${resource(dir: 'js', file: 'respond.min.js')}" ></script>
 
+<!--common script for all pages-->
+<script src="${resource(dir: 'js', file: 'common-scripts.js')}"></script>
 
 <script>
     $(document).ready(function() {

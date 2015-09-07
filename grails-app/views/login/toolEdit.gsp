@@ -43,35 +43,61 @@
             <div class="middle_content">
                 <div class="m_box">
 
-                    <header class="panel-heading clearfix">
-                        查看工具或案例
-                        <g:link action="toolEdit" id="${toolInstance.id}" class="btn btn-info" style="display:block;float:right;">修改</g:link>
-                        <g:link action="toolDelete" id="${toolInstance.id}" class="btn btn-info" style="display:block;float:right;" onClick="return confirm('确定删除？');">删除</g:link>
+                    <header class="panel-heading">
+                        编辑
                     </header>
-                    <table>
-                        <tr>
-                            <td>名称：</td>
-                            <td width="345"><g:fieldValue bean="${toolInstance}" field="toolName"/></td>
-                        </tr>
-                        <tr>
-                            <td>封面：</td>
-                            <td>
-                                <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'images', file: ''+toolInstance.toolImg+'')}" /></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <g:link action="tools" class="btn btn-info">返回</g:link>
-                                <g:link action="toolContentCreate" id="${toolInstance.id}" class="btn btn-info">新建内容</g:link>
-                                <g:link action="toolContentList" id="${toolInstance.id}" class="btn btn-info">内容列表</g:link>
-                            </td>
-                        </tr>
-                    </table>
+
+                    <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'toolSave']" method="post"  enctype= "multipart/form-data">
+                        <table>
+                            <tr>
+                                <td>名称：</td>
+                                <td width="345"><input name="toolName" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${toolInstance?.toolName}"></td>
+                            </tr>
+                            <tr>
+                                <td>封面：</td>
+                                <td>
+                                    <input id="up_img" name="toolImg" type="file" value="${toolInstance?.toolImg}" />
+                                    <div id="imgdiv" class="zsimg"><img id="imgShow" /></div>
+                                    <span>上传封面：（232*196）</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>创建时间：</td>
+                                <td><g:datePicker name="dateCreate" precision="day" value="${toolInstance?.dateCreate}" /> </td>
+                            </tr>
+                            <tr>
+                                <td>创建类型：</td>
+                                <td>
+                                    <select name="style">
+                                        <option value="1">工具</option>
+                                        <option value="2">案例</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button type="submit" class="btn btn-info">保存</button>
+                                    <g:link action="tools" class="btn btn-info">返回</g:link>
+                                </td>
+                            </tr>
+                        </table>
+                    </g:form>
                 </div>
             </div>
         </section>
+        <!--main content end-->
 
+        <!--footer start-->
+        %{--<footer class="site-footer">--}%
+        %{--<div class="text-center">--}%
+        %{--2013 &copy; FlatLab by VectorLab.--}%
+        %{--<a href="index.html#" class="go-top">--}%
+        %{--<i class="fa fa-angle-up"></i>--}%
+        %{--</a>--}%
+        %{--</div>--}%
+        %{--</footer>--}%
+        <!--footer end-->
     </section>
 
     <!-- js placed at the end of the document so the pages load faster -->

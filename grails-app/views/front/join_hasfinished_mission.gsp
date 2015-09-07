@@ -69,6 +69,7 @@
                                     <g:each in="${missionInstance}" status="i" var="missionInfo">
                                         <li class="m_all">
                                             <span style="display:none">${missionInfo.id}</span>
+                                            <span class="mark <g:if test="${missionInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${missionInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${missionInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${missionInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                             <span class="sn">${i+1}</span>
                                             <span class="title" data-task-id="${missionInfo.id}">${missionInfo.title}</span>
                                             <span class="status"><g:if test="${missionInfo.status=="1"}">已完成</g:if><g:else>未完成</g:else></span>
@@ -136,17 +137,18 @@
 <script type="text/javascript" src="${resource(dir: 'assets/jquery-multi-select/js', file: 'jquery.multi-select.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'assets/jquery-multi-select/js', file: 'jquery.quicksearch.js')}"></script>
 
-<!--right slidebar-->
-<script src="${resource(dir: 'js', file: 'slidebars.min.js')}"></script>
-
-<!--common script for all pages-->
-<script src="${resource(dir: 'js', file: 'common-scripts.js')}"></script>
 
 <!--菜单js-->
 <script src="${resource(dir: 'js', file: 'context.js')}"></script>
 
 <!--this page  script only-->
 <script src="${resource(dir: 'js', file: 'advanced-form-components.js')}"></script>
+
+<!--right slidebar-->
+<script src="${resource(dir: 'js', file: 'slidebars.min.js')}"></script>
+
+<!--common script for all pages-->
+<script src="${resource(dir: 'js', file: 'common-scripts.js')}"></script>
 
 <!--百分比图-->
 <script src="${resource(dir: 'assets/chart-master', file: 'Chart.js')}"></script>

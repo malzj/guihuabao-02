@@ -73,6 +73,7 @@
                                         <g:if test="${missionInfo.issubmit=='1'}">
                                         <li class="m_all">
                                             <span style="display:none">${missionInfo.id}</span>
+                                            <span class="mark <g:if test="${missionInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${missionInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${missionInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${missionInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                             <span class="sn">${i+1}</span>
                                             <span class="title" data-task-id="${missionInfo.id}">${missionInfo.title}</span>
                                             <span class="status"><g:if test="${missionInfo.status=="1"}">已完成</g:if><g:else>未完成</g:else></span>
@@ -92,7 +93,7 @@
                             <span style="display:none" id="var_all"></span>
                         </div>
                         <div class="pagination">
-                            <g:paginate total="${missionInstanceTotal}" params="[selected: selected]" />
+                            <g:paginate total="${missionInstanceTotal}"/>
                         </div>
                     </div>
 
@@ -253,6 +254,9 @@
                     $("#reply_container").append(html2);
                     replyclick();
                         $("#task").slideLeftShow(400);
+                    if(data.mission.hasvisited=='2'){
+                        $('#taskaccept').css('display','none');
+                    }
                     },
                 error:function() {
 
@@ -270,7 +274,12 @@
                 dataType: "json",
                 type:'post',
                 success: function (data) {
-                    alert('接受任务成功！');
+                    if(data.msg) {
+                        alert('接受任务成功！');
+                    }else{
+                        alert('获取信息失败！');
+                    }
+
                 },
                 error:function(){alert('获取信息失败1！');}
             });

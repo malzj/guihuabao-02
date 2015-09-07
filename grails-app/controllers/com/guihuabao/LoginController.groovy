@@ -1207,6 +1207,6 @@ class LoginController {
             return
         }
 
-        [toolContentInstanceList: toolContentInstanceList]
+        [toolContentInstanceList: toolContentInstanceList,toolId: id]
     }
 }

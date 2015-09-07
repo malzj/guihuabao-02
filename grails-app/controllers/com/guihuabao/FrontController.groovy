@@ -455,8 +455,8 @@ class FrontController {
             return
         }
         params.max = Math.min(max ?: 10, 100)
-        def exampleInstanceList = HexuTool.findAllByStyle(1,params)
-        def exampleInstanceTotal = HexuTool.countByStyle(1)
+        def exampleInstanceList = HexuTool.findAllByStyle(2,params)
+        def exampleInstanceTotal = HexuTool.countByStyle(2)
         [exampleInstanceList: exampleInstanceList, exampleInstanceTotal: exampleInstanceTotal]
     }
     //案例内容
@@ -1007,7 +1007,7 @@ class FrontController {
     def reportSave(Long id, Long version){
         def myReportInfo
         def rs =[:]
-
+        def a = params
         if (!id) {
             myReportInfo = new Zhoubao(params)
             myReportInfo.dateCreate = new Date()
@@ -1547,7 +1547,57 @@ class FrontController {
 
         redirect(action: "taskCreate", id: taskInstance.id)
     }
+    //任务信息修改
+    def taskInfoUpdate(Long id, Long version){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def taskInfoInstance = Task.get(id)
 
+        if (!taskInfoInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), id])
+            redirect(action: "fzTask")
+            return
+        }
+
+        if (version != null) {
+            if (taskInfoInstance.version > version) {
+                taskInfoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'task.label', default: 'Task')] as Object[],
+                        "Another user has updated this User while you were editing")
+                render(view: "fzTask", model: [companyUserInstance: taskInfoInstance])
+                return
+            }
+        }
+
+        taskInfoInstance.properties = params
+        def overdate = params.overtime.split(" ")
+        def uid = session.user.id
+        taskInfoInstance.cid = session.company.id
+        taskInfoInstance.fzuid = uid
+        taskInfoInstance.fzname = session.user.name
+        taskInfoInstance.overtime = overdate[0]
+        taskInfoInstance.overhour = overdate[1]
+        taskInfoInstance.status = 0
+        if(params.playuid==uid.toString()){
+            taskInfoInstance.lookstatus = 2
+        }
+        taskInfoInstance.remindstatus = 0
+
+        taskInfoInstance.dateCreate = new Date()
+
+        if (!taskInfoInstance.save(flush: true)) {
+            render(view: "fzTask", model: [companyUserInstance: taskInfoInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'task.label', default: 'Task'), taskInfoInstance.id])
+        redirect(action: "fzTask")
+    }
+    //任务状态修改
     def taskUpdate(Long id, Long version){
         def taskInstance = Task.findByIdAndCid(id,session.company.id)
         def rs = [:]
@@ -1720,6 +1770,8 @@ class FrontController {
         infos.finished = Task.countByCidAndFzuidAndStatus(cid,uid,1)
         infos.unfinished = Task.countByCidAndFzuidAndStatus(cid,uid,0)
 
+        def bumenInstance = Bumen.findAllByCid(session.company.id)
+
         if(selected=="1"){//已完成
             fzTaskInstance = Task.findAllByCidAndFzuidAndStatus(cid,uid,1,params)
             fzTaskInstanceTotal = infos.finished
@@ -1733,7 +1785,7 @@ class FrontController {
             fzTaskInstance = Task.findAllByCidAndFzuid(cid,uid,params)
             fzTaskInstanceTotal = Task.countByCidAndFzuid(cid,uid)
         }
-        [fzTaskInstance: fzTaskInstance,fzTaskInstanceTotal: fzTaskInstanceTotal,selected: selected,infos: infos]
+        [fzTaskInstance: fzTaskInstance,fzTaskInstanceTotal: fzTaskInstanceTotal,bumenInstance: bumenInstance,selected: selected,infos: infos]
     }
     //参与任务
     def cyTask(Integer max){
@@ -2140,6 +2192,7 @@ class FrontController {
     }
 
     def targetSave(){
+        def msg
         def user = session.user
         def company = session.company
         if(!user&&!company){
@@ -2152,17 +2205,22 @@ class FrontController {
         targetInstance.status = '0'
         targetInstance.percent = 0
         targetInstance.issubmit='0'
-
+        targetInstance.isedit='0'
+        targetInstance.ischeck='0'
         targetInstance.dateCreate = new Date()
 
 
         if (!targetInstance.save(flush: true)) {
             render(model: [targetInstance: targetInstance])
+            msg=false
             return
+        }else{
+             msg=true
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
-        redirect(action: "user_target", id: targetInstance.id)
+        redirect(action: "user_target", params:[id: targetInstance.id,msg:msg])
+          [msg:msg]
     }
     //目标保存并分解
     def targetSaveAndSplit() {
@@ -2171,6 +2229,7 @@ class FrontController {
         targetInstance.cid = session.company.id
         targetInstance.img = '1.png'
         targetInstance.status = '0'
+        targetInstance.ischeck='0'
         targetInstance.percent = 0
         targetInstance.dateCreate = new Date()
 
@@ -2189,6 +2248,7 @@ class FrontController {
     def targetDelete() {
         def rs=[:]
         def tid=params.target_id
+
         def user = session.user
         def company = session.company
         if(!user&&!company){
@@ -2198,15 +2258,22 @@ class FrontController {
         def targetInstance = Target.get(tid)
         if (!targetInstance) {
            rs.msg=false
+            println('a')
+           return
         }
 
-        try {
-            targetInstance.delete(flush: true)
-            rs.msg=true
-        }
-        catch (DataIntegrityViolationException e) {
-           rs.msg=false
-        }
+            try {
+
+                targetInstance.delete()
+
+                rs.msg=true
+                println('b')
+            }
+            catch (DataIntegrityViolationException e) {
+                rs.msg = false
+
+            }
+
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
@@ -2266,6 +2333,7 @@ class FrontController {
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
         }else{
+            params<<[sort:"dateCreate",order: "desc"]
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,1,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,1)
         }
@@ -2307,6 +2375,9 @@ class FrontController {
         mission.issubmit='0'
 
         def targetInstance = Target.get(params.target_id)
+        if(targetInstance.issubmit=='1'){
+            mission.issubmit='1'
+        }
 
         mission.target = targetInstance
         mission.save()
@@ -2342,8 +2413,29 @@ class FrontController {
        def mission=Mission.get(params.mid)
        if(!mission){
            rs.msg=false
+
        }else{
-           mission.hasvisited='2'
+           rs.msg=true
+           mission.hasvisited=2
+           if(!mission.save()){
+               rs.msg=false
+           }else {
+               def target = mission.target
+               def missionlist = target.mission
+
+               def sum = 0
+               for (def m in missionlist) {
+                   println(m.hasvisited)
+                   if (m.hasvisited =='2') {
+
+                       sum += 1
+                   }
+               }
+
+               if (sum == missionlist.size()) {
+                   target.isedit = 1
+               }
+           }
        }
        if (params.callback) {
            render "${params.callback}(${rs as JSON})"
@@ -2376,6 +2468,29 @@ class FrontController {
         rs.target=targetInstance
         rs.mission=targetInstance.mission
         rs.fzname=fzname
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def ischeck(){
+        def rs = [:]
+        def tid = params.target_id
+        def targetInstance = Target.get(tid)
+        if(!targetInstance){
+            rs.msg=false
+        }else {
+            def fzname = com.guihuabao.CompanyUser.findById(targetInstance.fzuid).name
+            targetInstance.ischeck=1
+            if(!targetInstance.save(flush: true)){
+                rs.msg=false
+            }else {
+                rs.msg=true
+                rs.target = targetInstance
+                rs.mission = targetInstance.mission
+                rs.fzname = fzname
+            }
+        }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
@@ -2457,9 +2572,9 @@ class FrontController {
         }
         def r_per=100-sum
         if (target.percent == 100) {
-            target.status = '1'
+            target.status = 1
         }else{
-            target.status = '0'
+            target.status = 0
         }
         rs.msg = true
         rs.target = target
@@ -2607,6 +2722,7 @@ class FrontController {
             missionInstance = Mission.findAllByPlaynameAndStatus(playname, 0, params)
             missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, 0)
         } else {
+            params<<[sort:"dateCreate",order: "desc"]
             missionInstance = Mission.findAllByPlaynameAndStatus( playname, '0', params)
             missionInstanceTotal = Mission.countByPlaynameAndStatus( playname, 0)
       }
@@ -2631,7 +2747,9 @@ class FrontController {
         }else {
             def target = mission.target
             def replymission=mission.replymission
-            mission.hasvisited='1'
+            if(mission.hasvisited!='2') {
+                mission.hasvisited = '1'
+            }
             def fzname = com.guihuabao.CompanyUser.findById(target.fzuid).name
 
             for(def r in replymission){
@@ -2724,10 +2842,10 @@ class FrontController {
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid, fzuid, 0, params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid, fzuid, 0)
         }
-        [targetInstance: targetInstance, targetInstanceTotal: targetInstanceTotal, bumenInstance: bumenInstance, selected: selected]
+        [targetInstance: targetInstance, targetInstanceTotal: targetInstanceTotal, bumenInstance: bumenInstance,uid:fzuid,cid:cid, selected: selected]
     }
 
-    def TargetUserList() {
+    def targetUserList() {
         def user = session.user
         def company = session.company
         if (!user && !company) {
@@ -2780,6 +2898,11 @@ class FrontController {
             def target=mission.target
             mission.status=1
             target.percent+=mission.percent
+            if(target.percent==100){
+                target.status=1
+            }else{
+                target.status=0
+            }
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
