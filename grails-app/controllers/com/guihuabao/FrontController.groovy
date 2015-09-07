@@ -455,8 +455,8 @@ class FrontController {
             return
         }
         params.max = Math.min(max ?: 10, 100)
-        def exampleInstanceList = HexuTool.findAllByStyle(1,params)
-        def exampleInstanceTotal = HexuTool.countByStyle(1)
+        def exampleInstanceList = HexuTool.findAllByStyle(2,params)
+        def exampleInstanceTotal = HexuTool.countByStyle(2)
         [exampleInstanceList: exampleInstanceList, exampleInstanceTotal: exampleInstanceTotal]
     }
     //案例内容

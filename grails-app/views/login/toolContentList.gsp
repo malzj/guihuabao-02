@@ -42,7 +42,7 @@
         <section class="wrapper mt80">
             <div class="hxzs_heading clearfix">
                 <h2>内容</h2>
-                <g:link action="toolContentCreate" class="btn btn-info" style="display:block;float:right;">新建内容</g:link>
+                <g:link action="toolContentCreate" id="${toolId}" class="btn btn-info" style="display:block;float:right;">新建内容</g:link>
                 <g:link action="tools"  class="btn btn-info" style="display:block;float:right;">返回工具列表</g:link>
             </div>
             <div class="content mt25">

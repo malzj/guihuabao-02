@@ -49,7 +49,7 @@
                 <div class="mt25">
                     <g:each in="${exampleInstanceList}" status="i" var="exampleInstance">
                         <div class="zs_style">
-                            <g:link controller="front" action="book" id="${exampleInstance.id}">
+                            <g:link controller="front" action="example" id="${exampleInstance.id}">
                                 <img src="${resource(dir: 'images', file: ''+exampleInstance.toolImg+'')}" height="195" width="235" />
                             </g:link>
                             <span>${exampleInstance.toolName}</span>
