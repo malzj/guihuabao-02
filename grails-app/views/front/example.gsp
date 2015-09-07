@@ -46,7 +46,7 @@
             <section class="wrapper wrapper_reset">
                 <div class="hxzs_content clearfix row">
 
-                    <div class="book_show col-xs-9 ">
+                    <div class="book_show col-xs-12 ">
                         <div class="top clearfix">
                             <div class="address f-l">
                                 案例>列表>内容

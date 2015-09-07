@@ -2217,8 +2217,8 @@ class FrontController {
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
-        redirect(action: "user_target", id: targetInstance.id)
-        [msg:msg]
+        redirect(action: "user_target", params:[id: targetInstance.id,msg:msg])
+          [msg:msg]
     }
     //目标保存并分解
     def targetSaveAndSplit() {
@@ -2245,6 +2245,7 @@ class FrontController {
     def targetDelete() {
         def rs=[:]
         def tid=params.target_id
+
         def user = session.user
         def company = session.company
         if(!user&&!company){
@@ -2254,16 +2255,22 @@ class FrontController {
         def targetInstance = Target.get(tid)
         if (!targetInstance) {
            rs.msg=false
-        }else {
+            println('a')
+           return
+        }
 
             try {
-                targetInstance.delete(flush: true)
-                rs.msg = true
+
+                targetInstance.delete()
+
+                rs.msg=true
+                println('b')
             }
             catch (DataIntegrityViolationException e) {
                 rs.msg = false
+
             }
-        }
+
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else

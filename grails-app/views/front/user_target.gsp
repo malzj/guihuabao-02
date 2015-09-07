@@ -73,7 +73,7 @@
 </head>
 
 <body>
-
+<div class="tishi" style="border:1px solid #000;background-color: pink;text-align: center;width:300px;height:80px;margin:250px auto;line-height:80px;position: fixed;z-index: 10000;display:none;">${params.msg}</div>
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
@@ -717,11 +717,11 @@
                     dataType: 'json',
                     data: {target_id: tid},
                     success: function (data) {
-                        if(rs.msg) {
+                        if(data.msg) {
                             location.reload();
                             alert('删除成功！');
                         }else{
-                            alert('获取数据失败！');
+                            alert('删除失败！');
                         }
                     },
                     error: function () {
@@ -1435,6 +1435,7 @@
                 }else{
                     $('#enddate').css('border-color','#d2d2d2');
                 }
+
             })
 
 
@@ -1577,7 +1578,18 @@
                     }
                 })
             })
+
+                if($('.tishi').html()=='true'){
+                    alert('保存成功！')
+                    $('.tishi').html('')
+                }else if($('.tishi').html()=='false'){
+                    alert('保存失败！')
+                    $('.tishi').html('')
+                }
+
+
             })
+
 
 
     </script>
