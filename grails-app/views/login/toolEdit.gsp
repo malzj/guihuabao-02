@@ -47,7 +47,9 @@
                         编辑
                     </header>
 
-                    <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'toolSave']" method="post"  enctype= "multipart/form-data">
+                    <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'toolUpdate']" method="post"  enctype= "multipart/form-data">
+                        <g:hiddenField name="id" value="${toolInstance?.id}" />
+                        <g:hiddenField name="version" value="${toolInstance?.version}" />
                         <table>
                             <tr>
                                 <td>名称：</td>
@@ -56,8 +58,8 @@
                             <tr>
                                 <td>封面：</td>
                                 <td>
-                                    <input id="up_img" name="toolImg" type="file" value="${toolInstance?.toolImg}" />
-                                    <div id="imgdiv" class="zsimg"><img id="imgShow" /></div>
+                                    <input id="up_img" name="file1" type="file" />
+                                    <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'images', file: ''+toolInstance?.toolImg+'')}" /></div>
                                     <span>上传封面：（232*196）</span>
                                 </td>
                             </tr>
@@ -69,8 +71,8 @@
                                 <td>创建类型：</td>
                                 <td>
                                     <select name="style">
-                                        <option value="1">工具</option>
-                                        <option value="2">案例</option>
+                                        <option value="1" <g:if test="${toolInstance.style == "1"}">selected</g:if>>工具</option>
+                                        <option value="2" <g:if test="${toolInstance.style == "2"}">selected</g:if>>案例</option>
                                     </select>
                                 </td>
                             </tr>

@@ -474,8 +474,9 @@ class FrontController {
             offset =params.offset
         }
         params<<[offset:offset]
+        params<<[sort:"id", order:"asc"]
         def hxtool = HexuTool.findByIdAndStyle(id,2)
-        def contentlist = ToolContent.findAllByHexutools(hxtool,[sort:"id", order:"asc"])
+        def contentlist = ToolContent.findAllByHexutools(hxtool,params)
         def contentsize= ToolContent.countByHexutools(hxtool)
         def content=""
 

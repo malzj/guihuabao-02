@@ -58,8 +58,8 @@
                             <td>${fieldValue(bean: toolContentInstance, field: "title")}</td>
                             <td>
                                 <g:link action="toolContentShow" id="${toolContentInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
-                                <g:link action="contentEdit" id="${toolContentInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
-                                <g:link action="contentDelete" id="${toolContentInstance?.id}" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
+                                <g:link action="toolContentEdit" id="${toolContentInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
+                                <g:link action="toolContentDelete" id="${toolContentInstance?.id}" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
                             </td>
                         </tr>
                     </g:each>

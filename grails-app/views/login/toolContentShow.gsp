@@ -45,8 +45,8 @@
 
                     <header class="panel-heading clearfix">
                         内容
-                        <g:link action="contentEdit" id="${toolContentInstance.id}" class="btn btn-info" style="display:block;float:right;">修改</g:link>
-                        <g:link action="contentDelete" id="${toolContentInstance.id}" class="btn btn-info" style="display:block;float:right;" onclick="return confirm('确定删除？');">删除</g:link>
+                        <g:link action="toolContentEdit" id="${toolContentInstance.id}" class="btn btn-info" style="display:block;float:right;">修改</g:link>
+                        <g:link action="toolContentDelete" id="${toolContentInstance.id}" class="btn btn-info" style="display:block;float:right;" onclick="return confirm('确定删除？');">删除</g:link>
                     </header>
                     <div id="">标题：${toolContentInstance.title}</div>
                     <div id="content_page">
