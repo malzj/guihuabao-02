@@ -141,9 +141,7 @@
                             </div>
                             </g:each>
 
-                            <div class="pagination">
-                                <g:paginate total="${targetInstanceTotal}" />
-                            </div>
+
 
                             <span style="display: none;" id="var_all"></span>
                             <span style="display: none;" id="all_var"></span>
