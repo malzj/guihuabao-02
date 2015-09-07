@@ -254,6 +254,9 @@
                     $("#reply_container").append(html2);
                     replyclick();
                         $("#task").slideLeftShow(400);
+                    if(data.mission.hasvisited=='2'){
+                        $('#taskaccept').css('display','none');
+                    }
                     },
                 error:function() {
 
