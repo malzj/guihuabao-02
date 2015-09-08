@@ -55,7 +55,7 @@
                     <g:each in="${chapterInstanceList}" status="i" var="chapterInstance">
                         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                             <td>${fieldValue(bean: chapterInstance, field: "id")}</td>
-                            <td>${fieldValue(bean: chapterInstance, field: "chapterName")}</td>
+                            <td><g:link action="contentList" id="${chapterInstance?.id}">${fieldValue(bean: chapterInstance, field: "chapterName")}</g:link></td>
                             <td>
                                 <g:link action="chapterShow" id="${chapterInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
                                 <g:link action="chapterEdit" id="${chapterInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
