@@ -69,6 +69,9 @@
         .sub li { background: none;}
         .disabled { pointer-events: none; }
        input[type=text]:focus,textarea:focus{border-color:#03a9f4;}
+
+
+
     </style>
 </head>
 
@@ -132,7 +135,7 @@
 
                                 <div class="tar_content clearfix">
                                     <div class="f-l percent">${targetInfo.percent}%</div>
-                                    <div class="f-l"style="margin-left: 10px;">共<span>${targetInfo.mission.size()}</span>位同事参与</div>
+                                    <div class="f-l"style="margin-left: 10px;">共<span>${targetInfo.mission.size()}</span>个任务</div>
                                 </div>
                                 <div class="clearfix" style="width:235px;margin:0 auto;">
                                     <span class="btime f-l">${targetInfo.begintime}</span><span class="etime f-l" style="width:133px;">${targetInfo.etime}</span>
@@ -316,12 +319,12 @@
 
                                     <g:if test="${session.user.pid==1}">
                                         <g:each in="${bumenInstance}" var="bumenInfo">
-                                            <li class="dropdown-submenu "  >
+                                            <li class="dropdown-submenu "  style="margin-bottom: 0;">
                                                 <a tabindex="-1"  data-toggle="dropdown" class="bumen">${bumenInfo.name}<span style="display:none" >${bumenInfo.id}</span></a>
-                                                <ul class="dropdown-menu"  role="menu" aria-labelledby="dLabel"  style="margin:0;padding-top:20px;">
+                                                <ul class="dropdown-menu"  role="menu" aria-labelledby="dLabel"  style="margin:0;padding-top:10px;padding-bottom: 10px;">
                                                     <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
                                                         <span style="display:none">${session.user.bid}</span>
-                                                         <li  class="dropdown" ><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
+                                                         <li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
                                                     </g:each>
                                                 </ul>
                                             </li>
@@ -329,14 +332,14 @@
                                     </g:if>
                                     <g:elseif test="${session.user.pid==2}">
                                          <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
-                                             <span style="display:none">${session.user.bid}</span>
-                                             <li  class="dropdown"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
+                                            <span style="display:none">${session.user.bid}</span>
+                                            <g:if test="${userInfo.pid>=2}"><li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li></g:if>
                                          </g:each>
                                     </g:elseif>
 
                                     <g:else>
                                         <span style="display:none">${session.user.bid}</span>
-                                        <li  class="dropdown"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>
+                                        <li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>
                                     </g:else>
                                 </ul>
 
@@ -417,12 +420,12 @@
 
                                         <g:if test="${session.user.pid==1}">
                                             <g:each in="${bumenInstance}" var="bumenInfo">
-                                                <li class="dropdown-submenu "  >
+                                                <li class="dropdown-submenu "  style="margin-bottom: 0;">
                                                     <a tabindex="-1"  data-toggle="dropdown" class="bumen">${bumenInfo.name}</a>
-                                                    <ul class="dropdown-menu"  role="menu" aria-labelledby="dLabel"  style="margin:0;padding-top:20px;">
+                                                    <ul class="dropdown-menu"  role="menu" aria-labelledby="dLabel"  style="margin:0;padding-top:10px;padding-bottom: 10px;">
                                                         <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
                                                             <span style="display:none" >${session.user.bid}</span>
-                                                            <li  class="dropdown" ><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
+                                                            <li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
 
                                                         </g:each>
                                                     </ul>
@@ -432,12 +435,12 @@
                                         <g:elseif test="${session.user.pid==2}">
                                             <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
                                                 <span style="display:none">${session.user.bid}</span>
-                                                <li  class="dropdown "><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
+                                                <g:if test="${userInfo.pid>=2}"><li  class="dropdown " style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li></g:if>
                                             </g:each>
                                         </g:elseif>
                                         <g:else>
                                             <span style="display:none">${session.user.bid}</span>
-                                            <li  class="dropdown"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>
+                                            <li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>
                                         </g:else>
                                     </ul>
 
