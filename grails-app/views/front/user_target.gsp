@@ -731,7 +731,8 @@
                     data: {target_id: tid},
                     success: function (data) {
                         if(data.msg) {
-                            location.reload();
+                            url=location.href.split('?')[0];
+                            location.replace(url);
                             alert('删除成功！');
                         }else{
                             alert('删除失败！');
@@ -1034,11 +1035,13 @@
                 $("#select_img").css("display","none");
             });
             $('#select_img .close').click(function(){
-                location.reload();
+                url=location.href.split('?')[0];
+                location.replace(url);
             })
             $('#tar_fj .close').click(function(){
                 $("#tar_fj").css('display','none');
-                location.reload();
+                url=location.href.split('?')[0];
+                location.replace(url);
             })
 
 
@@ -1312,7 +1315,8 @@
                     data:{target_id:tid},
                     success:function(data){
                         alert("下发任务成功！");
-                        location.reload();
+                        url=location.href.split('?')[0];
+                        location.replace(url);
 
                     },
                     error:function(){alert('获取数据失败！')}
@@ -1348,7 +1352,8 @@
                     dataType:'json',
                     data:{target_id:target_id,img:img},
                     success:function(data){
-                        location.reload();
+                        url=location.href.split('?')[0];
+                        location.replace(url);
 
                     },
                     error:function(){alert('获取数据失败！')}
