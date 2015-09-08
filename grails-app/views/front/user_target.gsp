@@ -333,7 +333,7 @@
                                     <g:elseif test="${session.user.pid==2}">
                                          <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
                                             <span style="display:none">${session.user.bid}</span>
-                                            <g:if test="${userInfo.pid>=2}"><li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li></g:if>
+                                            <li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
                                          </g:each>
                                     </g:elseif>
 
@@ -435,7 +435,7 @@
                                         <g:elseif test="${session.user.pid==2}">
                                             <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
                                                 <span style="display:none">${session.user.bid}</span>
-                                                <g:if test="${userInfo.pid>=2}"><li  class="dropdown " style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li></g:if>
+                                               <li  class="dropdown " style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
                                             </g:each>
                                         </g:elseif>
                                         <g:else>
