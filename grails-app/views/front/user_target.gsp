@@ -1603,10 +1603,7 @@
                 })
             })
 
-                if($('.tishi').html()=='true'){
-                    alert('保存成功！')
-                    $('.tishi').html('')
-                }else if($('.tishi').html()=='false'){
+                if($('.tishi').html()=='false'){
                     alert('保存失败！')
                     $('.tishi').html('')
                 }
