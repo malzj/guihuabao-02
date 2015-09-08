@@ -408,17 +408,18 @@
                 }
             })
         })
-        function stop_Pro(e){
-            var e=e || window.event;
-            if (e && e.stopPropagation) {
-                //W3C取消冒泡事件
-                e.stopPropagation();
-            } else {
-                //IE取消冒泡事件
-                window.event.cancelBubble = true;
-            }
-        }
+
     })
+    function stop_Pro(e){
+        var e=e || window.event;
+        if (e && e.stopPropagation) {
+            //W3C取消冒泡事件
+            e.stopPropagation();
+        } else {
+            //IE取消冒泡事件
+            window.event.cancelBubble = true;
+        }
+    }
 </script>
 </body>
 </html>
