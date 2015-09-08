@@ -47,6 +47,7 @@
 
                 <div class="hxzs_heading clearfix">
                     <h2>编辑公告</h2>
+                    <a href="javascript:history.go(-1);" class="ml15 f-r btn btn-info">取消</a>
                     <button type="submit" class="btn btn-info f-r">保存</button>
                 </div>
                 <div class="mt25">

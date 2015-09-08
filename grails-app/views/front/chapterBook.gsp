@@ -45,26 +45,26 @@
     <section id="main-content" class="col-xs-10" style="padding-left: 0;">
         <section class="wrapper wrapper_reset">
             <div class="hxzs_content clearfix row">
-                <div class="book_list col-xs-3">
-                    <h2><g:fieldValue bean="${bookInstance}" field="bookName"/></h2>
-                    <div class="menu_side">
-                        <ul class="menu">
+                %{--<div class="book_list col-xs-3">--}%
+                    %{--<h2><g:fieldValue bean="${bookInstance}" field="bookName"/></h2>--}%
+                    %{--<div class="menu_side">--}%
+                        %{--<ul class="menu">--}%
 
-                            <g:each status="i" in="${syllabusInstanceList}" var="syllabusInstance" >
-                                <li>
-                                    <span>${syllabusInstance.syllabusName}</span>
-                                    <ul class="weeks <g:if test="${syllabusInstance.id==syllabus.id}">on</g:if>">
-                                        <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" var="chapterInstance">
-                                            <li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link action="chapterBook" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>
-                                        </g:each>
-                                    </ul>
-                                </li>
-                            </g:each>
-                        </ul>
-                    </div>
-                </div>
+                            %{--<g:each status="i" in="${syllabusInstanceList}" var="syllabusInstance" >--}%
+                                %{--<li>--}%
+                                    %{--<span>${syllabusInstance.syllabusName}</span>--}%
+                                    %{--<ul class="weeks <g:if test="${syllabusInstance.id==syllabus.id}">on</g:if>">--}%
+                                        %{--<g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" var="chapterInstance">--}%
+                                            %{--<li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link action="chapterBook" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>--}%
+                                        %{--</g:each>--}%
+                                    %{--</ul>--}%
+                                %{--</li>--}%
+                            %{--</g:each>--}%
+                        %{--</ul>--}%
+                    %{--</div>--}%
+                %{--</div>--}%
 
-                <div class="book_show col-xs-9">
+                <div class="book_show col-xs-12">
                     <div class="top clearfix">
                         <div class="address f-l">
                             和许助手>${syllabus.syllabusName}>${chapter.chapterName}
@@ -75,6 +75,7 @@
 
                             <g:if test="${offset.toInteger() != 0}"><g:link action="chapterBook" id="${bookId}"  params="[offset:offset.toInteger()-2]"  class="pre_page ml25" >上一页</g:link> </g:if>
                             <g:if test="${offset.toInteger() < contentsize.toInteger()/2+1}"> <g:link action="chapterBook" id="${bookId}" params="[offset:offset.toInteger()+2]" class="next_page">下一页</g:link></g:if>
+                            <button id="bookmenu" class="sb-toggle-right rbtn btn-blue ml25">目录</button>
                         </div>
                     </div>
                     <div class="row" style="padding:0 15px;">
@@ -85,7 +86,26 @@
             </div>
         </section>
         <!--main content end-->
-
+        <!-- Right Slidebar start -->
+        <div class="sb-slidebar sb-right sb-style-overlay">
+            <div class="soline clearfix">
+                <h5 class="side-title f-l">目录</h5>
+                <a class="sb-toggle-right clomenu f-r" href="javascript:;">收起目录</a>
+            </div>
+            <ul class="quick-chat-list">
+                <g:each status="i" in="${syllabusInstanceList}" var="syllabusInstance" >
+                    <li>
+                        <div class="syl-title">${syllabusInstance.syllabusName}</div>
+                        <ul class="char-title">
+                            <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" var="chapterInstance">
+                                <li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link action="chapterBook" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>
+                            </g:each>
+                        </ul>
+                    </li>
+                </g:each>
+            </ul>
+        </div>
+        <!-- Right Slidebar end -->
     </section>
 </div>
     <!-- js placed at the end of the document so the pages load faster -->
@@ -115,6 +135,14 @@
             $(".menu>li>span").click(function(){
                 $(this).next(".weeks").toggle();
             })
+            $(".sb-slidebar .syl-title").click(function () {
+                var ul = $(this).next();
+                if (ul.css("display") == "none") {
+                    ul.slideDown("fast");
+                } else {
+                    ul.slideUp("fast");
+                }
+            });
         })
 
     </script>

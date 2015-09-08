@@ -55,7 +55,7 @@
                     <g:each in="${syllabusInstanceList}" status="i" var="syllarbusInstance">
                     <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                         <td>${fieldValue(bean: syllarbusInstance, field: "id")}</td>
-                        <td>${fieldValue(bean: syllarbusInstance, field: "syllabusName")}</td>
+                        <td><g:link action="chapterList" id="${syllarbusInstance?.id}">${fieldValue(bean: syllarbusInstance, field: "syllabusName")}</g:link></td>
                         <td>
                             <g:link action="syllabusShow" id="${syllarbusInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
                             <g:link action="syllabusEdit" id="${syllarbusInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
