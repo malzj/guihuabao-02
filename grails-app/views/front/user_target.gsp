@@ -832,7 +832,7 @@
                     }else{
                         $('#startdate_edit').css('border-color','#d2d2d2');
                     }
-                    if($('#enddate_edit').val()==''){
+                    if($('#enddate_edit').val()==''||$('#enddate_edit').val()<=$('#startdate_edit').val()){
                         $('#enddate_edit').css('border-color','red');
                         return false;
                     }else{
@@ -1192,7 +1192,7 @@
                     }else{
                         $('#startdate_mission').css('border-color','#d2d2d2');
                     }
-                    if($('#enddate_mission').val()==''){
+                    if($('#enddate_mission').val()==''||$('#enddate_mission').val()<=$('#startdate_mission').val()){
                         $('#enddate_mission').css('border-color','red');
                         return false;
                     }else{
@@ -1400,7 +1400,7 @@
                 }else{
                     $('#startdate').css('border-color','#d2d2d2');
                 }
-                if($('#enddate').val()==''){
+                if($('#enddate').val()==''||$('#enddate').val()<=$('#startdate').val()){
                     $('#enddate').css('border-color','red');
                     return false;
                 }else{
@@ -1448,7 +1448,7 @@
                 }else{
                     $('#startdate').css('border-color','#d2d2d2');
                 }
-                if($('#enddate').val()==''){
+                if($('#enddate').val()==''||$('#enddate').val()<=$('#startdate').val()){
                     $('#enddate').css('border-color','red');
                     return false;
                 }else{
@@ -1606,9 +1606,7 @@
                     $('.tishi').html('')
                 }
 
-
             })
-
 
 
     </script>

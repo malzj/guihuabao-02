@@ -263,6 +263,9 @@
 <!--    <script src="js/all-chartjs.js"></script>-->
 <!--详情滑动框-->
 <script src="${resource(dir: 'js', file: 'slidelefthideshow.js')}"></script>
+<!--表单验证-->
+<script src="${resource(dir: 'js', file: 'jquery.validate.min.js')}"></script>
+<script src="${resource(dir: 'js', file: 'jquery.form.js')}"></script>
 
 <script type="text/javascript">
     var Script = function () {
@@ -313,6 +316,66 @@
             } else {
                 ul.slideUp("fast");
                 $(".toolkit .task-order").css("border-bottom","none");
+            }
+        });
+        $("#taskcreate").validate({
+            errorPlacement: function(error, element) {
+                $('#taskcreate-'+element[0].name).html(error);
+            },
+            submitHandler:function(form) {
+                var playstatus = $("#playstatus").val()
+                var playuid = $("#playuid").val()
+                if($('#startdate').val()==''){
+                    $('#startdate').css('border-color','red');
+                    return false;
+                }else{
+                    $('#startdate').css('border-color','#d2d2d2');
+                }
+                if($('#enddate').val()==''||$('#enddate').val()<=$('#startdate').val()){
+                    $('#enddate').css('border-color','red');
+                    return false;
+                }else{
+                    $('#enddate').css('border-color','#d2d2d2');
+                }
+                if(!playstatus){
+                    $('#taskcreate-playstatus').html("请选择紧急程度！")
+                    return false;
+                }else if(!playuid){
+                    $('#taskcreate-playuid').html("请选择执行人！")
+                    return false;
+                }else{
+                    form.submit()
+                }
+
+            },
+            rules: {
+
+                title: {
+                    required: true
+                },
+                content: {
+                    required: true
+                },
+                bigentime: {
+                    required: true
+                },
+                overtime: {
+                    required: true
+                }
+            },
+            messages: {
+                title: {
+                    required: "任务标题不能为空"
+                },
+                content: {
+                    required: "任务详情不能为空"
+                },
+                bigentime: {
+                    required: "请选择开始时间"
+                },
+                overtime: {
+                    required: "请选择结束时间"
+                }
             }
         });
 

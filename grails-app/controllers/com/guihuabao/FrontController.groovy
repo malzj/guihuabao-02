@@ -2193,6 +2193,7 @@ class FrontController {
     }
 
     def targetSave(){
+        def rs=[:]
         def msg
         def user = session.user
         def company = session.company
@@ -2211,6 +2212,7 @@ class FrontController {
         targetInstance.dateCreate = new Date()
 
 
+
         if (!targetInstance.save(flush: true)) {
             render(model: [targetInstance: targetInstance])
             msg=false
@@ -2219,9 +2221,10 @@ class FrontController {
              msg=true
         }
 
+
         flash.message = message(code: 'default.created.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
-        redirect(action: "user_target", params:[id: targetInstance.id,msg:msg])
-          [msg:msg]
+        redirect(action: "user_target",params:[id: targetInstance.id,msg:msg])
+
     }
     //目标保存并分解
     def targetSaveAndSplit() {
@@ -2305,6 +2308,7 @@ class FrontController {
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0)
         }else{
+            params<<[sort:"dateCreate",order: "desc"]
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0)
         }
