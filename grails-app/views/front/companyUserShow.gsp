@@ -89,6 +89,7 @@
                                     <g:hiddenField name="id" value="${companyUserInstance?.id}" />
                                     <g:link controller="front" action="companyUserEdit" id="${companyUserInstance?.id}" class="btn btn-info">修改</g:link>
                                     <g:actionSubmit type="submit" class="btn btn-info" action="companyUserDelete"  value="删除" onclick="return confirm('确定删除?');" />
+                                    <a href="javascript:history.go(-1);" class="ml15 btn btn-info">取消</a>
                                 </g:form>
                             </td>
                         </tr>

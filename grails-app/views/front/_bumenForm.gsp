@@ -18,6 +18,6 @@
     </tr>
     <tr>
         <td></td>
-        <td align="right"><button type="submit" class="btn btn-info">保存</button></td>
+        <td align="right"><button type="submit" class="btn btn-info">保存</button><a href="javascript:history.go(-1);" class="ml20 btn btn-info">取消</a></td>
     </tr>
 </table>

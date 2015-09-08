@@ -50,6 +50,7 @@
                 <div class="text">
                     ${companyNoticeInstance.content}
                 </div>
+                <a href="javascript:history.go(-1);" class=" mt10 ml20 f-r btn btn-info">取消</a>
                 <g:link action="companyNoticeDelete" id="${companyNoticeInstance.id}" class="btn btn-info mt10 ml20 f-r">删除</g:link>
                 <g:link action="companyNoticeEdit" id="${companyNoticeInstance.id}" class="btn btn-info mt10 f-r">编辑</g:link>
             </div>
