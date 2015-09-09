@@ -16,7 +16,16 @@
             <%Calendar calendar = new GregorianCalendar();%>
             <%Date date1 = time.parse(date)%>
             <%calendar.setTime(date1);%>
-            <%calendar.add(Calendar.HOUR,6)%>
+            <%def nowday = new Date()%>
+            <%def hour=nowday.getHours()%>
+            <%switch (hour){
+                case 19: calendar.add(Calendar.HOUR,4); break;
+                case 20: calendar.add(Calendar.HOUR,3); break;
+                case 21: calendar.add(Calendar.HOUR,2); break;
+                case 22: calendar.add(Calendar.HOUR,1); break;
+                case 23: calendar.add(Calendar.HOUR,0); break;
+                default: calendar.add(Calendar.HOUR,6); break;
+            }%>
             <%def etime = time.format(calendar.getTime())%>
             <%def timearr = etime.split(" ")%>
             <%def timearr1 = date.split(" ")%>
@@ -26,16 +35,17 @@
             <%def nowtime = timearr1[1]%>
             <%def utaskcount = com.guihuabao.Task.countByCidAndPlayuidAndLookstatusAndStatus(session.company.id,session.user.id,0,0)%>
             <%def otargetcount = com.guihuabao.Target.countByCidAndFzuidAndStatusAndEtimeGreaterThanEqualsAndEtimeLessThanEquals(session.company.id,session.user.id,0,date,etime)%>
-            <%def otaskcount = com.guihuabao.Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,2,0)%>
+            <%def otaskcount = com.guihuabao.Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(session.company.id,session.user.id,nowdate,endtime,nowtime,2,0)%>
             <%def messageTaskFcount = com.guihuabao.Task.countByCidAndFzuidAndLookstatusAndStatusAndRemindstatus(session.company.id,session.user.id,2,1,1)%>
-            <%def newapplycount = com.guihuabao.Apply.countByApprovaluidAndCidAndApplystatus(session.user.id,session.company.id,0)%>
+            <%def newapplycount = com.guihuabao.Apply.countByApprovaluidAndCidAndApplystatussAndApplystatus(session.user.id,session.company.id,1,0)%>
             <%def applycount = com.guihuabao.Apply.countByApplyuidAndCidAndRemindstatus(session.user.id,session.company.id,1)%>
             <%def taskreplycount = com.guihuabao.ReplyTask.countByBpuidAndCidAndStatus(session.user.id,session.company.id,0)%>
             <%def utargetcount = com.guihuabao.ReplyMission.countByBpunameAndStatus(session.user.name,0)%><!--未读目标回复提醒-->
             %{--<%def targettaskcount = com.guihuabao.Target.countByBpunameAndStatus(session.user.name,1,0)%><!--目标任务完成提醒-->--}%
             <%def finishtargetcount = com.guihuabao.Target.countByCidAndFzuidAndStatusAndIscheck(session.company.id,session.user.id,1,0)%><!--目标完成提醒-->
             <%def cytargetcount = com.guihuabao.Mission.countByPlaynameAndHasvisitedAndIssubmit(session.user.name, 0,1)%><!--未读目标任务提醒-->
-            <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount+taskreplycount+utargetcount+finishtargetcount+cytargetcount%>
+            <%def copytomecount = com.guihuabao.Apply.countByCopyuidAndCidAndApplystatusAndCopyremind(session.user.id,session.company.id,1,1)%><!--抄送提醒-->
+            <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount+taskreplycount+utargetcount+finishtargetcount+cytargetcount+copytomecount%>
             <ul>
                 <li class="msg">
                     <a href="javascript:;"><i class="fa fa-bell"></i>消息<g:if test="${allcount!=0}"><span class="tsh bg-important">${allcount}</span></g:if></a>
@@ -125,6 +135,14 @@
                                 <g:link action="hasfinished_target" >
                                     目标完成提醒
                                     <em class="f-r">${finishtargetcount}</em>
+                                </g:link>
+                            </li>
+                        </g:if>
+                        <g:if test="${copytomecount!=0}">
+                            <li>
+                                <g:link action="copyToMe" >
+                                    申请抄送我的
+                                    <em class="f-r">${copytomecount}</em>
                                 </g:link>
                             </li>
                         </g:if>

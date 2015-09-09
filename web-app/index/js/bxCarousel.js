@@ -68,15 +68,16 @@ $this.parent().siblings('.prev').click(function(){
 												});
 if(options.auto){
 	start_slide();
-if(options.auto_hover&&clicked!=true){
-	$this.find('li').live('mouseenter',function(){
-												if(!clicked){
-													clearInterval(j);
-																					  }
-																					  });$this.find('li').live('mouseleave',function(){if(!clicked){
-																						  start_slide();
-																					  }});
-}}
+//if(options.auto_hover&&clicked!=true){
+//	$this.find('li').live('mouseenter',function(){
+//												if(!clicked){
+//													clearInterval(j);
+//																					  }
+//																					  });$this.find('li').live('mouseleave',function(){if(!clicked){
+//																						  start_slide();
+//																					  }});
+//}
+}
 function start_slide(){
 	if(options.auto_dir=='next'){j=setInterval(function(){
 														slide_next()},options.auto_interval);

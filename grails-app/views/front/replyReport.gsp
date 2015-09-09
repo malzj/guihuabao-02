@@ -63,14 +63,16 @@
                     </ul>
                 </div>
                 <div class="zhoubao col-xs-9">
+                    <g:if test="${count!=0}">
                     <div class="top clearfix">
                         <div class="address f-l">
-                            oscar第1周的工作报告
+                            ${session.user.username}第${zhoubao.week}周的工作报告
                         </div>
                     </div>
                     <div class="discuss clearfix">
                         <h4>反馈及评论</h4>
                     </div>
+                    </g:if>
                     <div id="reply_container">
                         <g:each in="${allReplyInfo}" var="replyInfo">
                             <div class="reply_box">

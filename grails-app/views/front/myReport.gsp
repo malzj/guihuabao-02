@@ -142,7 +142,9 @@
                 <span>工作报告</span>
                 <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
             </header>
-            <div class="content">
+            <div id="viewcontent">
+                <div class="content">
+                </div>
             </div>
         </div>
     </div>
@@ -223,10 +225,31 @@
                     jsonp: "callback",
                     success: function (data) {
                         // 去渲染界面
-                        html='<div class="hang"><h4 class="chx">本周工作成效</h4><p>'+data.reportInfo.performance+'</p></div>';
-                        html+='<div class="hang"><h4 class="xd">总结心得</h4><p>'+data.reportInfo.xinde+'</p></div>';
-                        html+='<div class="hang"><h4 class="jh">下周工作计划</h4><p>'+data.reportInfo.plan+'</p></div>';
-                        html+='<div class="hang"><h4 class="hz">部门协同合作</h4><p>'+data.reportInfo.cooperate+'</p></div>';
+                        var performance,xinde,plan,cooperate;
+                        if(data.reportInfo.performance){
+                            performance=data.reportInfo.performance
+                        }else{
+                            performance=""
+                        }
+                        if(data.reportInfo.xinde){
+                            xinde=data.reportInfo.xinde
+                        }else{
+                            xinde=""
+                        }
+                        if(data.reportInfo.plan){
+                            plan=data.reportInfo.plan
+                        }else{
+                            plan=""
+                        }
+                        if(data.reportInfo.cooperate){
+                            cooperate=data.reportInfo.cooperate
+                        }else{
+                            cooperate=""
+                        }
+                        html='<div class="hang"><h4 class="chx">本周工作成效</h4><p>'+performance+'</p></div>';
+                        html+='<div class="hang"><h4 class="xd">总结心得</h4><p>'+xinde+'</p></div>';
+                        html+='<div class="hang"><h4 class="jh">下周工作计划</h4><p>'+plan+'</p></div>';
+                        html+='<div class="hang"><h4 class="hz">部门协同合作</h4><p>'+cooperate+'</p></div>';
                         $(".popup_box .m_box .content").append(html);
                     }
                 })

@@ -82,8 +82,10 @@
                                         <span class="sn">${i+1}</span>
                                         <span class="title" data-task-id="${taskInfo.id}">${taskInfo.title}</span>
                                         <div class="right">
-                                            <span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
-                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
+                                            %{--<span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
+                                            %{--<g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
+                                            <span class="hsfinish"><a href="javascript:;" class="taskedit" onclick="stop_Pro(event)" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
+                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" onclick="confirm('确定删除？');stop_Pro(event)" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
                                             <span class="date f-r">${taskInfo.overtime}</span>
                                         </div>
                                     </li>
@@ -102,8 +104,10 @@
                                         <span class="sn">${i+1}</span>
                                         <span class="title" data-task-id="${taskInfo.id}">${taskInfo.title}</span>
                                         <div class="right">
-                                            <span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>
-                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>
+                                            %{--<span class="hsfinish"><g:link action="taskUpdate" id="${taskInfo.id}" params="[version: taskInfo.version]"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</g:link></span>--}%
+                                            %{--<g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><g:link action="taskDelete"  id="${taskInfo.id}"><i class="fa fa-trash-o"></i>删除任务</g:link></span></g:if>--}%
+                                            <span class="hsfinish"><a href="javascript:;" class="taskedit" onclick="stop_Pro(event)" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa <g:if test="${taskInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span>
+                                            <g:if test="${taskInfo.fzuid.toInteger()==session.user.id}"><span class="del"><a href="javascript:;" class="taskdelete" onclick="confirm('确定删除？');stop_Pro(event)" data-id="${taskInfo.id}" data-version="${taskInfo.version}"><i class="fa fa-trash-o"></i>删除任务</a></span></g:if>
                                             <span class="date f-r">${taskInfo.overtime}</span>
                                         </div>
                                     </li>
@@ -471,6 +475,42 @@
             </g:each>
             </g:else>
         ]);
+        //任务标记
+        $(".taskedit").click(function(){
+            var id=$(this).attr("data-id");
+            var version=$(this).attr("data-version");
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/taskUpdate?id='+id+'&version='+version,
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function(data){
+                    if(data.msg){
+                        alert("标记成功!")
+                        window.location.reload()
+                    }else{
+                        alert("标记失败!")
+                    }
+                }
+            })
+        })
+        //任务删除
+        $(".taskdelete").click(function(){
+            var id=$(this).attr("data-id");
+            var version=$(this).attr("data-version");
+            $.ajax({
+                url:'${webRequest.baseUrl}/front/taskDelete?id='+id,
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function(data){
+                    if(data.msg){
+                        alert("删除成功!")
+                        window.location.reload()
+                    }else{
+                        alert("删除失败!")
+                    }
+                }
+            })
+        })
     })
 </script>
 </body>

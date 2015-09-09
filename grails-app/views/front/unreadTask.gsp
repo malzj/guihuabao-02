@@ -322,7 +322,7 @@
 
         $("#taskaccept").click(function(){
             var taskid = $("#taskid").val();
-            var version = $("#version").val();
+            var version = parseInt($("#version").val())+1;
             $.ajax({
                 url:'${webRequest.baseUrl}/front/taskShow?id='+taskid+'&version='+version+'&accept=1',
                 dataType: "jsonp",

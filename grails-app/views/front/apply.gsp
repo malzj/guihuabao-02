@@ -42,11 +42,12 @@
     #apply_tab .th{background:#f8f8f8;}
     #apply_tab td{padding:10px;margin:0;}
     #apply_tab tr td:nth-of-type(1){width:140px;}
-    #apply_tab tr td:nth-of-type(2){width:600px;}
+    #apply_tab tr td:nth-of-type(2){width:400px;}
     #apply_tab tr td:nth-of-type(3){width:200px;}
-    #apply_tab tr td:nth-of-type(4){width:140px;}
-    #apply_tab tr td:nth-of-type(5){width:400px;}
-    #apply_tab tr td:nth-of-type(6){width:140px;}
+    #apply_tab tr td:nth-of-type(4){width:200px;}
+    #apply_tab tr td:nth-of-type(5){width:140px;}
+    #apply_tab tr td:nth-of-type(6){width:400px;}
+    #apply_tab tr td:nth-of-type(7){width:140px;}
     .select{width:300px;height:35px;border:1px solid #d0d0d0;}
     textarea{border:1px solid #d0d0d0;width:500px;height:400px;resize:none;}
     .panel-content{margin:15px;}
@@ -95,6 +96,7 @@
                             <td >申请类型</td>
                             <td>申请内容</td>
                             <td>审批人</td>
+                            <td>抄送人</td>
                             <td>审批结果</td>
                             <td>审批反馈</td>
                             <td>申请时间</td>
@@ -104,6 +106,7 @@
                                 <td>${applyInstance.type}</td>
                                 <td>${applyInstance.content}</td>
                                 <td>${applyInstance.approvalusername}</td>
+                                <td>${applyInstance.copyname}</td>
                                 <td>${applyInstance.status}</td>
                                 <td>${applyInstance.approvetext}</td>
                                 <td>${applyInstance.dateCreate.format("yyyy-MM-dd")}</td>
@@ -140,7 +143,20 @@
                     <td><!--<input class="form-control form-control-inline input-medium default-date-picker" data-toggle="dropdown" name="newapply" />-->
                         <select id="approvaluid" name="approvaluid" class="select">
                             <g:each in="${companyuserList}" var="user">
-                                <option value="${user.id}">${com.guihuabao.Bumen.get(user.bid).name}${com.guihuabao.Persona.get(user.pid).name}-${user.name}</option>
+                                <option value="${user.id}">${com.guihuabao.Bumen.get(user.bid).name}-${user.name}</option>
+                            </g:each>
+
+                        </select>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">抄送人</td>
+                    <td><!--<input class="form-control form-control-inline input-medium default-date-picker" data-toggle="dropdown" name="newapply" />-->
+                        <select id="copyuid" name="copyuid" class="select">
+                            <option value="" selected>请选择抄送人</option>
+                            <g:each in="${companyuserList}" var="copyuser">
+                                <option value="${copyuser.id}">${com.guihuabao.Bumen.get(copyuser.bid).name}-${copyuser.name}</option>
                             </g:each>
 
                         </select>
@@ -175,6 +191,7 @@
             <ul>
                 <li>申请类型：<span></span></li>
                 <li>审批人：<span></span></li>
+                <li>抄送人：<span></span></li>
                 <li>申请内容：<span></span></li>
                 <li>申请时间：<span></span></li>
                 <li>申请结果：<span></span></li>
@@ -224,15 +241,17 @@
             var applyType = $(this).children("td:eq(0)").html();
             var applyContent = $(this).children("td:eq(1)").html();
             var approvalusername = $(this).children("td:eq(2)").html();
-            var applyStauts = $(this).children("td:eq(3)").html();
-            var approvetext = $(this).children("td:eq(4)").html();
-            var applyDate = $(this).children("td:eq(5)").html();
+            var copyname = $(this).children("td:eq(3)").html();
+            var applyStauts = $(this).children("td:eq(4)").html();
+            var approvetext = $(this).children("td:eq(5)").html();
+            var applyDate = $(this).children("td:eq(6)").html();
             $(".panel-content ul li:eq(0) span").html(applyType)
             $(".panel-content ul li:eq(1) span").html(approvalusername)
-            $(".panel-content ul li:eq(2) span").html(applyContent)
-            $(".panel-content ul li:eq(3) span").html(applyDate)
-            $(".panel-content ul li:eq(4) span").html(applyStauts)
-            $(".panel-content ul li:eq(5) span").html(approvetext)
+            $(".panel-content ul li:eq(2) span").html(copyname)
+            $(".panel-content ul li:eq(3) span").html(applyContent)
+            $(".panel-content ul li:eq(4) span").html(applyDate)
+            $(".panel-content ul li:eq(5) span").html(applyStauts)
+            $(".panel-content ul li:eq(6) span").html(approvetext)
             $.ajax({
                 url:'${webRequest.baseUrl}/front/applyRemindUpdate?id='+encodeURI(applyId)+'&version='+encodeURI(version)+'&applyremind=1',
                 dataType: "jsonp",
@@ -270,9 +289,10 @@
         var content = $('#content').val();
         var type=$('#type').val();
         var approvaluid=$('#approvaluid').val()
+        var copyuid=$('#copyuid').val()
         console.log(content+type+approvaluid)
         $.ajax({
-            url:'${webRequest.baseUrl}/front/applySave1?content='+encodeURI(content)+'&type='+encodeURI(type)+'&approvaluid='+encodeURI(approvaluid),
+            url:'${webRequest.baseUrl}/front/applySave1?content='+encodeURI(content)+'&type='+encodeURI(type)+'&approvaluid='+encodeURI(approvaluid)+'&copyuid='+encodeURI(copyuid),
             dataType: "jsonp",
             jsonp: "callback",
             success: function (data) {
@@ -291,10 +311,11 @@
         var content = $('#content').val();
         var type=$('#type').val();
         var approvaluid=$('#approvaluid').val()
+        var copyuid=$('#copyuid').val()
         $(this).attr("disabled","disabled")
         console.log(content+type+approvaluid)
         $.ajax({
-            url:'${webRequest.baseUrl}/front/applySave?content='+encodeURI(content)+'&type='+encodeURI(type)+'&approvaluid='+encodeURI(approvaluid),
+            url:'${webRequest.baseUrl}/front/applySave?content='+encodeURI(content)+'&type='+encodeURI(type)+'&approvaluid='+encodeURI(approvaluid)+'&copyuid='+encodeURI(copyuid),
             dataType: "jsonp",
             jsonp: "callback",
             success: function (data) {

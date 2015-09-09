@@ -50,12 +50,12 @@
                     </g:link>
                     <span>登入页图片</span>
                 </div>
-                <div class="zs_style">
-                    <g:link action="funIntroduction" id="1">
-                        <img src="${resource(dir: 'img', file: 'sz_img_1.png')}" height="195" width="235" />
-                    </g:link>
-                    <span>功能介绍</span>
-                </div>
+                %{--<div class="zs_style">--}%
+                    %{--<g:link action="funIntroduction" id="1">--}%
+                        %{--<img src="${resource(dir: 'img', file: 'sz_img_1.png')}" height="195" width="235" />--}%
+                    %{--</g:link>--}%
+                    %{--<span>功能介绍</span>--}%
+                %{--</div>--}%
                 <div class="zs_style">
                     <g:link action="inform" id="1">
                         <img src="${resource(dir: 'img', file: 'sz_img_1.png')}" height="195" width="235" />
@@ -68,12 +68,12 @@
                     </g:link>
                     <span>反馈意见</span>
                 </div>
-                <div class="zs_style">
-                    <g:link action="version" id="1">
-                        <img src="${resource(dir: 'img', file: 'sz_img_1.png')}" height="195" width="235" />
-                    </g:link>
-                    <span>版本更新</span>
-                </div>
+                %{--<div class="zs_style">--}%
+                    %{--<g:link action="version" id="1">--}%
+                        %{--<img src="${resource(dir: 'img', file: 'sz_img_1.png')}" height="195" width="235" />--}%
+                    %{--</g:link>--}%
+                    %{--<span>版本更新</span>--}%
+                %{--</div>--}%
                 <div class="zs_style">
                     <g:link action="clause" id="1">
                         <img src="${resource(dir: 'img', file: 'sz_img_1.png')}" height="195" width="235" />
