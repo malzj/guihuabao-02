@@ -7,6 +7,9 @@ class Apply {
     String content      //申请内容
     String approvaluid      //审批人id
     String approvalusername     //审批人用户名
+    String copyuid//抄送人id
+    String copyname//抄送人用户名
+    String copyremind//抄送提醒（新建时和查看过后0，审批通过但未查看1）
     String status//中文审核状态 未审核  已通过 未通过
     String cid      //公司id
     String approvetext      //审批反馈
@@ -28,5 +31,7 @@ class Apply {
         applystatus(nullable: true)
         applystatuss(nullable: true)
         remindstatus(nullable: true)
+        copyuid(nullable: true)
+        copyname(nullable: true)
     }
 }

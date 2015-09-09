@@ -1161,7 +1161,7 @@ class FrontController {
             myReplyInfo[i].status=1
         }
 
-        [replyInstance: replyInstance,allReplyInfo: allReplyInfo,count: count]
+        [replyInstance: replyInstance,allReplyInfo: allReplyInfo,zhoubao: zhoubao,count: count]
     }
 
     //回复我的
@@ -1264,6 +1264,9 @@ class FrontController {
         applyInstance.applyusername = session.user.name
         applyInstance.cid= session.company.id
         applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+        if(params.copyuid) {
+            applyInstance.copyname = CompanyUser.get(params.copyuid).name
+        }
         applyInstance.status="未审核"
         Date currentTime = new Date();
 //        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -1271,6 +1274,7 @@ class FrontController {
         applyInstance.dateCreate=currentTime
         applyInstance.applystatus=0
         applyInstance.applystatuss=1
+        applyInstance.copyremind=0
         applyInstance.remindstatus = 0
         if (!applyInstance.save(flush: true)) {
             return
@@ -1293,6 +1297,9 @@ class FrontController {
         applyInstance.applyusername = session.user.name
         applyInstance.cid= session.company.id
         applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+        if(params.copyuid) {
+            applyInstance.copyname = CompanyUser.get(params.copyuid).name
+        }
         applyInstance.status="未审核"
         Date currentTime = new Date();
 //        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -1300,6 +1307,7 @@ class FrontController {
         applyInstance.dateCreate=currentTime
         applyInstance.applystatus=0
         applyInstance.applystatuss=0
+        applyInstance.copyremind=0
         applyInstance.remindstatus = 0
         if (!applyInstance.save(flush: true)) {
             return
@@ -1318,6 +1326,10 @@ class FrontController {
         def a = params.applysub
         if(applyInstance){//判断信息是否为空
             rs.msg=true
+            applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+            if(params.copyuid) {
+                applyInstance.copyname = CompanyUser.get(params.copyuid).name
+            }
             if(params.applysub=="1"){//判断是存草稿还是提交
                 applyInstance.applystatuss=1
             }else{
@@ -1418,6 +1430,69 @@ class FrontController {
             redirect(action: "user_draft", id: id)
         }
     }
+    //抄送我的
+    def copyToMe(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        params.max = Math.min(max ?: 10, 100)
+        params<<[sort: "dateCreate",order: "desc"]
+        def userId= session.user.id
+        def companyId = session.company.id
+        def selected = params.selected
+        def applylist
+        def applyInstanceTotal
+        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
+        if(selected == "1"){//未查看
+            applylist= Apply.findAllByCopyuidAndCidAndApplystatusAndCopyremind(userId,companyId,1,1,params)
+            applyInstanceTotal= Apply.countByCopyuidAndCidAndApplystatusAndCopyremind(userId,companyId,1,1)
+        }else if(selected == "0"){//已查看
+            applylist= Apply.findAllByCopyuidAndCidAndApplystatusAndCopyremind(userId,companyId,1,0,params)
+            applyInstanceTotal= Apply.countByCopyuidAndCidAndApplystatusAndCopyremind(userId,companyId,1,0)
+        }else{//全部
+            applylist= Apply.findAllByCopyuidAndCidAndApplystatus(userId,companyId,1,params)
+            applyInstanceTotal= Apply.countByCopyuidAndCidAndApplystatus(userId,companyId,1)
+        }
+
+        [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]
+    }
+    //抄送提醒修改
+    def copyRemindUpdate(){
+        def rs = [:]
+        def id = params.id
+        def companyId = session.company.id
+        def version = params.version.toInteger()
+        def applyInstance = Apply.findByIdAndCid(id,companyId)
+        if(!applyInstance){
+            rs.msg=false
+        }else{
+            rs.msg=true
+
+            applyInstance.copyremind = 0
+
+            applyInstance.properties = params
+        }
+
+        if (version != null) {
+            if (applyInstance.version > version) {
+                rs.msg=false
+            }else{
+                if(!applyInstance.save(flush: true)){
+                    rs.msg=false
+                }else{
+                    rs.msg=true
+                }
+            }
+        }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
     //我的审核
     def user_approve(Integer max){
         def user = session.user
@@ -1445,7 +1520,7 @@ class FrontController {
             applyInstanceTotal= Apply.countByApprovaluidAndCidAndApplystatus(userId,companyId,0)
         }else{//全部
             applylist= Apply.findAllByApprovaluidAndCidAndApplystatuss(userId,companyId,1,params)
-            applyInstanceTotal= Apply.countByApprovaluidAndCid(userId,companyId)
+            applyInstanceTotal= Apply.countByApprovaluidAndCidAndApplystatuss(userId,companyId,1)
         }
         [applylist:applylist,applyInstanceTotal:applyInstanceTotal]
     }
@@ -1465,10 +1540,12 @@ class FrontController {
                 applyInstance.applystatus = 1
                 applyInstance.status = "已通过"
                 applyInstance.remindstatus = 1
+                applyInstance.copyremind=1
             } else if(applystatus=="2"){
                 applyInstance.applystatus = 2
                 applyInstance.status = "未通过"
                 applyInstance.remindstatus = 1
+                applyInstance.copyremind=0
             }
             applyInstance.properties = params
         }
@@ -2611,22 +2688,35 @@ class FrontController {
             return
         }
         params.max = Math.min(max ?: 10, 100)
+        def uid=session.user.id
+        def cid=session.company.id
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm")
-        def date = time.format(new Date())
-        Calendar calendar = new GregorianCalendar();
+        def nowdate=new Date()
+        def date = time.format(nowdate)
+        Calendar calendar = new GregorianCalendar()
         Date date1 = time.parse(date)
-        calendar.setTime(date1);
-        calendar.add(Calendar.HOUR,6)
+        calendar.setTime(date1)
+        def hour=nowdate.getHours()
+
+
+        switch (hour){
+            case 19: calendar.add(Calendar.HOUR,4); break;
+            case 20: calendar.add(Calendar.HOUR,3); break;
+            case 21: calendar.add(Calendar.HOUR,2); break;
+            case 22: calendar.add(Calendar.HOUR,1); break;
+            case 23: calendar.add(Calendar.HOUR,0); break;
+            default: calendar.add(Calendar.HOUR,6); break;
+        }
         def etime = time.format(calendar.getTime())
         def timearr = etime.split(" ")
         def timearr1 = date.split(" ")
         def enddate = timearr[0]
         def endtime = timearr[1]
-        def nowdate = timearr1[0]
+        def nowday = timearr1[0]
         def nowtime = timearr1[1]
 
-        def messageTaskInstance = Task.findByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,2,0)
-        def messageTaskInstanceTotal = Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOvertimeGreaterThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(session.company.id,session.user.id,enddate,endtime,nowdate,nowtime,2,0)
+        def messageTaskInstance = Task.findAllByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(cid, uid, nowday, endtime, nowtime, 2, 0,params)
+        def messageTaskInstanceTotal = Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(cid,uid,nowday,endtime,nowtime,2,0)
         [messageTaskInstance: messageTaskInstance,messageTaskInstanceTotal:messageTaskInstanceTotal]
     }
 

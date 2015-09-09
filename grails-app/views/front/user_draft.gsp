@@ -44,11 +44,12 @@
     #apply_tab .th{background:#f8f8f8;}
     #apply_tab td{ padding:10px;margin:0;}
     #apply_tab tr td:nth-of-type(1){width:140px;}
-    #apply_tab tr td:nth-of-type(2){width:800px;}
+    #apply_tab tr td:nth-of-type(2){width:600px;}
     #apply_tab tr td:nth-of-type(3){width:200px;}
-    #apply_tab tr td:nth-of-type(4){width:140px;}
+    #apply_tab tr td:nth-of-type(4){width:200px;}
     #apply_tab tr td:nth-of-type(5){width:140px;}
-    #apply_tab tr td:nth-of-type(6){width:200px;}
+    #apply_tab tr td:nth-of-type(6){width:140px;}
+    #apply_tab tr td:nth-of-type(7){width:200px;}
     .select{width:300px;height:35px;border:1px solid #d0d0d0;}
     textarea{border:1px solid #d0d0d0;width:500px;height:400px;resize:none;}
     .panel-content{margin:15px;}
@@ -77,7 +78,7 @@
                 <!--<div class="info_title">-->
                 <table id="apply_top" width="100%" height="50px">
                     <tr>
-                        <td width="106px">我的申请</td>
+                        <td width="106px">草稿</td>
                         %{--<td style=" position:relative;width:96px;">--}%
                             %{--<div id="myfilter" href="#"><span id="filter-content">筛选</span><span style="margin-left:20px;"><i class="fa fa-sort-down"></i></span></div>--}%
                             %{--<ul id="filter">--}%
@@ -99,6 +100,7 @@
                             <td>申请类型</td>
                             <td>申请内容</td>
                             <td>审批人</td>
+                            <td>抄送人</td>
                             <td>审批结果</td>
                             <td>申请时间</td>
                             <td>
@@ -106,10 +108,11 @@
                             </td>
                         </tr>
                         <g:each in="${applylist}" status="i" var="applyInstance">
-                            <tr data-id="${applyInstance.id}" data-version="${applyInstance.version}" data-spuid="${applyInstance.approvaluid}" data-applyType="${applyInstance.type}">
+                            <tr data-id="${applyInstance.id}" data-version="${applyInstance.version}" data-spuid="${applyInstance.approvaluid}"  data-cpuid="${applyInstance.copyuid}" data-applyType="${applyInstance.type}">
                                 <td>${applyInstance.type}</td>
                                 <td>${applyInstance.content}</td>
                                 <td>${applyInstance.approvalusername}</td>
+                                <td>${applyInstance.copyname}</td>
                                 <td>${applyInstance.status}</td>
                                 <td>${applyInstance.dateCreate.format("yyyy-MM-dd")}</td>
                                 <td>
@@ -156,9 +159,11 @@
             <ul>
                 <li>申请类型：<span></span></li>
                 <li>审批人：<span></span></li>
+                <li>抄送人：<span></span></li>
                 <li>申请内容：<span></span></li>
                 <li>申请时间：<span></span></li>
                 <li>申请结果：<span></span></li>
+                <li>审核反馈：<span></span></li>
             </ul>
         </div>
 
@@ -185,8 +190,21 @@
                     <td><!--<input class="form-control form-control-inline input-medium default-date-picker" data-toggle="dropdown" name="newapply" />-->
                         <select id="approvaluid" name="approvaluid" class="select">
                             <g:each in="${companyuserList}" var="user">
-                                <option value="${user.id}">${com.guihuabao.Bumen.get(user.bid).name}${com.guihuabao.Persona.get(user.pid).name}-${user.name}</option>
+                                <option value="${user.id}">${com.guihuabao.Bumen.get(user.bid).name}-${user.name}</option>
                             </g:each>
+                        </select>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">抄送人</td>
+                    <td><!--<input class="form-control form-control-inline input-medium default-date-picker" data-toggle="dropdown" name="newapply" />-->
+                        <select id="copyuid" name="copyuid" class="select">
+                            <option selected>请选择抄送人</option>
+                            <g:each in="${companyuserList}" var="copyuser">
+                                <option value="${copyuser.id}">${com.guihuabao.Bumen.get(copyuser.bid).name}-${copyuser.name}</option>
+                            </g:each>
+
                         </select>
 
                     </td>
@@ -247,13 +265,15 @@
             var applyType = $(this).parent().siblings("td:eq(0)").html();
             var applyContent = $(this).parent().siblings("td:eq(1)").html();
             var approvalusername = $(this).parent().siblings("td:eq(2)").html();
-            var applyStauts = $(this).parent().siblings("td:eq(3)").html();
-            var applyDate = $(this).parent().siblings("td:eq(4)").html();
+            var copyname = $(this).parent().siblings("td:eq(3)").html();
+            var applyStauts = $(this).parent().siblings("td:eq(4)").html();
+            var applyDate = $(this).parent().siblings("td:eq(5)").html();
             $(".panel-content ul li:eq(0) span").html(applyType)
             $(".panel-content ul li:eq(1) span").html(approvalusername)
-            $(".panel-content ul li:eq(2) span").html(applyContent)
-            $(".panel-content ul li:eq(3) span").html(applyDate)
-            $(".panel-content ul li:eq(4) span").html(applyStauts)
+            $(".panel-content ul li:eq(2) span").html(copyname)
+            $(".panel-content ul li:eq(3) span").html(applyContent)
+            $(".panel-content ul li:eq(4) span").html(applyDate)
+            $(".panel-content ul li:eq(5) span").html(applyStauts)
             $("#draftdetails").css("display","block");
         })
         $(".draft_edit").click(function(){
@@ -261,12 +281,14 @@
             var applyId = $(this).parent().parent().attr("data-id");
             var version = $(this).parent().parent().attr("data-version");
             var spuid = $(this).parent().parent().attr("data-spuid");
+            var cpuid = $(this).parent().parent().attr("data-cpuid");
             var applyType = $(this).parent().parent().attr("data-applyType");
             var applyContent = $(this).parent().siblings("td:eq(1)").html();
             $("#applyId").val(applyId)
             $("#version").val(version)
             $("#type").find("option[value='"+applyType+"']").attr("selected",true)
-            $("#shenpiren").find("option[value='"+spuid+"']").attr("selected",true)
+            $("#approvaluid").find("option[value='"+spuid+"']").attr("selected",true)
+            $("#copyuid").find("option[value='"+cpuid+"']").attr("selected",true)
             $("#applyContent").val(applyContent)
         })
         $("#myfilter").click(function(){
@@ -289,6 +311,7 @@
         var id = $("#applyId").val();
         var version = $("#version").val();
         var approvaluid=$('#approvaluid').val();
+        var copyuid=$('#copyuid').val()
         var applysub=$(this).attr("data-sub");
         var dumpto
         if(applysub=="1"){
@@ -299,7 +322,7 @@
         $(this).attr("disabled","disabled")
         console.log(content+type+approvaluid)
         $.ajax({
-            url:'${webRequest.baseUrl}/front/applyUpdate?id='+encodeURI(id)+'&version='+encodeURI(version)+'&content='+encodeURI(content)+'&type='+encodeURI(type)+'&approvaluid='+encodeURI(approvaluid)+'&applysub='+encodeURI(applysub),
+            url:'${webRequest.baseUrl}/front/applyUpdate?id='+encodeURI(id)+'&version='+encodeURI(version)+'&content='+encodeURI(content)+'&type='+encodeURI(type)+'&approvaluid='+encodeURI(approvaluid)+'&copyuid='+encodeURI(copyuid)+'&applysub='+encodeURI(applysub),
             async: false,
             dataType: "jsonp",
             jsonp: "callback",

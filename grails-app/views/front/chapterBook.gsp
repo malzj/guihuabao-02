@@ -74,7 +74,7 @@
                             %{--<a class="double_page"><i></i>双页</a>--}%
 
                             <g:if test="${offset.toInteger() != 0}"><g:link action="chapterBook" id="${bookId}"  params="[offset:offset.toInteger()-2]"  class="pre_page ml25" >上一页</g:link> </g:if>
-                            <g:if test="${offset.toInteger() < contentsize.toInteger()/2+1}"> <g:link action="chapterBook" id="${bookId}" params="[offset:offset.toInteger()+2]" class="next_page">下一页</g:link></g:if>
+                            <g:if test="${offset.toInteger() <= contentsize.toInteger()/2+1}"> <g:link action="chapterBook" id="${bookId}" params="[offset:offset.toInteger()+2]" class="next_page">下一页</g:link></g:if>
                             <button id="bookmenu" class="sb-toggle-right rbtn btn-blue ml25">目录</button>
                         </div>
                     </div>

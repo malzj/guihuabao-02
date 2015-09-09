@@ -92,18 +92,20 @@
             <h5 class="side-title f-l">目录</h5>
             <a class="sb-toggle-right clomenu f-r" href="javascript:;">收起目录</a>
             </div>
-            <ul class="quick-chat-list">
-                <g:each status="i" in="${syllabusInstanceList}" var="syllabusInstance" >
-                <li>
-                    <div class="syl-title">${syllabusInstance.syllabusName}</div>
-                    <ul class="char-title">
-                        <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" var="chapterInstance">
-                            <li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link action="chapterBook" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>
-                        </g:each>
-                    </ul>
-                </li>
-                </g:each>
-            </ul>
+            <div id="allbookmenu">
+                <ul class="quick-chat-list">
+                    <g:each status="i" in="${syllabusInstanceList}" var="syllabusInstance" >
+                    <li>
+                        <div class="syl-title">${syllabusInstance.syllabusName}</div>
+                        <ul class="char-title">
+                            <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" var="chapterInstance">
+                                <li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link action="chapterBook" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>
+                            </g:each>
+                        </ul>
+                    </li>
+                    </g:each>
+                </ul>
+            </div>
         </div>
         <!-- Right Slidebar end -->
     </section>

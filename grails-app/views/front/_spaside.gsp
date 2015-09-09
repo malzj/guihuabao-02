@@ -12,12 +12,14 @@
                 </g:link>
 
             </li>
+            <g:if test="${session.user.pid!='3'}">
             <li class="sub-menu dcjq-parent-li">
                 <g:link action="user_approve" class="dcjq-parent" >
                     <span>我的审批</span>
                 </g:link>
 
             </li>
+            </g:if>
             <li class="sub-menu dcjq-parent-li">
                 <g:link action="user_draft" class="dcjq-parent">
                     <span>草稿箱</span>
@@ -25,6 +27,14 @@
                 </g:link>
 
             </li>
+            <g:if test="${session.user.pid!='3'}">
+                <li class="sub-menu dcjq-parent-li">
+                <g:link action="copyToMe" class="dcjq-parent">
+                    <span>抄送我的</span>
+                    <em class="f-r">${com.guihuabao.Apply.countByCopyuidAndCidAndCopyremind(session.user.id,session.company.id,1)}</em>
+                </g:link>
+                </li>
+            </g:if>
         </ul>
         <!-- sidebar menu end-->
     </div>

@@ -107,9 +107,9 @@ ul{list-style:none;}
         <li class="kefu">
             <img src="${resource(dir: 'index/img/', file: 'side.png')}" alt="">
             <ul class="kefulist">
-                <li><a href="http://wpa.qq.com/msgrd?v=3&uin=1114774100&Site=qq&Menu=yes">在线客服一</a></li>
-                <li><a href="http://wpa.qq.com/msgrd?v=3&uin=848215697&Site=qq&Menu=yes">在线客服二</a></li>
-                <li><a href="http://wpa.qq.com/msgrd?v=3&uin=1114774100&Site=qq&Menu=yes">在线客服三</a></li>
+                <li><a href="http://wpa.qq.com/msgrd?v=3&uin=1114774100&Site=qq&Menu=yes" target="_blank">在线客服一</a></li>
+                <li><a href="http://wpa.qq.com/msgrd?v=3&uin=848215697&Site=qq&Menu=yes" target="_blank">在线客服二</a></li>
+                <li><a href="http://wpa.qq.com/msgrd?v=3&uin=1114774100&Site=qq&Menu=yes" target="_blank">在线客服三</a></li>
             </ul>
         </li>
     </ul>

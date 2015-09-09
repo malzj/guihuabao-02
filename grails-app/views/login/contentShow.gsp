@@ -26,6 +26,11 @@
     <link href="${resource(dir: 'css', file: 'style-responsive.css')}" rel="stylesheet">
 
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">
+    <style type="text/css">
+         .middle_content table{    margin: 0;
+             border-spacing: 0;
+             border-collapse: collapse;}
+    </style>
 </head>
 
 <body>

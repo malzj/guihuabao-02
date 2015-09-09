@@ -225,10 +225,10 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .hxzs_content .zhoubao .top .this_week{ font-size:12px; color:#4a8bf6; padding:5px 10px; }
 .hxzs_content .zhoubao .hang,.popup_box .hang{ margin-top:5px; }
 .hxzs_content .zhoubao .hang h4,.popup_box .hang h4,.hxzs_content .zhoubao .discuss h4{ font-size:12px; margin:0; padding:10px 25px; }
-.hxzs_content .zhoubao .hang .chx,.popup_box .hang .chx{ background:url("../img/baogao_icon.png") no-repeat 0% -9%;)}
-.hxzs_content .zhoubao .hang .xd,.popup_box .hang .xd{ background:url("../img/baogao_icon.png") no-repeat 0% 27%;)}
-.hxzs_content .zhoubao .hang .jh,.popup_box .hang .jh{ background:url("../img/baogao_icon.png") no-repeat 0% 70%;)}
-.hxzs_content .zhoubao .hang .hz,.popup_box .hang .hz{ background:url("../img/baogao_icon.png") no-repeat 0% 113%;)}
+.hxzs_content .zhoubao .hang .chx,.popup_box .hang .chx{font-size: 16px; background:url("../img/baogao_icon.png") no-repeat 0% -14%;)}
+.hxzs_content .zhoubao .hang .xd,.popup_box .hang .xd{font-size: 16px; background:url("../img/baogao_icon.png") no-repeat 0% 28%;)}
+.hxzs_content .zhoubao .hang .jh,.popup_box .hang .jh{font-size: 16px; background:url("../img/baogao_icon.png") no-repeat 0% 70%;)}
+.hxzs_content .zhoubao .hang .hz,.popup_box .hang .hz{font-size: 16px; background:url("../img/baogao_icon.png") no-repeat 0% 113%;)}
 .hxzs_content .zhoubao .hang textarea,.popup_box .hang textarea,.hxzs_content .zhoubao .discuss textarea{ width:100%; height:130px; padding:10px; -webkit-box-shadow:0px 5px 5px -3px #D5D5D2 inset;box-shadow:0px 6px 5px -3px #D5D5D2 inset; background-color:#fff; border:1px solid #d0d0d0; }
 .hxzs_content .zhoubao .hang span{ line-height:30px; }
 .hxzs_content .zhoubao .hang p{ width:100%; min-height:130px; padding:10px; border:1px solid #d0d0d0; }
@@ -238,7 +238,8 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .popup_box .m_box .close{ float:right; padding-top:5px; }
 .popup_box .m_box{ width:800px; height:688px; padding-bottom:20px;background-color:#FFF; border-radius:4px; margin:50px auto 0; }
 .popup_box .m_box table{margin:0 auto;border-spacing: 20px;border-collapse: separate;}
-.popup_box .m_box .content{ margin:0 20px; }
+.popup_box .m_box .content{ margin:0 20px;height: 635px; }
+.popup_box .m_box .hang p{text-indent: 2em;min-height: 130px;}
 
 /*��������*/
 .xsreport{ margin:0 25px; }
@@ -374,3 +375,5 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .col-tb .col-cell.reset{ padding-right:30px;  }
 
 /*选中输入框样式改变*/
+/*助手菜单*/
+#allbookmenu{height: 100%}

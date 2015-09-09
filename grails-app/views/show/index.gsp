@@ -217,6 +217,32 @@
 
 		</div>
 	</div>
+<style type="text/css">
+*{border:0;margin:0;padding:0;}
+body{font-family:'Microsoft Yahei','微软雅黑',Arial,'Hiragino Sans GB','宋体';font-size:14px;	}
+ul{list-style:none;}
+/* slides */
+.slides{position:fixed;left:8px;top:55%;z-index: 10;}
+.slides .slideul>li{position:relative;display:block;width:56px;height:56px;margin-bottom:10px;overflow:visible;}
+.slides .slideul>li.kefu{width:66px;padding-left:10px;margin-left:-10px;}
+.slides .slideul>li ul.kefulist{position:absolute;right:-100px;top:-30px;padding-left:10px;display:none;}
+.slides .slideul>li ul.kefulist li{margin-bottom:10px;}
+.slides .slideul>li ul.kefulist li a{display:block;width:90px;height:30px;line-height:30px;background:#09c2ff;color:#fff;text-align:center;text-decoration:none;}
+.slides .slideul>li ul.kefulist li a:hover{text-decoration:none;}
+</style>
+<!--客服侧边栏-->
+<div class="slides">
+    <ul class="slideul">
+        <li class="kefu">
+            <img src="${resource(dir: 'index/img/', file: 'side.png')}" alt="">
+            <ul class="kefulist">
+                <li><a href="http://wpa.qq.com/msgrd?v=3&uin=1114774100&Site=qq&Menu=yes" target="_blank">在线客服一</a></li>
+                <li><a href="http://wpa.qq.com/msgrd?v=3&uin=848215697&Site=qq&Menu=yes" target="_blank">在线客服二</a></li>
+                <li><a href="http://wpa.qq.com/msgrd?v=3&uin=1114774100&Site=qq&Menu=yes" target="_blank">在线客服三</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
 </body>
 <script type="text/javascript" src="${resource(dir: 'index/js/', file: 'jquery-1.9.1.min.js')}"></script>
 <script type="text/javascript" src="${resource(dir: 'index/js/', file: 'jquery.easing.min.js')}"></script>
@@ -229,13 +255,21 @@
 <script type="text/javascript" src="${resource(dir: 'index/js/', file: 'bxCarousel.js')}"></script>
 <script type="text/javascript">
 $(function(){
-	$('#demo2').bxCarousel({
+    //Sldie
+    $(".slides .kefu").mouseenter(function(){
+        $(this).find(".kefulist").fadeIn();
+    });
+    $(".slides .kefu").mouseleave(function(){
+        $(this).find(".kefulist").fadeOut();
+    });
+    $('#demo2').bxCarousel({
 	display_num: 4,
 	move: 1,
 	auto: true,
 	margin: 15,
 	auto_hover: true
-	}); 
+	});
+
 });
 </script>
 </html>
