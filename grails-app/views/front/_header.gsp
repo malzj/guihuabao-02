@@ -156,7 +156,7 @@
                             <g:link action="personalSet" >个人设置</g:link>
                         </li>
                         <li>
-                            <g:link action="funIntroduction" id="1" >系统设置</g:link>
+                            <g:link action="inform" id="1" >系统设置</g:link>
                         </li>
                     </ul>
                 </li>
