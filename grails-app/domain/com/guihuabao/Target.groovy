@@ -14,7 +14,7 @@ class Target {
     String ischeck          //完成的目标是否查看过了（未查看0，已查看1）
     String targetzj         //目标总结
     String issubmit         //是否下发0下发1未下发
-    String isedit           //是否可以编辑
+    String isedit           //是否可以编辑   所有的任务都接受了以后并且所有任务权重之和为100时任务就不可以修改和删除了
     static hasMany = [mission:Mission]
     static constraints = {
         cid(nullable: true)

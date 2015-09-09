@@ -43,13 +43,36 @@
     <!--main content start-->
     <section id="main-content" class="col-xs-10" style="padding-left: 0;">
         <section class="wrapper">
-            <div class="info_content">
-                <div class="info_title">
-                    系统通知
-                </div>
-                <div class="text">
-                    ${fieldValue(bean: informInstance, field: "introduction")}
-                </div>
+            <div class="wrapper_title">
+                <span class="f-l"><i class="yh"></i>系统通知列表</span>
+                %{--<form class="f-r">--}%
+                %{--<input type="text" name="search" />--}%
+                %{--<input type="submit" value="" />--}%
+                %{--</form>--}%
+
+            </div>
+            <div class="content">
+                <table class="table table-striped table-advance table-hover">
+                    <tr class="even">
+                        <th width="10%">#编号</th>
+                        <th width="80%">标题</th>
+
+                    </tr>
+
+                    <g:each in="${informList}" status="i" var="inform">
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+
+                            <td>${i+1}</td>
+                            <td><g:link controller="front" action="informShow" id="${inform?.id}">${inform.title}</g:link></td>
+
+
+
+                        </tr>
+                    </g:each>
+                </table>
+                %{--<div class="pagination">--}%
+                %{--<g:paginate total="${companyNoticeInstanceTotal}" />--}%
+                %{--</div>--}%
             </div>
         </section>
         <!--main content end-->

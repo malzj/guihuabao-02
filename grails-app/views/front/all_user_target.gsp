@@ -30,7 +30,8 @@
     body{-webkit-text-size-adjust:none;}
     .btime,.etime{width:87px;height:25px;display:block;border:1px solid #d2d2d2;text-align:center;line-height:25px;}
     .btime{margin-right: 12px;}
-    .tar_whole{border:1px solid #d2d2d2;width:250px;height:210px;margin:0 15px 15px 0;cursor:pointer;}
+    .tar_whole{border:1px solid #d2d2d2;width:250px;height:210px;margin:0 15px 15px 0;cursor:pointer;background-color: #FFF;}
+    .tar_whole:hover{border:1px solid #03a9f4;}
     .tar_title{padding:14px;border-bottom: 1px solid #d2d2d2}
     .tar_content{margin:20px 0;font-size:20px;line-height:56px;}
     .percent{clear: both;width:56px;height:56px;margin-left:10px;text-align:center;line-height:56px;border:3px solid #d2d2d2;border-radius: 50px;}

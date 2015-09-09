@@ -89,10 +89,11 @@ $("#enddate").datetimepicker({
     pickerPosition: "bottom-left",
     minView:1,
     pickSeconds:false
-}).on('changeDate',function(ev){
-    var endtime = $("#enddate").val();
-    $("#startdate").datetimepicker('setEndDate',endtime);
-});
+})
+//    .on('changeDate',function(ev){
+//    var endtime = $("#enddate").val();
+//    $("#startdate").datetimepicker('setEndDate',endtime);
+//});
 
 $("#startdate_mission").datetimepicker({
     format: 'yyyy-mm-dd',
@@ -115,10 +116,11 @@ $("#enddate_mission").datetimepicker({
     pickerPosition: "bottom-left",
     minView:1,
     pickSeconds:false
-}).on('changeDate',function(ev){
-    var endtime = $("#enddate_mission").val();
-    $("#startdate_mission").datetimepicker('setEndDate',endtime);
-});
+})
+//    .on('changeDate',function(ev){
+//    var endtime = $("#enddate_mission").val();
+//    $("#startdate_mission").datetimepicker('setEndDate',endtime);
+//});
 
 $("#startdate_edit").datetimepicker({
     format: 'yyyy-mm-dd',
@@ -141,10 +143,11 @@ $("#enddate_edit").datetimepicker({
     pickerPosition: "bottom-left",
     minView:1,
     pickSeconds:false
-}).on('changeDate',function(ev){
-    var endtime = $("#enddate_edit").val();
-    $("#startdate_edit").datetimepicker('setEndDate',endtime);
-});
+})
+//    .on('changeDate',function(ev){
+//    var endtime = $("#enddate_edit").val();
+//    $("#startdate_edit").datetimepicker('setEndDate',endtime);
+//});
 
 $(".form_datetime").datetimepicker({
     format: 'yyyy-mm-dd hh:ii',

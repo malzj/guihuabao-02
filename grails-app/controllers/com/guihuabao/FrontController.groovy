@@ -555,17 +555,16 @@ class FrontController {
         [funIntroduction: funIntroduction]
     }
     //系统通知
-    def inform(Long id){
-        def user = session.user
-        def company = session.company
-        if(!user&&!company){
-            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
-            return
-        }
-        def informInstance = Inform.get(id)
-        if (!informInstance) {
-//            flash.message = message(code: 'default.not.found.message', args: [message(code: 'company.label', default: 'Company'), id])
-            redirect(action: "list")
+    def inform(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def informList = Inform.list(sort: "dateCreate",order: "desc")
+        [informList: informList]
+    }
+    def informShow(Long id){
+        def informInstance=Inform.get(id)
+        if(!informInstance){
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'inform.label', default: 'Inform'), id])
+            redirect(action: "inform")
             return
         }
         [informInstance: informInstance]
@@ -2270,6 +2269,7 @@ class FrontController {
     }
 
     def targetSave(){
+        def rs=[:]
         def msg
         def user = session.user
         def company = session.company
@@ -2288,6 +2288,7 @@ class FrontController {
         targetInstance.dateCreate = new Date()
 
 
+
         if (!targetInstance.save(flush: true)) {
             render(model: [targetInstance: targetInstance])
             msg=false
@@ -2296,9 +2297,10 @@ class FrontController {
              msg=true
         }
 
+
         flash.message = message(code: 'default.created.message', args: [message(code: 'target.label', default: 'Target'), targetInstance.id])
-        redirect(action: "user_target", params:[id: targetInstance.id,msg:msg])
-          [msg:msg]
+        redirect(action: "user_target",params:[id: targetInstance.id,msg:msg])
+
     }
     //目标保存并分解
     def targetSaveAndSplit() {
@@ -2382,6 +2384,7 @@ class FrontController {
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0)
         }else{
+            params<<[sort:"dateCreate",order: "desc"]
             targetInstance = Target.findAllByCidAndFzuidAndStatus(cid,fzuid,0,params)
             targetInstanceTotal = Target.countByCidAndFzuidAndStatus(cid,fzuid,0)
         }
@@ -2500,17 +2503,18 @@ class FrontController {
            }else {
                def target = mission.target
                def missionlist = target.mission
-
+               def size=missionlist.size()
+                def sum1=0
                def sum = 0
                for (def m in missionlist) {
-                   println(m.hasvisited)
+                   sum1+=m.percent.toInteger()
                    if (m.hasvisited =='2') {
 
                        sum += 1
                    }
                }
 
-               if (sum == missionlist.size()) {
+               if (sum == size&&sum1==100) {
                    target.isedit = 1
                }
            }

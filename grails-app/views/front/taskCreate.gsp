@@ -337,6 +337,18 @@
             submitHandler:function(form) {
                 var playstatus = $("#playstatus").val()
                 var playuid = $("#playuid").val()
+                if($('#startdate').val()==''){
+                    $('#startdate').css('border-color','red');
+                    return false;
+                }else{
+                    $('#startdate').css('border-color','#d2d2d2');
+                }
+                if($('#enddate').val()==''||$('#enddate').val()<=$('#startdate').val()){
+                    $('#enddate').css('border-color','red');
+                    return false;
+                }else{
+                    $('#enddate').css('border-color','#d2d2d2');
+                }
                 if(!playstatus){
                     $('#taskcreate-playstatus').html("请选择紧急程度！")
                     return false;
@@ -346,6 +358,7 @@
                 }else{
                     form.submit()
                 }
+
             },
             rules: {
 
