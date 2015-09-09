@@ -555,17 +555,16 @@ class FrontController {
         [funIntroduction: funIntroduction]
     }
     //系统通知
-    def inform(Long id){
-        def user = session.user
-        def company = session.company
-        if(!user&&!company){
-            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
-            return
-        }
-        def informInstance = Inform.get(id)
-        if (!informInstance) {
-//            flash.message = message(code: 'default.not.found.message', args: [message(code: 'company.label', default: 'Company'), id])
-            redirect(action: "list")
+    def inform(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def informList = Inform.list(sort: "dateCreate",order: "desc")
+        [informList: informList]
+    }
+    def informShow(Long id){
+        def informInstance=Inform.get(id)
+        if(!informInstance){
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'inform.label', default: 'Inform'), id])
+            redirect(action: "inform")
             return
         }
         [informInstance: informInstance]
@@ -2427,17 +2426,18 @@ class FrontController {
            }else {
                def target = mission.target
                def missionlist = target.mission
-
+               def size=missionlist.size()
+                def sum1=0
                def sum = 0
                for (def m in missionlist) {
-                   println(m.hasvisited)
+                   sum1+=m.percent.toInteger()
                    if (m.hasvisited =='2') {
 
                        sum += 1
                    }
                }
 
-               if (sum == missionlist.size()) {
+               if (sum == size&&sum1==100) {
                    target.isedit = 1
                }
            }

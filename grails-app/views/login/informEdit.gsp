@@ -1,3 +1,5 @@
+
+
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -40,43 +42,28 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper mt80">
-            <div class="wrapper_title">
-                <span class="f-l"><i class="yh"></i>系统通知列表</span>
-                %{--<form class="f-r">--}%
-                    %{--<input type="text" name="search" />--}%
-                    %{--<input type="submit" value="" />--}%
-                %{--</form>--}%
-                <g:link action="informCreate" class="f-r"><i class="fa fa-plus-circle"></i>新建</g:link>
-            </div>
-            <div class="content">
-                <table class="table table-striped table-advance table-hover">
-                    <tr class="even">
-                        <th width="10%">#编号</th>
-                        <th width="80%">标题</th>
-                        <th>操作</th>
-                    </tr>
 
-                    <g:each in="${informList}" status="i" var="inform">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+            <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'informUpdate']" method="post"  enctype= "multipart/form-data">
 
-                            <td>${i+1}</td>
-                            <td><g:link controller="front" action="informShow" id="${inform?.id}">${inform.title}</g:link></td>
-                            <td>
-                                <g:link controller="front" action="informShow" id="${inform?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
-                                <g:link action="informEdit" id="${inform?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
-                                <g:link action="informDelete" id="${inform?.id}" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
-                            </td>
+                <div class="hxzs_heading clearfix">
+                    <h2>编辑公告</h2>
+                    <a href="javascript:history.go(-1);" class="ml15 f-r btn btn-info">取消</a>
+                    <button type="submit" class="btn btn-info f-r">保存</button>
+                </div>
+                <div class="mt25">
+                    <g:hiddenField name="id" value="${informInstance.id}" ></g:hiddenField>
+                    %{--<g:hiddenField name="version" value="${informInstance.version}" ></g:hiddenField>--}%
+                    <div class="form-group">
 
-
-                        </tr>
-                    </g:each>
-                </table>
-                %{--<div class="pagination">--}%
-                    %{--<g:paginate total="${companyNoticeInstanceTotal}" />--}%
-                %{--</div>--}%
-            </div>
-
-
+                        <div class="col-lg-12">
+                            <input class="form-control" type="text" name="title" value="${informInstance.title}" />
+                        </div>
+                    </div>
+                    <div class="textarea">
+                        <textarea id="editor_id" name="content" style="width:100%;height:500px;">${informInstance.introduction}</textarea>
+                    </div>
+                </div>
+            </g:form>
         </section>
 
     </section>

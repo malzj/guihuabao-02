@@ -456,45 +456,66 @@ class LoginController {
 
     }
     //系统通知
-    def inform(Long id){
-        def inform = Inform.get(id)
-        if (!inform) {
-//            flash.message = message(code: 'default.not.found.message', args: [message(code: 'company.label', default: 'Company'), id])
-//            redirect(action: "list")
-            return
-        }
-        [inform: inform]
-
+    def inform(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def informList = Inform.list(sort: "dateCreate",order: "desc")
+        [informList: informList]
     }
-    def informSave(Long id, Long version){
-        def inform = Inform.get(id)
-        if (!inform) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'company.label', default: 'Company'), id])
-            redirect(action: "list")
+    def informCreate(){
+        [informInstance: new Inform(params)]
+    }
+    def informSave(){
+        def informInstance=new Inform(params)
+        informInstance.dateCreate=new Date()
+        if(!informInstance.save(flush: true)){
+            render(view: "informCreate", model: [informInstance: informInstance])
+            return
+        }
+        flash.message = message(code: 'default.created.message', args: [message(code: 'inform.label', default: 'Inform'), informInstance.id])
+        redirect(action: "inform", id: informInstance.id)
+    }
+    def informEdit(Long id){
+        def informInstance = Inform.findById(id)
+        if (!informInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'inform.label', default: 'Inform'), id])
+            redirect(action: "inform")
             return
         }
 
-        if (version != null) {
-            if (inform.version > version) {
-                inform.errors.rejectValue("version", "default.optimistic.locking.failure",
-                        [message(code: 'company.label', default: 'Company')] as Object[],
-                        "Another user has updated this Company while you were editing")
-                render(view: "edit", model: [funIntroduction: inform])
+        [informInstance: informInstance]
+    }
+    def informUpdate(Long id){
+        def informInstance=Inform.get(id)
+        if(!informInstance){
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'inform.label', default: 'Inform'), id])
+            redirect(action: "inform")
+            return
+        }
+            informInstance.properties=params
+            if(!informInstance.save(flush: true)){
+                render(view: "informEdit", model: [informInstance: informInstance])
                 return
             }
-        }
-
-        inform.properties = params
-
-
-        if (!inform.save(flush: true)) {
-            render(view: "edit", model: [funIntroduction: inform])
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'inform.label', default: 'Inform'), informInstance.id])
+        redirect(action: "inform", id: informInstance.id)
+    }
+    def informDelete(Long id){
+        def informInstance=Inform.get(id)
+        if (!informInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'inform.label', default: 'Inform'), id])
+            redirect(action: "inform")
             return
         }
 
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'company.label', default: 'Company'), inform.id])
-        redirect(action: "loginImg", id: inform.id)
-
+        try {
+            informInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'inform.label', default: 'Inform'), id])
+            redirect(action: "inform")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'inform.label', default: 'Inform'), id])
+            redirect(action: "inform", id: id)
+        }
     }
     //版本更新
     def version(Long id){
