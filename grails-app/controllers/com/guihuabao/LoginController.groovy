@@ -474,6 +474,15 @@ class LoginController {
         flash.message = message(code: 'default.created.message', args: [message(code: 'inform.label', default: 'Inform'), informInstance.id])
         redirect(action: "inform", id: informInstance.id)
     }
+    def informShow(Long id){
+        def informInstance=Inform.get(id)
+        if(!informInstance){
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'inform.label', default: 'Inform'), id])
+            redirect(action: "inform")
+            return
+        }
+        [informInstance: informInstance]
+    }
     def informEdit(Long id){
         def informInstance = Inform.findById(id)
         if (!informInstance) {
