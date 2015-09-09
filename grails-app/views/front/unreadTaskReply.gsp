@@ -87,7 +87,7 @@
                                             <g:hiddenField name="puid" value="${session.user.id}"></g:hiddenField>
                                             <g:hiddenField name="puname" value="${session.user.username}"></g:hiddenField>
                                             <div class="mt10">
-                                                <textarea name="content"></textarea>
+                                                <textarea name="content" class="con"></textarea>
                                             </div>
                                             <button class="fbtn btn-white mt10">回复</button>
                                             <input type="button" class="fbtn btn-white mt10  quxiao" value="取消">
@@ -150,6 +150,7 @@
                 $(this).next(".shuru").toggle();
             })
             $(".quxiao").on("click", function () {
+                $('.con').val('');
                 $('.shuru').slideUp();
                 $(".shuru .rcontainer").val('')
             })

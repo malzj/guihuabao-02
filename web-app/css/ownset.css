@@ -204,7 +204,7 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .info_content .imgupload{margin-left:100px; float:left; padding-top:20px;}
 
 /*���뵯�� start*/
-.passwordedit{ position:fixed; width:100%; height:100%; background:url("../img/bg.png"); top:0px; left:0px; z-index:2000; display:none; }
+.passwordedit{ position:fixed; width:100%; height:100%; background:url("../img/bg.png"); top:0px; left:0px; z-index:2000; display:none;overflow: auto; }
 .passwordedit .m_box .close{ float:right; padding-top:5px; }
 .passwordedit .m_box{ width:800px;padding-bottom:20px;background-color:#FFF; border-radius:4px; margin:150px auto 0; }
 .passwordedit .m_box table{margin:0 auto;border-spacing: 20px;border-collapse: separate;}
