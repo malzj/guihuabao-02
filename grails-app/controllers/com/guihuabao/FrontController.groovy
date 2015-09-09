@@ -593,7 +593,7 @@ class FrontController {
             redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
             return
         }
-        def clauseInstance = Banben.get(id)
+        def clauseInstance = Clause.get(id)
         if (!clauseInstance) {
 //            flash.message = message(code: 'default.not.found.message', args: [message(code: 'company.label', default: 'Company'), id])
             redirect(action: "list")
