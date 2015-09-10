@@ -86,7 +86,9 @@ var Script = function () {
 // custom scrollbar
     $("#sidebar").niceScroll({styler:"fb",cursorcolor:"#e8403f", cursorwidth: '3', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
 
-    $("#viewcontent").niceScroll({styler:"fb",cursorcolor:"#e8403f", cursorwidth: '5', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
+    $(".addscroll").niceScroll({styler:"fb",cursorcolor:"#e8403f", cursorwidth: '5', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
+
+    $("#viewcontent").niceScroll({styler:"fb",cursorcolor:"#e8403f", cursorwidth: '10', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
 
     $("#allbookmenu").niceScroll({styler:"fb",cursorcolor:"#e8403f", cursorwidth: '3', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
 

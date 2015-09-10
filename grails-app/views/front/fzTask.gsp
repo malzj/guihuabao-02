@@ -153,7 +153,7 @@
             </div>
             <!--任务详情 end-->
             <!--弹层 start-->
-            <div class="popup_box">
+            <div class="popup_box addscroll">
                 <div class="m_box" style="height: 435px;">
                     <header class="panel-heading">
                         <span>修改任务</span>
