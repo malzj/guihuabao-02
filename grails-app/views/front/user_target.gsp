@@ -185,7 +185,7 @@
             <g:form url="[controller:'front',action:'targetSave']" method="post">
                 <ul>
                     <li class="clearfix">
-                        <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'uploadfile/target-img',file:'1.png')}"></div>
+                        <div align="right" class="f-l" style="margin-right: 10px;"><a class="select_img"><img src="${resource(dir:'uploadfile/target-img',file:'1.png')}"></a></div>
                         <div class="f-l">
                             <input type="text" name="title" placeholder="添加目标名称" style="margin-top: 5px;width:689px;" class="nr" title="该字段不能为空！" id="tar_title"/>
                         </div>
