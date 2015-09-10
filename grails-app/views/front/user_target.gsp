@@ -119,17 +119,17 @@
                             <div class="tar_whole f-l">
                                 <input type="hidden" value="${targetInfo.id}"  />
                                 <div class="tar_title clearfix" >
-                                    <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'img/target-img',file:''+targetInfo.img+'')}" title="更换图片" width="48px" height="48px"/></a>
+                                    <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'uploadfile/target-img',file:''+targetInfo.img+'')}" title="更换图片" width="48px" height="48px"/></a>
                                     <div class="f-l" style="margin-left:10px;">
 
                                         <h2 style="font-size:20px;margin:4px;color:#40bdf5;"><g:if test="${targetInfo.title.size()<4}">${targetInfo.title}</g:if><g:else>${targetInfo.title.substring(0,4)}...</g:else></h2>
                                         负责人：<span>${com.guihuabao.CompanyUser.findByIdAndCid(targetInfo.fzuid,session.company.id).name}</span>
                                     </div>
                                     <div class="f-r">
-                                        <a href="#" style="color:#40bdf5;font-size:20px;"  onclick="stop_Pro(event)"><i class="fa fa-edit tar_edit" title="目标分解"></i></a>
+                                        <a href="#" style="color:#40bdf5;font-size:20px;"  onclick="stop_Pro(event)"><i class="fa fa-edit tar_edit" title="编辑"></i></a>
                                         <input type="hidden" value="${targetInfo.id}"  />
                                         %{--<g:link controller="front"  action="targetDelete" id="${targetInfo.id}" style="color:#40bdf5;font-size:20px;" onclick="del();stop_Pro(event)"><i class="fa fa-trash-o tar_delete" title="删除目标"></i></g:link>--}%
-                                        <a href="" class="del" style="color:#40bdf5;font-size:20px;" onclick="stop_Pro(event)"><i class="fa fa-trash-o tar_delete" title="删除目标"></i></a>
+                                        <a href="" class="del" style="color:#40bdf5;font-size:20px;" onclick="stop_Pro(event)"><i class="fa fa-trash-o tar_delete" title="删除目标 "></i></a>
                                     </div>
                                 </div>
 
@@ -185,7 +185,7 @@
             <g:form url="[controller:'front',action:'targetSave']" method="post">
                 <ul>
                     <li class="clearfix">
-                        <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
+                        <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'uploadfile/target-img',file:'1.png')}"></div>
                         <div class="f-l">
                             <input type="text" name="title" placeholder="添加目标名称" style="margin-top: 5px;width:689px;" class="nr" title="该字段不能为空！" id="tar_title"/>
                         </div>
@@ -270,15 +270,15 @@
         </div>
         <h2>备选图标</h2>
         <div class="ori bx">
-            <a><img  src="${resource(dir:'img/target-img',file:'1.png')}"/></a>
-            <a><img  src="${resource(dir:'img/target-img',file:'2.png')}"/></a>
-            <a><img  src="${resource(dir:'img/target-img',file:'3.png')}"/></a>
-            <a><img  src="${resource(dir:'img/target-img',file:'4.png')}"/></a>
-            <a><img  src="${resource(dir:'img/target-img',file:'5.png')}"/></a>
-            <a><img  src="${resource(dir:'img/target-img',file:'6.png')}"/></a>
-            <a><img  src="${resource(dir:'img/target-img',file:'7.png')}"/></a>
-            <a><img  src="${resource(dir:'img/target-img',file:'8.png')}"/></a>
-            <a><img  src="${resource(dir:'img/target-img',file:'9.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'1.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'2.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'3.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'4.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'5.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'6.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'7.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'8.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'9.png')}"/></a>
 
 
         </div>
@@ -497,7 +497,7 @@
         <ul>
 
             <li class="clearfix">
-                <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'img/target-img',file:'1.png')}"></div>
+                <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'uploadfile/target-img',file:'1.png')}"></div>
                 <h2 class="f-l" style="padding:0;margin: 0 20px 0 0;font-size: 20px;line-height:48px;" id="detail_title"></h2>
             </li>
             <li>
@@ -1375,9 +1375,7 @@
                    type: 'POST',
                    dataType: 'json',
                    data: $('#uploadForm').serialize(),
-                   beforeSubmit : function() {
-                       alert("正在上传");
-                   },
+
                    success: function (data) {
                        alert('成功上传！');
 

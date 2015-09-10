@@ -3137,7 +3137,7 @@ class FrontController {
             fileName=date.toString()+x.toString()+"."+strs[1]
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "img/target-img/")
+            def userDir = new File(webRootDir, "uploadfile/target-img/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
 
