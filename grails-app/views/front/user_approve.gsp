@@ -134,7 +134,7 @@
 </section>
 
 <!--审批详情弹层 start-->
-<div class="passwordedit" id="applydetails">
+<div class="passwordedit addscroll" id="applydetails">
     <div class="m_box" style="width:804px;">
         <header class="panel-heading">
             <span><i class="yh"></i>申请详情</span>

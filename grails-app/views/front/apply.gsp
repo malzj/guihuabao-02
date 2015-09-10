@@ -132,7 +132,7 @@
 
 </section>
 <!--新建弹层 start-->
-<div class="passwordedit" id="newapplydetail">
+<div class="passwordedit addscroll" id="newapplydetail">
     <div class="m_box" style="width:804px;">
         <header class="panel-heading">
             <span><i class="yh"></i>新建申请</span>
@@ -193,7 +193,7 @@
 </div>
 <!--新建弹层 end-->
 <!--申请详情弹层 start-->
-<div class="passwordedit" id="applydetails">
+<div class="passwordedit addscroll" id="applydetails">
     <div class="m_box" style="width:804px;">
         <header class="panel-heading">
             <span><i class="yh"></i>申请详情</span>
