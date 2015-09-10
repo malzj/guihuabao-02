@@ -122,7 +122,7 @@
                                     <a class="select_img" onclick="stop_Pro(event)"><img class="f-l" src="${resource(dir:'uploadfile/target-img',file:''+targetInfo.img+'')}" title="更换图片" width="48px" height="48px"/></a>
                                     <div class="f-l" style="margin-left:10px;">
 
-                                        <h2 style="font-size:20px;margin:4px;color:#40bdf5;"><g:if test="${targetInfo.title.size()<4}">${targetInfo.title}</g:if><g:else>${targetInfo.title.substring(0,4)}...</g:else></h2>
+                                        <h2 style="font-size:20px;margin:4px;color:#40bdf5;"><g:if test="${targetInfo?.title?.size()<4}">${targetInfo.title}</g:if><g:else>${targetInfo.title.substring(0,4)}...</g:else></h2>
                                         负责人：<span>${com.guihuabao.CompanyUser.findByIdAndCid(targetInfo.fzuid,session.company.id).name}</span>
                                     </div>
                                     <div class="f-r">
@@ -135,7 +135,7 @@
 
                                 <div class="tar_content clearfix">
                                     <div class="f-l percent">${targetInfo.percent}%</div>
-                                    <div class="f-l"style="margin-left: 10px;">共<span>${targetInfo.mission.size()}</span>个任务</div>
+                                    <div class="f-l"style="margin-left: 10px;">共<span>${targetInfo?.mission?.size()}</span>个任务</div>
                                 </div>
                                 <div class="clearfix" style="width:235px;margin:0 auto;">
                                     <span class="btime f-l">${targetInfo.begintime}</span><span class="etime f-l" style="width:133px;">${targetInfo.etime}</span>
