@@ -59,7 +59,7 @@
                                 <td>封面：</td>
                                 <td>
                                     <input id="up_img" name="file1" type="file" />
-                                    <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'images', file: ''+toolInstance?.toolImg+'')}" /></div>
+                                    <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'uploadfile/images', file: ''+toolInstance?.toolImg+'')}" /></div>
                                     <span>上传封面：（232*196）</span>
                                 </td>
                             </tr>

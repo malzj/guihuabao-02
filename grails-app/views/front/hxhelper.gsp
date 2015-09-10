@@ -50,7 +50,7 @@
                 <g:each in="${bookInstanceList}" status="i" var="bookInstance">
                     <div class="zs_style">
                         <g:link controller="front" action="book" id="${bookInstance.id}">
-                            <img src="${resource(dir: 'images', file: ''+bookInstance.bookImg+'')}" height="195" width="235" />
+                            <img src="${resource(dir: 'uploadfile/images', file: ''+bookInstance.bookImg+'')}" height="195" width="235" />
                         </g:link>
                         <span>${bookInstance.bookName}</span>
                     </div>

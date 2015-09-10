@@ -519,8 +519,9 @@ class FrontController {
             offset =params.offset
         }
         params<<[offset:offset]
+        params<<[sort:"id", order:"asc"]
         def hxtool = HexuTool.findByIdAndStyle(id,1)
-        def contentlist = ToolContent.findAllByHexutools(hxtool,[sort:"id", order:"asc"])
+        def contentlist = ToolContent.findAllByHexutools(hxtool,params)
         def contentsize= ToolContent.countByHexutools(hxtool)
         def content=""
 
@@ -666,7 +667,7 @@ class FrontController {
             fileName=date.toString()+x.toString()+"."+strs[1]
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "/images/")
+            def userDir = new File(webRootDir, "/uploadfile/images/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
         }

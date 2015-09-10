@@ -50,7 +50,7 @@
                     <g:each in="${toolInstanceList}" status="i" var="toolInstance">
                         <div class="zs_style">
                             <g:link controller="front" action="tool" id="${toolInstance.id}">
-                                <img src="${resource(dir: 'images', file: ''+toolInstance.toolImg+'')}" height="195" width="235" />
+                                <img src="${resource(dir: 'uploadfile/images', file: ''+toolInstance.toolImg+'')}" height="195" width="235" />
                             </g:link>
                             <span>${toolInstance.toolName}</span>
                         </div>
