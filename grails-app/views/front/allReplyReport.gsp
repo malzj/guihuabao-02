@@ -74,7 +74,7 @@
                             <div class="reply_box">
                                 <div class="name"><g:if test="${replyInfo.puid==session.user.id}">我</g:if><g:else>${replyInfo.puname}</g:else>&nbsp;回复&nbsp;<g:if test="${replyInfo.bpuid==session.user.id}">我</g:if><g:else>${replyInfo.bpuname}</g:else></div>
                                 <p>${replyInfo.content}</p>
-                                <span>${replyInfo.date}</span><g:if test="${replyInfo.bpuid==session.user.id}"><a href="javascript:;" class="reply">回复</a></g:if>
+                                <span>${replyInfo.date}</span><g:if test="${replyInfo.bpuid!=session.user.id}"><a href="javascript:;" class="reply">回复</a></g:if>
                                 <div class="shuru">
                                     <span>回复&nbsp;${replyInfo.puname}</span>
                                     <g:form url="[controller:'front',action:'myReplySave']">

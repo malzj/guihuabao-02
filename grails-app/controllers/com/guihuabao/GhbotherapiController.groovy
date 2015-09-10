@@ -88,6 +88,32 @@ class GhbotherapiController {
         } else
             render rs as JSON
     }
+    //审批人列表接口
+    def approveperson(){
+        def cid = params.cid
+        def rs=[:]
+        def userInfo = [:]
+        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(cid,3,[sort: "pid",order: "asc"])
+        for(def i=0;i<companyuserList.size();i++){
+            def companyuser = companyuserList.get(i)
+            def bumenname = Bumen.findByCidAndId(cid,companyuser.bid).name
+            userInfo<<[userId: companyuser.id,bumenname: bumenname,username: companyuser.name]
+        }
+
+        if(userInfo){
+            rs.result=true
+            rs.userInfo = userInfo
+            rs.msg = "查找审批人成功"
+        }else{
+            rs.result = false
+            rs.msg = "查找审批人失败"
+        }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
 
     //草稿箱列表
     def user_draft(){

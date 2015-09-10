@@ -1237,7 +1237,7 @@ class FrontController {
         def selected = params.selected
         def applylist
         def applyInstanceTotal
-        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
+        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3,[sort: "pid",order: "asc"])
         if(selected == "1"){//已通过
             applylist= Apply.findAllByApplyuidAndCidAndApplystatussAndApplystatus(userId,companyId,1,1,params)
             applyInstanceTotal= Apply.countByApplyuidAndCidAndApplystatus(userId,companyId,1)
@@ -1262,7 +1262,9 @@ class FrontController {
         applyInstance.applyuid= session.user.id
         applyInstance.applyusername = session.user.name
         applyInstance.cid= session.company.id
-        applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+        if(params.approvaluid) {
+            applyInstance.approvalusername = CompanyUser.get(params.approvaluid).name
+        }
         if(params.copyuid) {
             applyInstance.copyname = CompanyUser.get(params.copyuid).name
         }
@@ -1295,7 +1297,9 @@ class FrontController {
         applyInstance.applyuid= session.user.id
         applyInstance.applyusername = session.user.name
         applyInstance.cid= session.company.id
-        applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+        if(params.approvaluid) {
+            applyInstance.approvalusername = CompanyUser.get(params.approvaluid).name
+        }
         if(params.copyuid) {
             applyInstance.copyname = CompanyUser.get(params.copyuid).name
         }
@@ -1325,7 +1329,9 @@ class FrontController {
         def a = params.applysub
         if(applyInstance){//判断信息是否为空
             rs.msg=true
-            applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+            if(params.approvaluid) {
+                applyInstance.approvalusername = CompanyUser.get(params.approvaluid).name
+            }
             if(params.copyuid) {
                 applyInstance.copyname = CompanyUser.get(params.copyuid).name
             }

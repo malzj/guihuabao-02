@@ -611,7 +611,7 @@
         {header: '部门'},
         <g:each in="${bumenInstance}" var="bumenInfo">
         {text: '${bumenInfo.name}', subMenu: [
-            {header: '员工'},
+            {header: '下属'},
             <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
             {text: '${userInfo.name}', href: '#', action: function(e){
                 $("#playuid").val(${userInfo.id});
@@ -627,13 +627,13 @@
         </g:if>
         <g:elseif test="${session.user.pid==2}">
         context.attach('#playman', [
-            {header: '员工'},
+            {header: '下属'},
             <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
             {text: '${userInfo.name}', href: '#', action: function(e){
                 $("#playuid").val(${userInfo.id});
                 $("#playbid").val(${userInfo.bid});
                 $("#playname").val("${userInfo.name}");
-                $(this).hide();
+//                $(this).hide();
                 $("#cnplayname").html("${userInfo.name}");
             }},
             </g:each>

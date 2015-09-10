@@ -189,6 +189,7 @@
                     <td align="right">审批人</td>
                     <td><!--<input class="form-control form-control-inline input-medium default-date-picker" data-toggle="dropdown" name="newapply" />-->
                         <select id="approvaluid" name="approvaluid" class="select">
+                            <option value="" selected>请选择审批人</option>
                             <g:each in="${companyuserList}" var="user">
                                 <option value="${user.id}">${com.guihuabao.Bumen.get(user.bid).name}-${user.name}</option>
                             </g:each>
