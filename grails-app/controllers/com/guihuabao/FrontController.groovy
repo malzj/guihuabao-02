@@ -1406,7 +1406,7 @@ class FrontController {
         def userId= session.user.id
         def companyId = session.company.id
         params<<[sort: "dateCreate",order: "desc"]
-        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
+        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3,[sort: "pid",order: "asc"])
         def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,0,params)
         def applyInstanceTotal= Apply.countByApplyuidAndCidAndApplystatuss(userId,companyId,0)
         [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]

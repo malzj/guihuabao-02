@@ -117,12 +117,12 @@
                                 <td>${applyInstance.dateCreate.format("yyyy-MM-dd")}</td>
                                 <td>
 
-                                    <a href="javascript:;" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="edit"/></a>
+                                    <a href="javascript:;" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="编辑"/></a>
 
                                 </td>
                             </tr>
                         </g:each>
-                        <g:hiddenField name="applyId" id="applyId" ></g:hiddenField>
+                        <g:hiddenField name="applyId" id="applyId"></g:hiddenField>
                         <g:hiddenField name="version" id="version" ></g:hiddenField>
                     </table>
                 </div>
@@ -149,8 +149,8 @@
                 <li>申请结果：<span></span></li>
                 <li>审批反馈：<span><textarea id="approvetext" name="approvetext"></textarea></span></li>
             </ul>
-            <input type="button" value="通过" id="pass" class="ispass" data-status="1" />
-            <input type="button" value="未通过" id="nopass" class="ispass" data-status="2"/>
+            <input type="button" value="通过" id="pass" class="ispass ml20" data-status="1" />
+            <input type="button" value="未通过" id="nopass" class="ispass ml20" data-status="2"/>
         </div>
 
     </div>

@@ -154,7 +154,7 @@
             <!--任务详情 end-->
             <!--弹层 start-->
             <div class="popup_box">
-                <div class="m_box">
+                <div class="m_box" style="height: 435px;">
                     <header class="panel-heading">
                         <span>修改任务</span>
                         <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
