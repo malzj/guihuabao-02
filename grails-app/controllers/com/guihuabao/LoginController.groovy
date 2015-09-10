@@ -149,7 +149,7 @@ class LoginController {
 
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "/images/")
+            def userDir = new File(webRootDir, "/uploadfile/images/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
 
@@ -202,7 +202,7 @@ class LoginController {
 
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "/images/")
+            def userDir = new File(webRootDir, "/uploadfile/images/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
         }
@@ -419,7 +419,7 @@ class LoginController {
 
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "/images/")
+            def userDir = new File(webRootDir, "/uploadfile/images/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
             loginimg.img=fileName
@@ -639,7 +639,7 @@ class LoginController {
 
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "/images/")
+            def userDir = new File(webRootDir, "/uploadfile/images/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
     
@@ -884,11 +884,11 @@ class LoginController {
 
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "/images/")
+            def userDir = new File(webRootDir, "/uploadfile/images/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
         }
-        def web='/guihuabao/static/images/'+fileName
+        def web='/guihuabao/static/uploadfile/images/'+fileName
 
         rs=[error:0,url:web]
 
@@ -921,7 +921,7 @@ class LoginController {
             fileName=date.toString()+x.toString()+"."+strs[1]
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "/images/")
+            def userDir = new File(webRootDir, "/uploadfile/images/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
             bookInstance.bookImg=fileName
@@ -1135,7 +1135,7 @@ class LoginController {
             fileName=date.toString()+x.toString()+"."+strs[1]
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "/images/")
+            def userDir = new File(webRootDir, "/uploadfile/images/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
 
@@ -1189,7 +1189,7 @@ class LoginController {
             fileName=date.toString()+x.toString()+"."+strs[1]
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "/images/")
+            def userDir = new File(webRootDir, "uploadfile/images/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
 

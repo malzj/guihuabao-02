@@ -119,7 +119,7 @@
                         </tr>
                         <tr>
                             <td>公司logo：</td>
-                            <td><img alt="" src="${resource(dir: 'images', file: ''+companyInstance.logoimg+'')}" width="340" alt="" /></td>
+                            <td><img alt="" src="${resource(dir: 'uploadfile/images', file: ''+companyInstance.logoimg+'')}" width="340" alt="" /></td>
                         </tr>
                         <tr>
                             <td></td>

@@ -56,7 +56,7 @@
                         <tr>
                             <td>封面：</td>
                             <td>
-                                <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'images', file: ''+toolInstance.toolImg+'')}" /></div>
+                                <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'uploadfile/images', file: ''+toolInstance.toolImg+'')}" /></div>
                             </td>
                         </tr>
                         <tr>

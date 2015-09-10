@@ -49,7 +49,7 @@
                         <g:each in="${zhoubaoInstance}" var="zhoubaoInfo">
                             <li>
                                 <g:link action="allReplyReport" params="[year: zhoubaoInfo.year,month: zhoubaoInfo.month,week: zhoubaoInfo.week]">
-                                    <img src="" height="35" width="35" />
+                                    <img src="${resource(dir: 'uploadfile/images/', file: ''+session.user.img+'')}" height="35" width="35" />
                                     <div class="text">
                                         <h4>第${zhoubaoInfo.week}周工作报告</h4>
                                         <span>${zhoubaoInfo.dateCreate}</span>
