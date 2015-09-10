@@ -969,6 +969,7 @@
                     $.ajax({
                         url: '${webRequest.baseUrl}/front/mdelete',
                         type: 'post',
+                        async:'false',
                         dataType: 'json',
                         data: {mid: mid},
                         success: function (data) {
@@ -1234,6 +1235,7 @@
                     $.ajax({
                         url:'${webRequest.baseUrl}/front/missionSave',
                         type:'post',
+                        async:'false',
                         dataType:'json',
                         data:{target_id:target_id,title:title,content:content,playname:playname,playbid:playbid,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent,status:status,playstatus:playstatus},
                         success:function(data){
