@@ -2312,7 +2312,7 @@ class FrontController {
         }
         def targetInstance = new Target(params)
         targetInstance.cid = session.company.id
-        targetInstance.img = '1.png'
+
         targetInstance.status = '0'
         targetInstance.percent = 0
         targetInstance.issubmit='0'
