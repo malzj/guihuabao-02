@@ -41,14 +41,17 @@
     <g:render template="set_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
+
     <section id="main-content" class="col-xs-10" style="padding-left: 0;">
+
         <section class="wrapper">
             <div class="info_content">
                 <div class="info_title">
                     使用条款
+
                 </div>
                 <div class="text">
-                    ${fieldValue(bean: clauseInstance, field: "introduction")}
+                    ${clauseInstance.introduction}
                 </div>
             </div>
         </section>

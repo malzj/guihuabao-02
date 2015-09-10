@@ -143,7 +143,7 @@
                         <g:hiddenField name="puid" id="puid" value="${session.user.id}"></g:hiddenField>
                         <g:hiddenField name="puname" id="puname" value="${session.user.name}"></g:hiddenField>
                         <div>
-                            <textarea id="content" name="content"></textarea>
+                            <textarea id="content" name="content" class="con"></textarea>
                         </div>
                         <a href="javascript:;" id="submit" class="rbtn btn-blue mt25">提交</a>
                     </form>
@@ -710,6 +710,7 @@
         $(".taskclose").click(function(){
             $("#task").slideLeftHide(400);
             $("#task .task_content").empty();
+            $('.con').val('');
         });
     })
 </script>

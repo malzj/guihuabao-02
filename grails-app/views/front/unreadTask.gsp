@@ -115,7 +115,7 @@
                         <g:hiddenField name="puid" id="puid" value="${session.user.id}"></g:hiddenField>
                         <g:hiddenField name="puname" id="puname" value="${session.user.name}"></g:hiddenField>
                         <div>
-                            <textarea id="content" name="content"></textarea>
+                            <textarea id="content" name="content con"></textarea>
                         </div>
                         <a href="javascript:;" id="submit" class="rbtn btn-blue mt25">提交</a>
                     </form>
@@ -176,7 +176,9 @@
             $(".popup_box").css("display","block");
         });
         $(".close").click(function(){
+
             $(".popup_box").css("display","none");
+
         });
         $(".popup_box .r-jinji-down a").click(function(){
             var playstatus=$(this).attr("data-playstatus");
@@ -191,6 +193,7 @@
             } else {
                 ul.slideUp("fast");
                 $(".toolkit .task-order").css("border-bottom","none");
+
             }
         });
 
@@ -282,6 +285,7 @@
 
         function replysubmit(){
             $(".quxiao").on("click",function(){
+
                 $(this).parent().parent().parent().slideUp();
                 $(".shuru .rcontainer").empty()
             })
@@ -376,6 +380,7 @@
         $(".taskclose").click(function(){
             $("#task").slideLeftHide(400);
             $("#task .task_content").empty();
+           location.reload();
         });
 
         //筛选
