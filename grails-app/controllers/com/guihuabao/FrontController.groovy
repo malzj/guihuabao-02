@@ -1265,6 +1265,7 @@ class FrontController {
         if(params.approvaluid) {
             applyInstance.approvalusername = CompanyUser.get(params.approvaluid).name
         }
+        def a = params.copyuid
         if(params.copyuid) {
             applyInstance.copyname = CompanyUser.get(params.copyuid).name
         }
@@ -1332,6 +1333,7 @@ class FrontController {
             if(params.approvaluid) {
                 applyInstance.approvalusername = CompanyUser.get(params.approvaluid).name
             }
+            def c = params.copyuid
             if(params.copyuid) {
                 applyInstance.copyname = CompanyUser.get(params.copyuid).name
             }
@@ -1433,6 +1435,31 @@ class FrontController {
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'apply.label', default: 'Apply'), id])
             redirect(action: "user_draft", id: id)
+        }
+    }
+    //申请删除
+    def napplyDelete(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def applyInstance = Apply.get(id)
+        if (!applyInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'apply.label', default: 'Apply'), id])
+            redirect(action: "apply")
+            return
+        }
+
+        try {
+            applyInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'apply.label', default: 'Apply'), id])
+            redirect(action: "apply")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'apply.label', default: 'Apply'), id])
+            redirect(action: "apply", id: id)
         }
     }
     //抄送我的

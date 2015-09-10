@@ -201,7 +201,7 @@
                     <td align="right">抄送人</td>
                     <td><!--<input class="form-control form-control-inline input-medium default-date-picker" data-toggle="dropdown" name="newapply" />-->
                         <select id="copyuid" name="copyuid" class="select">
-                            <option selected>请选择抄送人</option>
+                            <option value="" selected>请选择抄送人</option>
                             <g:each in="${companyuserList}" var="copyuser">
                                 <option value="${copyuser.id}">${com.guihuabao.Bumen.get(copyuser.bid).name}-${copyuser.name}</option>
                             </g:each>
