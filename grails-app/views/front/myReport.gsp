@@ -277,14 +277,10 @@
             function remind(msg){
 
                 $("#panel").html(msg)
-                        .animate({top : "0" } , 1000 )
                         .show(500)
-                        .animate({top : "-16" } , 1000 )
-                        .hide(500)
+                        .animate({top : "0" } , 1000 )
+                        .hide(500).animate({top : "-16" } , 1000 )
 
-//                        .animate({height : "show" , width : "show" , opacity : "show" } , 1000 )
-//                        .animate({height : "500"} , 1000 );
-                $("#panel").html("");
             }
         })
     </script>

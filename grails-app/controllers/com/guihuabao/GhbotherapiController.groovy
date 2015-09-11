@@ -222,7 +222,6 @@ class GhbotherapiController {
         def rs = [:]
         def id = params.id
         def companyId = params.cid
-        def version = params.version.toInteger()
         def applystatus = params.applystatus
         def applyInstance = Apply.findByIdAndCid(id,companyId)
         if(!applyInstance){
@@ -242,21 +241,16 @@ class GhbotherapiController {
             applyInstance.properties = params
         }
 
-        if (version != null) {
-            if (applyInstance.version > version) {
-                rs.result=false
-                rs.msg = "审核失败"
-            }else{
-                if(!applyInstance.save(flush: true)){
-                    rs.result=false
-                    rs.msg = "审核失败"
-                }else{
-                    rs.result=true
-                    rs.msg = "审核成功"
-                    rs.applyInstance = applyInstance
-                }
-            }
+
+        if(!applyInstance.save(flush: true)){
+            rs.result=false
+            rs.msg = "审核失败"
+        }else{
+            rs.result=true
+            rs.msg = "审核成功"
+            rs.applyInstance = applyInstance
         }
+
 
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
@@ -267,7 +261,6 @@ class GhbotherapiController {
     def applyUpdate(){
         def rs = [:]
         def id = params.id
-        def version = params.version.toInteger()
         def applyInstance  = Apply.get(id)
         if(applyInstance){//判断信息是否为空
             rs.result=true
@@ -281,19 +274,15 @@ class GhbotherapiController {
                 applyInstance.remindstatus=0
             }
             applyInstance.properties = params
-            if(version != null){
-                if (applyInstance.version > version) {
-                    rs.result=false
-                    rs.msg="修改失败"
-                }else{
-                    rs.result=true
-                    rs.msg="修改成功"
-                    if (!applyInstance.save(flush: true)) {
-                        rs.result=false
-                        rs.msg="修改失败"
-                    }
-                }
+
+            if (!applyInstance.save(flush: true)) {
+                rs.result=false
+                rs.msg="修改失败"
+            }else {
+                rs.result=true
+                rs.msg="修改成功"
             }
+
         }else{
             rs.msg=false
         }
@@ -566,7 +555,6 @@ class GhbotherapiController {
     def reportSave(){
         def myReportInfo
         def rs =[:]
-        def version = params.version.toInteger()
         def id = params.id
         def date
         DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -589,31 +577,14 @@ class GhbotherapiController {
             myReportInfo = Zhoubao.get(id)
         }
 
-        if (version != null) {
-            if (myReportInfo.version > version) {
-                rs.result = false
-                rs.msg = "周报保存失败"
-            }else{
-                params.username = CompanyUser.findById(params.uid).name
-                myReportInfo.properties = params
-                if (myReportInfo.save(flush: true)) {
-                    rs.result = true
-                    rs.msg = "周报保存成功"
-                }else{
-                    rs.result = false
-                    rs.msg = "周报保存失败"
-                }
-            }
+        params.username = CompanyUser.findById(params.uid).name
+        myReportInfo.properties = params
+        if (myReportInfo.save(flush: true)) {
+            rs.result = true
+            rs.msg = "周报保存成功"
         }else{
-            params.username = CompanyUser.findById(params.uid).name
-            myReportInfo.properties = params
-            if (myReportInfo.save(flush: true)) {
-                rs.result = true
-                rs.msg = "周报保存成功"
-            }else{
-                rs.result = false
-                rs.msg = "周报保存失败"
-            }
+            rs.result = false
+            rs.msg = "周报保存失败"
         }
 
         if (params.callback) {
@@ -626,24 +597,16 @@ class GhbotherapiController {
         def rs = [:]
         def id = params.id
         def cid = params.cid
-        def version = params.version.toInteger()
         def myReportInfo = Zhoubao.findByIdAndCid(id,cid)
         if(myReportInfo){
-            if (version != null) {
-                if (myReportInfo.version > version) {
-                    rs.result = false
-                    rs.msg = "提交失败"
-                }else{
-                    myReportInfo.submit = 1
-                    myReportInfo.properties = params
-                    if (myReportInfo.save(flush: true)) {
-                        rs.result = true
-                        rs.msg = "提交成功"
-                    }else{
-                        rs.result = false
-                        rs.msg = "提交失败"
-                    }
-                }
+            myReportInfo.submit = 1
+            myReportInfo.properties = params
+            if (myReportInfo.save(flush: true)) {
+                rs.result = true
+                rs.msg = "提交成功"
+            }else{
+                rs.result = false
+                rs.msg = "提交失败"
             }
         }
 
