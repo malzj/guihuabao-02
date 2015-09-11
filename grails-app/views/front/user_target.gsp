@@ -50,6 +50,11 @@
         #select_img .bx img{margin-right:40px;margin-bottom:40px;}
         #select_img a{cursor:pointer;}
         #select_img .upload{margin-left:20px;line-height:44px;}
+        #select_img1 h2{font-size:20px;margin:15px 30px;}
+        #select_img1 .ori{margin-left:120px;}
+        #select_img1 .bx img{margin-right:40px;margin-bottom:40px;}
+        #select_img1 a{cursor:pointer;}
+        #select_img1 .upload{margin-left:20px;line-height:44px;}
         .discuss{padding:10px 30px;}
         .discuss h4,.discuss span {
             font-size: 12px;
@@ -185,7 +190,8 @@
             <g:form url="[controller:'front',action:'targetSave']" method="post">
                 <ul>
                     <li class="clearfix">
-                        <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'uploadfile/target-img',file:'1.png')}"></div>
+                        <div align="right" class="f-l" style="margin-right: 10px;"><a class="select_img1"><img  src="${resource(dir:'uploadfile/target-img',file:'add.png')}" id="touxiang" width="48px" height="48px"/></a></div>
+                        <input type="hidden" name="img" id="tar_img"/>
                         <div class="f-l">
                             <input type="text" name="title" placeholder="添加目标名称" style="margin-top: 5px;width:689px;" class="nr" title="该字段不能为空！" id="tar_title"/>
                         </div>
@@ -248,8 +254,44 @@
     </div>
 </div>
 <!--目标分解 end-->
+<!--新建选择图片 start-->
+<div class="passwordedit" id="select_img1" style="position:absolute;overflow: scroll;">
+    <div class="m_box clearfix" style="width:804px;margin:200px auto;">
+        <header class="panel-heading" style="padding:10px 28px;">
+            <span>选择图片</span>
+            <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
 
-<!--选择图片 start-->
+        </header>
+        <h2>已选图标</h2>
+        <div class="clearfix ori">
+            <a class="f-l"><div id="imgDefault1"><img  src="${resource(dir:'uploadfile/target-img',file:'1.png')}" id="img1" width="48px" height="48px"/><span style="display:none;" id="filename1"></span></div></a>
+            <div class="f-l upload">
+                <a><form method="post" id="uploadForm1" enctype="multipart/form-data">
+                    <i class="fa fa-plus-circle"></i>
+                    <input type="file" id="up_img1" name="file1" style="display:inline-block" class="nr"/>
+                    <input type="button" class="btn" id="upload1" value="上传" style="width:80px;height:30px;line-height:16px;background:#03a9f4;color:#fff;"/>
+                </form></a>
+            </div>
+        </div>
+        <h2>备选图标</h2>
+        <div class="ori bx">
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'1.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'2.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'3.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'4.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'5.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'6.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'7.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'8.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'9.png')}"/></a>
+
+
+        </div>
+        <div class="f-r" style="margin-right: 30px;"><input type="button" class="btn" id="upimg1" value="确认" style="width:80px;height:30px;line-height:16px;background:#03a9f4;color:#fff;"/></div>
+    </div>
+</div>
+<!--选择图片 end-->
+<!--编辑图片 start-->
 <div class="passwordedit" id="select_img" style="position:absolute;overflow: scroll;">
     <div class="m_box clearfix" style="width:804px;margin:200px auto;">
         <header class="panel-heading" style="padding:10px 28px;">
@@ -285,7 +327,7 @@
         <div class="f-r" style="margin-right: 30px;"><input type="button" class="btn" id="upimg" value="确认" style="width:80px;height:30px;line-height:16px;background:#03a9f4;color:#fff;"/></div>
     </div>
 </div>
-<!--选择图片 end-->
+<!--编辑图片 end-->
 
 <!--新建任务 start-->
 <div class="passwordedit popup_box" id="newmissiondetail">
@@ -594,6 +636,7 @@
     <script type="text/javascript">
         window.onload = function () {
             new uploadPreview({ UpBtn: "up_img", DivShow: "imgDefault", ImgShow: "img" });
+            new uploadPreview({ UpBtn: "up_img1", DivShow: "imgDefault1", ImgShow: "img1" });
         }
     </script>
     <script>
@@ -1033,14 +1076,19 @@
             $("#newtargetdetail .close").click(function(){
                 $('.nr').val("");
                 $('.con').empty();
+                $('#touxiang').attr('src','/guihuabao/static/uploadfile/target-img/add.png')
                 $("#newtargetdetail").css("display","none");
 
 
                 $("#select_img").css("display","none");
             });
             $('#select_img .close').click(function(){
-                url=location.href.split('?')[0];
-                location.replace(url);
+//                url=location.href.split('?')[0];
+                location.reload();
+            })
+            $('#select_img1 .close').click(function(){
+                $('#select_img1').css('display','none');
+
             })
             $('#tar_fj .close').click(function(){
                 $("#tar_fj").css('display','none');
@@ -1388,6 +1436,59 @@
                    }
                })
            })
+//-------------------------------
+            $('.select_img1').click(function() {
+//                var tid=$(this).parent().prev().val();
+//                $('#all_var').html(tid);
+//                var img=$(this).find('img:first-child').attr('src');
+//                $('#img').attr('src',img);
+
+                $('#select_img1').css('display', 'block');
+                $('#select_img1 .ori img').click(function () {
+                    var thisimg = $(this).attr('src');
+
+                    $('#img1').attr('src', thisimg);
+                    $('#filename1').html(thisimg);
+                });
+
+
+            });
+
+            $('#upimg1').click(function(){
+                var filename=$('#filename1').html();
+                var imgs=filename.split('/');
+                var img=imgs[imgs.length-1];
+                $('#tar_img').val(img);
+                $('#touxiang').attr('src', filename);
+                $('#select_img1').css('display', 'none');
+            })
+
+            $('#upload1').click(function() {
+                if($("#up_img1").val()==""){
+                    alert("请选择一个图片文件,再点击");
+                    return;
+                }
+                $("#uploadForm1").ajaxSubmit({
+                    url: '${webRequest.baseUrl}/front/uploadImg',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: $('#uploadForm').serialize(),
+
+                    success: function (data) {
+                        alert('成功上传！');
+
+                        $('#filename1').html('/guihuabao/static/uploadfile/target-img/'+data.fileName);
+
+
+                    },
+                    error: function () {
+                        alert('获取数据失败！');
+                    }
+                })
+            })
+
+
+          //  ---------------------------------------------
             $('#saf').click(function(){
                 if($('#tar_title').val()==''){
                     $('#tar_title').css('border-color','red');
