@@ -519,8 +519,9 @@ class FrontController {
             offset =params.offset
         }
         params<<[offset:offset]
+        params<<[sort:"id", order:"asc"]
         def hxtool = HexuTool.findByIdAndStyle(id,1)
-        def contentlist = ToolContent.findAllByHexutools(hxtool,[sort:"id", order:"asc"])
+        def contentlist = ToolContent.findAllByHexutools(hxtool,params)
         def contentsize= ToolContent.countByHexutools(hxtool)
         def content=""
 
@@ -666,7 +667,7 @@ class FrontController {
             fileName=date.toString()+x.toString()+"."+strs[1]
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "/images/")
+            def userDir = new File(webRootDir, "/uploadfile/images/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
         }
@@ -1406,7 +1407,7 @@ class FrontController {
         def userId= session.user.id
         def companyId = session.company.id
         params<<[sort: "dateCreate",order: "desc"]
-        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3)
+        def companyuserList= CompanyUser.findAllByCidAndPidLessThan(companyId,3,[sort: "pid",order: "asc"])
         def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(userId,companyId,0,params)
         def applyInstanceTotal= Apply.countByApplyuidAndCidAndApplystatuss(userId,companyId,0)
         [applylist:applylist,applyInstanceTotal:applyInstanceTotal,companyuserList:companyuserList]
@@ -2312,7 +2313,7 @@ class FrontController {
         }
         def targetInstance = new Target(params)
         targetInstance.cid = session.company.id
-        targetInstance.img = '1.png'
+
         targetInstance.status = '0'
         targetInstance.percent = 0
         targetInstance.issubmit='0'
@@ -3170,7 +3171,7 @@ class FrontController {
             fileName=date.toString()+x.toString()+"."+strs[1]
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "img/target-img/")
+            def userDir = new File(webRootDir, "uploadfile/target-img/")
             userDir.mkdirs()
             f.transferTo( new File( userDir, fileName))
 

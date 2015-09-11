@@ -116,9 +116,9 @@
                                 <td>${applyInstance.status}</td>
                                 <td>${applyInstance.dateCreate.format("yyyy-MM-dd")}</td>
                                 <td>
-                                    <a href="javascript:;" class="draft_pre"><img src="${resource(dir:'img',file:'pre.png')}" alt="pre" title="pre"/></a>
-                                    <a href="javascript:;" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="edit"/></a>
-                                    <g:link action="applyDelete" id="${applyInstance.id}" class="draft_delete" onclick="return confirm('确定删除？');"><img src="${resource(dir:'img',file:'delete.png')}" alt="delete" title="delete"/></g:link>
+                                    <a href="javascript:;" class="draft_pre"><img src="${resource(dir:'img',file:'pre.png')}" alt="pre" title="查看"/></a>
+                                    <a href="javascript:;" class="draft_edit"><img src="${resource(dir:'img',file:'edit.png')}" alt="edit" title="编辑"/></a>
+                                    <g:link action="applyDelete" id="${applyInstance.id}" class="draft_delete" onclick="return confirm('确定删除？');"><img src="${resource(dir:'img',file:'delete.png')}" alt="delete" title="删除"/></g:link>
                                 </td>
                             </tr>
                         </g:each>
@@ -191,7 +191,9 @@
                         <select id="approvaluid" name="approvaluid" class="select">
                             <option value="" selected>请选择审批人</option>
                             <g:each in="${companyuserList}" var="user">
-                                <option value="${user.id}">${com.guihuabao.Bumen.get(user.bid).name}-${user.name}</option>
+                                <g:if test="${user.id!= session.user.id}">
+                                    <option value="${user.id}">${com.guihuabao.Bumen.get(user.bid).name}-${user.name}</option>
+                                </g:if>
                             </g:each>
                         </select>
 
@@ -203,7 +205,9 @@
                         <select id="copyuid" name="copyuid" class="select">
                             <option value="" selected>请选择抄送人</option>
                             <g:each in="${companyuserList}" var="copyuser">
-                                <option value="${copyuser.id}">${com.guihuabao.Bumen.get(copyuser.bid).name}-${copyuser.name}</option>
+                                <g:if test="${copyuser.id!= session.user.id}">
+                                    <option value="${copyuser.id}">${com.guihuabao.Bumen.get(copyuser.bid).name}-${copyuser.name}</option>
+                                </g:if>
                             </g:each>
 
                         </select>
@@ -219,8 +223,8 @@
                 <tr>
                     <td></td>
                     <td>
-                        <button id="button" type="button" class="applysub btn btn-info"  data-sub="0">存草稿</button>
                         <button id="button1" type="submit" class="applysub btn btn-info" data-sub="1">提交</button>
+                        <button id="button" type="button" class="applysub draftbtn btn ml20"  data-sub="0">存草稿</button>
                     </td>
                     <td></td>
                 </tr>

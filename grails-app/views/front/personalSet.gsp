@@ -92,7 +92,7 @@
                             <div class="f-l">头像设置：</div>
                             <div class="f-l">
                                 <input type="file" id="up_img" name="file1" value="${userInstance?.img}"/>
-                                <div id="imgdiv" class="mt20"><img id="imgShow" width="305" height="305" src="<g:if test="${userInstance?.img}">${resource(dir:"images", file: ''+userInstance?.img+'')}</g:if><g:else>${resource(dir:"images", file: "touxiang.jpg")}</g:else>"/></div>
+                                <div id="imgdiv" class="mt20"><img id="imgShow" width="305" height="305" src="<g:if test="${userInstance?.img}">${resource(dir:"uploadfile/images", file: ''+userInstance?.img+'')}</g:if><g:else>${resource(dir:"uploadfile/images", file: "touxiang.jpg")}</g:else>"/></div>
                                 <span>头像大小（100*100）</span>
                             </div>
                         </div>
