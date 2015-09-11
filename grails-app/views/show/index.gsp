@@ -169,15 +169,15 @@
 		<div class="footer-link">
 			<ul class="link-item">
 				<li><h5>产品</h5></li>
-				<li><a href="">功能特性</a></li>
-                <li><a href="">数据安全</a></li>
-                <li><a href="">移动版本</a></li> 
+				<li><g:link controller="show" action="function">功能特性</g:link></li>
+                <li><g:link controller="show" action="safe">数据安全</g:link></li>
+                <li><g:link controller="show" action="mobile">移动版本</g:link></li>
             </ul>
 			<ul class="link-item">
 				<li><h5>他说</h5></li>
-                <li><a href="">用户说</a></li>
-                <li><a href="">媒体说</a></li>
-                <li><a href="">行业说</a></li>
+                <li><g:link controller="show" action="everyonesay">用户说</g:link></li>
+                <li><g:link controller="show" action="everyonesay">媒体说</g:link></li>
+                <li><g:link controller="show" action="everyonesay">行业说</g:link></li>
 			</ul>
 			<ul class="link-item">
 				<li><h5>支持</h5></li>
@@ -188,10 +188,10 @@
 			
 			<ul class="link-item">
 				<li><h5>更多</h5></li>
-                <li><a href="">关于我们</a></li>
-                <li><a href="">联系我们</a></li>
-                <li><a href="">隐私政策</a></li>
-                <li><a href="">服务条款</a></li>
+                <li><g:link controller="show" action="aboutus">关于我们</g:link></li>
+                <li><g:link controller="show" action="contactus">联系我们</g:link></li>
+                <li><g:link controller="show" action="privacy">隐私政策</g:link></li>
+                <li><g:link controller="show" action="service">服务条款</g:link></li>
 			</ul>
 		</div>
 		<div class="footer-rightCol">

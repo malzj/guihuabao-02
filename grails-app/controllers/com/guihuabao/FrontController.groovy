@@ -1005,35 +1005,40 @@ class FrontController {
         redirect(action: "myReport", id: myReportInfo.id)
     }
     //周报ajax保存
-    def reportSave(Long id, Long version){
+    def reportSave(Long version){
         def myReportInfo
+        def myReportInfos
         def rs =[:]
         def a = params
-        if (!id) {
-            myReportInfo = new Zhoubao(params)
-            myReportInfo.dateCreate = new Date()
-            myReportInfo.submit = 0
+        myReportInfo = Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(params.uid,params.cid,params.year.toString(),params.month.toString(),params.week.toString())
+        if (!myReportInfo) {
+            myReportInfos = new Zhoubao(params)
+            myReportInfos.dateCreate = new Date()
+            myReportInfos.submit = 0
+            if(!myReportInfos.save(flush: true)){
+                rs.result = false
+                rs.msg = "保存失败"
+            }else{
+                rs.result = true
+                rs.msg = "保存成功"
+            }
         }else {
-            myReportInfo = Zhoubao.get(id)
-        }
-
-        if (version != null) {
-            if (myReportInfo.version > version) {
-                myReportInfo.errors.rejectValue("version", "default.optimistic.locking.failure",
-                        [message(code: 'zhoubao.label', default: 'Zhoubao')] as Object[],
-                        "Another user has updated this User while you were editing")
-                render(view: "myReport", model: [myReportInfo: myReportInfo])
-                return
+            if (version != null) {
+                if (myReportInfo.version > version) {
+                    rs.result = false
+                    rs.msg = "保存失败"
+                }else{
+                    myReportInfo.properties = params
+                    if (myReportInfo.save(flush: true)) {
+                        rs.result = true
+                        rs.msg = "保存成功"
+                    }else{
+                        rs.result = false
+                        rs.msg = "保存失败"
+                    }
+                }
             }
         }
-
-        myReportInfo.properties = params
-        if (myReportInfo.save(flush: true)) {
-            rs.msg = true
-        }else{
-            rs.msg = false
-        }
-
 
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"

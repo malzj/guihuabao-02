@@ -89,7 +89,6 @@
                         </div>
                     </div>
                     <form id="form1" method="post"  enctype= "multipart/form-data">
-                        <g:hiddenField name="id" value="${myReportInfo?.id}" />
                         <g:hiddenField name="version" value="${myReportInfo?.version}" />
                         <g:hiddenField name="uid" value="${session.user.id}" />
                         <g:hiddenField name="username" value="${session.user.username}" />
@@ -207,11 +206,10 @@
                     jsonp: "callback",
                     success: function (data) {
                         // 去渲染界面
-                        if(data.msg){
-//                            alert("修改成功！");
-                            window.location.reload();
+                        if(data.result){
+                            alert(data.msg);
                         }else{
-                            alert("修改失败！");
+                            alert(data.msg);
                         }
                     }
                 })
