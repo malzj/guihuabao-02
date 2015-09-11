@@ -2320,7 +2320,9 @@ class FrontController {
         targetInstance.isedit='0'
         targetInstance.ischeck='0'
         targetInstance.dateCreate = new Date()
-
+        if(!params.img){
+            targetInstance.img='add.png'
+        }
 
 
         if (!targetInstance.save(flush: true)) {
@@ -2341,12 +2343,14 @@ class FrontController {
         def rs = [:]
         def targetInstance = new Target(params)
         targetInstance.cid = session.company.id
-        targetInstance.img = '1.png'
+
         targetInstance.status = '0'
         targetInstance.ischeck='0'
         targetInstance.percent = 0
         targetInstance.dateCreate = new Date()
-
+        if(!params.img){
+            targetInstance.img='add.png'
+        }
 
         if (!targetInstance.save(flush: true)) {
             render(model: [targetInstance: targetInstance])
