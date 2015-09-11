@@ -60,7 +60,8 @@
                                 </g:if>
                             </div>
                         </div>
-                        <div class="row" style="padding:0 15px;">
+                        <div class="row" style="padding:0 15px;position:relative">
+                            <div style="position: absolute;top:0;left: 0;z-index:10000;width:100%;height:100%;"></div>
                             <div class="page b-k col-xs-12">${content}</div>
 
                     </div>
