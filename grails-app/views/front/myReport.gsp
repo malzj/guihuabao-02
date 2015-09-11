@@ -280,7 +280,6 @@
                         .show(500)
                         .animate({top : "0" } , 1000 )
                         .hide(500).animate({top : "-16" } , 1000 )
-
             }
         })
     </script>
