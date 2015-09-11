@@ -78,7 +78,8 @@
                             <button id="bookmenu" class="sb-toggle-right rbtn btn-blue ml25">目录</button>
                         </div>
                     </div>
-                    <div class="row" style="padding:0 15px;">
+                    <div class="row" style="padding:0 15px; position:relative">
+                        <div style="position: absolute;top:0;left: 0;z-index:10000;width:100%;height:100%;;"></div>
                     <div class="page b-k col-xs-6" style="width:48%">${content}</div>
                     <div class="page b-k ml20 col-xs-6" style="width:48%">${content1}</div>
                     </div>

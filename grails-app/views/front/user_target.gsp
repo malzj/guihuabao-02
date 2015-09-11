@@ -777,8 +777,7 @@
                     data: {target_id: tid},
                     success: function (data) {
                         if(data.msg) {
-                            url=location.href.split('?')[0];
-                            location.replace(url);
+                          location.reload();
                             alert('删除成功！');
                         }else{
                             alert('删除失败！');
@@ -1092,8 +1091,7 @@
             })
             $('#tar_fj .close').click(function(){
                 $("#tar_fj").css('display','none');
-                url=location.href.split('?')[0];
-                location.replace(url);
+               location.reload();
             })
 
 
@@ -1515,16 +1513,18 @@
                 }else{
                     $('#enddate').css('border-color','#d2d2d2');
                 }
+                var img=$('#tar_img').val();
                 var title=$('#tar_title').val();
                 var content=$('#tar_con').val();
                 var fzuid=$('#tar_fzuid').val();
                 var begintime=$('#startdate').val();
                 var etime=$('#enddate').val();
+
                 $.ajax({
                     url:'${webRequest.baseUrl}/front/targetSaveAndSplit',
                     type:'post',
                     dataType:'json',
-                    data:{title:title,contnet:content,fzuid:fzuid,begintime:begintime,etime:etime},
+                    data:{title:title,contnet:content,fzuid:fzuid,begintime:begintime,etime:etime,img:img},
                     success:function(data){
 
                         $("#tar_fj").css('display','block');
