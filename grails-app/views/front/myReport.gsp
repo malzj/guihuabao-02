@@ -79,6 +79,7 @@
                     </div>
                 </div>
                 <div class="zhoubao col-xs-9">
+                    <div id="panel" style="width:218px;height: 50px;line-height: 50px; display: none; background-color: #f4f4f4; border: 1px solid #d3d3d3; position: absolute; top:-16px; right:50%; border-radius: 5px;"></div>
                     <div class="top clearfix">
                         <div class="address f-l">
                             ${session.user.username}第${week}周的工作报告
@@ -195,7 +196,6 @@
             })
             $(".zhoubao textarea").bind("blur",function(){
                 var name=$(this).attr("name")
-                var value=$(this).val()
                 var c=$("#form1").serialize();
 //            console.log(c+"111111111111111111111111111")
                 $.ajax({
@@ -207,9 +207,13 @@
                     success: function (data) {
                         // 去渲染界面
                         if(data.result){
-                            alert(data.msg);
+//                            alert(data.msg);
+                            remind(data.msg);
+                            var version = parseInt($("input[name=version]").val())+1;
+                            $("input[name=version]").val(version);
+
                         }else{
-                            alert(data.msg);
+                            remind(data.msg);
                         }
                     }
                 })
@@ -267,6 +271,20 @@
                 if(performance&&xinde&&plan&&cooperate){
                     $(".zhoubao .rbtn").removeAttr("disabled")
                 }
+            }
+
+            //保存完成提示
+            function remind(msg){
+
+                $("#panel").html(msg)
+                        .animate({top : "0" } , 1000 )
+                        .show(500)
+                        .animate({top : "-16" } , 1000 )
+                        .hide(500)
+
+//                        .animate({height : "show" , width : "show" , opacity : "show" } , 1000 )
+//                        .animate({height : "500"} , 1000 );
+                $("#panel").html("");
             }
         })
     </script>
