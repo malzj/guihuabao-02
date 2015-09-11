@@ -180,7 +180,7 @@
                             <input type="text" placeholder="一句话描述任务" class="size" name="title" /><span id="taskcreate-title" style="color: red"></span>
                         </div>
                         <div class="control-group">
-                            <input type="text" placeholder="添加任务详情" class="size" name="content" /><span id="taskcreate-content" style="color: red"></span>
+                            <textarea rows="4" placeholder="添加任务详情" class="size" name="content" ></textarea><span id="taskcreate-content" style="color: red"></span>
                         </div>
                         <div class="control-group">
                             <table>
