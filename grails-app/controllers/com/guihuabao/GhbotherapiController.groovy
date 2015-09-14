@@ -7,7 +7,62 @@ import java.text.SimpleDateFormat
 
 class GhbotherapiController {
 
-    def index() {}
+    //首页
+    def index() {
+        def rs=[:]
+        def cid=params.cid
+        def uid=params.uid
+
+        params.max = 2
+        params<<[sort:"dateCreate",order: "desc"]
+
+        def current = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        def now = time.format(current)
+
+        def targetlist = Target.findAllByFzuidAndCidAndStatus(uid, cid, 0, params)//目标列表
+        def todayTaskList = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(cid,uid,2,0,now,now,params)//今日任务
+        def applylist= Apply.findAllByApplyuidAndCidAndApplystatuss(uid,cid,1,params)//申请列表
+        def companyNoticeInstanceList = CompanyNotice.findAllByCid(cid,params)//公告列表
+
+        if(targetlist){
+            rs.targetresult = true
+            rs.targetlist = targetlist
+        }else{
+            rs.targetresult = false
+            rs.targetmsg = "未找到目标"
+        }
+
+        if(todayTaskList){
+            rs.todayTaskresult = true
+            rs.todayTasklist = todayTaskList
+        }else{
+            rs.todayTaskresult = false
+            rs.todayTaskmsg = "未找到任务"
+        }
+
+        if(applylist){
+            rs.applyresult = true
+            rs.applylist = applylist
+        }else{
+            rs.applyresult = false
+            rs.applymsg = "未找到申请"
+        }
+
+        def a = companyNoticeInstanceList
+        if(companyNoticeInstanceList){
+            rs.companyNoticeresult = true
+            rs.companyNoticelist = companyNoticeInstanceList
+        }else{
+            rs.companyNoticeresult = false
+            rs.companyNoticemsg = "未找到公告"
+        }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
     //我的申请
     def apply(){
 
@@ -371,8 +426,8 @@ class GhbotherapiController {
         def date
         def date1
         DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-        if(params.prevweek){
-            date = params.prevweek
+        if(params.reportdate){
+            date = params.reportdate
         }else{
             date = dayFormat.format(new Date())
         }
@@ -390,11 +445,8 @@ class GhbotherapiController {
         for(i=0;i<ureadReply.size();i++){
             ureadReply[i].status=1
         }
-        if(myReportInfo){
-            date1 = myReportInfo.dateCreate
-        }else{
-            date1 = dayFormat.parse(date)
-        }
+
+        date1 = dayFormat.parse(date)
 
         Calendar calendar = new GregorianCalendar();
         def day = date1
@@ -407,6 +459,9 @@ class GhbotherapiController {
             rs.myReportInfo = myReportInfo
             rs.replyInstance = replyInstance
         }else{
+            rs.year = n_year
+            rs.month = n_month
+            rs.week = n_week
             rs.result = false
             rs.msg = "未找到报告"
         }
@@ -554,31 +609,39 @@ class GhbotherapiController {
     //报告保存
     def reportSave(){
         def myReportInfo
+        def myReportInfos
         def rs =[:]
         def id = params.id
         def date
         DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-        if(params.reportweek){//预留如果不是本周报告，但可修改的话用
-            date = params.reportweek
-        }else{
-            date = dayFormat.format(new Date())
-        }
-
+        date = dayFormat.format(new Date())
         def month_week = weekJudge(date)
 
-        if (!id) {
-            myReportInfo = new Zhoubao(params)
-            myReportInfo.year = month_week.year
-            myReportInfo.month = month_week.month
-            myReportInfo.week = month_week.nowweek
-            myReportInfo.dateCreate = new Date()
-            myReportInfo.submit = 0
+        myReportInfo = Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(params.uid,params.cid,params.year.toString(),params.month.toString(),params.week.toString())
+        if (!myReportInfo) {
+            params.username = CompanyUser.findById(params.uid).name
+            myReportInfos = new Zhoubao(params)
+            myReportInfos.dateCreate = new Date()
+            myReportInfos.submit = 0
+            if(!myReportInfos.save(flush: true)){
+                rs.result = false
+                rs.msg = "保存失败"
+            }else{
+                rs.result = true
+                rs.msg = "保存成功"
+            }
         }else {
-            myReportInfo = Zhoubao.get(id)
+            params.username = CompanyUser.findById(params.uid).name
+            myReportInfo.properties = params
+            if (myReportInfo.save(flush: true)) {
+                rs.result = true
+                rs.msg = "保存成功"
+            }else{
+                rs.result = false
+                rs.msg = "保存失败"
+            }
         }
 
-        params.username = CompanyUser.findById(params.uid).name
-        myReportInfo.properties = params
         if (myReportInfo.save(flush: true)) {
             rs.result = true
             rs.msg = "周报保存成功"
@@ -652,6 +715,7 @@ class GhbotherapiController {
             for (def i=0;i<replyInstance.size();i++){
                 def info= [:]
                 info.allInfo=replyInstance.get(i)
+                info.reportdate= replyInstance.get(i).zhoubao.dateCreate
                 info.week= replyInstance.get(i).zhoubao.week
                 replyInfo<<info
             }
