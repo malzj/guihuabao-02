@@ -14,9 +14,9 @@ class Mission {
     String overtime     //截止时间日
 
     Date dateCreate     //创建时间
-    String hasvisited   //是否已阅读（这个属性不要了，并到了status里面了）
+    String hasvisited   //是否已阅读
     String issubmit     //是否下发
-    String reply        //是否有回复
+//    String reply        //是否有回复
     String playstatus   //紧急状态 1紧急且重要2紧急不重要3重要不紧急4不重要不紧急
     static belongsTo = [target:Target]
     static hasMany = [replymission: ReplyMission]
@@ -34,7 +34,7 @@ class Mission {
         dateCreate(nullable: true)
         hasvisited(nullable:true)
         issubmit(nullable:true)
-        reply(nullable: true)
+//        reply(nullable: true)
         playstatus(nullable: true)
     }
 }

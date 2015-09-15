@@ -45,7 +45,9 @@ class TargetController {
         def rs=[:]
         def targetInstance=new Target(params)
         targetInstance.dateCreate=new Date()
-        targetInstance.img='1.png'
+        if(!params.img){
+            targetInstance.img='add.png'
+        }
         targetInstance.issubmit=0
         targetInstance.status=0
         targetInstance.percent=0
@@ -142,7 +144,7 @@ class TargetController {
         missionInstance.issubmit=0
         missionInstance.hasvisited=0
         missionInstance.dateCreate=new Date()
-        missionInstance.reply=0
+//        missionInstance.reply=0
         missionInstance.target=targetInstance
         if(!missionInstance.save(flush: true)){
             rs.result=false
@@ -286,10 +288,10 @@ class TargetController {
             offset =params.offset.toInteger()
         }
         params<<[offset:offset]
-        def joinmissionsize=Mission.countByPlayuidAndStatus(uid,0)
+        def joinmissionsize=Mission.countByPlayuidAndIssubmitAndStatus(uid,1,0)
         def offse=params.offset.toInteger()
         if(joinmissionsize>offse) {
-            def joinmissionlist = Mission.findAllByPlayuidAndStatus(uid, 0, params)
+            def joinmissionlist = Mission.findAllByPlayuidAndIssubmitAndStatus(uid,1,0, params)
             if(joinmissionlist){
                 rs.result=true
                 rs.joinmissionlist=joinmissionlist
@@ -442,6 +444,100 @@ class TargetController {
                    r.status=1
                }
                 rs.result = true
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def sign_mission_hasvisited(){
+        def rs=[:]
+        def mid=params.mid
+        def missionInstance=Mission.get(mid)
+        if(!missionInstance){
+            rs.result=false
+            rs.msg='获取数据失败！'
+        }else{
+            missionInstance.hasvisited=1
+            if(!missionInstance.save(flush: true)){
+                rs.result=false
+                rs.msg='获取数据失败！'
+            }else{
+                rs.result=true
+                rs.msg='任务已查看！'
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def sign_mission_accepted(){
+        def rs=[:]
+        def mid=params.mid
+        def missionInstance=Mission.get(mid)
+        if(!missionInstance){
+            rs.result=false
+            rs.msg='获取数据失败！'
+        }else{
+            missionInstance.hasvisited=2
+            if(!missionInstance.save(flush: true)){
+                rs.result=false
+                rs.msg='获取数据失败！'
+            }else{
+                rs.result=true
+                rs.msg='任务已接受！'
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def sign_mission_hasfinished(){
+        def rs=[:]
+        def mid=params.mid
+        def missionInstance=Mission.get(mid)
+        if(!missionInstance){
+            rs.result=false
+            rs.msg='获取数据失败！'
+        }else{
+            missionInstance.status=1
+            missionInstance.target.percent+=missionInstance.percent
+            if(!missionInstance.save(flush: true)){
+                rs.result=false
+                rs.msg='获取数据失败！'
+            }else{
+
+                rs.result=true
+                rs.msg='任务标记完成！'
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def sign_target_submit(){
+        def rs=[:]
+        def tid=params.tid
+        def targetInstance=Target.get(tid)
+        if(!targetInstance){
+            rs.result=false
+            rs.msg='获取数据失败！'
+        }else{
+            targetInstance.issubmit=1
+            def missionlist=targetInstance.mission
+            for(def m in missionlist){
+                m.issubmit=1
+            }
+            if(!targetInstance.save(flush: true)){
+                rs.result=false
+                rs.msg='获取数据失败！'
+            }else{
+                rs.result=true
+                rs.msg='目标下发成功！'
             }
         }
         if (params.callback) {

@@ -330,9 +330,10 @@ class MyController {
         Date date1 = time.parse(date)
         calendar.setTime(date1)
         calendar.add(Calendar.HOUR,6)
+        def sum=0
         def etime = time.format(calendar.getTime())
         def endedtargetlistsize=Target.countByCidAndFzuidAndStatusAndEtimeGreaterThanEqualsAndEtimeLessThanEquals(cid, uid, 0, date, etime)
-
+        sum+=endedtargetlistsize
 
 
         def nowdate=new Date()
@@ -359,16 +360,21 @@ class MyController {
         def nowday = timearr1[0]
         def nowtime = timearr1[1]
         def endedtasklistsize=Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(cid,uid,nowday,endtime,nowtime,2,0)
-
+        sum+=endedtasklistsize
         def unreadtaskreplylist=ReplyTask.countByBpuidAndCidAndStatus(uid,cid,0)
-
+        sum+=unreadtaskreplylist
         def hasfinishedtasklistsize=Task.countByCidAndFzuidAndStatus(cid, uid, 1)
-
+        sum+=hasfinishedtasklistsize
         def applylistsize=Apply.countByCidAndApplyuidAndRemindstatus(cid, uid,1)
-
+        sum+=applylistsize
         def unreadtasklistsize=Task.countByCidAndPlayuidAndLookstatus(cid, uid, 0)
-
+        sum+=unreadtasklistsize
         def applylistsize1=Apply.countByCidAndApprovaluidAndApplystatus(cid, uid,0)
+        if(sum>0){
+            rs.sign=1
+        }else{
+            rs.sign=0
+        }
         rs.endedtasklistsize=endedtasklistsize
         rs.endedtargetlistsize=endedtargetlistsize
         rs.unreadtaskreplylist=unreadtaskreplylist
@@ -392,12 +398,14 @@ class MyController {
             rs.result=false
             rs.msg="获取数据失败！"
         }else{
+
             def bumen=Bumen.findById(companyuserInstance.bid).name
             def pname=Persona.findById(companyuserInstance.pid).name
             rs.result=true
             rs.user=companyuserInstance
             rs.bumen=bumen
             rs.pname=pname
+
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"

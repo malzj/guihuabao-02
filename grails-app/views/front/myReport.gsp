@@ -275,13 +275,8 @@
 
             //保存完成提示
             function remind(msg){
-//
-                $("#panel").html(msg);
-////                $("#panel").show(2000).hide(2000);
-//                $("#panel").animate({top : "0"}
-//                .show(1000)
 
-                $("#panel").animate({top : "0" } , 1000 )
+                $("#panel").html(msg).animate({top : "0" } , 1000 )
                         .show(500)
                         .animate({top : "-16" } , 1000 )
                         .hide(500)
