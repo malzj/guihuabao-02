@@ -500,7 +500,7 @@ class FrontController {
             return
         }
         params.max = Math.min(max ?: 10, 100)
-        def toolInstanceList = HexuTool.findAllByStyle(1,params)
+        def toolInstanceList = Hexuool.findAllByStyle(1,params)
         def toolInstanceTotal = HexuTool.countByStyle(1)
         [toolInstanceList: toolInstanceList, toolInstanceTotal: toolInstanceTotal]
     }
@@ -2321,9 +2321,9 @@ class FrontController {
 
         targetInstance.status = '0'
         targetInstance.percent = 0
-        targetInstance.issubmit='0'
-        targetInstance.isedit='0'
-        targetInstance.ischeck='0'
+        targetInstance.issubmit = '0'
+        targetInstance.isedit = '0'
+        targetInstance.ischeck ='0'
         targetInstance.dateCreate = new Date()
         if(!params.img){
             targetInstance.img='add.png'
@@ -2352,6 +2352,9 @@ class FrontController {
         targetInstance.status = '0'
         targetInstance.ischeck='0'
         targetInstance.percent = 0
+        targetInstance.issubmit = '0'
+        targetInstance.isedit = '0'
+        targetInstance.ischeck ='0'
         targetInstance.dateCreate = new Date()
         if(!params.img){
             targetInstance.img='add.png'

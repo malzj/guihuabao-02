@@ -233,7 +233,7 @@
 </div>
 
 <!--目标分解 start-->
-<div class="passwordedit" id="tar_fj" style="position:absolute;overflow: scroll;">
+<div class="passwordedit" id="tar_fj" style="overflow: scroll;">
 
     <div class="m_box" style="width:804px;">
         <header class="panel-heading" style="padding:10px 28px;">
@@ -255,7 +255,7 @@
 </div>
 <!--目标分解 end-->
 <!--新建选择图片 start-->
-<div class="passwordedit" id="select_img1" style="position:absolute;overflow: scroll;">
+<div class="passwordedit" id="select_img1" style="overflow: scroll;">
     <div class="m_box clearfix" style="width:804px;margin:200px auto;">
         <header class="panel-heading" style="padding:10px 28px;">
             <span>选择图片</span>
@@ -292,7 +292,7 @@
 </div>
 <!--选择图片 end-->
 <!--编辑图片 start-->
-<div class="passwordedit" id="select_img" style="position:absolute;overflow: scroll;">
+<div class="passwordedit" id="select_img" style="overflow: scroll;">
     <div class="m_box clearfix" style="width:804px;margin:200px auto;">
         <header class="panel-heading" style="padding:10px 28px;">
             <span>选择图片</span>
@@ -353,7 +353,7 @@
                         <td width="75%" >
 
                             <input type="hidden"  name="playuid" value=""  id="newmission_playname" class="nr" title="该字段不能为空！"/>
-                            <input type="hidden" id="playbid" name="playbid" value="" class="nr" title="该字段不能为空！"/>
+                            <input type="hidden" id="playbid" name="bid" value="" class="nr" title="该字段不能为空！"/>
                             <input type="hidden" id="playname" name="playname" value="" class="nr" title="该字段不能为空！"/>
                             <div class="dropdown"><span class="zhxr con"></span>
                                 <a  id="playman" style="cursor:pointer;" class="menu"  data-toggle="dropdown"><i class="fa fa-plus-square-o"></i></a>
@@ -529,7 +529,7 @@
 </div>
 <!--编辑任务 end-->
 <!--目标详情 start-->
-<div class="passwordedit" id="tar_detail" style="position:absolute;overflow: scroll;">
+<div class="passwordedit" id="tar_detail" style="overflow: scroll;">
     <div class="m_box" style="width:804px;overflow: scroll;">
         <header class="panel-heading" style="padding:10px 28px;">
             <span>目标详情<i class="fa fa-print" style="margin:0 10px;color:#03a9f4;"></i><i class="fa fa-file-text" style="color:#03a9f4;"></i></span>
@@ -563,7 +563,7 @@
 </div>
 <!--目标详情 end-->
 <!--评论及反馈 start-->
-<div class="passwordedit" id="task" style="width:100%;background-color:transparent;position:absolute;overflow: scroll;z-index:2000">
+<div class="passwordedit" id="task" style="width:100%;background-color:transparent;overflow: scroll;z-index:2000">
     <div class="m_box" style="width:804px;overflow: scroll;">
         <header class="panel-heading" style="padding:10px 28px;">
 
@@ -860,12 +860,7 @@
                     }else{
                         $('#mission_content_edit').css('border-color','#d2d2d2');
                     }
-////                    if($('#playuid_edit').val()==''){
-////                        $('#playuid_edit').css('border-color','red');
-////                        return false;
-////                    }else{
-////                        $('#playuid_edit').css('border-color','#d2d2d2');
-////                    }
+
                     if($('.zhxr').html()==''){
                         $('.zhxr').next().css('border','1px solid red');
                         return false
@@ -970,6 +965,10 @@
                                         '</tr>'+
                                         '</table>'+
                                         '</li>';
+                                if(missionlist[i].status=='1'){
+                                    $('.mission_edit').addClass('disabled');
+                                    $('.mission_delete').addClass('disabled');
+                                }
 
                             }
                             $("#tar_fj ul").append(html);
@@ -1269,7 +1268,7 @@
                     var target_id=$('#target_id').val();
                     var title=$('#newmission_title').val();
                     var content=$('#newmission_content').val();
-                    var playuid=$('#playuid').val();
+                    var playuid=$('#newmission_playname').val();
                     var playbid=$('#playbid').val();
                     var playname=$('#playname').val();
                     var begintime=$('#startdate_mission').val();
@@ -1283,7 +1282,7 @@
                         type:'post',
                         async:'false',
                         dataType:'json',
-                        data:{target_id:target_id,title:title,content:content,playname:playname,playbid:playbid,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent,status:status,playstatus:playstatus},
+                        data:{target_id:target_id,title:title,content:content,playname:playname,bid:playbid,playuid:playuid,begintime:begintime,overtime:overtime,percent:percent,status:status,playstatus:playstatus},
                         success:function(data){
                             var target=data.target;
                             var mission=data.mission;
@@ -1524,7 +1523,7 @@
                     url:'${webRequest.baseUrl}/front/targetSaveAndSplit',
                     type:'post',
                     dataType:'json',
-                    data:{title:title,contnet:content,fzuid:fzuid,begintime:begintime,etime:etime,img:img},
+                    data:{title:title,content:content,fzuid:fzuid,begintime:begintime,etime:etime,img:img},
                     success:function(data){
 
                         $("#tar_fj").css('display','block');
