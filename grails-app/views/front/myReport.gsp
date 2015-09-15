@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="zhoubao col-xs-9">
-                    <div id="panel" style="width:218px;height: 50px;line-height: 50px; display: none;text-align: center; background-color: #f4f4f4; border: 1px solid #d3d3d3; position: absolute; top:-16px; right:50%; border-radius: 5px;"></div>
+                    <div id="panel" style="width:218px;height: 50px;line-height: 50px; display: none; background-color: #f4f4f4; border: 1px solid #d3d3d3; position: absolute; top:-16px; right:50%; border-radius: 5px;"></div>
                     <div class="top clearfix">
                         <div class="address f-l">
                             ${session.user.username}第${week}周的工作报告
@@ -276,13 +276,10 @@
             //保存完成提示
             function remind(msg){
 
-                $("#panel").html(msg).animate({top : "0" } , 1000 )
+                $("#panel").html(msg)
                         .show(500)
-                        .animate({top : "-16" } , 1000 )
-                        .hide(500)
-
-//                        .animate({height : "show" , width : "show" , opacity : "show" } , 1000 )
-//                        .animate({height : "500"} , 1000 );
+                        .animate({top : "0" } , 1000 )
+                        .hide(500).animate({top : "-16" } , 1000 )
             }
         })
     </script>
