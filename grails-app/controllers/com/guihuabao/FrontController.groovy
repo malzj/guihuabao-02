@@ -1333,13 +1333,13 @@ class FrontController {
     def applyUpdate(Long id, Long version){
         def rs=[:]
         def applyInstance  = Apply.get(id)
-        def a = params.applysub
+
         if(applyInstance){//判断信息是否为空
             rs.msg=true
             if(params.approvaluid) {
                 applyInstance.approvalusername = CompanyUser.get(params.approvaluid).name
             }
-            def c = params.copyuid
+
             if(params.copyuid) {
                 applyInstance.copyname = CompanyUser.get(params.copyuid).name
             }
