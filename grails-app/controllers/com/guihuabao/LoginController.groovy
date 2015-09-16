@@ -1424,4 +1424,7 @@ class LoginController {
             redirect(action: "appShow", id: id)
         }
     }
+    def buy_app(){
+
+    }
 }

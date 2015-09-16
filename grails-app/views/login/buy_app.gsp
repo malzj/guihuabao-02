@@ -48,21 +48,17 @@
                     %{--<div class="m_box ">--}%
                     <div style="width:49%;height:100%;border:1px solid #d2d2d2;background-color: #fff;" class="f-l">
                         <header class="panel-heading">
-                            <span>应用</span>
+                            <span>所有应用</span>
                         </header>
                         <ul id="ul1" class="xsreport clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:100%">
-                            <g:each in="${companyAppList}" status="i" var="app">
-                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;line-height: 90px;">
-                                    <img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}"/>
-                                    <div>${app.name}</div>
-                                    <span style="display: none">${app.id}</span>
-                                </li>
+                            <g:each in="${apps}" status="i" var="app">
+                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;line-height: 90px;">${app}</li>
                             </g:each>
                         </ul>
                     </div>
                     <div style="width:49%;height:100%;border:1px solid #d2d2d2;background-color: #fff;" class="f-r">
                         <header class="panel-heading">
-                            <span>要显示在导航条的应用</span>
+                            <span>已购买应用</span>
                         </header>
                         <ul id="ul2" class="xsreport clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" >
 
@@ -98,21 +94,9 @@
 
         var ev=ev||window.event;
         ev.preventDefault();
-        var ul2=document.getElementById('ul2');
-        if(ev.target==ul2){
-            if($('#ul2').children().length==5){
-                alert('只能显示5个应用！');
-
-            }else {
-                var data = ev.dataTransfer.getData("Text");
-                var li = document.getElementById(data);
-                ev.target.appendChild(li);
-            }
-        }else{
-            var data = ev.dataTransfer.getData("Text");
-            var li = document.getElementById(data);
-            ev.target.appendChild(li);
-        }
+        var data=ev.dataTransfer.getData("Text");
+        var li=document.getElementById(data);
+        ev.target.appendChild(li);
 
     }
 </script>

@@ -3219,19 +3219,11 @@ class FrontController {
         } else
             render rs as JSON
     }
-    def buy_app(){
-        def app=[]
-        for(def i=0;i<10;i++){
-            app.add(i)
-        }
-        [apps:app]
-    }
+
     def show_app(){
-        def app=[]
-        for(def i=0;i<10;i++){
-            app.add(i)
-        }
-        [apps:app]
+        def cid=session.user.cid
+        def companyAppList=CompanyApps.findByCid(cid,[sort:'buydate',order:'desc'])
+        [companyAppList:companyAppList]
     }
 }
 
