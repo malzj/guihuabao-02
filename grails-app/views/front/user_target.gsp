@@ -687,6 +687,7 @@
                             }else if(missionlist[i].hasvisited=='2'&&missionlist[i].status=='1'){
                                 s='已完成';
                             }
+
                             html+=' <li class="clearfix">'+
                             '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
                             '<div class="f-l" style="font-size: 20px;margin-top:7px;">'+
@@ -932,6 +933,7 @@
                                 }else if(missionlist[i].hasvisited=='2'&&missionlist[i].status=='1'){
                                     s='已完成';
                                 }
+
                                 html+=' <li class="clearfix">'+
                                         '<h2 style="padding:0;margin: 0 20px 0 0;font-size: 20px;color:#03a9f4" class="f-l">任务'+(i+1)+'：<span style="color:#797979;">'+missionlist[i].title+'</span></h2>'+
                                         '<div class="f-l on" style="font-size: 20px;margin-top:7px;">'+
@@ -965,10 +967,7 @@
                                         '</tr>'+
                                         '</table>'+
                                         '</li>';
-                                if(missionlist[i].status=='1'){
-                                    $('.mission_edit').addClass('disabled');
-                                    $('.mission_delete').addClass('disabled');
-                                }
+
 
                             }
                             $("#tar_fj ul").append(html);

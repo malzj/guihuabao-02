@@ -88,7 +88,7 @@
         </section>
         <!--main content end-->
         <!-- Right Slidebar start -->
-        <div class="sb-slidebar sb-right sb-style-overlay">
+        <div class="sb-slidebar sb-right sb-style-overlay" style="z-index: 10001">
             <div class="soline clearfix">
             <h5 class="side-title f-l">目录</h5>
             <a class="sb-toggle-right clomenu f-r" href="javascript:;">收起目录</a>

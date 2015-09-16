@@ -30,11 +30,11 @@ class TargetController {
                 rs.targetlist = targetlist
             } else {
                 rs.result = false
-                rs.msg = "已加载所有数据"
+                rs.msg = "已加载所有数据!"
             }
         }else{
             rs.result = false
-            rs.msg = "已加载所有数据"
+            rs.msg = "已加载所有数据!"
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
@@ -51,6 +51,8 @@ class TargetController {
         targetInstance.issubmit=0
         targetInstance.status=0
         targetInstance.percent=0
+        targetInstance.isedit =0
+        targetInstance.ischeck =0
         if(!targetInstance.save(flush: true)){
             rs.result=false
             rs.msg="保存失败"
@@ -98,6 +100,7 @@ class TargetController {
         def id=params.id
         def cid=params.cid
         def targetInstance=Target.findByIdAndCid(id,cid)
+        def sum=0
         if(!targetInstance){
             rs.result=false
             rs.msg="获取数据失败！"
@@ -106,6 +109,10 @@ class TargetController {
             rs.target=targetInstance
             def missionlist=targetInstance.mission
             rs.missionlist=missionlist
+            for(def m in missionlist){
+                sum+=m.percent
+            }
+            rs.r_per=100-sum
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
@@ -261,7 +268,7 @@ class TargetController {
             replymissionInstance.status = 0
             SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             replymissionInstance.date=time.format(new Date())
-            missionInstance.reply = 1
+//            missionInstance.reply = 1
             replymissionInstance.mission = missionInstance
             if (!replymissionInstance.save(flush: true)) {
                 rs.result = false
@@ -404,23 +411,19 @@ class TargetController {
     }
     def unreadComment(){
         def rs=[:]
-        def mid=params.mid
+
         def uid=params.uid
         params<<[sort:"date",order: "desc"]
-        def missionInstance=Mission.get(mid)
-        if(!missionInstance){
-            rs.result=false
-            rs.msg="获取数据失败！"
-        }else {
-            def unreadcomment = ReplyMission.findAllByMissionAndBpuidAndStatus(missionInstance,uid,0,params)
+            def unreadcomment = ReplyMission.findAllByBpuidAndStatus(uid,0,params)
             if(!unreadcomment){
                 rs.result=false
-                rs.msg="获取数据失败！"
+                rs.msg="已加载所有数据！"
             }else {
                 rs.unreadcomment = unreadcomment
+                rs.mission=unreadcomment.mission
                 rs.result = true
             }
-        }
+
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
