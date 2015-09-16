@@ -1436,29 +1436,32 @@ class LoginController {
     }
     //购买应用保存
     def buyappSave(Long id){
+        def companyappInstance = new CompanyApps(params)
         def appInstance = Apps.get(id)
-        def companyappInstance = [:]
-        companyappInstance.cid = params.buycid
-        if(!params.appname) {
-            companyappInstance.name = appInstance.appName
-        }else{
-            companyappInstance.name = params.appname
+        companyappInstance.app = appInstance
+        if(companyappInstance){
+            companyappInstance.cid = params.buycid
+            if(!params.appname) {
+                companyappInstance.name = appInstance.appName
+            }else{
+                companyappInstance.name = params.appname
+            }
+            if(!params.appImg) {
+                companyappInstance.name = appInstance.appImg
+            }else{
+                companyappInstance.img = params.appImg
+            }
+            companyappInstance.appurl = appInstance.appurl
+            companyappInstance.buydate = new Date()
+            companyappInstance.enddate = params.enddate
         }
-        if(!params.appImg) {
-            companyappInstance.name = appInstance.appImg
-        }else{
-            companyappInstance.name = params.appImg
-        }
-        companyappInstance.buydate = new Date()
-        companyappInstance.enddate = params.enddate
-        appInstance.companyApp = companyappInstance
 
-        if (!appInstance.save(flush: true)) {
-            render(view: "buyapps")
+        if (!companyappInstance.save(flush: true)) {
+            render(view: "buy_app")
             return
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'apps.label', default: 'Apps'), appInstance.id])
-        redirect(action: "buyapps")
+        redirect(action: "buy_app")
     }
 }

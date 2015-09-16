@@ -58,7 +58,7 @@
                         </header>
                         <ul id="ul2" class="xsreport clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" >
                             <g:each in="${buyappInstance}" status="i" var="app">
-                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;line-height: 90px;">${app}</li>
+                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;line-height: 90px;">${app.name}</li>
                             </g:each>
                         </ul>
                     </div>
