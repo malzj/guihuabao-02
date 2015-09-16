@@ -258,8 +258,8 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 /应用/
 .app{ margin:0 25px; }
 .app li{ float:left; margin:0 0 20px 30px; position:relative; }
-
-.app li span{ display:block; margin:34px auto; width:45px; /*position:absolute; top:50px; left:50px*/}
+.app li img{margin-top: 10px;}
+.app li span{ display:block; margin:5px auto; width:45px; /*position:absolute; top:50px; left:50px*/}
 /*�ظ��ҵ�*/
 .zblist li{/*height:72px;*/ padding-top:25px; margin:0 5px; border-bottom:1px solid #d2d2d2;}
 .zblist li img{ float:left; }

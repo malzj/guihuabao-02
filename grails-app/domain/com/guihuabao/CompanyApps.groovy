@@ -7,7 +7,9 @@ class CompanyApps {
     Date buydate//购买时间
     Date enddate//到期时间
     static belongsTo = [app: Apps]
+    static hasMany = [showApp:ShowApp]
     static constraints = {
+        cid(nullable:true)
         name(nullable: true)
         img(nullable: true)
         buydate(nullable: true)

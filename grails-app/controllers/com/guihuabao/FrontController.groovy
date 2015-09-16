@@ -3221,9 +3221,45 @@ class FrontController {
     }
 
     def show_app(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def cid=session.user.cid
-        def companyAppList=CompanyApps.findByCid(cid,[sort:'buydate',order:'desc'])
+        def companyAppList=CompanyApps.findAllByCid(cid,[sort:'buydate',order:'desc'])
         [companyAppList:companyAppList]
+    }
+    def addApp(){
+        def rs=[:]
+        def aid=params.aid
+        def companyapp=CompanyApps.get(aid)
+        if(!companyapp){
+            rs.result=false
+            rs.msg='获取数据失败！'
+        }else{
+            def showapp=new ShowApp()
+            showapp.buydate=new Date()
+            showapp.cid=companyapp.cid
+            showapp.enddate=companyapp.enddate
+            showapp.img=companyapp.img
+            showapp.name=companyapp.name
+            showapp.uid=session.user.id
+            showapp.appurl=companyapp.appurl
+            showapp.companyApp=companyapp
+            if(showapp.save(flush: true)){
+                rs.result=true
+                rs.msg='添加成功！'
+            }else{
+                rs.result=true
+                rs.msg='添加失败！'
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
 }
 
