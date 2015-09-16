@@ -35,6 +35,12 @@
                     <li><g:link controller="login" action="hxset">和许设置</g:link></li>
                 </ul>
             </li>
+            <li>
+                <g:link controller="login" action="appList">
+                    <i class="fa role"></i>
+                    <span>应用管理</span>
+                </g:link>
+            </li>
         </ul>
         <!-- sidebar menu end-->
     </div>

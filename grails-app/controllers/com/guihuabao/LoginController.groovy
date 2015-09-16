@@ -1119,8 +1119,6 @@ class LoginController {
     }
     def toolUpdate(Long id, Long version){
         def toolInstance = HexuTool.get(id)
-        def a =params
-        def  filePath
         def  fileName
 
         MultipartFile f = request.getFile('file1')
@@ -1229,10 +1227,12 @@ class LoginController {
 
         [toolContentInstance: toolContentInstance,toolId: toolContentInstance.hexutools.id]
     }
-    def toolContentList(Long id){
-        def toolContentInstanceList = ToolContent.findAllByHexutools(HexuTool.get(id))
-
-        [toolContentInstanceList: toolContentInstanceList,toolId: id]
+    def toolContentList(Integer max,Long id){
+        params.max = Math.min(max ?: 10, 100)
+        params<<[sort: "id",order: "asc"]
+        def toolContentInstanceList = ToolContent.findAllByHexutools(HexuTool.get(id),params)
+        def toolContentInstanceTotal = ToolContent.countByHexutools(HexuTool.get(id))
+        [toolContentInstanceList: toolContentInstanceList,toolContentInstanceTotal: toolContentInstanceTotal,toolId: id]
     }
     def toolContentEdit(Long id){
         def toolContentInstance = ToolContent.get(id)
@@ -1288,6 +1288,140 @@ class LoginController {
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'content.label', default: 'Content'), id])
             redirect(action: "toolContentShow", id: id)
+        }
+    }
+
+
+    //应用
+    //新建应用
+    def appList(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        [appsInstanceList: Apps.list(params), appsInstanceTotal: Apps.count()]
+    }
+
+    def appCreate() {
+        [appsInstance: new Apps(params)]
+    }
+
+    def appSave() {
+        def appsInstance = new Apps(params)
+        def  fileName
+        MultipartFile f = request.getFile('file')
+        if(!f.empty) {
+
+            def date= new Date().getTime()
+            Random random =new Random()
+            def x = random.nextInt(100)
+            def str =f.originalFilename
+            String [] strs = str.split("[.]")
+
+
+            fileName=date.toString()+x.toString()+"."+strs[1]
+            def webRootDir = servletContext.getRealPath("/")
+            println webRootDir
+            def userDir = new File(webRootDir, "uploadfile/appimg/")
+            userDir.mkdirs()
+            f.transferTo( new File( userDir, fileName))
+
+            appsInstance.appImg=fileName
+        }
+        if (!appsInstance.save(flush: true)) {
+            render(view: "appCreate", model: [appsInstance: appsInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: 'apps.label', default: 'Apps'), appsInstance.id])
+        redirect(action: "appShow", id: appsInstance.id)
+    }
+
+    def appShow(Long id) {
+        def appsInstance = Apps.get(id)
+        if (!appsInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'apps.label', default: 'Apps'), id])
+            redirect(action: "appList")
+            return
+        }
+
+        [appsInstance: appsInstance]
+    }
+
+    def appEdit(Long id) {
+        def appsInstance = Apps.get(id)
+        if (!appsInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'apps.label', default: 'Apps'), id])
+            redirect(action: "appList")
+            return
+        }
+
+        [appsInstance: appsInstance]
+    }
+
+    def appUpdate(Long id, Long version) {
+        def appsInstance = Apps.get(id)
+        def  fileName
+        MultipartFile f = request.getFile('file')
+        if(!f.empty) {
+
+            def date= new Date().getTime()
+            Random random =new Random()
+            def x = random.nextInt(100)
+            def str =f.originalFilename
+            String [] strs = str.split("[.]")
+
+
+            fileName=date.toString()+x.toString()+"."+strs[1]
+            def webRootDir = servletContext.getRealPath("/")
+            println webRootDir
+            def userDir = new File(webRootDir, "uploadfile/appimg/")
+            userDir.mkdirs()
+            f.transferTo( new File( userDir, fileName))
+
+            appsInstance.appImg=fileName
+        }
+
+        if (!appsInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'apps.label', default: 'Apps'), id])
+            redirect(action: "appList")
+            return
+        }
+
+        if (version != null) {
+            if (appsInstance.version > version) {
+                appsInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'apps.label', default: 'Apps')] as Object[],
+                        "Another user has updated this Apps while you were editing")
+                render(view: "appEdit", model: [appsInstance: appsInstance])
+                return
+            }
+        }
+
+        appsInstance.properties = params
+
+        if (!appsInstance.save(flush: true)) {
+            render(view: "appEdit", model: [appsInstance: appsInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'apps.label', default: 'Apps'), appsInstance.id])
+        redirect(action: "appShow", id: appsInstance.id)
+    }
+
+    def appDelete(Long id) {
+        def appsInstance = Apps.get(id)
+        if (!appsInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'apps.label', default: 'Apps'), id])
+            redirect(action: "appList")
+            return
+        }
+
+        try {
+            appsInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'apps.label', default: 'Apps'), id])
+            redirect(action: "appList")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'apps.label', default: 'Apps'), id])
+            redirect(action: "appShow", id: id)
         }
     }
 }

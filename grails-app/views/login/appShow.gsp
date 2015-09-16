@@ -40,38 +40,40 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper mt80">
-            <div class="hxzs_heading clearfix">
-                <h2>书籍大纲</h2>
-                <g:link action="syllabusCreate" id="${bookId}" class="btn btn-info" style="display:block;float:right;">新建大纲</g:link>
-                <g:link action="hxhelper" class="btn btn-info" style="display:block;float:right;">返回助手</g:link>
-            </div>
-            <div class="content mt25">
-                <table class="table table-striped table-advance table-hover">
-                    <tr class="even">
-                        <th>编号</th>
-                        <th>大纲名称</th>
-                        <th>操作</th>
-                    </tr>
-                    <g:each in="${syllabusInstanceList}" status="i" var="syllarbusInstance">
-                    <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-                        <td>${fieldValue(bean: syllarbusInstance, field: "id")}</td>
-                        <td><g:link action="chapterList" id="${syllarbusInstance?.id}">${fieldValue(bean: syllarbusInstance, field: "syllabusName")}</g:link></td>
-                        <td>
-                            <g:link action="syllabusShow" id="${syllarbusInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
-                            <g:link action="syllabusEdit" id="${syllarbusInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
-                            <g:link action="syllabusDelete" id="${syllarbusInstance?.id}" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
-                        </td>
-                    </tr>
-                    </g:each>
-                </table>
-                <div class="pagination">
-                    <g:paginate total="${syllabusInstanceTotal}" id="${bookId}" />
+            <div class="middle_content">
+                <div class="m_box">
+
+                    <header class="panel-heading clearfix">
+                        查看应用
+                        <g:link action="appEdit" id="${appsInstance.id}" class="btn btn-info" style="display:block;float:right;">修改</g:link>
+                        <g:link action="appDelete" id="${appsInstance.id}" class="btn btn-info" style="display:block;float:right;" onClick="return confirm('确定删除？');">删除</g:link>
+                    </header>
+                    <table>
+                        <tr>
+                            <td>名称：</td>
+                            <td width="345"><g:fieldValue bean="${appsInstance}" field="appName"/></td>
+                        </tr>
+                        <tr>
+                            <td>应用链接：</td>
+                            <td width="345">${appsInstance.appurl}</td>
+                        </tr>
+                        <tr>
+                            <td>封面：</td>
+                            <td>
+                                <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'uploadfile/appimg', file: ''+appsInstance.appImg+'')}" /></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <g:link action="appList" class="btn btn-info">返回</g:link>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-
         </section>
 
-        <!--footer end-->
     </section>
 
     <!-- js placed at the end of the document so the pages load faster -->
@@ -97,6 +99,35 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
 
+    %{--<script>--}%
+
+    %{--//owl carousel--}%
+
+    %{--$(document).ready(function() {--}%
+    %{--$("#owl-demo").owlCarousel({--}%
+    %{--navigation : true,--}%
+    %{--slideSpeed : 300,--}%
+    %{--paginationSpeed : 400,--}%
+    %{--singleItem : true,--}%
+    %{--autoPlay:true--}%
+
+    %{--});--}%
+    %{--});--}%
+
+    %{--//custom select box--}%
+
+    %{--$(function(){--}%
+    %{--$('select.styled').customSelect();--}%
+    %{--});--}%
+
+    %{--</script>--}%
+    <!--上传图片预览 js-->
+    <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            new uploadPreview({ UpBtn: "up_img", DivShow: "imgdiv", ImgShow: "imgShow" });
+        }
+    </script>
 
 </body>
 </html>

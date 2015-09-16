@@ -64,7 +64,9 @@
                         </tr>
                     </g:each>
                 </table>
-
+                <div class="pagination">
+                    <g:paginate total="${chapterInstanceTotal}" id="${syllabusId}" />
+                </div>
             </div>
 
         </section>

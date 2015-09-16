@@ -41,37 +41,26 @@
     <section id="main-content">
         <section class="wrapper mt80">
             <div class="hxzs_heading clearfix">
-                <h2>书籍大纲</h2>
-                <g:link action="syllabusCreate" id="${bookId}" class="btn btn-info" style="display:block;float:right;">新建大纲</g:link>
-                <g:link action="hxhelper" class="btn btn-info" style="display:block;float:right;">返回助手</g:link>
+                <h2>应用</h2>
+                <g:link action="appCreate" class="btn btn-info" style="display:block;float:right;">新建应用</g:link>
             </div>
-            <div class="content mt25">
-                <table class="table table-striped table-advance table-hover">
-                    <tr class="even">
-                        <th>编号</th>
-                        <th>大纲名称</th>
-                        <th>操作</th>
-                    </tr>
-                    <g:each in="${syllabusInstanceList}" status="i" var="syllarbusInstance">
-                    <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-                        <td>${fieldValue(bean: syllarbusInstance, field: "id")}</td>
-                        <td><g:link action="chapterList" id="${syllarbusInstance?.id}">${fieldValue(bean: syllarbusInstance, field: "syllabusName")}</g:link></td>
-                        <td>
-                            <g:link action="syllabusShow" id="${syllarbusInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
-                            <g:link action="syllabusEdit" id="${syllarbusInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
-                            <g:link action="syllabusDelete" id="${syllarbusInstance?.id}" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
-                        </td>
-                    </tr>
-                    </g:each>
-                </table>
-                <div class="pagination">
-                    <g:paginate total="${syllabusInstanceTotal}" id="${bookId}" />
-                </div>
+            <div class="mt25">
+                <g:each in="${appsInstanceList}" status="i" var="appsInstance">
+                    <div class="zs_style">
+                        <g:link controller="login" action="appShow" id="${appsInstance.id}">
+                            <img src="${resource(dir: 'uploadfile/appimg', file: ''+appsInstance.appImg+'')}" height="195" width="235" />
+                        </g:link>
+                        <span>${appsInstance.appName}</span>
+                    </div>
+                </g:each>
+                <g:link action="appCreate"><img src="${resource(dir: 'img', file: 'add.png')}" height="195" width="235" /></g:link>
             </div>
 
+            <div class="pagination">
+                <g:paginate total="${appsInstanceTotal}" />
+            </div>
         </section>
 
-        <!--footer end-->
     </section>
 
     <!-- js placed at the end of the document so the pages load faster -->

@@ -500,7 +500,7 @@ class FrontController {
             return
         }
         params.max = Math.min(max ?: 10, 100)
-        def toolInstanceList = Hexuool.findAllByStyle(1,params)
+        def toolInstanceList = HexuTool.findAllByStyle(1,params)
         def toolInstanceTotal = HexuTool.countByStyle(1)
         [toolInstanceList: toolInstanceList, toolInstanceTotal: toolInstanceTotal]
     }

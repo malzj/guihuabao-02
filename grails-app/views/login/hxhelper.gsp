@@ -56,7 +56,9 @@
             <g:link action="bookCreate"><img src="${resource(dir: 'img', file: 'add.png')}" height="195" width="235" /></g:link>
                 </div>
 
-
+            <div class="pagination">
+                <g:paginate total="${bookInstanceTotal}" />
+            </div>
         </section>
 
     </section>
