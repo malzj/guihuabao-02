@@ -1429,7 +1429,7 @@ class LoginController {
 
     //购买应用
     //应用列表
-    def buyapps(Integer max){
+    def buy_app(Integer max){
         params.max = Math.min(max ?: 10, 100)
         def buyappInstance = CompanyApps.findByCid(params.cid)
         [appsInstanceList: Apps.list(params), appsInstanceTotal: Apps.count(),buyappInstance: buyappInstance]
