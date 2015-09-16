@@ -54,8 +54,9 @@
                             <g:each in="${companyAppList}" status="i" var="app">
                                 <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;">
                                     <img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px"/>
-                                    <span>${app.name}</span>
+
                                     <span style="display: none">${app.id}</span>
+                                    <span>${app.name}</span>
                                 </li>
                             </g:each>
                         </ul>
@@ -105,7 +106,8 @@
 
             }else {
                 var data = ev.dataTransfer.getData("Text");
-                var aid=$(ev.target).find('span:first').html();
+                var li = document.getElementById(data);
+                var aid=li.getElementsByTagName('span')[0].innerHTML
                 alert(aid);
                 $.ajax( {
                     url:'${webRequest.baseUrl}/front/addApp',
@@ -117,16 +119,19 @@
                             alert('添加失败！');
                             return;
 
+                        }else{
+                            alert(data.msg);
+                            ev.target.appendChild(li);
                         }
                     },
                     error:function(){
                     alert('获取数据失败！');
+                        return;
                 }
-                }
+                })
 
 
-                var li = document.getElementById(data);
-                ev.target.appendChild(li);
+
             }
         }else{
             var data = ev.dataTransfer.getData("Text");
@@ -135,6 +140,7 @@
         }
 
     }
+
 </script>
 </body>
 </html>

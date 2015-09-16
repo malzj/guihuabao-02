@@ -3234,26 +3234,30 @@ class FrontController {
     def addApp(){
         def rs=[:]
         def aid=params.aid
-        def companyapp=CompanyApps.get(aid)
+        def uid=session.user.id
+        def companyapp=CompanyApps.findById(aid)
         if(!companyapp){
             rs.result=false
             rs.msg='获取数据失败！'
         }else{
+            def showappsize=ShowApp.countByUid(uid);
+            println(showappsize)
             def showapp=new ShowApp()
             showapp.buydate=new Date()
             showapp.cid=companyapp.cid
             showapp.enddate=companyapp.enddate
             showapp.img=companyapp.img
             showapp.name=companyapp.name
-            showapp.uid=session.user.id
+            showapp.uid=uid
             showapp.appurl=companyapp.appurl
+            showapp.num=showappsize+1
             showapp.companyApp=companyapp
-            if(showapp.save(flush: true)){
+            if(!showapp.save(flush: true)){
                 rs.result=true
-                rs.msg='添加成功！'
+                rs.msg='添加失败1！'
             }else{
                 rs.result=true
-                rs.msg='添加失败！'
+                rs.msg='添加成功！'
             }
         }
         if (params.callback) {
