@@ -6,7 +6,6 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
-
 <html>
 <head>
     <title>规划宝后台管理系统</title>
@@ -23,7 +22,7 @@
     <link href="${resource(dir: 'css', file: 'slidebars.css')}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="${resource(dir: 'css', file: 'style.css')}" rel="stylesheet">
+    <link href="${resource(dir: 'css', file: 'styleone.css')}" rel="stylesheet">
     <link href="${resource(dir: 'css', file: 'style-responsive.css')}" rel="stylesheet">
 
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">
@@ -34,17 +33,14 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
-    <div style="height:110px;"></div>
     <!--header end-->
     <!--sidebar start-->
-    <div class="row">
-        <div class="col-xs-2" style="height:100%"></div>
-        <g:render template="buy_siderbar" />
-        <!--sidebar end-->
-        <!--main content start-->
-        <section id="main-content" class="col-xs-10">
-            <section class="wrapper">
-                <div class="middle_content clearfix">
+    <g:render template="buy_siderbar" />
+    <!--sidebar end-->
+    <!--main content start-->
+    <section id="main-content">
+        <section class="wrapper mt80">
+            <div class="middle_content clearfix">
                     %{--<div class="m_box ">--}%
                     <div style="width:49%;height:100%;border:1px solid #d2d2d2;background-color: #fff;" class="f-l">
                         <header class="panel-heading">

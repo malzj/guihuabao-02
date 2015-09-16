@@ -255,6 +255,11 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .hxzs_content .zhoubao .reply_box .name{ color:#1c7ef3; margin:10px 0; }
 .hxzs_content .zhoubao .reply_box .reply{ margin-left:20px; padding:5px 0 5px 20px; background:url("../img/dis_icon.png") no-repeat 0% 116%;}
 
+/应用/
+.app{ margin:0 25px; }
+.app li{ float:left; margin:0 0 20px 30px; position:relative; }
+
+.app li span{ display:block; margin:34px auto; width:45px; /*position:absolute; top:50px; left:50px*/}
 /*�ظ��ҵ�*/
 .zblist li{/*height:72px;*/ padding-top:25px; margin:0 5px; border-bottom:1px solid #d2d2d2;}
 .zblist li img{ float:left; }

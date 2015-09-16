@@ -52,9 +52,9 @@
                         </header>
                         <ul id="ul1" class="xsreport clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:100%">
                             <g:each in="${companyAppList}" status="i" var="app">
-                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;line-height: 90px;">
-                                    <img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}"/>
-                                    <div>${app.name}</div>
+                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;">
+                                    <img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px"/>
+                                    <span>${app.name}</span>
                                     <span style="display: none">${app.id}</span>
                                 </li>
                             </g:each>
