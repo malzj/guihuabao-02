@@ -363,7 +363,7 @@ class MyController {
         sum+=endedtasklistsize
         def unreadtaskreplylist=ReplyTask.countByBpuidAndCidAndStatus(uid,cid,0)
         sum+=unreadtaskreplylist
-        def hasfinishedtasklistsize=Task.countByCidAndFzuidAndStatus(cid, uid, 1)
+        def hasfinishedtasklistsize=Task.countByCidAndFzuidAndStatusAndRemindstatus(cid, uid, 1,1)
         sum+=hasfinishedtasklistsize
         def applylistsize=Apply.countByCidAndApplyuidAndRemindstatus(cid, uid,1)
         sum+=applylistsize

@@ -500,7 +500,7 @@ class FrontController {
             return
         }
         params.max = Math.min(max ?: 10, 100)
-        def toolInstanceList = Hexuool.findAllByStyle(1,params)
+        def toolInstanceList = HexuTool.findAllByStyle(1,params)
         def toolInstanceTotal = HexuTool.countByStyle(1)
         [toolInstanceList: toolInstanceList, toolInstanceTotal: toolInstanceTotal]
     }
@@ -3219,6 +3219,19 @@ class FrontController {
         } else
             render rs as JSON
     }
-
+    def buy_app(){
+        def app=[]
+        for(def i=0;i<10;i++){
+            app.add(i)
+        }
+        [apps:app]
+    }
+    def show_app(){
+        def app=[]
+        for(def i=0;i<10;i++){
+            app.add(i)
+        }
+        [apps:app]
+    }
 }
 
