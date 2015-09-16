@@ -1424,7 +1424,41 @@ class LoginController {
             redirect(action: "appShow", id: id)
         }
     }
-    def buy_app(){
 
+
+
+    //购买应用
+    //应用列表
+    def buyapps(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        def buyappInstance = CompanyApps.findByCid(params.cid)
+        [appsInstanceList: Apps.list(params), appsInstanceTotal: Apps.count(),buyappInstance: buyappInstance]
+    }
+    //购买应用保存
+    def buyappSave(Long id){
+        def appInstance = Apps.get(id)
+        def companyappInstance = [:]
+        companyappInstance.cid = params.buycid
+        if(!params.appname) {
+            companyappInstance.name = appInstance.appName
+        }else{
+            companyappInstance.name = params.appname
+        }
+        if(!params.appImg) {
+            companyappInstance.name = appInstance.appImg
+        }else{
+            companyappInstance.name = params.appImg
+        }
+        companyappInstance.buydate = new Date()
+        companyappInstance.enddate = params.enddate
+        appInstance.companyApp = companyappInstance
+
+        if (!appInstance.save(flush: true)) {
+            render(view: "buyapps")
+            return
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: 'apps.label', default: 'Apps'), appInstance.id])
+        redirect(action: "buyapps")
     }
 }
