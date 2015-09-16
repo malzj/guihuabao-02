@@ -117,9 +117,16 @@ class GhbotherapiController {
         def rs=[:]
         def applyInstance  = new Apply(params)
 //        applyInstance.applyuid= params.applyuid
+
         applyInstance.applyusername = CompanyUser.get(params.applyuid).name
+
         applyInstance.cid= params.cid
-        applyInstance.approvalusername=CompanyUser.get(params.approvaluid).name
+        if(params.copyuid) {
+            applyInstance.copyname = CompanyUser.get(params.copyuid).name
+        }
+        if(params.approvaluid) {
+            applyInstance.approvalusername = CompanyUser.get(params.approvaluid).name
+        }
         applyInstance.status="未审核"
         Date currentTime = new Date();
         applyInstance.dateCreate=currentTime
@@ -129,6 +136,7 @@ class GhbotherapiController {
         }else{
             applyInstance.applystatuss=0
         }
+        applyInstance.copyremind = 0
         applyInstance.remindstatus = 0
         if (!applyInstance.save(flush: true)) {
             rs.result = false
@@ -147,12 +155,14 @@ class GhbotherapiController {
     def approveperson(){
         def cid = params.cid
         def rs=[:]
-        def userInfo = [:]
+        def userInfo = []
         def companyuserList= CompanyUser.findAllByCidAndPidLessThan(cid,3,[sort: "pid",order: "asc"])
         for(def i=0;i<companyuserList.size();i++){
             def companyuser = companyuserList.get(i)
             def bumenname = Bumen.findByCidAndId(cid,companyuser.bid).name
-            userInfo<<[userId: companyuser.id,bumenname: bumenname,username: companyuser.name]
+            def info=[:]
+            info <<[userId: companyuser.id,bumenname: bumenname,username: companyuser.name]
+            userInfo<<info
         }
 
         if(userInfo){
@@ -312,11 +322,18 @@ class GhbotherapiController {
         } else
             render rs as JSON
     }
-    //申请编辑
+    //申请草稿编辑
     def applyUpdate(){
         def rs = [:]
         def id = params.id
         def applyInstance  = Apply.get(id)
+        if(params.approvaluid) {
+            applyInstance.approvalusername = CompanyUser.get(params.approvaluid).name
+        }
+
+        if(params.copyuid) {
+            applyInstance.copyname = CompanyUser.get(params.copyuid).name
+        }
         if(applyInstance){//判断信息是否为空
             rs.result=true
             rs.msg="修改成功"
@@ -362,6 +379,85 @@ class GhbotherapiController {
 
 
         }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+
+    //申请抄送我的
+    def copyToMe(){
+
+        def rs=[:]
+        def userId= params.userId
+        def companyId = params.cid
+        def selected = params.selected
+
+        params.max = 5
+        params<<[sort: "dateCreate",order: "desc"]
+        def offset = 0
+
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
+        }
+        params<<[offset:offset]
+        def applylist
+        def applyInstanceTotal
+        if(selected == "1"){//未查看
+            applylist= Apply.findAllByCopyuidAndCidAndApplystatusAndCopyremind(userId,companyId,1,1,params)
+            applyInstanceTotal= Apply.countByCopyuidAndCidAndApplystatusAndCopyremind(userId,companyId,1,1)
+        }else if(selected == "0"){//已查看
+            applylist= Apply.findAllByCopyuidAndCidAndApplystatusAndCopyremind(userId,companyId,1,0,params)
+            applyInstanceTotal= Apply.countByCopyuidAndCidAndApplystatusAndCopyremind(userId,companyId,1,0)
+        }else{//全部
+            applylist= Apply.findAllByCopyuidAndCidAndApplystatus(userId,companyId,1,params)
+            applyInstanceTotal= Apply.countByCopyuidAndCidAndApplystatus(userId,companyId,1)
+        }
+        def offse = params.offset.toInteger()
+        if(applyInstanceTotal>offse){
+            if(applylist){
+                rs.result = true
+                rs.applylist = applylist
+            }else{
+                rs.result = false
+                rs.msg = "已加载所有数据"
+            }
+        }else {
+            rs.result = false
+            rs.msg="已加载所有数据"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+
+    //抄送提醒状态修改
+    def copyRemindUpdate(){
+        def rs = [:]
+        def id= params.id
+        def companyId = params.cid
+        def applyInstance = Apply.findByIdAndCid(id,companyId)
+        if(!applyInstance){
+            rs.result = false
+            rs.msg = "未找到相应申请"
+        }else{
+            rs.result = true
+            rs.msg = "成功"
+            applyInstance.copyremind = 0
+
+            applyInstance.properties = params
+        }
+
+        if(!applyInstance.save(flush: true)){
+            rs.result = false
+            rs.msg = "保存失败"
+        }else{
+            rs.result = true
+            rs.msg = "成功"
+        }
+
+
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else

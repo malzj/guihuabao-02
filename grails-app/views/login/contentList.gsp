@@ -64,7 +64,9 @@
                         </tr>
                     </g:each>
                 </table>
-
+                <div class="pagination">
+                    <g:paginate total="${contentInstanceTotal}" id="${chapterId}" />
+                </div>
             </div>
 
         </section>
