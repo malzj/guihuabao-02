@@ -47,8 +47,8 @@
                             <span>所有应用</span>
                         </header>
                         <ul id="ul1" class="xsreport clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:100%">
-                            <g:each in="${apps}" status="i" var="app">
-                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;line-height: 90px;">${app}</li>
+                            <g:each in="${appsInstanceList}" status="i" var="app">
+                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;line-height: 90px;">${app.appName}</li>
                             </g:each>
                         </ul>
                     </div>
@@ -57,7 +57,9 @@
                             <span>已购买应用</span>
                         </header>
                         <ul id="ul2" class="xsreport clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" >
-
+                            <g:each in="${buyappInstance}" status="i" var="app">
+                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;line-height: 90px;">${app.name}</li>
+                            </g:each>
                         </ul>
                     </div>
                     %{--</div>--}%
