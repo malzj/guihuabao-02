@@ -61,6 +61,7 @@ class TargetController {
             rs.result=true
             rs.msg="保存成功"
             rs.target=targetInstance
+            rs.tid=targetInstance.id
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"

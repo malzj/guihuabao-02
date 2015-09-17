@@ -50,12 +50,13 @@
                         <header class="panel-heading">
                             <span>应用</span>
                         </header>
-                        <ul id="ul1" class="xsreport clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:100%">
+                        <ul id="ul1" class="app clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:100%">
                             <g:each in="${companyAppList}" status="i" var="app">
                                 <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;">
                                     <img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px"/>
-                                    <span>${app.name}</span>
+
                                     <span style="display: none">${app.id}</span>
+                                    <span>${app.name}</span>
                                 </li>
                             </g:each>
                         </ul>
@@ -64,7 +65,7 @@
                         <header class="panel-heading">
                             <span>要显示在导航条的应用</span>
                         </header>
-                        <ul id="ul2" class="xsreport clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" >
+                        <ul id="ul2" class="app clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" >
 
                         </ul>
                     </div>
@@ -106,7 +107,31 @@
             }else {
                 var data = ev.dataTransfer.getData("Text");
                 var li = document.getElementById(data);
-                ev.target.appendChild(li);
+                var aid=li.getElementsByTagName('span')[0].innerHTML
+                alert(aid);
+                $.ajax( {
+                    url:'${webRequest.baseUrl}/front/addApp',
+                    method:'post',
+                    dataType:'json',
+                    data:{aid:aid},
+                    success:function(data){
+                        if(!data.result){
+                            alert('添加失败！');
+                            return;
+
+                        }else{
+                            alert(data.msg);
+                            ev.target.appendChild(li);
+                        }
+                    },
+                    error:function(){
+                    alert('获取数据失败！');
+                        return;
+                }
+                })
+
+
+
             }
         }else{
             var data = ev.dataTransfer.getData("Text");
@@ -115,6 +140,7 @@
         }
 
     }
+
 </script>
 </body>
 </html>
