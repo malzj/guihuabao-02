@@ -386,8 +386,11 @@ class FrontController {
         params.max = Math.min(max ?: 2, 100)
         params<<[sort: "id",order: "asc"]
         def offset = 0;
-        if (params.offset>0){
-            offset =params.offset
+//        if (params.offset>0){
+//            offset =params.offset
+//        }
+        if(params.offset) {
+            offset = params.offset.toLong()
         }
         params<<[offset:offset]
         def syll = Syllabus.findAllByBook(Book.get(id),[sort:"id", order:"asc"])
@@ -398,6 +401,49 @@ class FrontController {
         def contentsize= Content.countByChapter(chapter)
         def content=""
         def content1 =""
+        def charpterId
+        def syllabusInfo
+        if(!contentlist&&chapter&&syllabus){
+
+            if(offset>0){ //判断是向前翻页，还是向后翻页
+                 //向后翻页 下一页
+                charpterId = Chapter.findByIdGreaterThan(chapter.id,[sort: "id",order: "asc"])?.id //向后翻页时获得后一个章节的id
+                if(charpterId){
+                    redirect(action: "chapterBook",params: [id: charpterId])
+                    return
+                }else{//如果没有后一章节，则查找后一大纲的第一章节
+                    syllabusInfo = Syllabus.findByIdGreaterThanAndBook(syllabus.id,bookInstance,[sort: "id",order: "asc"]) //获得后一个大纲
+                    if(syllabusInfo){//如果后一大纲存在，则获取第一章节id
+                        charpterId = Chapter.findBySyllabus(syllabusInfo,[sort: "id",order: "asc"])
+                        redirect(action: "chapterBook",params: [id: charpterId])
+                        return
+                    }else{//如果前一大纲不存在，则返回第一页
+                        redirect(action: "book",params: [id: id])
+                        return
+                    }
+                }
+            }
+        }else if(contentlist&&chapter&&syllabus){
+            if(offset<0) { //判断是向前翻页，还是向后翻页 上一页
+                charpterId = Chapter.findByIdLessThanAndSyllabus(chapter.id, syllabus, [sort: "id", order: "desc"])?.id
+                //向前翻页时获得前一个章节的id
+                if (charpterId) {
+                    redirect(action: "chapterBook", params: [id: charpterId])
+                    return
+                } else {//如果没有前一章节，则查找前一大纲的最后一章节
+                    syllabusInfo = Syllabus.findByIdLessThanAndBook(syllabus.id, bookInstance, [sort: "id", order: "desc"])
+                    //获得前一个大纲
+                    if (syllabusInfo) {//如果前一大纲存在，则获取最后一章节id
+                        charpterId = Chapter.findBySyllabus(syllabusInfo, [sort: "id", order: "desc"])
+                        redirect(action: "chapterBook", params: [id: charpterId])
+                        return
+                    } else {//如果前一大纲不存在，则返回第一页
+                        redirect(action: "book", params: [id: id])
+                        return
+                    }
+                }
+            }
+        }
 
         if(contentlist.size()>0){
             content= contentlist.get(0).introduction
@@ -423,8 +469,8 @@ class FrontController {
         params.max = Math.min(max ?: 2, 100)
         params<<[sort: "id",order: "asc"]
         def offset = 0;
-        if (params.offset>0){
-            offset =params.offset
+        if (params.offset){
+            offset =params.offset.toLong()
         }
         params<<[offset:offset]
         def chapter = Chapter.get(id)
@@ -436,6 +482,50 @@ class FrontController {
         def contentsize= Content.countByChapter(chapter)
         def content=""
         def content1 =""
+        def charpterId
+        def syllabusInfo
+
+        if(!contentlist&&chapter&&syllabus){
+
+            if(offset>0){ //判断是向前翻页，还是向后翻页
+                //向后翻页 下一页
+                charpterId = Chapter.findByIdGreaterThan(chapter.id,[sort: "id",order: "asc"])?.id //向后翻页时获得后一个章节的id
+                if(charpterId){
+                    redirect(action: "chapterBook",params: [id: charpterId])
+                    return
+                }else{//如果没有后一章节，则查找后一大纲的第一章节
+                    syllabusInfo = Syllabus.findByIdGreaterThanAndBook(syllabus.id,bookInstance,[sort: "id",order: "asc"]) //获得后一个大纲
+                    if(syllabusInfo){//如果后一大纲存在，则获取第一章节id
+                        charpterId = Chapter.findBySyllabus(syllabusInfo,[sort: "id",order: "asc"])
+                        redirect(action: "chapterBook",params: [id: charpterId])
+                        return
+                    }else{//如果前一大纲不存在，则返回第一页
+                        redirect(action: "book",params: [id: bookId])
+                        return
+                    }
+                }
+            }
+        }else if(contentlist&&chapter&&syllabus){
+            if(offset<0) { //判断是向前翻页，还是向后翻页 上一页
+                charpterId = Chapter.findByIdLessThanAndSyllabus(chapter.id, syllabus, [sort: "id", order: "desc"])?.id
+                //向前翻页时获得前一个章节的id
+                if (charpterId) {
+                    redirect(action: "chapterBook", params: [id: charpterId])
+                    return
+                } else {//如果没有前一章节，则查找前一大纲的最后一章节
+                    syllabusInfo = Syllabus.findByIdLessThanAndBook(syllabus.id, bookInstance, [sort: "id", order: "desc"])
+                    //获得前一个大纲
+                    if (syllabusInfo) {//如果前一大纲存在，则获取最后一章节id
+                        charpterId = Chapter.findBySyllabus(syllabusInfo, [sort: "id", order: "desc"])
+                        redirect(action: "chapterBook", params: [id: charpterId])
+                        return
+                    } else {//如果前一大纲不存在，则返回第一页
+                        redirect(action: "book", params: [id: bookId])
+                        return
+                    }
+                }
+            }
+        }
 
         if(contentlist.size()>0){
             content= contentlist.get(0).introduction
