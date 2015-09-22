@@ -92,7 +92,7 @@
                             <g:each in="${replymissionlist}" var="replyInfo">
                                 <li>
                                     <g:link action="unread_comment" id="${replyInfo.missionId}">
-                                        <img src="${resource(dir: 'uploadfile/images', file: ''+com.guihuabao.CompanyUser.findByCidAndId(replyInfo.cid,replyInfo.puid).img+'')}" height="35" width="35" />
+                                        <img src="${resource(dir: 'uploadfile/images', file: ''+com.guihuabao.CompanyUser.findByCidAndId(replyInfo.cid,replyInfo.puid)?.img+'')}" height="35" width="35" />
                                         <div class="text">
                                             <h4>${replyInfo.puname}回复了你(${replyInfo.mission.title})</h4>
                                             <span>${replyInfo.date}</span>
