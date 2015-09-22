@@ -2882,6 +2882,12 @@ class FrontController {
         [messageTargetInstance: messageTargetInstance,messageTargetInstanceTotal:messageTargetInstanceTotal]
     }
     def messageTaskF(Integer max){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         params.max = Math.min(max ?: 10, 100)
         def messageTaskFInstance = Task.findAllByCidAndFzuidAndLookstatusAndStatusAndRemindstatus(session.company.id,session.user.id,2,1,1,params)//已完成
         def messageTaskFInstanceTotal = Task.countByCidAndFzuidAndLookstatusAndStatusAndRemindstatus(session.company.id,session.user.id,2,1,1)

@@ -414,13 +414,22 @@ class TargetController {
         def rs=[:]
 
         def uid=params.uid
+        def cid=params.cid
+        def replyInfo = []
         params<<[sort:"date",order: "desc"]
             def unreadcomment = ReplyMission.findAllByBpuidAndStatus(uid,0,params)
             if(!unreadcomment){
                 rs.result=false
                 rs.msg="已加载所有数据！"
             }else {
-                rs.unreadcomment = unreadcomment
+                for (def i=0;i<unreadcomment.size();i++){
+                    def info= [:]
+                    def allInfo=unreadcomment.get(i)
+                    info.allInfo=allInfo
+                    info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+                    replyInfo<<info
+                }
+                rs.replyInfo = replyInfo
                 rs.mission=unreadcomment.mission
                 rs.result = true
             }

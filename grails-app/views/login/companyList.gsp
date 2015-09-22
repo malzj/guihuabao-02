@@ -74,9 +74,8 @@
                                     <g:link action="companyShow" id="${companyInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
                                     <g:link action="companyEdit" id="${companyInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
                                     <g:link action="companyDelete" id="${companyInstance?.id}" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
+                                    <g:link action="buy_app" params="[cid: companyInstance?.id]" class="btn btn-primary btn-xs">应</g:link>
                                 </td>
-
-
                             </tr>
                         </g:each>
 

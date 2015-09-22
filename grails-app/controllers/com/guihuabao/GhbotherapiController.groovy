@@ -810,9 +810,11 @@ class GhbotherapiController {
         if(replyInstance){
             for (def i=0;i<replyInstance.size();i++){
                 def info= [:]
-                info.allInfo=replyInstance.get(i)
+                def allInfo=replyInstance.get(i)
+                info.allInfo=allInfo
                 info.reportdate= replyInstance.get(i).zhoubao.dateCreate
                 info.week= replyInstance.get(i).zhoubao.week
+                info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
                 replyInfo<<info
             }
 
@@ -865,8 +867,11 @@ class GhbotherapiController {
         if(replyInstance){
             for (def i=0;i<replyInstance.size();i++){
                 def info= [:]
-                info.allInfo=replyInstance.get(i)
+                def allInfo=replyInstance.get(i)
+                info.allInfo=allInfo
+                info.reportdate= replyInstance.get(i).zhoubao.dateCreate
                 info.week= replyInstance.get(i).zhoubao.week
+                info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
                 replyInfo<<info
             }
 

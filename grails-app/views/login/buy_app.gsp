@@ -48,7 +48,11 @@
                         </header>
                         <ul id="ul1" class="xsreport clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:100%">
                             <g:each in="${appsInstanceList}" status="i" var="app">
-                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;line-height: 90px;">${app.appName}</li>
+                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;line-height: 90px;">
+                                    <g:link action="buyappSave" id="${app.id}" params="[buycid: params.cid]">
+                                        购买${app.appName}
+                                    </g:link>
+                                </li>
                             </g:each>
                         </ul>
                     </div>
@@ -74,29 +78,29 @@
 <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
 <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
 <script type="text/javascript">
-    function allowDrop(ev)
-    {
-        var ev=ev||window.event;
-        ev.preventDefault();
-    }
-
-    function drag(ev)
-    {
-        var ev=ev||window.event;
-        ev.dataTransfer.setData("Text",ev.target.id);
-
-    }
-
-    function drop(ev)
-    {
-
-        var ev=ev||window.event;
-        ev.preventDefault();
-        var data=ev.dataTransfer.getData("Text");
-        var li=document.getElementById(data);
-        ev.target.appendChild(li);
-
-    }
+//    function allowDrop(ev)
+//    {
+//        var ev=ev||window.event;
+//        ev.preventDefault();
+//    }
+//
+//    function drag(ev)
+//    {
+//        var ev=ev||window.event;
+//        ev.dataTransfer.setData("Text",ev.target.id);
+//
+//    }
+//
+//    function drop(ev)
+//    {
+//
+//        var ev=ev||window.event;
+//        ev.preventDefault();
+//        var data=ev.dataTransfer.getData("Text");
+//        var li=document.getElementById(data);
+//        ev.target.appendChild(li);
+//
+//    }
 </script>
 </body>
 </html>

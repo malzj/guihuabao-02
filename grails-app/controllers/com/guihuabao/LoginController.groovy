@@ -1431,37 +1431,45 @@ class LoginController {
     //应用列表
     def buy_app(Integer max){
         params.max = Math.min(max ?: 10, 100)
-        def buyappInstance = CompanyApps.findByCid(params.cid)
-        [appsInstanceList: Apps.list(params), appsInstanceTotal: Apps.count(),buyappInstance: buyappInstance]
+        def cid = params.cid
+        def buyappInstance = CompanyApps.findAllByCid(cid)
+        [appsInstanceList: Apps.list(params), appsInstanceTotal: Apps.count(),buyappInstance: buyappInstance,params: [cid: cid]]
     }
     //购买应用保存
     def buyappSave(Long id){
-        def companyappInstance = new CompanyApps(params)
         def appInstance = Apps.get(id)
+        def cid = params.buycid
+        def haveone = CompanyApps.findByAppAndCid(appInstance,cid)
+        if(haveone){
+            redirect(action: "buy_app", params: [cid: params.buycid])
+            return
+        }
+        def companyappInstance = new CompanyApps(params)
+
         companyappInstance.app = appInstance
-        if(companyappInstance){
+        if (companyappInstance) {
             companyappInstance.cid = params.buycid
-            if(!params.appname) {
+            if (!params.appname) {
                 companyappInstance.name = appInstance.appName
-            }else{
+            } else {
                 companyappInstance.name = params.appname
             }
-            if(!params.appImg) {
-                companyappInstance.name = appInstance.appImg
-            }else{
+            if (!params.appImg) {
+                companyappInstance.img = appInstance.appImg
+            } else {
                 companyappInstance.img = params.appImg
             }
-            companyappInstance.appurl = appInstance.appurl
+//            companyappInstance.appurl = appInstance.appurl
             companyappInstance.buydate = new Date()
             companyappInstance.enddate = params.enddate
         }
 
         if (!companyappInstance.save(flush: true)) {
-            render(view: "buy_app")
+            render(view: "buy_app", params: [cid: params.buycid])
             return
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'apps.label', default: 'Apps'), appInstance.id])
-        redirect(action: "buy_app")
+        redirect(action: "buy_app", params: [cid: params.buycid])
     }
 }

@@ -48,6 +48,8 @@
                     </header>
 
                     <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'appUpdate']" method="post"  enctype= "multipart/form-data">
+                        <g:hiddenField name="id" value="${appsInstance?.id}"></g:hiddenField>
+                        <g:hiddenField name="version" value="${appsInstance?.version}"></g:hiddenField>
                         <table>
                             <tr>
                                 <td>名称：</td>
@@ -60,7 +62,7 @@
                             <tr>
                                 <td>封面：</td>
                                 <td>
-                                    <input id="up_img" name="file" type="file" value="${appsInstance?.appImg}" />
+                                    <input id="up_img" name="file" type="file" />
                                     <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'uploadfile/appimg', file: ''+appsInstance?.appImg+'')}" /></div>
                                     <span>上传封面：（232*196）</span>
                                 </td>
