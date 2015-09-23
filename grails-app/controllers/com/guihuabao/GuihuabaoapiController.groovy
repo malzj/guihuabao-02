@@ -38,6 +38,7 @@ class GuihuabaoapiController {
     def taskSave(){
         def rs = [:]
         def taskInstance = new Task(params)
+        taskInstance.remindstatus = 0
         taskInstance.dateCreate = new Date()
         if (!taskInstance.save(flush: true)) {
           rs.result=false
