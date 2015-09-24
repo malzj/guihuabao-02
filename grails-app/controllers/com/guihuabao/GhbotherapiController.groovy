@@ -218,9 +218,8 @@ class GhbotherapiController {
     def applyShow(){
         def rs = [:]
         def id = params.id
-        def userId = params.userId
         def companyId = params.cid
-        def applyInctance = Apply.findByIdAndApplyuidAndCid(id,userId,companyId)
+        def applyInctance = Apply.findByIdAndCid(id,companyId)
         if(applyInctance){
             rs.result = true
             rs.applyInctance = applyInctance
