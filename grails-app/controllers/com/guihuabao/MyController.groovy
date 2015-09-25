@@ -482,16 +482,15 @@ class MyController {
             fileName=date.toString()+x.toString()+"."+strs[1]
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "img/target-img/")
+            def userDir = new File(webRootDir, "uploadfile/target-img/")
             userDir.mkdirs()
-           if( f.transferTo( new File( userDir, fileName))) {
+            def s=f.transferTo( new File( userDir, fileName))
+
                rs.result=true
                rs.fileName = fileName
                rs.msg="上传成功！"
-           }else{
-               rs.result=false
-               rs.msg="上传失败！"
-           }
+
+
         }else{
             rs.result=false
             rs.msg="上传失败！"
