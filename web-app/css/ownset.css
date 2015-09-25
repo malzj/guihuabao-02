@@ -67,6 +67,7 @@ body{padding:0;margin:0;}
 .sidebar_object{color: #AEB2B7;text-decoration: none;padding: 15px 0px 15px 49px;font-size: 16px;outline: medium none;position: relative;}
 .sidebar_object .page{ display:inline-block; height:20px; width:20px;position: absolute;top:16px;left:24px;}
 .sidebar_object .tar_icon{ background:url("../img/tar_icon.png") no-repeat;}
+.sidebar_object .app_icon{ background:url("../img/nav_5.png") no-repeat;background-size: 20px 20px;}
 .sidebar_object .task_icon{ background:url("../img/task_icon.png") no-repeat;}
 .sidebar_object .apply_icon{ background:url("../img/apply_icon.png") no-repeat;}
 .sidebar_object .report_icon{ background:url("../img/report_icon.png") no-repeat;}
@@ -257,9 +258,10 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 
 /应用/
 .app{ margin:0 25px; }
-.app li{ float:left; margin:0 0 20px 30px; position:relative; }
-.app li img{margin-top: 10px;}
-.app li span{ display:block; margin:5px auto; width:45px; /*position:absolute; top:50px; left:50px*/}
+.app li{ float:left; margin:0 0 20px 30px; position:relative; font-size: 20px;}
+.app li img{margin-top: 21px;}
+.app .flag{color:#39c2ff;float: left;text-align: center;height:90px;line-height: 50px;font-size: 20px;margin-top:40px;border-right: 1px solid #d2d2d2;padding:0 20px 0 20px;cursor:pointer;}
+.app li span{ display:block; margin:5px auto;}
 /*�ظ��ҵ�*/
 .zblist li{/*height:72px;*/ padding-top:25px; margin:0 5px; border-bottom:1px solid #d2d2d2;}
 .zblist li img{ float:left; }

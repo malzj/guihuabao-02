@@ -277,6 +277,7 @@ class MyController {
         def content=params.content
         def uname=params.uname
         def feedbackInstance=new Feedback(params)
+
         if(!feedbackInstance.save(flush: true)){
             rs.result=false
             rs.msg="保存失败！"

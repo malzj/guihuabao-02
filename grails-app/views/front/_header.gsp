@@ -173,9 +173,16 @@
             <li><g:link action="frontIndex"><i class="home"></i>首页</g:link></li>
             <li><g:link action="user_target"><i class="aim"></i>目标</g:link></li>
             <li><g:link action="taskCreate"><i class="rw"></i>任务</g:link></li>
-            <li><g:link action="apply"><i class="apply"></i>申请</g:link></li>
-            <li><g:link action="myReport"><i class="bg"></i>报告</g:link></li>
-            <li><a href="javascript:;"><i class="app"></i>应用</a></li>
+            %{--<li><g:link action="apply"><i class="apply"></i>申请</g:link></li>--}%
+            %{--<li><g:link action="myReport"><i class="bg"></i>报告</g:link></li>--}%
+            <%def showapps=com.guihuabao.ShowApp.findAllByUidAndCid(session.user.id,session.user.cid,[sort:'num',order:'asc'])%>
+            <g:each in="${showapps}"  var="app">
+             <g:if test="${app.companyApp.id<3}"> <li><a href="${app.companyApp.app.appurl}?uid=${session.user.id}&cid=${session.user.cid}&companyappid=${app.companyApp.id}"><img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="30px;" height="30px"/>${app.name}</a></li></g:if>
+             <g:else>
+                 <li><a href="${app.companyApp.app.appurl}?uid=${session.user.id}&cid=${session.user.cid}&companyappid=${app.companyApp.id}" target="_blank"><img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="30px;" height="30px"/>${app.name}</a></li>
+             </g:else>
+            </g:each>
+            <li><g:link action="show_app"><i class="app"></i>应用</g:link></li>
             <g:if test="${session.user.rid}">
             <li><g:link action="companyUserList" ><i class="ht"></i>后台</g:link></li>
             </g:if>

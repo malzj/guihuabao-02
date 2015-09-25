@@ -41,7 +41,7 @@
     <g:render template="zhoubao_siderbar" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content" class="row col-xs-10">
+    <section id="main-content" class=" col-xs-10" style="padding-left:0;">
         <section class="wrapper wrapper_reset">
             <div class="hxzs_content clearfix row">
                 <div class="book_list col-xs-3">`

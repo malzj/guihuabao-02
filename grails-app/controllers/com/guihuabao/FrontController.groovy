@@ -3227,37 +3227,97 @@ class FrontController {
             redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
             return
         }
+        def uid=session.user.id
         def cid=session.user.cid
+        def showapps=ShowApp.findAllByUidAndCid(uid,cid,[sort:'num',order:'asc'])
+
         def companyAppList=CompanyApps.findAllByCid(cid,[sort:'buydate',order:'desc'])
-        [companyAppList:companyAppList]
+        [companyAppList:companyAppList,showapps:showapps]
     }
     def addApp(){
         def rs=[:]
+        def user=session.user
+        def company=session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def aid=params.aid
+        def cid=session.user.cid
         def uid=session.user.id
         def companyapp=CompanyApps.findById(aid)
-        if(!companyapp){
+        def showapps=ShowApp.findAllByUidAndCid(uid,cid,[sort:'num',order:'asc'])
+         if(!companyapp){
             rs.result=false
             rs.msg='获取数据失败！'
+        }else {
+             def hasshowapp = ShowApp.findByUidAndCidAndCompanyApp(uid, cid, companyapp)
+             if (hasshowapp) {
+                 rs.result = false
+                 rs.msg = '已经显示该应用！'
+             } else {
+                 def showappsize = showapps.size()
+                 println(showappsize)
+//                 companyapp.showApp
+                 def showapp = new ShowApp(params)
+                 showapp.buydate = new Date()
+                 showapp.cid = companyapp.cid
+                 showapp.enddate = companyapp.enddate
+                 showapp.img = companyapp.img
+                 showapp.name = companyapp.name
+                 showapp.uid = uid
+//                 showapp.appurl = companyapp.appurl
+                 if(showappsize==0){
+                     showapp.num =1
+                 }else {
+                     def show = showapps.get(showappsize-1)
+                     println(show.num)
+                     showapp.num = show.num + 1
+                 }
+                 showapp.companyApp = companyapp
+                 if (!showapp.save(flush: true)) {
+                     rs.result = false
+                     rs.msg = '添加失败！'
+                 } else {
+                     rs.result = true
+                     rs.msg = '添加成功！'
+
+                 }
+             }
+         }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def upApp(){
+        def rs=[:]
+        def user=session.user
+        def company=session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def showappInstance=ShowApp.get(params.aid)
+        if(!showappInstance){
+            rs.result=false
+            rs.msg='获取数据失败1！'
         }else{
-            def showappsize=ShowApp.countByUid(uid);
-            println(showappsize)
-            def showapp=new ShowApp()
-            showapp.buydate=new Date()
-            showapp.cid=companyapp.cid
-            showapp.enddate=companyapp.enddate
-            showapp.img=companyapp.img
-            showapp.name=companyapp.name
-            showapp.uid=uid
-            showapp.appurl=companyapp.appurl
-            showapp.num=showappsize+1
-            showapp.companyApp=companyapp
-            if(!showapp.save(flush: true)){
-                rs.result=true
-                rs.msg='添加失败1！'
+            if(showappInstance.num==1){
+                rs.result=false
+                rs.msg='该app已经排在第一位了！'
             }else{
-                rs.result=true
-                rs.msg='添加成功！'
+                def num1=showappInstance.num-1
+                def showapp1=ShowApp.findByUidAndCidAndNum(user.id,company.id,num1)
+                showappInstance.num-=1
+                showapp1.num+=1
+                if(!showappInstance.save(flush: true)&&!showapp1.save(flash:true)){
+                    rs.result=false
+                    rs.msg='向上调整失败！'
+                }else{
+                    rs.result=true
+                    rs.msg='向上调整成功！'
+                }
             }
         }
         if (params.callback) {
@@ -3265,5 +3325,84 @@ class FrontController {
         } else
             render rs as JSON
     }
+    def downApp(){
+        def rs=[:]
+        def user=session.user
+        def company=session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def showappInstance=ShowApp.get(params.aid)
+        def showapps=ShowApp.findAllByUidAndCid(user.id,company.id)
+        if(!showappInstance){
+            rs.result=false
+            rs.msg='获取数据失败1！'
+        }else{
+            if(showappInstance.num==showapps.size()){
+                rs.result=false
+                rs.msg='该app已经排在最后一位了！'
+            }else{
+                def num1=showappInstance.num+1
+                def showapp1=ShowApp.findByUidAndCidAndNum(user.id,company.id,num1)
+                showappInstance.num+=1
+                showapp1.num-=1
+                if(!showappInstance.save(flush: true)&&!showapp1.save(flash:true)){
+                    rs.result=false
+                    rs.msg='向上调整失败！'
+                }else{
+                    rs.result=true
+                    rs.msg='向上调整成功！'
+                }
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def deleteApp(){
+        def rs=[:]
+        def user=session.user
+        def company=session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def showapps=ShowApp.findAllByUidAndCid(user.id,company.id)
+        def showappInstance=ShowApp.get(params.aid)
+        if(!showappInstance){
+            rs.result=false
+            rs.msg='获取数据失败1！'
+        }else{
+
+            def bshowapps=ShowApp.findAllByUidAndCidAndNumGreaterThan(user.id,company.id,showappInstance.num)
+            try {
+                if(showappInstance.num==showapps.size()){
+                    showappInstance.delete(flush: true)
+                }else {
+                    for (def b in bshowapps) {
+                        b.num -= 1
+                        b.save(flush: true)
+                    }
+                    showappInstance.delete(flush: true)
+                }
+
+                rs.result= true
+                rs.msg='删除成功！'
+            }
+            catch (DataIntegrityViolationException e) {
+                rs.result = false
+                rs.msg='删除异常！'
+            }
+
+
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def example_phone(){}
 }
 

@@ -7,7 +7,7 @@ class ShowApp {
     String img//应用图片（用于公司自己设置应用图片）
     Date buydate//购买时间
     Date enddate//到期时间
-    String appurl//链接
+//    String appurl//链接
     Integer num//排序的序列号
     static belongsTo = [companyApp:CompanyApps]
     static constraints = {
@@ -18,5 +18,6 @@ class ShowApp {
         cid(nullable: true)
         uid(nullable:true)
         num(nullable:true)
+//        appurl(nullable:true)
     }
 }

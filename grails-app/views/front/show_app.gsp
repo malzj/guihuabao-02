@@ -27,6 +27,13 @@
     <link href="${resource(dir: 'css', file: 'style-responsive.css')}" rel="stylesheet">
 
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">
+    <style>
+        .c0{background-color: #3494ed;}
+        .c1{background-color: #ed7159;}
+        .c2{background-color: #4ec6a2;}
+        .c3{background-color: #b772c7;}
+        .c4{background-color: #56bc4e;}
+    </style>
 </head>
 
 <body>
@@ -42,31 +49,52 @@
         <g:render template="buy_siderbar" />
         <!--sidebar end-->
         <!--main content start-->
-        <section id="main-content" class="col-xs-10">
+        <section id="main-content" class="col-xs-10" style="padding-left: 0;">
             <section class="wrapper">
                 <div class="middle_content clearfix">
                     %{--<div class="m_box ">--}%
-                    <div style="width:49%;height:100%;border:1px solid #d2d2d2;background-color: #fff;" class="f-l">
+                    <div style="width:69%;min-height:100%;border:1px solid #d2d2d2;background-color: #fff;margin-right: 1%;" class="f-l">
                         <header class="panel-heading">
-                            <span>应用</span>
+                            <span>授权应用——您可以将以下的授权应用拖拽到右侧，以方便您在导航栏中快速使用该功能</span>
                         </header>
-                        <ul id="ul1" class="app clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:100%">
+                        <ul id="ul1" class="app clearfix" style="text-align: center;width:100%;height:100%"  style="width:100%;height:100%">
                             <g:each in="${companyAppList}" status="i" var="app">
-                                <li draggable="true" ondragstart="drag(event)" id="${i}" style="border-radius: 50px; border: 1px solid #d0d0d0;width:90px;height:90px;">
-                                    <img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px"/>
-
-                                    <span style="display: none">${app.id}</span>
-                                    <span>${app.name}</span>
+                                <li draggable="true" ondragstart="drag(event)" id="${i}" style=" border-radius:5px;border: 1px solid #d0d0d0;width:90px;height:90px;position: relative;" class="c${app.id%5}">
+                                    <img style="line-height: 72px;margin-bottom: 20px;" src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px"/>
+                                    <div style="width:100%;height:100%;position: absolute;top:0;"></div>
+                                    <span style="display: none;">${app.id}</span>
+                                    %{--<span style="margin-bottom: 10px;">${app.name}</span>--}%
+                                    <g:if test="${app.id<3}">
+                                        <a href="${app.app.appurl}?uid=${session.user.id}&cid=${session.user.cid}&companyappid=${app.id}" style="display: block;" >${app.name}</a>
+                                    </g:if>
+                                    <g:else>
+                                        <a href="${app.app.appurl}?uid=${session.user.id}&cid=${session.user.cid}&companyappid=${app.id}" target="_blank" style="display: block;" >${app.name}</a>
+                                    </g:else>
                                 </li>
+
                             </g:each>
                         </ul>
                     </div>
-                    <div style="width:49%;height:100%;border:1px solid #d2d2d2;background-color: #fff;" class="f-r">
-                        <header class="panel-heading">
-                            <span>要显示在导航条的应用</span>
+                    <div style="width:30%;min-height:100%;border:1px solid #d2d2d2;background-color: #fff;" class="f-r">
+                        <header class="panel-heading" style="margin-bottom: 0px;">
+                            <span>显示在导航栏的应用(最多显示4个)</span>
                         </header>
                         <ul id="ul2" class="app clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" >
+                            <g:each in="${showapps}"  var="app">
+                                <div style="width:100%;border-bottom: 1px solid #d2d2d2;" class="clearfix">
+                                    <li   style="border-radius:5px;border: 1px solid #d0d0d0;width:90px;height:90px;margin-bottom: 40px;margin-top: 20px;" class="c${app.companyApp.id%5}">
+                                        <img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px" style="margin-bottom: 20px;"/>
 
+                                        <span>${app.name}</span>
+
+                                    </li>
+                                    <div class="flag up"><img src="${resource(dir:'images/',file:'up.png')}" title="向上"/><p>上移</p></div>
+                                    <span style="display: none">${app.id}</span>
+                                    <div class="flag down"><img src="${resource(dir:'images/',file:'down.png')}" title="向下"/><p>下移</p></div>
+                                    <div class="flag delete"><img src="${resource(dir:'images/',file:'delete.png')}" title="删除"/><p>删除</p></div>
+                                    <span style="display: none">${app.num}</span>
+                                </div>
+                            </g:each>
                         </ul>
                     </div>
                     %{--</div>--}%
@@ -96,50 +124,117 @@
 
     function drop(ev)
     {
-
         var ev=ev||window.event;
         ev.preventDefault();
         var ul2=document.getElementById('ul2');
-        if(ev.target==ul2){
-            if($('#ul2').children().length==5){
-                alert('只能显示5个应用！');
+//        if(ev.target==ul2){
+            if($('#ul2').children().length==4){
+                alert('最多只能显示4个应用！');
 
             }else {
                 var data = ev.dataTransfer.getData("Text");
                 var li = document.getElementById(data);
                 var aid=li.getElementsByTagName('span')[0].innerHTML
-                alert(aid);
+
                 $.ajax( {
                     url:'${webRequest.baseUrl}/front/addApp',
                     method:'post',
                     dataType:'json',
+                    async:'false',
                     data:{aid:aid},
                     success:function(data){
+                        console.log(data.result)
                         if(!data.result){
-                            alert('添加失败！');
+                            alert(data.msg);
                             return;
 
                         }else{
-                            alert(data.msg);
+
                             ev.target.appendChild(li);
+                            location.reload();
                         }
                     },
                     error:function(){
                     alert('获取数据失败！');
                         return;
                 }
+
                 })
 
 
 
             }
-        }else{
-            var data = ev.dataTransfer.getData("Text");
-            var li = document.getElementById(data);
-            ev.target.appendChild(li);
-        }
+
 
     }
+    $(function(){
+        $('.up').click(function(){
+            var aid=$(this).next().html()
+            $.ajax( {
+                url:'${webRequest.baseUrl}/front/upApp',
+                method:'post',
+                dataType:'json',
+                async:'false',
+                data:{aid:aid},
+                success:function(data){
+                    if(data.result){
+
+                        location.reload();
+                    }else{
+                        alert(data.msg)
+                    }
+                },
+                error:function(){
+                    alert('获取数据失败！')
+                }
+            })
+
+        })
+        $('.down').click(function(){
+            var aid=$(this).prev().html()
+            $.ajax( {
+                url:'${webRequest.baseUrl}/front/downApp',
+                method:'post',
+                dataType:'json',
+                async:'false',
+                data:{aid:aid},
+                success:function(data){
+                    if(data.result){
+
+                        location.reload();
+                    }else{
+                        alert(data.msg)
+                    }
+                },
+                error:function(){
+                    alert('获取数据失败！')
+                }
+            })
+
+        })
+        $('.delete').click(function(){
+            var aid=$(this).prev().prev().html()
+            $.ajax( {
+                url:'${webRequest.baseUrl}/front/deleteApp',
+                method:'post',
+                dataType:'json',
+                async:'false',
+                data:{aid:aid},
+                success:function(data){
+                    if(data.result){
+                        alert(data.msg);
+                        location.reload();
+                    }else{
+                        alert(data.msg)
+                    }
+                },
+                error:function(){
+                    alert('获取数据失败！')
+                }
+            })
+
+        })
+    })
 
 </script>
 </body>
