@@ -734,9 +734,72 @@ class LoginController {
 
     }
 
+    //内容顺序调整
+    //向上调整
+    def contentUp(){
+        def contentInstance=Content.get(params.id)
+        def charpterid = contentInstance.chapter.id
+        if(!contentInstance){
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), contentInstance.id])
+            redirect(action: "contentList",params: [id: charpterid])
+            return
+        }else{
+            if(contentInstance.num==1){
+
+            }else{
+                def num1=contentInstance.num-1
+                def content1=Content.findByChapterAndNum(contentInstance.chapter,num1)
+                contentInstance.num-=1
+                content1.num+=1
+                if(contentInstance.save(flush: true)&&content1.save(flash:true)){
+
+                }else{
+                    flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), contentInstance.id])
+                    redirect(action: "contentList",params: [id: charpterid])
+                    return
+                }
+            }
+        }
+        flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), contentInstance.id])
+        redirect(action: "contentList",params: [id: charpterid])
+        return
+    }
+
+    //向下调整
+    def contentDown(){
+        def contentInstance=Content.get(params.id)
+        def charpterid = contentInstance.chapter.id
+        def allContent = Content.findAllByChapter(contentInstance.chapter)
+        if(!contentInstance){
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), contentInstance.id])
+            redirect(action: "contentList",params: [id: charpterid])
+            return
+        }else{
+            if(contentInstance.num==allContent.size()){
+
+            }else{
+                def num1=contentInstance.num+1
+                def content1=Content.findByChapterAndNum(contentInstance.chapter,num1)
+                contentInstance.num+=1
+                content1.num-=1
+                if(contentInstance.save(flush: true)&&content1.save(flash:true)){
+
+                }else{
+                    flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), contentInstance.id])
+                    redirect(action: "contentList",params: [id: charpterid])
+                    return
+                }
+            }
+        }
+        flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), contentInstance.id])
+        redirect(action: "contentList",params: [id: charpterid])
+        return
+    }
+
     //内容
     def contentList(Integer max,Long id){
         params.max = Math.min(max ?: 10, 100)
+        params<<[sort: 'num',order: 'asc']
         def   contentInstanceList=Content.findAllByChapter(Chapter.get(id),params)
         def contentInstanceTotal=Content.countByChapter(Chapter.get(id))
 
@@ -748,8 +811,16 @@ class LoginController {
         [contentInstance: new Content(params),chapterId:id]
     }
     def contentSave(){
+        def allContent = Content.findAllByChapter(Chapter.get(params.chapterId),[sort:'num',order:'asc'])
+        def contentsize = allContent.size()
         def contentInstance = new Content(params)
         contentInstance.chapter=Chapter.get(params.chapterId)
+        if(contentsize==0){
+            contentInstance.num =1
+        }else {
+            def show = allContent.get(contentsize-1)
+            contentInstance.num = show.num + 1
+        }
         contentInstance.dateCreate=new Date()
         if (!contentInstance.save(flush: true)) {
             render(view: "create", model: [contentInstance: contentInstance])
@@ -849,14 +920,29 @@ class LoginController {
     }
     def contentDelete(Long id){
         def contentInstance = Content.get(id)
+        def chapter = Chapter.get(contentInstance.chapter.id)
+        def allContent = Content.findAllByChapter(chapter)
+
         if (!contentInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), id])
             redirect(action: "contentList",id: contentInstance.chapter.id)
             return
         }
 
+        def bcontentInstance = Content.findAllByChapterAndNumGreaterThan(chapter,contentInstance.num,[sort: 'num',order: 'asc'])
+
+
         try {
-            contentInstance.delete(flush: true)
+            if(contentInstance.num==allContent.size()){
+                contentInstance.delete(flush: true)
+            }else {
+                for (def b in bcontentInstance) {
+                    b.num -= 1
+                    b.save(flush: true)
+                }
+                contentInstance.delete(flush: true)
+            }
+
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'content.label', default: 'Content'), id])
             redirect(action: "contentList",id: contentInstance.chapter.id)
         }

@@ -51,6 +51,7 @@
                         <th>编号</th>
                         <th>标题名称</th>
                         <th>操作</th>
+                        <th>排序</th>
                     </tr>
                     <g:each in="${contentInstanceList}" status="i" var="contentInstance">
                         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
@@ -60,6 +61,10 @@
                                 <g:link action="contentShow" id="${contentInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
                                 <g:link action="contentEdit" id="${contentInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
                                 <g:link action="contentDelete" id="${contentInstance?.id}" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
+                            </td>
+                            <td>
+                                <span class="flag"><g:link action="contentUp" id="${contentInstance?.id}"><i class="fa fa-arrow-up up" title="向上"></i></g:link></span>
+                                <span class="flag"><g:link action="contentDown" id="${contentInstance?.id}"><i class="fa fa-arrow-down down" title="向下" ></i></g:link></span>
                             </td>
                         </tr>
                     </g:each>
