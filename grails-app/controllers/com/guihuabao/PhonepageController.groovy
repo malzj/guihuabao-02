@@ -1,0 +1,118 @@
+package com.guihuabao
+
+import grails.converters.JSON
+
+class PhonepageController {
+
+    //知识内容详情
+    def knowcontent(){
+        def id = params.id
+
+        params.max = 1
+        params<<[sort:"num", order:"asc"]
+        def offset = 0
+        def offse
+        if (params.offset){
+            offset =params.offset.toLong()
+        }
+        if(offse>0){
+            offset = offse
+        }
+        params<<[offset: offset]
+        def contentInfo
+        def charpterId
+        def syllabusInfo
+        def chapter = Chapter.get(id)
+        def syllabus=chapter.syllabus
+        def bookId=chapter.syllabus.book.id
+        def contentInfoTotal = Content.countByChapter(Chapter.get(id))
+        def bookInstance = Book.get(bookId)
+        contentInfo = Content.findByChapter(Chapter.get(id),params)
+
+        if(!contentInfo&&chapter&&syllabus){
+
+            if(offset>0){ //判断是向前翻页，还是向后翻页
+                //向后翻页 下一页
+                charpterId = Chapter.findByIdGreaterThan(chapter.id,[sort: "id",order: "asc"])?.id //向后翻页时获得后一个章节的id
+                if(charpterId){
+                    redirect(action: "knowcontent",params: [id: charpterId])
+                    return
+                }else{//如果没有后一章节，则查找后一大纲的第一章节
+                    syllabusInfo = Syllabus.findByIdGreaterThanAndBook(syllabus.id,bookInstance,[sort: "id",order: "asc"]) //获得后一个大纲
+                    if(syllabusInfo){//如果后一大纲存在，则获取第一章节id
+                        charpterId = Chapter.findBySyllabus(syllabusInfo,[sort: "id",order: "asc"])
+                        redirect(action: "knowcontent",params: [id: charpterId])
+                        return
+                    }else{//如果前一大纲不存在，则返回第一页
+                        render(view: "msgshow", model: [contentInfo: [introduction: '已经是最后一页'], contentInfoTotal: contentInfoTotal,offset: offset,id: id])
+                        return
+                    }
+                }
+            }
+        }else if(contentInfo&&chapter&&syllabus){
+            if(offset<0) { //判断是向前翻页，还是向后翻页 上一页
+                offset = 0
+                charpterId = Chapter.findByIdLessThanAndSyllabus(chapter.id, syllabus, [sort: "id", order: "desc"])?.id
+                //向前翻页时获得前一个章节的id
+                if (charpterId) {
+                    redirect(action: "knowcontent", params: [id: charpterId])
+                    return
+                } else {//如果没有前一章节，则查找前一大纲的最后一章节
+                    syllabusInfo = Syllabus.findByIdLessThanAndBook(syllabus.id, bookInstance, [sort: "id", order: "desc"])
+                    //获得前一个大纲
+                    if (syllabusInfo) {//如果前一大纲存在，则获取最后一章节id
+                        charpterId = Chapter.findBySyllabus(syllabusInfo, [sort: "id", order: "desc"])
+                        redirect(action: "knowcontent", params: [id: charpterId])
+                        return
+                    } else {//如果前一大纲不存在，则返回第一页
+                        render(view: "msgshow", model: [contentInfo: [introduction: '已经是第一页'], contentInfoTotal: contentInfoTotal,offset: offset,id: id])
+                        return
+                    }
+                }
+            }
+        }
+
+
+//        if(contentInfoTotal>offset){
+
+            if(!contentInfo){
+                render(view: "msgshow", model: [contentInfo: [introduction: '已加载所有数据'], contentInfoTotal: contentInfoTotal,offset: offset,id: id])
+                return
+            }
+//        }else{
+//            render(view: "msgshow", model: [contentInfo: [introduction: '已加载所有数据'], contentInfoTotal: contentInfoTotal,offset: offset,id: id])
+//            return
+//        }
+        [contentInfo: contentInfo, contentInfoTotal: contentInfoTotal,offset: offset,id: id]
+    }
+
+    //工具内容详情
+    def toolcontent(){
+        def id = params.id
+
+        params.max = 1
+        params<<[sort:"id", order:"asc"]
+        def offset = 0
+        def offse = params.offset.toInteger()
+        if(offse>0){
+            offset = offse
+        }
+        params<<[offset: offset]
+        def contentInfo
+        def contentInfoTotal = ToolContent.countByHexutools(HexuTool.get(id))
+        if(contentInfoTotal>offset){
+            contentInfo = ToolContent.findByHexutools(HexuTool.get(id),params)
+            if(!contentInfo){
+//                redirect(action: "knowcontent",params: [contentInfoList: contentInfoList, contentInfoTotal: contentInfoTotal,offset: offset])
+//                return
+//            }else{
+                render(view: "msgshow", model: [contentInfo: [introduction: '已加载所有数据'], contentInfoTotal: contentInfoTotal,offset: offset,id: id])
+                return
+            }
+        }else{
+            render(view: "msgshow", model: [contentInfo: [introduction: '已加载所有数据'], contentInfoTotal: contentInfoTotal,offset: offset,id: id])
+            return
+        }
+        [contentInfo: contentInfo, contentInfoTotal: contentInfoTotal,offset: offset,id: id]
+    }
+}

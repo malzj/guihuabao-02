@@ -518,6 +518,7 @@ class GhbotherapiController {
     //我的报告
     def myReport(){
         def rs = [:]
+        def replyInfo = []
         def date
         def date1
         DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -541,6 +542,17 @@ class GhbotherapiController {
             ureadReply[i].status=1
         }
 
+        if(replyInstance){
+            for (def n=0;n<replyInstance.size();n++){
+                def info= [:]
+                def allInfo=replyInstance.get(n)
+                info.allInfo=allInfo
+                info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+                replyInfo<<info
+            }
+            println("shi de ")
+        }
+
         date1 = dayFormat.parse(date)
 
         Calendar calendar = new GregorianCalendar();
@@ -552,7 +564,7 @@ class GhbotherapiController {
         if(myReportInfo){
             rs.result = true
             rs.myReportInfo = myReportInfo
-            rs.replyInstance = replyInstance
+            rs.replyInfo = replyInfo
         }else{
             rs.year = n_year
             rs.month = n_month

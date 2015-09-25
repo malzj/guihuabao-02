@@ -507,6 +507,7 @@ class FrontController {
             }
         }else if(contentlist&&chapter&&syllabus){
             if(offset<0) { //判断是向前翻页，还是向后翻页 上一页
+                offset = 0
                 charpterId = Chapter.findByIdLessThanAndSyllabus(chapter.id, syllabus, [sort: "id", order: "desc"])?.id
                 //向前翻页时获得前一个章节的id
                 if (charpterId) {
