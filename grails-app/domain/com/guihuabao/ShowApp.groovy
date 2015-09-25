@@ -18,5 +18,6 @@ class ShowApp {
         cid(nullable: true)
         uid(nullable:true)
         num(nullable:true)
+//        appurl(nullable:true)
     }
 }
