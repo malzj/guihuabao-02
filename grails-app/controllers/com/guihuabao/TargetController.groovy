@@ -207,6 +207,7 @@ class TargetController {
         }else{
             rs.result=true
             rs.mission=missionInstance
+            rs.replys=ReplyMission.findAllByMission(missionInstance,[sort:'date',order:'desc'])
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
