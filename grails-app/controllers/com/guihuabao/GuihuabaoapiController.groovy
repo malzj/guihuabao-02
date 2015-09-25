@@ -38,6 +38,7 @@ class GuihuabaoapiController {
     def taskSave(){
         def rs = [:]
         def taskInstance = new Task(params)
+        taskInstance.remindstatus = 0
         taskInstance.dateCreate = new Date()
         if (!taskInstance.save(flush: true)) {
           rs.result=false
@@ -367,12 +368,21 @@ class GuihuabaoapiController {
     //未读的回复
     def wdReplyTaskList(){
         def rs=[:]
+        def replyInfo = []
         def userId = params.userId
         def cid =params.cid
         def replyTaskList = ReplyTask.findAllByCidAndBpuidAndStatus(cid,userId,0)
         if (replyTaskList){
+            for (def i=0;i<replyTaskList.size();i++){
+                def info= [:]
+                def allInfo=replyTaskList.get(i)
+                info.allInfo=allInfo
+                info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+                replyInfo<<info
+            }
             rs.result = true
-            rs.replyTaskList=replyTaskList
+            rs.replyInfo = replyInfo
+//            rs.replyTaskList=replyTaskList
         }else {
             rs.result =false
             rs.msg = "没有未回复消息"

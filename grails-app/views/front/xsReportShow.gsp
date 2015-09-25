@@ -94,7 +94,7 @@
                         <h4 class="hz">部门协同合作</h4>
                         <p>${myReportInfo?.cooperate}</p>
                     </div>
-                    <g:if test="${myReportInfo?.reply==1}">
+                    <g:if test="${myReportInfo?.submit==1}">
                         <div class="discuss clearfix">
                         <h4>反馈及评论</h4>
                         <g:form url="[controller:'front',action:'replySave']">

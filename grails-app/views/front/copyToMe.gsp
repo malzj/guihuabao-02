@@ -42,7 +42,8 @@
     #apply_tab .th{background:#f8f8f8;}
     #apply_tab td{padding:10px;margin:0;}
     #apply_tab tr td:nth-of-type(1){width:140px;}
-    #apply_tab tr td:nth-of-type(2){width:600px;}
+    #apply_tab tr td:nth-of-type(2){width:400px;}
+    #apply_tab tr td:nth-of-type(2){width:200px;}
     #apply_tab tr td:nth-of-type(3){width:200px;}
     #apply_tab tr td:nth-of-type(4){width:140px;}
     #apply_tab tr td:nth-of-type(5){width:400px;}
@@ -92,6 +93,7 @@
                             <tr class="th">
                                 <td >申请类型</td>
                                 <td>申请内容</td>
+                                <td>申请人</td>
                                 <td>审批人</td>
                                 <td>审批结果</td>
                                 <td>审批反馈</td>
@@ -101,6 +103,7 @@
                                 <tr data-id="${applyInstance.id}" data-version="${applyInstance.version}">
                                     <td>${applyInstance.type}</td>
                                     <td>${applyInstance.content}</td>
+                                    <td>${applyInstance.applyusername}</td>
                                     <td>${applyInstance.approvalusername}</td>
                                     <td>${applyInstance.status}</td>
                                     <td>${applyInstance.approvetext}</td>
@@ -128,6 +131,7 @@
         <div class="panel-content">
             <ul>
                 <li>申请类型：<span></span></li>
+                <li>申请人：<span></span></li>
                 <li>审批人：<span></span></li>
                 <li>申请内容：<span></span></li>
                 <li>申请时间：<span></span></li>
@@ -171,16 +175,18 @@
             var version = $(this).attr("data-version");
             var applyType = $(this).children("td:eq(0)").html();
             var applyContent = $(this).children("td:eq(1)").html();
-            var approvalusername = $(this).children("td:eq(2)").html();
-            var applyStauts = $(this).children("td:eq(3)").html();
-            var approvetext = $(this).children("td:eq(4)").html();
-            var applyDate = $(this).children("td:eq(5)").html();
+            var applyusername = $(this).children("td:eq(2)").html();
+            var approvalusername = $(this).children("td:eq(3)").html();
+            var applyStauts = $(this).children("td:eq(4)").html();
+            var approvetext = $(this).children("td:eq(5)").html();
+            var applyDate = $(this).children("td:eq(6)").html();
             $(".panel-content ul li:eq(0) span").html(applyType)
-            $(".panel-content ul li:eq(1) span").html(approvalusername)
-            $(".panel-content ul li:eq(2) span").html(applyContent)
-            $(".panel-content ul li:eq(3) span").html(applyDate)
-            $(".panel-content ul li:eq(4) span").html(applyStauts)
-            $(".panel-content ul li:eq(5) span").html(approvetext)
+            $(".panel-content ul li:eq(1) span").html(applyusername)
+            $(".panel-content ul li:eq(2) span").html(approvalusername)
+            $(".panel-content ul li:eq(3) span").html(applyContent)
+            $(".panel-content ul li:eq(4) span").html(applyDate)
+            $(".panel-content ul li:eq(5) span").html(applyStauts)
+            $(".panel-content ul li:eq(6) span").html(approvetext)
             $.ajax({
                 url:'${webRequest.baseUrl}/front/copyRemindUpdate?id='+encodeURI(applyId)+'&version='+encodeURI(version),
                 dataType: "jsonp",

@@ -66,16 +66,35 @@
 </div>
 <img class="banner" src='${resource(dir: 'index/img/', file: 'banner_1.png')}' />
 <div class="all-container clearfix">
-    <div class="z-content" style="padding-left: 0;">
-        <h2>数据安全</h2>
-        <p style="line-height:2.5em;">
-            更重要的是：规划宝还如此安全<br />
-            物理安全：采用高性能的阿里服务器<br />
-            基础安全：安全团队7*24小时待命<br />
-            数据安全：重要数据加密处理<br />
-            权限安全：按角色和人员划分权限<br />
-            容灾保障：异步实时备份
-        </p>
+    <div class="z-content" style="padding:35px 0 117px; width: 100%">
+        <h2 style="font-size:36px;text-align: center;">数据安全</h2>
+        <ul class="safe clearfix">
+            <li>
+                <img src="${resource(dir: 'index/img/', file: 'safe_1.png')}">
+                <h3>物理安全</h3>
+                <p>采用高性能的阿里服务器</p>
+            </li>
+            <li>
+                <img src="${resource(dir: 'index/img/', file: 'safe_2.png')}">
+                <h3>基础安全</h3>
+                <p>安全团队7*24小时待命</p>
+            </li>
+            <li>
+                <img src="${resource(dir: 'index/img/', file: 'safe_3.png')}">
+                <h3>数据安全</h3>
+                <p>重要数据加密处理</p>
+            </li>
+            <li>
+                <img src="${resource(dir: 'index/img/', file: 'safe_4.png')}">
+                <h3>权限安全</h3>
+                <p>按角色和人员划分权限</p>
+            </li>
+            <li class="mr0">
+                <img src="${resource(dir: 'index/img/', file: 'safe_5.png')}">
+                <h3>容灾保障</h3>
+                <p>异步实时备份</p>
+            </li>
+        </ul>
     </div>
 </div>
 <g:render template="footer" />
