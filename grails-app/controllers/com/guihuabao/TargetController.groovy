@@ -426,12 +426,13 @@ class TargetController {
                 for (def i=0;i<unreadcomment.size();i++){
                     def info= [:]
                     def allInfo=unreadcomment.get(i)
+
                     info.allInfo=allInfo
                     info.plimg = CompanyUser.findById(allInfo.puid).img
                     replyInfo<<info
                 }
                 rs.replyInfo = replyInfo
-                rs.mission=unreadcomment.mission
+//                rs.mission=unreadcomment.mission
                 rs.result = true
             }
 
