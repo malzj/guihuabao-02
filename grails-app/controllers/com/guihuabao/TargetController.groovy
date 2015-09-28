@@ -427,7 +427,7 @@ class TargetController {
                     def info= [:]
                     def allInfo=unreadcomment.get(i)
                     info.allInfo=allInfo
-                    info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+                    info.plimg = CompanyUser.findById(allInfo.puid).img
                     replyInfo<<info
                 }
                 rs.replyInfo = replyInfo
