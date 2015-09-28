@@ -99,7 +99,7 @@
                         <div class="syl-title">${syllabusInstance.syllabusName}</div>
                         <ul class="char-title">
                             <g:each in="${com.guihuabao.Chapter.findAllBySyllabus(syllabusInstance,[sort:"id", order:"asc"])}" var="chapterInstance">
-                                <li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link action="chapterBook" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>
+                                <li <g:if test="${chapter.id==chapterInstance.id}">class="active"</g:if> ><g:link controller="phonepage" action="knowcontent" id="${chapterInstance.id}"><span>${chapterInstance.chapterName}</span></g:link></li>
                             </g:each>
                         </ul>
                     </li>

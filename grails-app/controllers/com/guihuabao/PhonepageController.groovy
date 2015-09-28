@@ -22,7 +22,7 @@ class PhonepageController {
         def contentInfo
         def charpterId
         def syllabusInfo
-        def chapter = Chapter.get(id)
+        def chapter = Chapter.get(id.toInteger())
         def syllabus=chapter.syllabus
         def bookId=chapter.syllabus.book.id
         def contentInfoTotal = Content.countByChapter(Chapter.get(id))
@@ -93,10 +93,14 @@ class PhonepageController {
         params.max = 1
         params<<[sort:"id", order:"asc"]
         def offset = 0
-        def offse = params.offset.toInteger()
+        def offse
+        if (params.offset){
+            offset =params.offset.toLong()
+        }
         if(offse>0){
             offset = offse
         }
+
         params<<[offset: offset]
         def contentInfo
         def contentInfoTotal = ToolContent.countByHexutools(HexuTool.get(id))
@@ -110,6 +114,11 @@ class PhonepageController {
                 return
             }
         }else{
+            render(view: "msgshow", model: [contentInfo: [introduction: '已加载所有数据'], contentInfoTotal: contentInfoTotal,offset: offset,id: id])
+            return
+        }
+        if(offset<0){
+            offset=0
             render(view: "msgshow", model: [contentInfo: [introduction: '已加载所有数据'], contentInfoTotal: contentInfoTotal,offset: offset,id: id])
             return
         }
