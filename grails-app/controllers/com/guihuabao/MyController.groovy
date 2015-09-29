@@ -516,7 +516,7 @@ class MyController {
             fileName=date.toString()+x.toString()+"."+strs[1]
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "uploadfile/target-img/")
+            def userDir = new File(webRootDir, "uploadfile/images/")
             userDir.mkdirs()
             def s=f.transferTo( new File( userDir, fileName))
             def user=CompanyUser.findById(uid)
