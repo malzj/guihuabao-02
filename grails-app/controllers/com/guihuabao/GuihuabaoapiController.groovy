@@ -378,8 +378,12 @@ class GuihuabaoapiController {
             for (def i=0;i<replyTaskList.size();i++){
                 def info= [:]
                 def allInfo=replyTaskList.get(i)
+                allInfo.img=CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+                allInfo.title=allInfo.tasks.title
                 info.allInfo=allInfo
-                info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+
+//                info.allInfo<<[title:allInfo.tasks.title]
+//                info.allInfo<<[img:CompanyUser.findByIdAndCid(allInfo.puid,cid).img]
                 replyInfo<<info
             }
             rs.result = true
