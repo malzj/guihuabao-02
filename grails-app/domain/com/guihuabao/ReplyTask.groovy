@@ -13,6 +13,8 @@ class ReplyTask {
     String title
     static belongsTo = [tasks: Task]
     static constraints = {
+        img(nullable: true)
+        title(nullable: true)
         cid(nullable: true)
         puid(nullable: true)
         puname(nullable: true)

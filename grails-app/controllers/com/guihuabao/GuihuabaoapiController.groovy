@@ -21,6 +21,7 @@ class GuihuabaoapiController {
             def company= Company.get(companyUser.cid)
             if (company.dateUse>date){
                 rs.user=companyUser
+                rs.bumen=Bumen.get(companyUser.bid).name
                 rs.company=company
                 rs.msg="欢迎登陆规划宝"
                 rs.result=true
@@ -376,15 +377,12 @@ class GuihuabaoapiController {
         def replyTaskList = ReplyTask.findAllByCidAndBpuidAndStatus(cid,userId,0)
         if (replyTaskList){
             for (def i=0;i<replyTaskList.size();i++){
-                def info= [:]
+//                def info= [:]
                 def allInfo=replyTaskList.get(i)
                 allInfo.img=CompanyUser.findByIdAndCid(allInfo.puid,cid).img
                 allInfo.title=allInfo.tasks.title
-                info.allInfo=allInfo
-
-//                info.allInfo<<[title:allInfo.tasks.title]
-//                info.allInfo<<[img:CompanyUser.findByIdAndCid(allInfo.puid,cid).img]
-                replyInfo<<info
+//                info.allInfo=allInfo
+                replyInfo<<allInfo
             }
             rs.result = true
             rs.replyInfo = replyInfo
