@@ -96,7 +96,7 @@ class GuihuabaoapiController {
           def now = time.format(current)
           def order = [sort:"dateCreate",order: "desc"]
           def todayTaskList = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(cid,userId,2,0,now,now,order)
-          def dueTaskList = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndOvertimeGreaterThanEquals(cid,userId,2,0,now,[sort:"overtime",order:"asc"])
+          def dueTaskList = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndOvertimeGreaterThanEquals(cid,userId,2,0,now,[sort:"overtime",order:"desc"])
             if(todayTaskList||dueTaskList){
                 rs.result =true
                 rs.todayTaskList=todayTaskList
@@ -170,7 +170,7 @@ class GuihuabaoapiController {
            def cid = params.cid
 
            params.max = 5
-           params<<[sort: "id",order: "asc"]
+           params<<[sort: "id",order: "desc"]
            def offset = 0;
 
 
@@ -207,7 +207,7 @@ class GuihuabaoapiController {
         def cid = params.cid
 
         params.max = 5
-        params<<[sort: "id",order: "asc"]
+        params<<[sort: "id",order: "desc"]
         def offset = 0;
 
 
@@ -250,8 +250,10 @@ class GuihuabaoapiController {
         }
         def taskInstance = Task.findByCidAndId(cid,id)
         if (userId==taskInstance.playuid){
-            taskInstance.lookstatus=1
-            taskInstance.save(flush: true)
+              if (taskInstance.lookstatus==0){
+                taskInstance.lookstatus=1
+                taskInstance.save(flush: true)
+            }
         }
         if (userId == taskInstance.fzuid){
             if(taskInstance.remindstatus==1){
@@ -301,7 +303,7 @@ class GuihuabaoapiController {
              def userId = params.userId
              def cid = params.cid
              params.max = 5
-             params<<[sort: "id",order: "asc"]
+             params<<[sort: "id",order: "desc"]
              def offset = 0;
 
 
@@ -336,7 +338,7 @@ class GuihuabaoapiController {
              def userId = params.userId
              def cid = params.cid
              params.max = 5
-             params<<[sort: "id",order: "asc"]
+             params<<[sort: "id",order: "desc"]
              def offset = 0;
 
 
