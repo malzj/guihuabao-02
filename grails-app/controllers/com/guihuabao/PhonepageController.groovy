@@ -86,6 +86,57 @@ class PhonepageController {
         [contentInfo: contentInfo, contentInfoTotal: contentInfoTotal,offset: offset,id: id]
     }
 
+
+    def knowcontent2(){
+        def rs=[:]
+        def id = params.id
+        params.max = 1
+        params<<[sort:"num", order:"asc"]
+        def offset = 0
+
+       def offse=params.offset
+            if (offse){
+            if (offse.toString().toLong()>0){
+                offset =offse.toLong()
+            }else {
+                offset=0;
+                rs.s=2
+            }
+        }
+
+
+        params<<[offset: offset]
+
+        def contentInfo = Content.findByChapter(Chapter.get(id),params)
+        def num=Content.countByChapter(Chapter.get(id))
+        def next=0
+        def prev=0
+        if (offset>=num){
+
+            next=1
+        }
+        if (offset<=0){
+            prev=1
+        }
+        if (contentInfo){
+
+            rs.contentInfo=contentInfo.introduction
+        }else {
+            rs.contentInfo="已加载所有数据"
+            rs.s=1;
+        }
+        println(next+'  '+prev)
+        rs.next=next
+        rs.prev=prev
+        rs.offset=offset
+        rs.id=id
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+
+    }
+
     //工具内容详情
     def toolcontent(){
         def id = params.id
@@ -123,5 +174,54 @@ class PhonepageController {
             return
         }
         [contentInfo: contentInfo, contentInfoTotal: contentInfoTotal,offset: offset,id: id]
+    }
+    def toolcontent2(){
+        def rs=[:]
+        def id = params.id
+        params.max = 1
+        params<<[sort:"id", order:"asc"]
+        def offset = 0
+
+        def offse=params.offset
+        if (offse){
+            if (offse.toString().toLong()>0){
+                offset =offse.toLong()
+            }else {
+                offset=0;
+
+            }
+        }
+
+
+        params<<[offset: offset]
+
+        def contentInfo = ToolContent.findByHexutools(HexuTool.get(id),params)
+        def n1um=ToolContent.countByHexutools(HexuTool.get(id))
+        def next=0
+        def prev=0
+        println(n1um)
+        if (offset>=n1um){
+            next=1
+        }
+        if (offset<=0){
+            prev=1
+        }
+        if (contentInfo){
+
+            rs.contentInfo=contentInfo.introduction
+        }else {
+            rs.contentInfo="已加载所有数据"
+
+        }
+        println(next+'  '+prev)
+        rs.next=next
+        rs.prev=prev
+        rs.offset=offset
+        rs.id=id
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+
     }
 }
