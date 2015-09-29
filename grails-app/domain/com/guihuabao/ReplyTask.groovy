@@ -9,8 +9,12 @@ class ReplyTask {
     Integer status  //是否查看0未查看1已查看
     String content  //回复内容
     String date     //回复时间
+    String img
+    String title
     static belongsTo = [tasks: Task]
     static constraints = {
+        img(nullable: true)
+        title(nullable: true)
         cid(nullable: true)
         puid(nullable: true)
         puname(nullable: true)

@@ -148,8 +148,14 @@ class TargetController {
         def tid=params.tid
         def targetInstance=Target.get(tid)
         def missionInstance=new Mission(params)
+        missionInstance.target=targetInstance
         missionInstance.status=0
-        missionInstance.issubmit=0
+        if(targetInstance.issubmit=='0'){
+            missionInstance.issubmit=0
+        }else{
+            missionInstance.issubmit=1
+        }
+        
         missionInstance.hasvisited=0
         missionInstance.dateCreate=new Date()
 //        missionInstance.reply=0
