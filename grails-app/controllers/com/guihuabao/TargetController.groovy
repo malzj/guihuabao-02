@@ -148,8 +148,14 @@ class TargetController {
         def tid=params.tid
         def targetInstance=Target.get(tid)
         def missionInstance=new Mission(params)
+        missionInstance.target=targetInstance
         missionInstance.status=0
-        missionInstance.issubmit=0
+        if(targetInstance.issubmit=='0'){
+            missionInstance.issubmit=0
+        }else{
+            missionInstance.issubmit=1
+        }
+
         missionInstance.hasvisited=0
         missionInstance.dateCreate=new Date()
 //        missionInstance.reply=0
@@ -205,6 +211,7 @@ class TargetController {
         if(!missionInstance){
             rs.result=false
             rs.msg="获取数据失败！"
+            return
         }else if(uid==missionInstance.playuid){
             if(missionInstance.hasvisited=='0') {
                 missionInstance.hasvisited = 1
@@ -212,6 +219,9 @@ class TargetController {
             }
 
         }
+        def fzuid=missionInstance.target.fzuid
+        rs.fzuid=fzuid
+        rs.fzname=CompanyUser.findById(fzuid).name
         rs.result=true
         rs.mission=missionInstance
         rs.replys=ReplyMission.findAllByMission(missionInstance,[sort:'date',order:'desc'])
