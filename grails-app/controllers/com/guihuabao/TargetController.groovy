@@ -284,6 +284,7 @@ class TargetController {
         }else {
             def replymissionInstance = new ReplyMission(params)
             replymissionInstance.status = 0
+            replymissionInstance.title=missionInstance.title
             SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             replymissionInstance.date=time.format(new Date())
 //            missionInstance.reply = 1
@@ -447,7 +448,7 @@ class TargetController {
                     info.plimg = CompanyUser.findById(allInfo.puid).img
                     replyInfo<<info
                 }
-                rs.replyInfo = replyInfo
+                rs.replyInfo = unreadcomment
 //                rs.mission=unreadcomment.mission
                 rs.result = true
             }

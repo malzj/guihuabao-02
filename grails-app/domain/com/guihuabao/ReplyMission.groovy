@@ -10,6 +10,7 @@ class ReplyMission {
     Integer status  //0未读1已读
     String content  //评论内容
     String date     //评论时间
+    String title   //任务标题
     static belongsTo = [mission: Mission]
     static constraints = {
         cid(nullable: true)
@@ -20,5 +21,6 @@ class ReplyMission {
         status(nullable: true)
         content(nullable: true)
         date(nullable: true)
+        title(nullable:true)
     }
 }
