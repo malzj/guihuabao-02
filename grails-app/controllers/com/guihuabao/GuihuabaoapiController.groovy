@@ -251,7 +251,7 @@ class GuihuabaoapiController {
         }
         def taskInstance = Task.findByCidAndId(cid,id)
         if (userId==taskInstance.playuid){
-              if (taskInstance.lookstatus==0){
+              if (taskInstance.lookstatus.toLong()==0){
                 taskInstance.lookstatus=1
                 taskInstance.save(flush: true)
             }
