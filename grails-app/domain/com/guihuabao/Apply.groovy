@@ -13,7 +13,7 @@ class Apply {
     String status//中文审核状态 未审核  已通过 未通过
     String cid      //公司id
     String approvetext      //审批反馈
-    Date dateCreate     //申请时间
+    String dateCreate     //申请时间
     Integer applystatus//审核状态 0未审核1已通过2未通过
     Integer applystatuss//提交状态(草稿0，提交1)
     String remindstatus//审核通过提醒状态（初始或查看后0，审核但未查看1）

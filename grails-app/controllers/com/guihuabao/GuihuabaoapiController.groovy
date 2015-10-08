@@ -220,7 +220,7 @@ class GuihuabaoapiController {
         def x = fztaskSize
         def offse=params.offset.toInteger()
         if (x>offse){
-            def cytaskList = Task.findAllByPlayuidAndCid(userId,cid,params)
+            def cytaskList = Task.findAllByPlayuidAndCidAndLookstatus(userId,cid,2,params)
             if (cytaskList){
                 rs.result =  true
                 rs.cytaskList=cytaskList

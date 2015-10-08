@@ -131,8 +131,9 @@ class GhbotherapiController {
 //        Date currentTime = new Date();
         SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
         def nowdate=new Date()
+        def time1 = time.format(nowdate).toString()
 //        def date = time.format(nowdate)
-        applyInstance.dateCreate=time.format(nowdate)
+        applyInstance.dateCreate=time1
         applyInstance.applystatus=0
         if(params.applysub=="1"){//判断是存草稿0还是提交1
             applyInstance.applystatuss=1
