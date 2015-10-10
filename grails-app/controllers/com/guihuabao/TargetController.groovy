@@ -148,8 +148,14 @@ class TargetController {
         def tid=params.tid
         def targetInstance=Target.get(tid)
         def missionInstance=new Mission(params)
+        missionInstance.target=targetInstance
         missionInstance.status=0
-        missionInstance.issubmit=0
+        if(targetInstance.issubmit=='0'){
+            missionInstance.issubmit=0
+        }else{
+            missionInstance.issubmit=1
+        }
+
         missionInstance.hasvisited=0
         missionInstance.dateCreate=new Date()
 //        missionInstance.reply=0
@@ -199,15 +205,26 @@ class TargetController {
     }
     def missionShow(){
         def rs=[:]
+        def uid=params.uid
         def mid=params.mid
         def missionInstance=Mission.findById(mid)
         if(!missionInstance){
             rs.result=false
             rs.msg="获取数据失败！"
-        }else{
-            rs.result=true
-            rs.mission=missionInstance
+            return
+        }else if(uid==missionInstance.playuid){
+            if(missionInstance.hasvisited=='0') {
+                missionInstance.hasvisited = 1
+                missionInstance.save()
+            }
+
         }
+        def fzuid=missionInstance.target.fzuid
+        rs.fzuid=fzuid
+        rs.fzname=CompanyUser.findById(fzuid).name
+        rs.result=true
+        rs.mission=missionInstance
+        rs.replys=ReplyMission.findAllByMission(missionInstance,[sort:'date',order:'desc'])
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else
@@ -267,6 +284,7 @@ class TargetController {
         }else {
             def replymissionInstance = new ReplyMission(params)
             replymissionInstance.status = 0
+            replymissionInstance.title=missionInstance.title
             SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             replymissionInstance.date=time.format(new Date())
 //            missionInstance.reply = 1
@@ -425,12 +443,13 @@ class TargetController {
                 for (def i=0;i<unreadcomment.size();i++){
                     def info= [:]
                     def allInfo=unreadcomment.get(i)
+
                     info.allInfo=allInfo
-                    info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+                    info.plimg = CompanyUser.findById(allInfo.puid).img
                     replyInfo<<info
                 }
-                rs.replyInfo = replyInfo
-                rs.mission=unreadcomment.mission
+                rs.replyInfo = unreadcomment
+//                rs.mission=unreadcomment.mission
                 rs.result = true
             }
 
@@ -464,28 +483,28 @@ class TargetController {
         } else
             render rs as JSON
     }
-    def sign_mission_hasvisited(){
-        def rs=[:]
-        def mid=params.mid
-        def missionInstance=Mission.get(mid)
-        if(!missionInstance){
-            rs.result=false
-            rs.msg='获取数据失败！'
-        }else{
-            missionInstance.hasvisited=1
-            if(!missionInstance.save(flush: true)){
-                rs.result=false
-                rs.msg='获取数据失败！'
-            }else{
-                rs.result=true
-                rs.msg='任务已查看！'
-            }
-        }
-        if (params.callback) {
-            render "${params.callback}(${rs as JSON})"
-        } else
-            render rs as JSON
-    }
+//    def sign_mission_hasvisited(){
+//        def rs=[:]
+//        def mid=params.mid
+//        def missionInstance=Mission.get(mid)
+//        if(!missionInstance){
+//            rs.result=false
+//            rs.msg='获取数据失败！'
+//        }else{
+//            missionInstance.hasvisited=1
+//            if(!missionInstance.save(flush: true)){
+//                rs.result=false
+//                rs.msg='获取数据失败！'
+//            }else{
+//                rs.result=true
+//                rs.msg='任务已查看！'
+//            }
+//        }
+//        if (params.callback) {
+//            render "${params.callback}(${rs as JSON})"
+//        } else
+//            render rs as JSON
+//    }
     def sign_mission_accepted(){
         def rs=[:]
         def mid=params.mid
@@ -522,7 +541,10 @@ class TargetController {
                 rs.result=false
                 rs.msg='获取数据失败！'
             }else{
-
+                if(missionInstance.target.percent==100){
+                    missionInstance.target.status=1
+                    missionInstance.save();
+                }
                 rs.result=true
                 rs.msg='任务标记完成！'
             }

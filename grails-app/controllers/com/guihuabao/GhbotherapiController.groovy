@@ -128,8 +128,11 @@ class GhbotherapiController {
             applyInstance.approvalusername = CompanyUser.get(params.approvaluid).name
         }
         applyInstance.status="未审核"
-        Date currentTime = new Date();
-        applyInstance.dateCreate=currentTime
+//        Date currentTime = new Date();
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        def nowdate=new Date()
+//        def date = time.format(nowdate)
+        applyInstance.dateCreate=time.format(nowdate)
         applyInstance.applystatus=0
         if(params.applysub=="1"){//判断是存草稿0还是提交1
             applyInstance.applystatuss=1

@@ -21,6 +21,7 @@ class GuihuabaoapiController {
             def company= Company.get(companyUser.cid)
             if (company.dateUse>date){
                 rs.user=companyUser
+                rs.bumen=Bumen.get(companyUser.bid).name
                 rs.company=company
                 rs.msg="欢迎登陆规划宝"
                 rs.result=true
@@ -96,7 +97,7 @@ class GuihuabaoapiController {
           def now = time.format(current)
           def order = [sort:"dateCreate",order: "desc"]
           def todayTaskList = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndBigentimeLessThanEqualsAndOvertimeGreaterThanEquals(cid,userId,2,0,now,now,order)
-          def dueTaskList = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndOvertimeGreaterThanEquals(cid,userId,2,0,now,[sort:"overtime",order:"asc"])
+          def dueTaskList = Task.findAllByCidAndPlayuidAndLookstatusAndStatusAndOvertimeGreaterThanEquals(cid,userId,2,0,now,[sort:"overtime",order:"desc"])
             if(todayTaskList||dueTaskList){
                 rs.result =true
                 rs.todayTaskList=todayTaskList
@@ -170,7 +171,7 @@ class GuihuabaoapiController {
            def cid = params.cid
 
            params.max = 5
-           params<<[sort: "id",order: "asc"]
+           params<<[sort: "id",order: "desc"]
            def offset = 0;
 
 
@@ -207,7 +208,7 @@ class GuihuabaoapiController {
         def cid = params.cid
 
         params.max = 5
-        params<<[sort: "id",order: "asc"]
+        params<<[sort: "id",order: "desc"]
         def offset = 0;
 
 
@@ -257,8 +258,10 @@ class GuihuabaoapiController {
 //        }
 
         if (userId==taskInstance.playuid){
-            taskInstance.lookstatus=1
-            taskInstance.save(flush: true)
+              if (taskInstance.lookstatus.toLong()==0){
+                taskInstance.lookstatus=1
+                taskInstance.save(flush: true)
+            }
         }
         if (userId == taskInstance.fzuid){
             if(taskInstance.remindstatus==1){
@@ -308,7 +311,7 @@ class GuihuabaoapiController {
              def userId = params.userId
              def cid = params.cid
              params.max = 5
-             params<<[sort: "id",order: "asc"]
+             params<<[sort: "id",order: "desc"]
              def offset = 0;
 
 
@@ -343,7 +346,7 @@ class GuihuabaoapiController {
              def userId = params.userId
              def cid = params.cid
              params.max = 5
-             params<<[sort: "id",order: "asc"]
+             params<<[sort: "id",order: "desc"]
              def offset = 0;
 
 
@@ -381,11 +384,12 @@ class GuihuabaoapiController {
         def replyTaskList = ReplyTask.findAllByCidAndBpuidAndStatus(cid,userId,0)
         if (replyTaskList){
             for (def i=0;i<replyTaskList.size();i++){
-                def info= [:]
+//                def info= [:]
                 def allInfo=replyTaskList.get(i)
-                info.allInfo=allInfo
-                info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
-                replyInfo<<info
+                allInfo.img=CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+                allInfo.title=allInfo.tasks.title
+//                info.allInfo=allInfo
+                replyInfo<<allInfo
             }
             rs.result = true
             rs.replyInfo = replyInfo

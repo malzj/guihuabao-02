@@ -482,16 +482,62 @@ class MyController {
             fileName=date.toString()+x.toString()+"."+strs[1]
             def webRootDir = servletContext.getRealPath("/")
             println webRootDir
-            def userDir = new File(webRootDir, "img/target-img/")
+            def userDir = new File(webRootDir, "uploadfile/target-img/")
             userDir.mkdirs()
-           if( f.transferTo( new File( userDir, fileName))) {
+            def s=f.transferTo( new File( userDir, fileName))
+
                rs.result=true
                rs.fileName = fileName
                rs.msg="上传成功！"
-           }else{
-               rs.result=false
-               rs.msg="上传失败！"
-           }
+
+
+        }else{
+            rs.result=false
+            rs.msg="上传失败！"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def uploadImg1(){
+        def rs=[:]
+        def uid=params.uid
+        def filePath
+        def fileName
+        MultipartFile f = request.getFile('file1')
+
+        if(!f.empty) {
+            def date= new Date().getTime()
+            Random random =new Random()
+            def x = random.nextInt(100)
+            def str =f.originalFilename
+            String [] strs = str.split("[.]")
+            fileName=date.toString()+x.toString()+"."+strs[1]
+            def webRootDir = servletContext.getRealPath("/")
+            println webRootDir
+            def userDir = new File(webRootDir, "uploadfile/images/")
+            userDir.mkdirs()
+            def s=f.transferTo( new File( userDir, fileName))
+            def user=CompanyUser.findById(uid)
+            if(!user){
+                rs.result=false
+                rs.msg='无此用户！'
+            }else{
+                user.img=fileName
+                if(!user.save()){
+                    rs.result=false
+                    rs.msg='保存失败！'
+                }else{
+                    rs.result=true
+                    rs.fileName = fileName
+                    rs.msg="上传成功！"
+                }
+            }
+
+
+
+
         }else{
             rs.result=false
             rs.msg="上传失败！"
