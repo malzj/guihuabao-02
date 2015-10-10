@@ -244,11 +244,18 @@ class GuihuabaoapiController {
         def id = params.id
         def userId = params.userId
         def replyId = params.replyId
-        if (replyId){
-            def rep =ReplyTask.get(replyId)
-            rep.status =1
-        }
         def taskInstance = Task.findByCidAndId(cid,id)
+//        if (replyId){
+//            def rep =ReplyTask.get(replyId)
+//            rep.status =1
+            def i
+        def allReplyInfo = ReplyTask.findAllByTasksAndCid(taskInstance, cid, [sort: "date", order: "desc"])
+            def myReplyInfo = ReplyTask.findAllByTasksAndCidAndBpuid(taskInstance, cid, userId, [sort: "date", order: "desc"])
+            for (i = 0; i < myReplyInfo.size(); i++) {
+                myReplyInfo[i].status = 1
+            }
+//        }
+
         if (userId==taskInstance.playuid){
             taskInstance.lookstatus=1
             taskInstance.save(flush: true)
@@ -261,7 +268,7 @@ class GuihuabaoapiController {
         if (taskInstance){
             rs.result =true
             rs.taskInstance = taskInstance
-            rs.replaytasks  =taskInstance.replaytasks
+            rs.replaytasks  = allReplyInfo
         }else {
             rs.result =false
             rs.msg="未找到任务"

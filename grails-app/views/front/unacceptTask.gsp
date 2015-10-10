@@ -216,7 +216,14 @@
                         var html="";
                         var html2="";
                         var playstatus
-                        var status = (data.taskInfo.status=="1")?"已完成":"未完成";
+                        var status
+                        if(data.taskInfo.lookstatus=='2'){
+                            status = (data.taskInfo.status=="1")?"已完成":"未完成";
+                        }else if(data.taskInfo.lookstatus=='1'&&data.taskInfo.status=="0"){
+                            status = "已查看";
+                        }else if(data.taskInfo.lookstatus=='0'&&data.taskInfo.status=="0"){
+                            status = "未查看";
+                        }
                         if(data.taskInfo.playstatus==1){
                             playstatus="紧急且重要";
                         }else if(data.taskInfo.playstatus==2){

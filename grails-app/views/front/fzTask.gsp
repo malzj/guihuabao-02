@@ -180,7 +180,7 @@
                             <input type="text" placeholder="一句话描述任务" class="size" name="title" /><span id="taskcreate-title" style="color: red"></span>
                         </div>
                         <div class="control-group">
-                            <textarea rows="4" placeholder="添加任务详情" class="size" name="content" ></textarea><span id="taskcreate-content" style="color: red"></span>
+                            <textarea rows="4" placeholder="添加任务详情" class="size xiugai" name="content" ></textarea><span id="taskcreate-content" style="color: red"></span>
                         </div>
                         <div class="control-group">
                             <table>
@@ -401,7 +401,14 @@
                         var html="";
                         var html2="";
                         var playstatus
-                        var status = (data.taskInfo.status=="1")?"已完成":"未完成";
+                        var status
+                        if(data.taskInfo.lookstatus=='2'){
+                            status = (data.taskInfo.status=="1")?"已完成":"未完成";
+                        }else if(data.taskInfo.lookstatus=='1'&&data.taskInfo.status=="0"){
+                            status = "已查看";
+                        }else if(data.taskInfo.lookstatus=='0'&&data.taskInfo.status=="0"){
+                            status = "未查看";
+                        }
                         if(data.taskInfo.playstatus==1){
                             playstatus="紧急且重要";
                         }else if(data.taskInfo.playstatus==2){
@@ -556,7 +563,14 @@
                     if(data.msg){
                         var playstatus
                         var pstatus
-                        var status = (data.taskInfo.status=="1")?"已完成":"未完成";
+                        var status
+                        if(data.taskInfo.lookstatus=='2'){
+                            status = (data.taskInfo.status=="1")?"已完成":"未完成";
+                        }else if(data.taskInfo.lookstatus=='1'&&data.taskInfo.status=="0"){
+                            status = "已查看";
+                        }else if(data.taskInfo.lookstatus=='0'&&data.taskInfo.status=="0"){
+                            status = "未查看";
+                        }
                         if(data.taskInfo.playstatus==1){
                             playstatus="紧急且重要";
                             pstatus="clock-red"
@@ -573,7 +587,7 @@
                         $(".popup_box .r-title-jinji>i").addClass(pstatus);
                         $(".popup_box .r-title-jinji .r-chd").html(playstatus);
                         $("input[name=title]").val(data.taskInfo.title);
-                        $("input[name=content]").val(data.taskInfo.content);
+                        $(".xiugai").val(data.taskInfo.content);
                         $("#taid").val(taskid);
                         $("#tversion").val(version);
                         $("#playstatus").val(data.taskInfo.playstatus);
@@ -603,7 +617,14 @@
                     if(data.msg){
                         var playstatus
                         var pstatus
-                        var status = (data.taskInfo.status=="1")?"已完成":"未完成";
+                        var status
+                        if(data.taskInfo.lookstatus=='2'){
+                            status = (data.taskInfo.status=="1")?"已完成":"未完成";
+                        }else if(data.taskInfo.lookstatus=='1'&&data.taskInfo.status=="0"){
+                            status = "已查看";
+                        }else if(data.taskInfo.lookstatus=='0'&&data.taskInfo.status=="0"){
+                            status = "未查看";
+                        }
                         if(data.taskInfo.playstatus==1){
                             playstatus="紧急且重要";
                             pstatus="clock-red"
@@ -620,7 +641,7 @@
                         $(".popup_box .r-title-jinji>i").addClass(pstatus);
                         $(".popup_box .r-title-jinji .r-chd").html(playstatus);
                         $("input[name=title]").val(data.taskInfo.title);
-                        $("input[name=content]").val(data.taskInfo.content);
+                        $(".xiugai").val(data.taskInfo.content);
                         $("#taid").val(taskid);
                         $("#tversion").val(version);
                         $("#playstatus").val(data.taskInfo.playstatus);
