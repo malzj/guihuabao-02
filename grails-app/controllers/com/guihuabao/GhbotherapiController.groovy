@@ -540,7 +540,7 @@ class GhbotherapiController {
         def n_week=month_week.nowweek
 
         def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(uid,cid,n_year,n_month,n_week)
-        def replyInstance = ReplyReport.findAllByZhoubaoAndCidAndBpuid(myReportInfo,cid,uid,[sort: "date",order: "desc"])
+        def replyInstance = ReplyReport.findAllByZhoubaoAndCid(myReportInfo,cid,[sort: "date",order: "desc"])
         def ureadReply = ReplyReport.findAllByZhoubaoAndCidAndBpuidAndStatus(myReportInfo,cid,uid,0)
         for(i=0;i<ureadReply.size();i++){
             ureadReply[i].status=1
@@ -564,22 +564,79 @@ class GhbotherapiController {
         rs.prevweek = dayFormat.format(calendar.getTime())
 
         if(myReportInfo){
-            if(uid==myReportInfo.uid){
+            rs.result = true
+            rs.myReportInfo = myReportInfo
+            rs.replyInfo = replyInfo
+        }else{
+            rs.year = n_year
+            rs.month = n_month
+            rs.week = n_week
+            rs.result = false
+            rs.msg = "未保存报告"
+        }
+
+        if(params.callback){
+            render "${params.callback}(${rs as JSON})"
+        }else
+            render rs as JSON
+    }
+
+    //下属报告
+    def xsReport(){
+        def rs = [:]
+        def replyInfo = []
+        def date
+        def date1
+        DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+        if(params.reportdate){
+            date = params.reportdate
+        }else{
+            date = dayFormat.format(new Date())
+        }
+        def i
+        def dluid = params.dluid
+        def uid = params.userId
+        def cid = params.cid
+        def month_week = weekJudge(date)
+        def n_year=month_week.year
+        def n_month=month_week.month
+        def n_week=month_week.nowweek
+
+        def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(uid,cid,n_year,n_month,n_week)
+        def replyInstance = ReplyReport.findAllByZhoubaoAndCid(myReportInfo,cid,[sort: "date",order: "desc"])
+        def ureadReply = ReplyReport.findAllByZhoubaoAndCidAndBpuidAndStatus(myReportInfo,cid,dluid,0)
+        for(i=0;i<ureadReply.size();i++){
+            ureadReply[i].status=1
+        }
+
+        if(replyInstance){
+            for (def n=0;n<replyInstance.size();n++){
+                def allInfo=replyInstance.get(n)
+                allInfo.img = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+                replyInfo<<allInfo
+            }
+        }
+
+        date1 = dayFormat.parse(date)
+
+        Calendar calendar = new GregorianCalendar();
+        def day = date1
+        calendar.clear();
+        calendar.setTime(day);
+        calendar.add(Calendar.DATE,-7)
+        rs.prevweek = dayFormat.format(calendar.getTime())
+
+        if(myReportInfo){
+            if(myReportInfo.submit){
                 rs.result = true
                 rs.myReportInfo = myReportInfo
                 rs.replyInfo = replyInfo
             }else{
-                if(myReportInfo.submit){
-                    rs.result = true
-                    rs.myReportInfo = myReportInfo
-                    rs.replyInfo = replyInfo
-                }else{
-                    rs.year = n_year
-                    rs.month = n_month
-                    rs.week = n_week
-                    rs.result = false
-                    rs.msg = "未保存报告"
-                }
+                rs.year = n_year
+                rs.month = n_month
+                rs.week = n_week
+                rs.result = false
+                rs.msg = "未保存报告"
             }
         }else{
             rs.year = n_year
