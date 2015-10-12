@@ -219,6 +219,10 @@ class TargetController {
             }
 
         }
+        def replys=missionInstance.replymission
+        for(def i in replys){
+            i.status=1
+        }
         def fzuid=missionInstance.target.fzuid
         rs.fzuid=fzuid
         rs.fzname=CompanyUser.findById(fzuid).name
