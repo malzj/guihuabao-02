@@ -24,5 +24,6 @@ class ReplyReport {
         date(nullable: true)
         img(nullable: true)
         reportdate(nullable: true)
+        title(nullable: true)
     }
 }

@@ -539,7 +539,7 @@ class GhbotherapiController {
         def n_week=month_week.nowweek
 
         def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(uid,cid,n_year,n_month,n_week)
-        def replyInstance = ReplyReport.findAllByZhoubaoAndCidAndBpuid(myReportInfo,cid,uid,[sort: "date",order: "desc"])
+        def replyInstance = ReplyReport.findAllByZhoubaoAndCid(myReportInfo,cid,[sort: "date",order: "desc"])
         def ureadReply = ReplyReport.findAllByZhoubaoAndCidAndBpuidAndStatus(myReportInfo,cid,uid,0)
         for(i=0;i<ureadReply.size();i++){
             ureadReply[i].status=1
@@ -593,6 +593,7 @@ class GhbotherapiController {
             date = dayFormat.format(new Date())
         }
         def i
+        def dluid = params.dluid
         def uid = params.userId
         def cid = params.cid
         def month_week = weekJudge(date)
@@ -601,8 +602,8 @@ class GhbotherapiController {
         def n_week=month_week.nowweek
 
         def myReportInfo =Zhoubao.findByUidAndCidAndYearAndMonthAndWeek(uid,cid,n_year,n_month,n_week)
-        def replyInstance = ReplyReport.findAllByZhoubaoAndCidAndBpuid(myReportInfo,cid,uid,[sort: "date",order: "desc"])
-        def ureadReply = ReplyReport.findAllByZhoubaoAndCidAndBpuidAndStatus(myReportInfo,cid,uid,0)
+        def replyInstance = ReplyReport.findAllByZhoubaoAndCid(myReportInfo,cid,[sort: "date",order: "desc"])
+        def ureadReply = ReplyReport.findAllByZhoubaoAndCidAndBpuidAndStatus(myReportInfo,cid,dluid,0)
         for(i=0;i<ureadReply.size();i++){
             ureadReply[i].status=1
         }
