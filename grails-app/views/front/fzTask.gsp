@@ -134,20 +134,20 @@
                 <g:hiddenField name="taskid" id="taskid" ></g:hiddenField>
                 <g:hiddenField name="version" id="version" ></g:hiddenField>
                 <button id="taskedi" class="rbtn btn-blue ml25 mt10" style="display: none;">修改任务</button>
-                <div class="discuss clearfix">
-                    <h4>反馈及评论</h4>
-                    <form id="form1">
-                        <g:hiddenField name="id" id="id"></g:hiddenField>
-                        <g:hiddenField name="bpuid" id="bpuid"></g:hiddenField>
-                        <g:hiddenField name="bpuname" id="bpuname"></g:hiddenField>
-                        <g:hiddenField name="puid" id="puid" value="${session.user.id}"></g:hiddenField>
-                        <g:hiddenField name="puname" id="puname" value="${session.user.name}"></g:hiddenField>
-                        <div>
-                            <textarea id="content" name="content" class="con"></textarea>
-                        </div>
-                        <a href="javascript:;" id="submit" class="rbtn btn-blue mt25">提交</a>
-                    </form>
-                </div>
+                %{--<div class="discuss clearfix">--}%
+                    %{--<h4>反馈及评论</h4>--}%
+                    %{--<form id="form1">--}%
+                        %{--<g:hiddenField name="id" id="id"></g:hiddenField>--}%
+                        %{--<g:hiddenField name="bpuid" id="bpuid"></g:hiddenField>--}%
+                        %{--<g:hiddenField name="bpuname" id="bpuname"></g:hiddenField>--}%
+                        %{--<g:hiddenField name="puid" id="puid" value="${session.user.id}"></g:hiddenField>--}%
+                        %{--<g:hiddenField name="puname" id="puname" value="${session.user.name}"></g:hiddenField>--}%
+                        %{--<div>--}%
+                            %{--<textarea id="content" name="content" class="con"></textarea>--}%
+                        %{--</div>--}%
+                        %{--<a href="javascript:;" id="submit" class="rbtn btn-blue mt25">提交</a>--}%
+                    %{--</form>--}%
+                %{--</div>--}%
                 <div id="reply_container">
                 </div>
             </div>
