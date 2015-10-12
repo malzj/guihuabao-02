@@ -548,13 +548,10 @@ class GhbotherapiController {
 
         if(replyInstance){
             for (def n=0;n<replyInstance.size();n++){
-                def info= [:]
                 def allInfo=replyInstance.get(n)
-                info.allInfo=allInfo
-                info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
-                replyInfo<<info
+                allInfo.img = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+                replyInfo<<allInfo
             }
-            println("shi de ")
         }
 
         date1 = dayFormat.parse(date)
@@ -565,16 +562,31 @@ class GhbotherapiController {
         calendar.setTime(day);
         calendar.add(Calendar.DATE,-7)
         rs.prevweek = dayFormat.format(calendar.getTime())
+
         if(myReportInfo){
-            rs.result = true
-            rs.myReportInfo = myReportInfo
-            rs.replyInfo = replyInfo
+            if(uid==myReportInfo.uid){
+                rs.result = true
+                rs.myReportInfo = myReportInfo
+                rs.replyInfo = replyInfo
+            }else{
+                if(myReportInfo.submit){
+                    rs.result = true
+                    rs.myReportInfo = myReportInfo
+                    rs.replyInfo = replyInfo
+                }else{
+                    rs.year = n_year
+                    rs.month = n_month
+                    rs.week = n_week
+                    rs.result = false
+                    rs.msg = "未保存报告"
+                }
+            }
         }else{
             rs.year = n_year
             rs.month = n_month
             rs.week = n_week
             rs.result = false
-            rs.msg = "未找到报告"
+            rs.msg = "未保存报告"
         }
 
         if(params.callback){
@@ -824,13 +836,11 @@ class GhbotherapiController {
 
         if(replyInstance){
             for (def i=0;i<replyInstance.size();i++){
-                def info= [:]
                 def allInfo=replyInstance.get(i)
-                info.allInfo=allInfo
-                info.reportdate= replyInstance.get(i).zhoubao.dateCreate
-                info.week= replyInstance.get(i).zhoubao.week
-                info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
-                replyInfo<<info
+                allInfo.reportdate= replyInstance.get(i).zhoubao.dateCreate
+                allInfo.title= replyInstance.get(i).zhoubao.week
+                allInfo.img = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+                replyInfo<<allInfo
             }
 
             rs.result = true
@@ -881,13 +891,11 @@ class GhbotherapiController {
         def replyInstance = ReplyReport.findAllByBpuidAndCid(uid, cid, [sort: "date", order: "desc"])
         if(replyInstance){
             for (def i=0;i<replyInstance.size();i++){
-                def info= [:]
                 def allInfo=replyInstance.get(i)
-                info.allInfo=allInfo
-                info.reportdate= replyInstance.get(i).zhoubao.dateCreate
-                info.week= replyInstance.get(i).zhoubao.week
-                info.plimg = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
-                replyInfo<<info
+                allInfo.reportdate= replyInstance.get(i).zhoubao.dateCreate
+                allInfo.title= replyInstance.get(i).zhoubao.week
+                allInfo.img = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
+                replyInfo<<allInfo
             }
 
             rs.result = true
