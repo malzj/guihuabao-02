@@ -562,6 +562,7 @@ class GhbotherapiController {
         calendar.setTime(day);
         calendar.add(Calendar.DATE,-7)
         rs.prevweek = dayFormat.format(calendar.getTime())
+        rs.nowweek = date
 
         if(myReportInfo){
             rs.result = true
@@ -625,7 +626,8 @@ class GhbotherapiController {
         calendar.setTime(day);
         calendar.add(Calendar.DATE,-7)
         rs.prevweek = dayFormat.format(calendar.getTime())
-
+        rs.nowweek = date
+        
         if(myReportInfo){
             if(myReportInfo.submit){
                 rs.result = true
@@ -861,13 +863,15 @@ class GhbotherapiController {
     //回复新增
     def reportReplySave(){
         def rs = [:]
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         def id = params.id
         def replyInstance = new ReplyReport(params)
         def zhoubao = Zhoubao.get(id)
         zhoubao.reply = 1
         replyInstance.zhoubao=  zhoubao
 
-        def date = new Date()
+        def date
+        date = dateFormat.format(new Date())
         replyInstance.date = date
         replyInstance.status = 0
         if(!replyInstance.save(flush: true)){

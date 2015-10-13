@@ -8,7 +8,7 @@ class ReplyReport {
     String bpuname  //被评人名字
     Integer status  //0未读1已读
     String content  //评论内容
-    Date date       //评论时间
+    String date       //评论时间
     String img      //用户头像
     String title    //周报标题（第几周）
     Date reportdate //周报创建日期
