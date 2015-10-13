@@ -219,7 +219,8 @@ class TargetController {
             }
 
         }
-        def replys=missionInstance.replymission
+//        def replys=missionInstance.replymission
+        def replys=ReplyMission.findAllByBpuidAndMission(uid,missionInstance)
         for(def i in replys){
             i.status=1
         }
@@ -447,7 +448,8 @@ class TargetController {
                 for (def i=0;i<unreadcomment.size();i++){
                     def info= [:]
                     def allInfo=unreadcomment.get(i)
-
+                    SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                    allInfo.date=time.format(allInfo.date)
                     info.allInfo=allInfo
                     info.plimg = CompanyUser.findById(allInfo.puid).img
                     replyInfo<<info
@@ -522,6 +524,23 @@ class TargetController {
                 rs.result=false
                 rs.msg='获取数据失败！'
             }else{
+                def targetInstance=missionInstance.target
+                def missionList=targetInstance.mission
+                def size=missionList.size()
+                def sum=0
+                def sum1=0
+                for (def m in missionList) {
+                    sum1+=m.percent.toInteger()
+                    if (m.hasvisited =='2') {
+
+                        sum += 1
+                    }
+                }
+
+                if (sum == size&&sum1==100) {
+                    targetInstance.isedit = 1
+                    targetInstance.save()
+                }
                 rs.result=true
                 rs.msg='任务已接受！'
             }
