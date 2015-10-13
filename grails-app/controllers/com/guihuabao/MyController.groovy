@@ -241,6 +241,162 @@ class MyController {
         } else
             render rs as JSON
     }
+    def uReplyMissionRemind(){
+        def rs=[:]
+        def uid=params.uid
+        def cid=params.cid
+        params.max = 5
+        params<<[sort:"date",order: "desc"]
+        def offset = 0;
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
+        }
+        params<<[offset:offset]
+        def uReplyMissionsize=ReplyMission.countByBpuidAndCidAndStatus(uid,cid,0)
+        def offse=params.offset.toInteger()
+        if(uReplyMissionsize>offse) {
+            def uReplyMissions=ReplyMission.findAllByBpuidAndCidAndStatus(uid,cid,0,params)
+            if(uReplyMissions){
+                rs.result=true
+                rs.uReplyMissions=uReplyMissions
+            }else{
+                rs.result = false
+                rs.msg = "已加载所有数据！"
+            }
+        }else{
+            rs.result = false
+            rs.msg = "已加载所有数据！"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def uReplyReportRemind(){
+        def rs=[:]
+        def uid=params.uid
+        def cid=params.cid
+        params.max = 5
+        params<<[sort:"date",order: "desc"]
+        def offset = 0;
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
+        }
+        params<<[offset:offset]
+        def uReplyReportsize=ReplyReport.countByBpuidAndCidAndStatus(uid,cid,0)
+        def offse=params.offset.toInteger()
+        if(uReplyReportsize>offse) {
+            def uReplyReports=ReplyReport.findAllByBpuidAndCidAndStatus(uid,cid,0,params)
+            if(uReplyReports){
+                rs.result=true
+                rs.uReplyReports=uReplyReports
+            }else{
+                rs.result = false
+                rs.msg = "已加载所有数据！"
+            }
+        }else{
+            rs.result = false
+            rs.msg = "已加载所有数据！"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def uMissionRemind(){
+        def rs=[:]
+        def uid=params.uid
+
+        params.max = 5
+        params<<[sort:"dateCreate",order: "desc"]
+        def offset = 0;
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
+        }
+        params<<[offset:offset]
+        def uMissionsize=Mission.countByPlayuidAndHasvisited(uid,0)
+        def offse=params.offset.toInteger()
+        if(uMissionsize>offse) {
+            def uMissions=Mission.findAllByPlayuidAndHasvisited(uid,0,params)
+            if(uMissions){
+                rs.result=true
+                rs.uMissions=uMissions
+            }else{
+                rs.result = false
+                rs.msg = "已加载所有数据！"
+            }
+        }else{
+            rs.result = false
+            rs.msg = "已加载所有数据！"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def hasfinishedTargetRemind(){
+        def rs=[:]
+        def uid=params.uid
+
+        params.max = 5
+        params<<[sort:"dateCreate",order: "desc"]
+        def offset = 0;
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
+        }
+        params<<[offset:offset]
+        def hasfinishedTargetsize=Target.countByFzuidAndStatusAndIscheck(uid,1,0)
+        def offse=params.offset.toInteger()
+        if(hasfinishedTargetsize>offse) {
+            def hasfinishedTargets=Target.findAllByFzuidAndStatusAndIscheck(uid,1,0,params)
+            if(hasfinishedTargets){
+                rs.result=true
+                rs.hasfinishedTargets=hasfinishedTargets
+            }else{
+                rs.result = false
+                rs.msg = "已加载所有数据！"
+            }
+        }else{
+            rs.result = false
+            rs.msg = "已加载所有数据！"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def chaosongRemind(){
+        def rs=[:]
+        def uid=params.uid
+        def cid=params.cid
+        params.max = 5
+        params<<[sort:"date",order: "desc"]
+        def offset = 0;
+        if (params.offset.toInteger()>0){
+            offset =params.offset.toInteger()
+        }
+        params<<[offset:offset]
+        def chaosongsize=Apply.countByCopyuidAndCidAndApplystatusAndCopyremind(uid,cid,1,1)
+        def offse=params.offset.toInteger()
+        if(chaosongsize>offse) {
+            def chaosongs=Apply.findAllByCopyuidAndCidAndApplystatusAndCopyremind(uid,cid,1,1,params)
+            if(chaosongs){
+                rs.result=true
+                rs.chaosongs=chaosongs
+            }else{
+                rs.result = false
+                rs.msg = "已加载所有数据！"
+            }
+        }else{
+            rs.result = false
+            rs.msg = "已加载所有数据！"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+
     def funIntroduction(){
         def rs=[:]
         def funIntroduction=FunIntroduction.findById(1)
@@ -371,6 +527,17 @@ class MyController {
         def unreadtasklistsize=Task.countByCidAndPlayuidAndLookstatus(cid, uid, 0)
         sum+=unreadtasklistsize
         def applylistsize1=Apply.countByCidAndApprovaluidAndApplystatus(cid, uid,0)
+        sum+=applylistsize1
+        def chaosongsize=Apply.countByCopyuidAndCidAndApplystatusAndCopyremind(uid,cid,1,1)
+        sum+=chaosongsize
+        def hasfinishedTargetsize=Target.countByFzuidAndStatusAndIscheck(uid,1,0)
+        sum+=hasfinishedTargetsize
+        def uMissionsize=Mission.countByPlayuidAndHasvisited(uid,0)
+        sum+=uMissionsize
+        def uReplyMissionsize=ReplyMission.countByBpuidAndCidAndStatus(uid,cid,0)
+        sum+=uReplyMissionsize
+        def uReplyReportsize=ReplyReport.countByBpuidAndCidAndStatus(uid,cid,0)
+        sum+=uReplyReportsize
         if(sum>0){
             rs.sign=1
         }else{
@@ -384,6 +551,11 @@ class MyController {
         rs.applylistsize=applylistsize
         rs.unreadtasklistsize=unreadtasklistsize
         rs.applylistsize1=applylistsize1
+        rs.chaosongsize=chaosongsize
+        rs.hasfinishedTargetsize=hasfinishedTargetsize
+        rs.uMissionsize=uMissionsize
+        rs.uReplyMissionsize=uReplyMissionsize
+        rs.uReplyReportsize=uReplyReportsize
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else

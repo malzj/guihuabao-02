@@ -106,6 +106,9 @@ class TargetController {
             rs.result=false
             rs.msg="获取数据失败！"
         }else{
+            if(targetInstance.ischeck=='0'&&targetInstance.status=='1'){
+                targetInstance.ischeck=1
+            }
             rs.result=true
             rs.target=targetInstance
             def missionlist=targetInstance.mission
@@ -448,8 +451,7 @@ class TargetController {
                 for (def i=0;i<unreadcomment.size();i++){
                     def info= [:]
                     def allInfo=unreadcomment.get(i)
-                    SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                    allInfo.date=time.format(allInfo.date)
+
                     info.allInfo=allInfo
                     info.plimg = CompanyUser.findById(allInfo.puid).img
                     replyInfo<<info
