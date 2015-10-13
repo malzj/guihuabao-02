@@ -448,8 +448,7 @@ class TargetController {
                 for (def i=0;i<unreadcomment.size();i++){
                     def info= [:]
                     def allInfo=unreadcomment.get(i)
-                    SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                    allInfo.date=time.format(allInfo.date)
+
                     info.allInfo=allInfo
                     info.plimg = CompanyUser.findById(allInfo.puid).img
                     replyInfo<<info
