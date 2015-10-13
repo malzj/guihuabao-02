@@ -868,7 +868,6 @@ class GhbotherapiController {
         replyInstance.zhoubao=  zhoubao
 
         def date = new Date()
-        replyInstance.reportuid = zhoubao.uid
         replyInstance.date = date
         replyInstance.status = 0
         if(!replyInstance.save(flush: true)){
@@ -895,6 +894,7 @@ class GhbotherapiController {
         if(replyInstance){
             for (def i=0;i<replyInstance.size();i++){
                 def allInfo=replyInstance.get(i)
+                allInfo.reportuid=replyInstance.get(i).zhoubao.uid
                 allInfo.reportdate= replyInstance.get(i).zhoubao.dateCreate
                 allInfo.title= replyInstance.get(i).zhoubao.week
                 allInfo.img = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
@@ -950,6 +950,7 @@ class GhbotherapiController {
         if(replyInstance){
             for (def i=0;i<replyInstance.size();i++){
                 def allInfo=replyInstance.get(i)
+                allInfo.reportuid=replyInstance.get(i).zhoubao.uid
                 allInfo.reportdate= replyInstance.get(i).zhoubao.dateCreate
                 allInfo.title= replyInstance.get(i).zhoubao.week
                 allInfo.img = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
