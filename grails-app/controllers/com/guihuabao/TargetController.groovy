@@ -220,7 +220,7 @@ class TargetController {
 
         }
 //        def replys=missionInstance.replymission
-        def replys=ReplyMission.findByBpuidAndMission(uid,missionInstance)
+        def replys=ReplyMission.findAllByBpuidAndMission(uid,missionInstance)
         for(def i in replys){
             i.status=1
         }
