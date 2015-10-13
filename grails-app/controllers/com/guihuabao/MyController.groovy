@@ -490,7 +490,7 @@ class MyController {
         def sum=0
         def etime = time.format(calendar.getTime())
         def endedtargetlistsize=Target.countByCidAndFzuidAndStatusAndEtimeGreaterThanEqualsAndEtimeLessThanEquals(cid, uid, 0, date, etime)
-        sum+=endedtargetlistsize
+//        sum+=endedtargetlistsize
 
 
         def nowdate=new Date()
@@ -517,11 +517,11 @@ class MyController {
         def nowday = timearr1[0]
         def nowtime = timearr1[1]
         def endedtasklistsize=Task.countByCidAndPlayuidAndOvertimeAndOverhourLessThanEqualsAndOverhourGreaterThanEqualsAndLookstatusAndStatus(cid,uid,nowday,endtime,nowtime,2,0)
-        sum+=endedtasklistsize
+//        sum+=endedtasklistsize
         def unreadtaskreplylist=ReplyTask.countByBpuidAndCidAndStatus(uid,cid,0)
         sum+=unreadtaskreplylist
         def hasfinishedtasklistsize=Task.countByCidAndFzuidAndStatusAndRemindstatus(cid, uid, 1,1)
-        sum+=hasfinishedtasklistsize
+//        sum+=hasfinishedtasklistsize
         def applylistsize=Apply.countByCidAndApplyuidAndRemindstatus(cid, uid,1)
         sum+=applylistsize
         def unreadtasklistsize=Task.countByCidAndPlayuidAndLookstatus(cid, uid, 0)
@@ -533,7 +533,7 @@ class MyController {
         def hasfinishedTargetsize=Target.countByFzuidAndStatusAndIscheck(uid,1,0)
         sum+=hasfinishedTargetsize
         def uMissionsize=Mission.countByPlayuidAndHasvisited(uid,0)
-        sum+=uMissionsize
+//        sum+=uMissionsize
         def uReplyMissionsize=ReplyMission.countByBpuidAndCidAndStatus(uid,cid,0)
         sum+=uReplyMissionsize
         def uReplyReportsize=ReplyReport.countByBpuidAndCidAndStatus(uid,cid,0)
