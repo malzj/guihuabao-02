@@ -38,7 +38,7 @@
     <!--sidebar start-->
     <div class="row">
         <div class="col-xs-2" style="height:100%"></div>
-        <g:render template="siderbar" />
+    <g:render template="set_siderbar" />
         <!--sidebar end-->
         <!--main content start-->
         <section id="main-content" class="col-xs-10" style="padding-left: 0;">
