@@ -40,11 +40,11 @@
             <%def newapplycount = com.guihuabao.Apply.countByApprovaluidAndCidAndApplystatussAndApplystatus(session.user.id,session.company.id,1,0)%>
             <%def applycount = com.guihuabao.Apply.countByApplyuidAndCidAndRemindstatus(session.user.id,session.company.id,1)%>
             <%def taskreplycount = com.guihuabao.ReplyTask.countByBpuidAndCidAndStatus(session.user.id,session.company.id,0)%>
-            <%def utargetcount = com.guihuabao.ReplyMission.countByBpunameAndStatus(session.user.name,0)%><!--未读目标回复提醒-111111111111111111111111->
+            <%def utargetcount = com.guihuabao.ReplyMission.countByBpunameAndStatus(session.user.name,0)%><!--未读目标回复提醒-->
             %{--<%def targettaskcount = com.guihuabao.Target.countByBpunameAndStatus(session.user.name,1,0)%><!--目标任务完成提醒-->--}%
-            <%def finishtargetcount = com.guihuabao.Target.countByCidAndFzuidAndStatusAndIscheck(session.company.id,session.user.id,1,0)%><!--目标完成提醒-1111111111111->
-            <%def cytargetcount = com.guihuabao.Mission.countByPlaynameAndHasvisitedAndIssubmit(session.user.name, 0,1)%><!--未读目标任务提醒-111111111111111->
-            <%def copytomecount = com.guihuabao.Apply.countByCopyuidAndCidAndApplystatusAndCopyremind(session.user.id,session.company.id,1,1)%><!--抄送提醒-1111111111->
+            <%def finishtargetcount = com.guihuabao.Target.countByCidAndFzuidAndStatusAndIscheck(session.company.id,session.user.id,1,0)%><!--目标完成提醒-->
+            <%def cytargetcount = com.guihuabao.Mission.countByPlaynameAndHasvisitedAndIssubmit(session.user.name, 0,1)%><!--未读目标任务提醒-->
+            <%def copytomecount = com.guihuabao.Apply.countByCopyuidAndCidAndApplystatusAndCopyremind(session.user.id,session.company.id,1,1)%><!--抄送提醒-->
             <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount+taskreplycount+utargetcount+finishtargetcount+cytargetcount+copytomecount%>
             <ul>
                 <li class="msg">
