@@ -868,6 +868,7 @@ class GhbotherapiController {
         replyInstance.zhoubao=  zhoubao
 
         def date = new Date()
+        replyInstance.reportuid = zhoubao.uid
         replyInstance.date = date
         replyInstance.status = 0
         if(!replyInstance.save(flush: true)){
