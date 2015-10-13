@@ -220,7 +220,7 @@ class GuihuabaoapiController {
         def x = fztaskSize
         def offse=params.offset.toInteger()
         if (x>offse){
-            def cytaskList = Task.findAllByPlayuidAndCid(userId,cid,params)
+            def cytaskList = Task.findAllByPlayuidAndCidAndLookstatus(userId,cid,2,params)
             if (cytaskList){
                 rs.result =  true
                 rs.cytaskList=cytaskList
@@ -436,6 +436,10 @@ class GuihuabaoapiController {
 
         def replyTaskInstance = new ReplyTask(params)
         replyTaskInstance.tasks=taskInstance
+        def current = new Date()
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        replyTaskInstance.date = time.format(current)
+
         if (!replyTaskInstance.save(flush: true)) {
             rs.result =false
             rs.msg = "没有回复成功"
