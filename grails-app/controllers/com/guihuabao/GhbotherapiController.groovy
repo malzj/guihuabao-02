@@ -822,13 +822,13 @@ class GhbotherapiController {
             }
         }
 
-        if (myReportInfo.save(flush: true)) {
-            rs.result = true
-            rs.msg = "周报保存成功"
-        }else{
-            rs.result = false
-            rs.msg = "周报保存失败"
-        }
+//        if (myReportInfo.save(flush: true)) {
+//            rs.result = true
+//            rs.msg = "周报保存成功"
+//        }else{
+//            rs.result = false
+//            rs.msg = "周报保存失败"
+//        }
 
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"

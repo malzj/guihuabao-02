@@ -281,6 +281,31 @@ class GuihuabaoapiController {
         } else
             render rs as JSON
     }
+
+//    任务更新
+    def taskInstanceUpdate(){
+        def rs =[:]
+        def id = params.id
+        def a = params
+        def taskInfoInstance = Task.get(id)
+        taskInfoInstance.properties = params
+        taskInfoInstance.remindstatus = 0
+        taskInfoInstance.dateCreate = new Date()
+
+        if (!taskInfoInstance.save(flush: true)) {
+            rs.result=false
+            rs.msg = "任务编辑失败！"
+        }else{
+            rs.result = true
+            rs.msg = "任务编辑成功！"
+            rs.taskInfo = taskInfoInstance
+        }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
     //接受任务
     def taskInstanceupdateLookStaust(){
         def rs =[:]
