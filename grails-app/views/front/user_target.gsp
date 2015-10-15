@@ -251,6 +251,7 @@
         <div class="clearfix" style="margin:40px;">
             <input type="submit" value="提交" class="f-r button"  id="submit"  />
         </div>
+
     </div>
 </div>
 <!--目标分解 end-->
@@ -390,7 +391,7 @@
                     </tr>
                     <tr>
                         <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;line-height: 30px;">起止日</th>
-                        <td width="75%"> <input id="startdate_mission" name="begintime" value="" readonly="" class="nr" type="text" style="width:120px;" title="该字段不能为空！">-<input id="enddate_mission" name="overtime" value="" readonly="" class="nr" type="text" style="width:163px;" title="该字段不能为空！"></td>
+                        <td width="75%"> <input id="startdate_mission" name="begintime" value="" readonly="" class="nr" type="text" style="width:120px;" title="该字段不能为空且不能超过任务结束时间和目标结束时间！">-<input id="enddate_mission" name="overtime" value="" readonly="" class="nr" type="text" style="width:163px;" title="该字段不能为空且不能超过目标结束时间！"></td>
 
                     </tr>
                     <tr>
@@ -421,7 +422,7 @@
                     </tr>
                 </table>
             </li>
-
+            <span style="display:-none" id="t_overtime"></span>
             <li class="clearfix">
                 <button type="submit" class="f-r" style="width:82px;height:34px;border:none;background:#03a9f4;color:#fff;" id="save_mission">确认</button>
             </li>
@@ -491,7 +492,7 @@
                         </tr>
                         <tr>
                             <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal;line-height: 30px;">起止日</th>
-                            <td width="75%" style="line-height:36px;"> <input id="startdate_edit" name="begintime" value="" readonly="" type="text" style="width:120px;" title="该字段不能为空！">—<input id="enddate_edit" name="overtime" value="" readonly="" type="text" style="width:163px;" title="该字段不能为空！"></td>
+                            <td width="75%" style="line-height:36px;"> <input id="startdate_edit" name="begintime" value="" readonly="" type="text" style="width:120px;" title="该字段不能为空且不能超过任务结束时间和目标结束时间！">—<input id="enddate_edit" name="overtime" value="" readonly="" type="text" style="width:163px;" title="该字段不能为空且不能超过目标结束时间！"></td>
 
                         </tr>
                         <tr>
@@ -525,6 +526,7 @@
                 </li>
 
         </ul>
+        <span style="display:-none;" id="t_overtime_edit"></span>
     </div>
 </div>
 <!--编辑任务 end-->
@@ -829,6 +831,7 @@
                             $('#mission_percent_edit').val(mission.percent);
                             $('#mission_status_edit').val(s);
                             $('#mid').val(mission.id);
+                            $('#t_overtime_edit').html(target.etime);
                             $('#mission_edit_detail').css('display', 'block');
                             p+=mission.percent;
 
@@ -868,13 +871,13 @@
                     }else{
                         $('.zhxr').next().css('border','none');
                     }
-                    if($('#startdate_edit').val()==''){
+                    if($('#startdate_edit').val()==''||$('#startdate_edit').val()>$('#enddate_edit').val()||$('#startdate_edit').val()>$('#t_overtime_edit').html()){
                         $('#startdate_edit').css('border-color','red');
                         return false;
                     }else{
                         $('#startdate_edit').css('border-color','#d2d2d2');
                     }
-                    if($('#enddate_edit').val()==''||$('#enddate_edit').val()<=$('#startdate_edit').val()){
+                    if($('#enddate_edit').val()==''||$('#enddate_edit').val()<=$('#startdate_edit').val()||$('#enddate_edit').val()>$('#t_overtime_edit').html()){
                         $('#enddate_edit').css('border-color','red');
                         return false;
                     }else{
@@ -1210,14 +1213,30 @@
                 $('.nr').val('');
                 $('.con').empty();
                 $('#target_id').val($('#var_all').html());
-                $("#newmissiondetail").css('display', 'block');
-            })
+                var target_id= $('#target_id').val();
+                $.ajax({
+                    url: '${webRequest.baseUrl}/front/tshow',
+                    type: 'post',
+                    async: 'false',
+                    dataType: 'json',
+                    data: {target_id: target_id},
+                    success: function (data) {
+                        $("#newmissiondetail").css('display', 'block');
+                        $('#t_overtime').html(data.target.etime)
+                    },
+                    error: function () {
+                        alert('获取数据失败！');
+                    }
+                })
+                }
+            )
 
 
             //新建任务提交
                 $("#save_mission").click(function(){
                     var r=parseInt($('#r_per').html());
                     var p=parseInt($('#newmission_percent').val());
+                    var t_overtime=$('#t_overtime').html();
                     var z= /^[0-9]*$/;
                     if($('#newmission_title').val()==''){
                         $('#newmission_title').css('border-color','red');
@@ -1237,13 +1256,13 @@
                     }else{
                         $('.zhxr').next().css('border','none');
                     }
-                    if($('#startdate_mission').val()==''){
+                    if($('#startdate_mission').val()==''||$('#startdate_mission').val()>$('#enddate_mission').val()||$('#startdate_mission').val()>$('#t_overtime').html()){
                         $('#startdate_mission').css('border-color','red');
                         return false;
                     }else{
                         $('#startdate_mission').css('border-color','#d2d2d2');
                     }
-                    if($('#enddate_mission').val()==''||$('#enddate_mission').val()<=$('#startdate_mission').val()){
+                    if($('#enddate_mission').val()==''||$('#enddate_mission').val()<=$('#startdate_mission').val()||$('#enddate_mission').val()>$('#t_overtime').html()){
                         $('#enddate_mission').css('border-color','red');
                         return false;
                     }else{
