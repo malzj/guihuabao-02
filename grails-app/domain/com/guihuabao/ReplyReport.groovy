@@ -11,6 +11,7 @@ class ReplyReport {
     Date date       //评论时间
     String img      //用户头像
     String title    //周报标题（第几周）
+    Integer reportuid //周报用户ID
     Date reportdate //周报创建日期
     static belongsTo = [zhoubao: Zhoubao]
     static constraints = {
@@ -25,5 +26,6 @@ class ReplyReport {
         img(nullable: true)
         reportdate(nullable: true)
         title(nullable: true)
+        reportuid(nullable: true)
     }
 }

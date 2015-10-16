@@ -106,6 +106,9 @@ class TargetController {
             rs.result=false
             rs.msg="获取数据失败！"
         }else{
+            if(targetInstance.ischeck=='0'&&targetInstance.status=='1'){
+                targetInstance.ischeck=1
+            }
             rs.result=true
             rs.target=targetInstance
             def missionlist=targetInstance.mission
@@ -219,7 +222,8 @@ class TargetController {
             }
 
         }
-        def replys=missionInstance.replymission
+//        def replys=missionInstance.replymission
+        def replys=ReplyMission.findAllByBpuidAndMission(uid,missionInstance)
         for(def i in replys){
             i.status=1
         }
@@ -522,6 +526,23 @@ class TargetController {
                 rs.result=false
                 rs.msg='获取数据失败！'
             }else{
+                def targetInstance=missionInstance.target
+                def missionList=targetInstance.mission
+                def size=missionList.size()
+                def sum=0
+                def sum1=0
+                for (def m in missionList) {
+                    sum1+=m.percent.toInteger()
+                    if (m.hasvisited =='2') {
+
+                        sum += 1
+                    }
+                }
+
+                if (sum == size&&sum1==100) {
+                    targetInstance.isedit = 1
+                    targetInstance.save()
+                }
                 rs.result=true
                 rs.msg='任务已接受！'
             }
