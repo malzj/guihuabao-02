@@ -286,7 +286,6 @@ class GuihuabaoapiController {
     def taskInstanceUpdate(){
         def rs =[:]
         def id = params.id
-        def a = params
         def taskInfoInstance = Task.get(id)
         taskInfoInstance.properties = params
         taskInfoInstance.remindstatus = 0
