@@ -308,6 +308,7 @@ class GhbotherapiController {
                 applyInstance.applystatus = 1
                 applyInstance.status = "已通过"
                 applyInstance.remindstatus = 1
+                applyInstance.copyremind = 1
             } else if(applystatus=="2"){
                 applyInstance.applystatus = 2
                 applyInstance.status = "未通过"
