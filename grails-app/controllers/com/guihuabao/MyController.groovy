@@ -414,7 +414,7 @@ class MyController {
     }
     def inform(){
         def rs=[:]
-        def inform=Inform.findById(1)
+        def inform=Inform.list()
         if(!inform){
             rs.result=false
             rs.msg="获取数据失败！"
