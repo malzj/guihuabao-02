@@ -977,7 +977,7 @@ class GhbotherapiController {
         def rs = [:]
 
         params.max = 8
-        params<<[sort: 'dateCreate',order: 'desc']
+        params<<[sort: 'id',order: 'asc']
         def offset = 0
         def offse = params.offset.toInteger()
         if(offse>0){
@@ -1114,7 +1114,7 @@ class GhbotherapiController {
         def rs = [:]
 
         params.max = 8
-        params<<[sort: 'dateCreate',order: 'desc']
+        params<<[sort: 'id',order: 'asc']
         def offset = 0
         def offse = params.offset.toInteger()
         if(offse>0){
@@ -1181,7 +1181,7 @@ class GhbotherapiController {
         def rs = [:]
 
         params.max = 8
-        params<<[sort: 'dateCreate',order: 'desc']
+        params<<[sort: 'id',order: 'asc']
         def offset = 0
         def offse = params.offset.toInteger()
         if(offse>0){
