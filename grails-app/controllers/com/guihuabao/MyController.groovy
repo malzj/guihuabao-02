@@ -414,13 +414,30 @@ class MyController {
     }
     def inform(){
         def rs=[:]
-        def inform=Inform.findById(1)
+        def inform=Inform.list()
         if(!inform){
             rs.result=false
             rs.msg="获取数据失败！"
         }else{
             rs.result=true
             rs.inform=inform
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    def informInstance(){
+        def rs=[:]
+        def id=params.id
+        def informInstance=Inform.get(id)
+        if(!informInstance){
+            rs.result=false
+            rs.msg='获取数据失败！'
+
+        }else{
+            rs.result=true
+            rs.informInstance=informInstance
         }
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"

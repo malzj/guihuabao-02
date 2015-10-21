@@ -129,7 +129,7 @@ class GhbotherapiController {
         }
         applyInstance.status="未审核"
 //        Date currentTime = new Date();
-        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd")
+        SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         def nowdate=new Date()
         def time1 = time.format(nowdate).toString()
 //        def date = time.format(nowdate)
@@ -222,8 +222,15 @@ class GhbotherapiController {
     def applyShow(){
         def rs = [:]
         def id = params.id
+        def userId = params.userId
         def companyId = params.cid
         def applyInctance = Apply.findByIdAndCid(id,companyId)
+        if(userId==applyInctance.applyuid&&applyInctance.applystatus!=0){
+            applyInctance.remindstatus = 0
+        }else if(userId == applyInctance.copyuid&&applyInctance.applystatus!=0){
+            applyInctance.copyremind = 0
+        }
+
         if(applyInctance){
             rs.result = true
             rs.applyInctance = applyInctance
@@ -301,6 +308,7 @@ class GhbotherapiController {
                 applyInstance.applystatus = 1
                 applyInstance.status = "已通过"
                 applyInstance.remindstatus = 1
+                applyInstance.copyremind = 1
             } else if(applystatus=="2"){
                 applyInstance.applystatus = 2
                 applyInstance.status = "未通过"
