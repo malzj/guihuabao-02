@@ -73,15 +73,15 @@
 			<p>我们会同样保持最快速的更新，让你无论何时何地都可以完整的使用规划宝</p>
 			<div class="clearfix download">
 				<div id="buttons" class="fl">
-					<a>
+					<a href="http://182.92.5.162:8081/guihubao.apk" style="text-decoration:none;">
 					<div id="android" class="button"><img src='${resource(dir: 'index/img/', file: 'download.png')}' align="download" />Android版</div>
 					</a>
-					<a>
+					<a style="text-decoration:none;">
 					<div id="apple" class="button"><img src='${resource(dir: 'index/img/', file: 'download.png')}' align="download" />iphone版</div>
 					</a>
 				</div>
 				<div id="erweima" class="fr">
-					<img src="${resource(dir: 'index/img/', file: 'erweima.png')}"  alt="二维码"/>
+					<img width="140" height="140" src="${resource(dir: 'index/img/', file: 'erweima.png')}"  alt="二维码"/>
 					<p>扫一扫，直接下载到手机</p>
 				</div>
 			</div>
