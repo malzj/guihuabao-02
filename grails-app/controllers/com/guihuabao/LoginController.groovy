@@ -1522,40 +1522,70 @@ class LoginController {
         [appsInstanceList: Apps.list(params), appsInstanceTotal: Apps.count(),buyappInstance: buyappInstance,params: [cid: cid]]
     }
     //购买应用保存
-    def buyappSave(Long id){
+    def buyappSave(){
+        def rs=[:]
+        def id=params.aid
         def appInstance = Apps.get(id)
         def cid = params.buycid
         def haveone = CompanyApps.findByAppAndCid(appInstance,cid)
         if(haveone){
-            redirect(action: "buy_app", params: [cid: params.buycid])
-            return
-        }
-        def companyappInstance = new CompanyApps(params)
+            rs.result=false
+            rs.msg="已购买该应用！"
+        }else {
+            def companyappInstance = new CompanyApps(params)
 
-        companyappInstance.app = appInstance
-        if (companyappInstance) {
-            companyappInstance.cid = params.buycid
-            if (!params.appname) {
-                companyappInstance.name = appInstance.appName
-            } else {
-                companyappInstance.name = params.appname
-            }
-            if (!params.appImg) {
-                companyappInstance.img = appInstance.appImg
-            } else {
-                companyappInstance.img = params.appImg
-            }
+            companyappInstance.app = appInstance
+            if (companyappInstance) {
+                companyappInstance.cid = params.buycid
+                if (!params.appname) {
+                    companyappInstance.name = appInstance.appName
+                } else {
+                    companyappInstance.name = params.appname
+                }
+                if (!params.appImg) {
+                    companyappInstance.img = appInstance.appImg
+                } else {
+                    companyappInstance.img = params.appImg
+                }
 //            companyappInstance.appurl = appInstance.appurl
-            companyappInstance.buydate = new Date()
-            companyappInstance.enddate = params.enddate
+                companyappInstance.buydate = new Date()
+                companyappInstance.enddate = params.enddate
+            }
+
+            if (!companyappInstance.save(flush: true)) {
+                rs.result=false
+                rs.msg="不能买该该应用！"
+            }else{
+                rs.result=true
+                rs.msg="买该应用成功！"
+            }
         }
 
-        if (!companyappInstance.save(flush: true)) {
-            render(view: "buy_app", params: [cid: params.buycid])
-            return
-        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+//    删除购买应用
+    def buyappDelete(){
+        def rs=[:]
+        def id=params.aid
+        def appInstance = CompanyApps.get(id)
+        if(appInstance) {
 
-        flash.message = message(code: 'default.created.message', args: [message(code: 'apps.label', default: 'Apps'), appInstance.id])
-        redirect(action: "buy_app", params: [cid: params.buycid])
+            try {
+                appInstance.delete(flush: true)
+                rs.result = true
+                rs.msg = '删除成功！'
+            }
+            catch (DataIntegrityViolationException e) {
+                rs.result = false
+                rs.msg = '删除失败！'
+            }
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
 }
