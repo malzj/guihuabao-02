@@ -29,6 +29,7 @@
 
     <link href="${resource(dir: 'css', file: 'context.standalone.css')}" rel="stylesheet">
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">
+
 </head>
 
 <body>
@@ -57,7 +58,10 @@
                             <li>
                                 <g:link action="user_target">
                                     <img src="${resource(dir: 'img', file: 'mb_bg.png')}" />
-                                    <span>${targetInfo.percent}%</span>
+                                    %{--<span>${targetInfo.percent}%</span>--}%
+                                    <div class="bio-chart" style="position: absolute;top: 20%; left: 28%;">
+                                        <input class="knob" data-width="100" data-height="100" data-displayPrevious=true  data-thickness=".05" value="${targetInfo.percent}" data-readonly="true" data-fgColor="#e06b7d" data-bgColor="#e8e8e8">
+                                    </div>
                                     <p>${targetInfo.title}</p>
                                 </g:link>
                             </li>
@@ -348,8 +352,14 @@
 <script src="${resource(dir: 'js', file: 'advanced-form-components.js')}"></script>
 
 <!--百分比图-->
-<script src="${resource(dir: 'assets/chart-master', file: 'Chart.js')}"></script>
-<!--    <script src="js/all-chartjs.js"></script>-->
+<script src="${resource(dir: 'assets/jquery-knob/js', file: 'jquery.knob.js')}"></script>
+<script>
+
+    //knob
+    $(".knob").knob();
+
+</script>
+
 <!--详情滑动框-->
 <script src="${resource(dir: 'js', file: 'slidelefthideshow.js')}"></script>
 

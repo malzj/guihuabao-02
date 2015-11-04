@@ -20,7 +20,7 @@
         <g:if test="${session.user.pid==1||session.user.pid==2}">
         <li>
 
-            <g:link controller="front" action="xsTarget">
+            <g:link controller="front" action="targetSubordinate">
                 <span>下属目标</span>
                 %{--<span class="dcjq-icon"></span>--}%
             </g:link>

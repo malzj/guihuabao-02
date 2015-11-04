@@ -38,7 +38,7 @@
             </li>
             <g:if test="${session.user.pid==1||session.user.pid==2}">
             <li>
-                <g:link action="xsTask" >
+                <g:link action="taskSubordinate" >
                     <span>下属任务</span>
                 </g:link>
             </li>

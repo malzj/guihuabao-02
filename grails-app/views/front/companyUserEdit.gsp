@@ -26,6 +26,9 @@
     <link href="${resource(dir: 'css', file: 'style-responsive.css')}" rel="stylesheet">
 
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">
+
+    <!--编辑器样式-->
+    <link rel="stylesheet" type="text/css" href="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'bootstrap-wysihtml5.css')}" />
 </head>
 
 <body>
@@ -59,16 +62,6 @@
         </section>
         <!--main content end-->
 
-        <!--footer start-->
-        %{--<footer class="site-footer">--}%
-        %{--<div class="text-center">--}%
-        %{--2013 &copy; FlatLab by VectorLab.--}%
-        %{--<a href="index.html#" class="go-top">--}%
-        %{--<i class="fa fa-angle-up"></i>--}%
-        %{--</a>--}%
-        %{--</div>--}%
-        %{--</footer>--}%
-        <!--footer end-->
     </section>
 
     <!-- js placed at the end of the document so the pages load faster -->
@@ -77,45 +70,28 @@
     <script class="include" type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dcjqaccordion.2.7.js')}"></script>
     <script src="${resource(dir: 'js', file: 'jquery.scrollTo.min.js')}"></script>
     <script src="${resource(dir: 'js', file: 'jquery.nicescroll.js')}" type="text/javascript"></script>
-    <script src="${resource(dir: 'js', file: 'jquery.sparkline.js')}" type="text/javascript"></script>
-    <script src="${resource(dir: 'assets/jquery-easy-pie-chart/', file: 'jquery.easy-pie-chart.js')}"></script>
-    <script src="${resource(dir: 'js', file: 'owl.carousel.js')}" ></script>
-    <script src="${resource(dir: 'js', file: 'jquery.customSelect.min.js')}" ></script>
-    <script src="${resource(dir: 'js', file: 'respond.min.js')}" ></script>
+    %{--<script src="${resource(dir: 'js', file: 'jquery.sparkline.js')}" type="text/javascript"></script>--}%
+    %{--<script src="${resource(dir: 'assets/jquery-easy-pie-chart/', file: 'jquery.easy-pie-chart.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js', file: 'owl.carousel.js')}" ></script>--}%
+    %{--<script src="${resource(dir: 'js', file: 'jquery.customSelect.min.js')}" ></script>--}%
+    %{--<script src="${resource(dir: 'js', file: 'respond.min.js')}" ></script>--}%
 
-    <!--right slidebar-->
-    <script src="${resource(dir: 'js', file: 'slidebars.min.js')}"></script>
+    <!--编辑器-->
+    <script type="text/javascript" src="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'wysihtml5-0.3.0.js')}"></script>
+    <script type="text/javascript" src="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'bootstrap-wysihtml5.js')}"></script>
 
-    <!--common script for all pages-->
-    <script src="${resource(dir: 'js', file: 'common-scripts.js')}"></script>
+    <script type="text/javascript">
+        $('.wysihtml5').wysihtml5({
+            "font-styles": false,
+            "color": false,
+            "emphasis": true,
+            "lists": true,
+            "html": false,
+            "link": false,
+            "image": false
+        });
+    </script>
 
-    <!--script for this page-->
-    <script src="${resource(dir: 'js', file: 'sparkline-chart.js')}"></script>
-    <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
-    <script src="${resource(dir: 'js', file: 'count.js')}"></script>
-
-    %{--<script>--}%
-
-    %{--//owl carousel--}%
-
-    %{--$(document).ready(function() {--}%
-    %{--$("#owl-demo").owlCarousel({--}%
-    %{--navigation : true,--}%
-    %{--slideSpeed : 300,--}%
-    %{--paginationSpeed : 400,--}%
-    %{--singleItem : true,--}%
-    %{--autoPlay:true--}%
-
-    %{--});--}%
-    %{--});--}%
-
-    %{--//custom select box--}%
-
-    %{--$(function(){--}%
-    %{--$('select.styled').customSelect();--}%
-    %{--});--}%
-
-    %{--</script>--}%
 
 </body>
 </html>

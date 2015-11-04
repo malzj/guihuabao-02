@@ -50,16 +50,23 @@
                     </header>
                     <table>
                         <tr>
-                            <td>名称：</td>
+                            <td align="right">名称：</td>
                             <td width="345">${fieldValue(bean: bumenInstance, field: "name")}</td>
                         </tr>
                         <tr>
-                            <td>备注：</td>
+                            <td align="right">所属部门：</td>
+                            <%
+                                def afiliated=com.guihuabao.Bumen.findByCidAndId(session.company.id,bumenInstance.affiliated)
+                            %>
+                            <td width="345">${(afiliated)?afiliated.name:"无"}</td>
+                        </tr>
+                        <tr>
+                            <td align="right">备注：</td>
                             <td>${fieldValue(bean: bumenInstance, field: "remark")}</td>
                         </tr>
 
                         <tr>
-                            <td>
+                            <td align="right">
                                 创建时间：
                             </td>
                             <td>

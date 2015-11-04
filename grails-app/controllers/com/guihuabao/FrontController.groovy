@@ -162,7 +162,8 @@ class FrontController {
                 companyUserInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'companyUser.label', default: 'CompanyUser')] as Object[],
                         "Another user has updated this User while you were editing")
-                render(view: "companyUserEdit", model: [companyUserInstance: companyUserInstance])
+//                render(view: "companyUserEdit", model: [companyUserInstance: companyUserInstance])
+                redirect(action: "companyUserEdit",id: id)
                 return
             }
         }
@@ -220,7 +221,9 @@ class FrontController {
             redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
             return
         }
-        [bumenInstance: new Bumen(params)]
+        def affiliatedList=Bumen.findAllByCid(company.id)
+
+        [bumenInstance: new Bumen(params),affiliatedList: affiliatedList]
     }
     def bumenSave(){
         def user = session.user
@@ -262,13 +265,14 @@ class FrontController {
             return
         }
         def bumenInstance = Bumen.get(id)
+        def affiliatedList=Bumen.findAllByCid(company.id)
         if (!bumenInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'bumen.label', default: 'Bumen'), id])
             redirect(action: "bumenList")
             return
         }
 
-        [bumenInstance: bumenInstance]
+        [bumenInstance: bumenInstance,affiliatedList: affiliatedList]
     }
     def bumenUpdate(Long id, Long version) {
         def user = session.user
@@ -1147,7 +1151,7 @@ class FrontController {
         } else
             render rs as JSON
     }
-    //下属报告
+    //下属报告(删)
     def xsReport(){
         def user = session.user
         def company = session.company
@@ -1167,6 +1171,27 @@ class FrontController {
             return
         }
     }
+    /*
+    * 下属部门及人员列表
+    * 参数bid，cid
+    * */
+    def reportSubordinate(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def bid = (params.bid)?params.bid:session.user.bid
+        def cid = (params.cid)?params.cid:session.user.cid
+        def bumenList
+        def companyUserList
+        bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
+        companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
+
+        [bumenList: bumenList,companyUserList: companyUserList]
+    }
+//    (删)
     def reportUserList(){
         def companyUserInstance = CompanyUser.findAllByBidAndCid(params.bid,params.cid)
         [companyUserInstance: companyUserInstance]
@@ -2154,7 +2179,7 @@ class FrontController {
         [replyInstance: replyInstance, allReplyInfo: allReplyInfo, count: count]
     }
 
-    //下属任务
+    //下属任务(删)
     def xsTask(){
         def user = session.user
         def company = session.company
@@ -2166,16 +2191,38 @@ class FrontController {
         def ubid = session.user.bid
         def ucid = session.user.cid
         def bumenInfo
+        def companyUserList
         if(upid==1){
             bumenInfo = Bumen.findAllByCid(ucid)
-            render(view: "taskBumenList", model: [bumenInfo: bumenInfo])
+            companyUserList=CompanyUser.findAllByCidAndBid(company.id,0)
+            render(view: "taskBumenList", model: [bumenInfo: bumenInfo,companyUserList: companyUserList])
         }else if(upid==2){
             redirect(action: "taskUserList",params: [bid: ubid,cid: ucid])
             return
         }
     }
 
+    /*
+    * 下属部门及人员列表
+    * 参数bid，cid
+    * */
+    def taskSubordinate(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def bid = (params.bid)?params.bid:session.user.bid
+        def cid = (params.cid)?params.cid:session.user.cid
+        def bumenList
+        def companyUserList
+        bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
+        companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
 
+        [bumenList: bumenList,companyUserList: companyUserList]
+    }
+//    (删)
     def taskUserList(){
         def user = session.user
         def company = session.company
@@ -3034,7 +3081,7 @@ class FrontController {
         } else
             render rs as JSON
     }
-    //下属目标
+    //下属目标(删)
     def xsTarget() {
         def user = session.user
         def company = session.company
@@ -3053,6 +3100,26 @@ class FrontController {
             redirect(action: "targetUserList", params: [bid: ubid, cid: ucid])
             return
         }
+    }
+    /*
+    * 目标下属部门及人员列表
+    * 参数bid，cid
+    * */
+    def targetSubordinate(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def bid = (params.bid)?params.bid:session.user.bid
+        def cid = (params.cid)?params.cid:session.user.cid
+        def bumenList
+        def companyUserList
+        bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
+        companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
+
+        [bumenList: bumenList,companyUserList: companyUserList]
     }
     def xsTargetList(Integer max) {
         def user = User.findById(params.uid)
@@ -3082,7 +3149,7 @@ class FrontController {
         }
         [targetInstance: targetInstance, targetInstanceTotal: targetInstanceTotal, bumenInstance: bumenInstance,uid:fzuid,cid:cid, selected: selected]
     }
-
+//    用户列表(删)
     def targetUserList() {
         def user = session.user
         def company = session.company

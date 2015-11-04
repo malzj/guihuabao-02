@@ -65,16 +65,24 @@
                             <td>手机号：</td>
                             <td>${fieldValue(bean: companyUserInstance, field: "phone")}</td>
                         </tr>
+                        <%
+                            def bumen=com.guihuabao.Bumen.findByCidAndId(session.company.id,companyUserInstance.bid)
+                        %>
                         <tr>
                             <td>部门：</td>
-                            <td>${com.guihuabao.Bumen.findById(companyUserInstance.bid)?.name}</td>
-                        </td>
+                            <td>${(bumen)?bumen.name:"无"}</td>
                         </tr>
                         <tr>
                             <td>
                                 角色：
                             </td>
                             <td>${com.guihuabao.Persona.findById(companyUserInstance.pid)?.name}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                职位：
+                            </td>
+                            <td>${companyUserInstance?.position}</td>
                         </tr>
                         <tr>
                             <td>
