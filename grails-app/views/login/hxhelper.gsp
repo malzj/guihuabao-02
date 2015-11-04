@@ -50,7 +50,7 @@
                     <g:link controller="login" action="bookShow" id="${bookInstance.id}">
                         <img src="${resource(dir: 'uploadfile/images', file: ''+bookInstance.bookImg+'')}" height="195" width="235" />
                     </g:link>
-                    <span>${bookInstance.bookName}</span>
+                    %{--<span>${bookInstance.bookName}</span>--}%
                 </div>
             </g:each>
             <g:link action="bookCreate"><img src="${resource(dir: 'img', file: 'add.png')}" height="195" width="235" /></g:link>

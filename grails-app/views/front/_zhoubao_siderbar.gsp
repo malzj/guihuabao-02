@@ -13,7 +13,7 @@
             </li>
             <g:if test="${session.user.pid==1||session.user.pid==2}">
             <li>
-                <g:link action="xsReport">
+                <g:link action="reportSubordinate">
                     <span>下属报告</span>
                 </g:link>
             </li>

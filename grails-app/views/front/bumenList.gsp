@@ -56,6 +56,7 @@
                     <tr class="even">
                         <th>#编号</th>
                         <th>部门名称</th>
+                        <th>所属部门</th>
                         <th>备注</th>
                         <th>操作</th>
                     </tr>
@@ -64,6 +65,10 @@
                             <td>${fieldValue(bean: bumenInstance, field: "id")}</td>
 
                             <td><g:link controller="front" action="bumenShow" id="${bumenInstance?.id}">${fieldValue(bean: bumenInstance, field: "name")}</g:link></td>
+                            <%
+                                def afiliated=com.guihuabao.Bumen.findByCidAndId(session.company.id,bumenInstance.affiliated)
+                                %>
+                            <td>${(afiliated)?afiliated.name:"无"}</td>
                             <td>${fieldValue(bean: bumenInstance, field: "remark")}</td>
                             <td>
                                 <g:link action="bumenShow" id="${bumenInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>

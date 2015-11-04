@@ -170,9 +170,9 @@
         <a href="index.html" class="logo"><img height="30" src="${resource(dir: 'img', file: 'logo.png')}"></a>
         <!--logo end-->
         <ul class="nav">
-            <li><g:link action="frontIndex"><i class="home"></i>首页</g:link></li>
-            <li><g:link action="user_target"><i class="aim"></i>目标</g:link></li>
-            <li><g:link action="taskCreate"><i class="rw"></i>任务</g:link></li>
+            <li><g:link action="frontIndex"><img src="${resource(dir:'img',file:'nav_1.png')}" width="30px;" height="30px"/>首页</g:link></li>
+            <li><g:link action="user_target"><img src="${resource(dir:'img',file:'nav_2.png')}" width="30px;" height="30px"/>目标</g:link></li>
+            <li><g:link action="taskCreate"><img src="${resource(dir:'img',file:'nav_3.png')}" width="30px;" height="30px"/>任务</g:link></li>
             %{--<li><g:link action="apply"><i class="apply"></i>申请</g:link></li>--}%
             %{--<li><g:link action="myReport"><i class="bg"></i>报告</g:link></li>--}%
             <%def showapps=com.guihuabao.ShowApp.findAllByUidAndCid(session.user.id,session.user.cid,[sort:'num',order:'asc'])%>
@@ -182,9 +182,9 @@
                  <li><a href="${app.companyApp.app.appurl}?uid=${session.user.id}&cid=${session.user.cid}&companyappid=${app.companyApp.id}" target="_blank"><img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="30px;" height="30px" style="margin-bottom:5px;"/>${app.name}</a></li>
              </g:else>
             </g:each>
-            <li><g:link action="show_app"><i class="app"></i>应用</g:link></li>
+            <li><g:link action="show_app"><img src="${resource(dir:'img',file:'nav_5.png')}" width="30px;" height="30px"/>应用</g:link></li>
             <g:if test="${session.user.rid}">
-            <li><g:link action="companyUserList" ><i class="ht"></i>后台</g:link></li>
+            <li><g:link action="companyUserList" ><img src="${resource(dir:'img',file:'nav_6.png')}" width="30px;" height="30px"/>后台</g:link></li>
             </g:if>
         </ul>
         <g:link action="hxhelper" class="f-r zs"><i></i>和许助手</g:link>

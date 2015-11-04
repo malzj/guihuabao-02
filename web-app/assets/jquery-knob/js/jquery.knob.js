@@ -149,7 +149,6 @@
                             this.o.width + 'px" height="' +
                             this.o.height + 'px"></canvas>');
             this.c = this.$c[0].getContext("2d");
-
             this.$
                 .wrap($('<div style="' + (this.o.inline ? 'display:inline;' : '') +
                         'width:' + this.o.width + 'px;height:' +
@@ -403,7 +402,7 @@
                     bgColor : this.$.data('bgcolor') || '#EEEEEE',
                     angleOffset : this.$.data('angleoffset') || 0,
                     angleArc : this.$.data('anglearc') || 360,
-                    inline : true
+//                    inline : true
                 }, this.o
             );
         };
