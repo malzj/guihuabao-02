@@ -2510,6 +2510,7 @@ class FrontController {
 //        def order1 = [sort:"begintime",order: "desc"]
 //        def order2 = [sort:"dateCreate",order: "desc"]
         def bumenInstance = Bumen.findAllByCid(session.company.id)
+//        def bumenPerson=CompanyUser.findAllByBidAndCid(user.bid,cid);
         def targetInstance
         def targetInstanceTotal
         if(selected=="1"){

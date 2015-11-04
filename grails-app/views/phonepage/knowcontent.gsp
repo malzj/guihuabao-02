@@ -47,27 +47,7 @@
 <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
 <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
 <script type="text/javascript">
-    %{--$('.prev').click(function(){--}%
-        %{--var id=$(this).next().val();--}%
-        %{--var offset=parseInt($(this).next().next().val())-1;--}%
-        %{--console.log(id+'  '+offset);--}%
-        %{--$.ajax( {--}%
-            %{--url:'${webRequest.baseUrl}/phonepage/knowcontent2',--}%
-            %{--method:'post',--}%
-            %{--dataType:'json',--}%
-            %{--async:'false',--}%
-            %{--data:{id:id,offset:offset},--}%
-            %{--success:function(data){--}%
-               %{--alert(data);--}%
-                %{--$('.content-1').html(data.contentInfo.introduction);--}%
-                %{--$('.id').val(data.id);--}%
-                %{--$('.offset').val(data.offset);--}%
-            %{--},--}%
-            %{--error:function(){--}%
-                %{--alert('获取数据失败！')--}%
-            %{--}--}%
-    %{--})--}%
-    %{--})--}%
+
     $('#next').click(function(){
         var id=$('#id').val();
         var offset=$('#offset').val()

@@ -34,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'assets/bootstrap-timepicker/compiled', file: 'timepicker.css')}" />
     <style>
         body{-webkit-text-size-adjust:none;}
+        hr{margin:0px;}
         .btime,.etime{width:87px;height:25px;display:block;border:1px solid #d2d2d2;text-align:center;line-height:25px;}
         .btime{margin-right: 12px;}
         .tar_whole{border:1px solid #d2d2d2;width:250px;height:210px;margin:0 15px 15px 0;cursor:pointer;background-color: #FFF;}
@@ -279,12 +280,12 @@
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'1.png')}"/></a>
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'2.png')}"/></a>
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'3.png')}"/></a>
-            <a><img  src="${resource(dir:'uploadfile/target-img',file:'4.png')}"/></a>
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'5.png')}"/></a>
-            <a><img  src="${resource(dir:'uploadfile/target-img',file:'6.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'4.png')}"/></a>
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'7.png')}"/></a>
-            <a><img  src="${resource(dir:'uploadfile/target-img',file:'8.png')}"/></a>
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'9.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'6.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'8.png')}"/></a>
 
 
         </div>
@@ -316,12 +317,12 @@
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'1.png')}"/></a>
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'2.png')}"/></a>
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'3.png')}"/></a>
-            <a><img  src="${resource(dir:'uploadfile/target-img',file:'4.png')}"/></a>
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'5.png')}"/></a>
-            <a><img  src="${resource(dir:'uploadfile/target-img',file:'6.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'4.png')}"/></a>
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'7.png')}"/></a>
-            <a><img  src="${resource(dir:'uploadfile/target-img',file:'8.png')}"/></a>
             <a><img  src="${resource(dir:'uploadfile/target-img',file:'9.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'6.png')}"/></a>
+            <a><img  src="${resource(dir:'uploadfile/target-img',file:'8.png')}"/></a>
 
 
         </div>
@@ -358,34 +359,55 @@
                             <input type="hidden" id="playname" name="playname" value="" class="nr" title="该字段不能为空！"/>
                             <div class="dropdown"><span class="zhxr con"></span>
                                 <a  id="playman" style="cursor:pointer;" class="menu"  data-toggle="dropdown"><i class="fa fa-plus-square-o"></i></a>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="margin:0;" id="topmenu">
+                                %{--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="margin:0;" id="topmenu">--}%
+                                    %{--<li class="dropdown-header">下属部门</li>--}%
+                                    %{--<g:if test="${session.user.pid==1}">--}%
+                                        %{--<g:each in="${bumenInstance}" var="bumenInfo">--}%
+                                            %{--<li class="dropdown-submenu "  style="margin-bottom: 0;">--}%
+                                                %{--<a tabindex="-1"  data-toggle="dropdown" class="bumen">${bumenInfo.name}<span style="display:none" >${bumenInfo.id}</span></a>--}%
+                                                %{--<ul class="dropdown-menu"  role="menu" aria-labelledby="dLabel"  style="margin:0;padding-top:10px;padding-bottom: 10px;">--}%
+                                                    %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">--}%
+                                                        %{--<span style="display:none">${session.user.bid}</span>--}%
+                                                         %{--<li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>--}%
+                                                    %{--</g:each>--}%
+                                                %{--</ul>--}%
+                                            %{--</li>--}%
+                                        %{--</g:each>--}%
+                                    %{--</g:if>--}%
+                                    %{--<g:elseif test="${session.user.pid==2}">--}%
+                                         %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">--}%
+                                            %{--<span style="display:none">${session.user.bid}</span>--}%
+                                            %{--<li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>--}%
+                                         %{--</g:each>--}%
+                                    %{--</g:elseif>--}%
 
-                                    <g:if test="${session.user.pid==1}">
-                                        <g:each in="${bumenInstance}" var="bumenInfo">
-                                            <li class="dropdown-submenu "  style="margin-bottom: 0;">
-                                                <a tabindex="-1"  data-toggle="dropdown" class="bumen">${bumenInfo.name}<span style="display:none" >${bumenInfo.id}</span></a>
-                                                <ul class="dropdown-menu"  role="menu" aria-labelledby="dLabel"  style="margin:0;padding-top:10px;padding-bottom: 10px;">
-                                                    <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
-                                                        <span style="display:none">${session.user.bid}</span>
-                                                         <li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
-                                                    </g:each>
-                                                </ul>
-                                            </li>
-                                        </g:each>
-                                    </g:if>
-                                    <g:elseif test="${session.user.pid==2}">
-                                         <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
-                                            <span style="display:none">${session.user.bid}</span>
-                                            <li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
-                                         </g:each>
-                                    </g:elseif>
+                                    %{--<g:else>--}%
+                                        %{--<span style="display:none">${session.user.bid}</span>--}%
+                                        %{--<li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>--}%
+                                    %{--</g:else>--}%
+                                    %{--<li role="separator" class="divider"></li>--}%
+                                    %{--<li class="dropdown-header">本部门成员</li>--}%
 
-                                    <g:else>
-                                        <span style="display:none">${session.user.bid}</span>
-                                        <li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>
-                                    </g:else>
+                                %{--</ul>--}%
+
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="position:fixed;;top:50px;left:auto;margin:0;padding:0;width:300px;height:600px;overflow:auto;">
+                                <h2 style="font-size: 16px;padding:10px 20px;;margin:0px;"><i class="fa fa-chevron-left" style="margin-right: 5px;"></i>返回<span>孵化中心</span></h2>
+                                <hr/>
+                                    <li role="presentation" class="dropdown-header" style="margin-bottom: 5px;"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>下属部门</li>
+                                        <g:if test="${session.user.pid==1}">
+                                            <g:each in="${bumenInstance}" var="bumenInfo">
+
+                                                    <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="liebiao">
+                                                        <a role="menuitem" tabindex="-1" href="#">${bumenInfo.name}<span style="display:none" >${bumenInfo.id}</span></a>
+                                                    </li>
+                                            </g:each>
+                                          </g:if>
+                                    <li role="presentation" class="divider"></li>
+                                    <li role="presentation" class="dropdown-header" style="margin-bottom: 5px;"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>本部门人员</li>
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" href="#" style="margin-bottom: 5px;text-indent: 20px;">ddd</a>
+                                    </li>
                                 </ul>
-
                             </div></td>
 
                     </tr>
@@ -543,7 +565,7 @@
         <ul>
 
             <li class="clearfix">
-                <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'uploadfile/target-img',file:'1.png')}"></div>
+                <div align="right" class="f-l" style="margin-right: 10px;"><img src="${resource(dir:'uploadfile/target-img',file:'add.png')}" id="detail_img"></div>
                 <h2 class="f-l" style="padding:0;margin: 0 20px 0 0;font-size: 20px;line-height:48px;" id="detail_title"></h2>
             </li>
             <li>
@@ -1125,7 +1147,7 @@
                         dataType: 'json',
                         data:{target_id:tid},
                         success: function (data) {
-
+                            $('#detail_img').attr('src','/guihuabao/static/uploadfile/target-img/'+data.target.img);
                             $('#detail_title').html(data.target.title);
                             $('#detail_content').html(data.target.content);
                             $('#detail_fz').html(data.fzname )
@@ -1733,7 +1755,14 @@
                     alert('保存失败！')
                     $('.tishi').html('')
                 }
-
+//            $('.fa-caret-down').toggle(
+//                function(){
+//                   alert(1);
+//                },
+//                function(){
+//                   alert(2);
+//                }
+//            )
             })
 
 
