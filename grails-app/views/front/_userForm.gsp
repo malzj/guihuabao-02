@@ -18,7 +18,7 @@
     <tr>
         <td>部门：</td>
         <td>
-            <g:select name="bid" from="${bumenList}" optionKey="id" optionValue="name" noSelection="['0':'无']" required="" value="${companyUserInstance?.bid}" class="form-control form-control-inline input-medium"/>
+            <g:select name="bid" from="${bumenList}" optionKey="id" optionValue="name" required="" value="${companyUserInstance?.bid}" class="form-control form-control-inline input-medium"/>
         </td>
     </tr>
     <tr>

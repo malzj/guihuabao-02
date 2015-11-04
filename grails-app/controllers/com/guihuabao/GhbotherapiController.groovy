@@ -1251,4 +1251,26 @@ class GhbotherapiController {
         } else
             render rs as JSON
     }
-}
+
+    /*
+    * 部门及人员列表
+    * */
+    def subordinateList(){
+        def rs = [:]
+        def cid = params.cid
+        def bid = params.bid
+        def bumenList
+        def companyUserList
+
+        bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
+        companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
+
+        rs.bumenList=bumenList
+        rs.companyUserList=companyUserList
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+ }
