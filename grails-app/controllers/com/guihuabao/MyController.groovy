@@ -549,7 +549,7 @@ class MyController {
         sum+=chaosongsize
         def hasfinishedTargetsize=Target.countByFzuidAndStatusAndIscheck(uid,1,0)
         sum+=hasfinishedTargetsize
-        def uMissionsize=Mission.countByPlayuidAndHasvisited(uid,0)
+        def uMissionsize=Mission.countByPlayuidAndHasvisitedAndIssubmit(uid,0,1)
 //        sum+=uMissionsize
         def uReplyMissionsize=ReplyMission.countByBpuidAndCidAndStatus(uid,cid,0)
         sum+=uReplyMissionsize

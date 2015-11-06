@@ -206,15 +206,41 @@
                                 <tr>
                                     <td>执行人</td>
                                     <td>
-                                        <input type="hidden" id="playuid" name="playuid" value="" />
-                                        <input type="hidden" id="playbid" name="playbid" value="" />
-                                        <input type="hidden" id="playname" name="playname" value="" />
-                                        <div id="zhxr">
-                                            <a id="playman"></a>
-                                            <span id="cnplayname"></span>
-                                            <span id="taskcreate-playuid" style="color: red"></span>
-                                        </div>
+                                        %{--<input type="hidden" id="playuid" name="playuid" value="" />--}%
+                                        %{--<input type="hidden" id="playbid" name="playbid" value="" />--}%
+                                        %{--<input type="hidden" id="playname" name="playname" value="" />--}%
+                                        %{--<div id="zhxr">--}%
+                                            %{--<a id="playman"></a>--}%
+                                            %{--<span id="cnplayname"></span>--}%
+                                            %{--<span id="taskcreate-playuid" style="color: red"></span>--}%
+                                        %{--</div>--}%
+                                        <g:if test="${session.user.pid<=2}">
+                                            <input type="hidden"  name="playuid" value=""  id="newmission_playname" class="nr puid" title="该字段不能为空！"/>
+                                            <input type="hidden" id="playbid" name="bid" value="" class="nr pbid" title="该字段不能为空！"/>
+                                            <input type="hidden" id="playname" name="playname" value="" class="nr puname" title="该字段不能为空！"/>
+                                            <div class="dropdown"><span class="zhxr con"></span><span id="taskcreate-playuid" style="color: red"></span>
 
+                                                <a  id="playman" style="cursor:pointer;background:none;" class="menu playman" ><i class="fa fa-plus-square-o"></i></a>
+
+
+                                                <ul class="dropdown-menu dropdown-menu1" role="menu" aria-labelledby="dropdownMenu1" style="position:fixed;;top:50px;left:auto;margin:0;padding:0;width:300px;max-height:600px;min-height:300px;overflow:auto;display:none;">
+                                                <h2 class="clearfix" style="font-size: 16px;padding:10px 20px;;margin:0px;"><div class="fanhui f-l" style="cursor: pointer;"><i class="fa fa-chevron-left" style="margin-right: 5px;"></i>返回<span class="bumenname"></span><span class="bumenid" style="display: none;"></span></div><i class="fa fa-times f-r" style="cursor:pointer;"></i></h2>
+                                                <hr style="margin:0;"/>
+                                                    <li role="presentation" class="dropdown-header dropdown-header1" style="margin-bottom: 5px;cursor: pointer;"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>下属部门</li>
+
+                                                    <li role="presentation" class="divider"></li>
+                                                    <li role="presentation" class="dropdown-header dropdown-header2" style="margin-bottom: 5px;cursor: pointer;"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>本部门人员</li>
+
+                                                </ul>
+                                        </g:if>
+                                        <g:else>
+                                            <input type="hidden"  name="playuid" value="${session.user.id}"  id="newmission_playname" class="nr" title="该字段不能为空！"/>
+                                            <input type="hidden" id="playbid" name="bid" value="${session.user.bid}" class="nr" title="该字段不能为空！"/>
+                                            <input type="hidden" id="playname" name="playname" value="${session.user.name}" class="nr" title="该字段不能为空！"/>
+                                            <div class="dropdown"><span class="zhxr con">${session.user.id}</span>
+                                        </g:else>
+
+                                    </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -336,7 +362,7 @@
             },
             submitHandler:function(form) {
                 var playstatus = $("#playstatus").val()
-                var playuid = $("#playuid").val()
+                var playuid = $("#newmission_playname").val()
                 if($('#startdate').val()==''){
                     $('#startdate').css('border-color','red');
                     return false;
@@ -612,46 +638,212 @@
                 $(".toolkit .task-order").css("border-bottom","none");
             }
         });
-        context.init({preventDoubleContext: false});
-        <g:if test="${session.user.pid==1}">
-        context.attach('#playman', [
-        {header: '部门'},
-        <g:each in="${bumenInstance}" var="bumenInfo">
-        {text: '${bumenInfo.name}', subMenu: [
-            {header: '下属'},
-            <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
-            {text: '${userInfo.name}', href: '#', action: function(e){
-                $("#playuid").val(${userInfo.id});
-                $("#playbid").val(${userInfo.bid});
-                $("#playname").val("${userInfo.name}");
-                $(".dropdown-menu").hide();
-                $("#cnplayname").html('${userInfo.name}');
-            }},
-            </g:each>
-        ]},
-        </g:each>
-        ]);
-        </g:if>
-        <g:elseif test="${session.user.pid==2}">
-        context.attach('#playman', [
-            {header: '下属'},
-            <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
-            {text: '${userInfo.name}', href: '#', action: function(e){
-                $("#playuid").val(${userInfo.id});
-                $("#playbid").val(${userInfo.bid});
-                $("#playname").val("${userInfo.name}");
-//                $(this).hide();
-                $("#cnplayname").html("${userInfo.name}");
-            }},
-            </g:each>
-        ]);
-        </g:elseif>
-        <g:else>
-            $("#playuid").val(${session.user.id});
-            $("#playbid").val(${session.user.bid});
-            $("#playname").val("${session.user.name}");
-            $("#cnplayname").html("${session.user.name}");
-        </g:else>
+        %{--context.init({preventDoubleContext: false});--}%
+        %{--<g:if test="${session.user.pid==1}">--}%
+        %{--context.attach('#playman', [--}%
+        %{--{header: '部门'},--}%
+        %{--<g:each in="${bumenInstance}" var="bumenInfo">--}%
+        %{--{text: '${bumenInfo.name}', subMenu: [--}%
+            %{--{header: '下属'},--}%
+            %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">--}%
+            %{--{text: '${userInfo.name}', href: '#', action: function(e){--}%
+                %{--$("#playuid").val(${userInfo.id});--}%
+                %{--$("#playbid").val(${userInfo.bid});--}%
+                %{--$("#playname").val("${userInfo.name}");--}%
+                %{--$(".dropdown-menu").hide();--}%
+                %{--$("#cnplayname").html('${userInfo.name}');--}%
+            %{--}},--}%
+            %{--</g:each>--}%
+        %{--]},--}%
+        %{--</g:each>--}%
+        %{--]);--}%
+        %{--</g:if>--}%
+        %{--<g:elseif test="${session.user.pid==2}">--}%
+        %{--context.attach('#playman', [--}%
+            %{--{header: '下属'},--}%
+            %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">--}%
+            %{--{text: '${userInfo.name}', href: '#', action: function(e){--}%
+                %{--$("#playuid").val(${userInfo.id});--}%
+                %{--$("#playbid").val(${userInfo.bid});--}%
+                %{--$("#playname").val("${userInfo.name}");--}%
+%{--//                $(this).hide();--}%
+                %{--$("#cnplayname").html("${userInfo.name}");--}%
+            %{--}},--}%
+            %{--</g:each>--}%
+        %{--]);--}%
+        %{--</g:elseif>--}%
+        %{--<g:else>--}%
+            %{--$("#playuid").val(${session.user.id});--}%
+            %{--$("#playbid").val(${session.user.bid});--}%
+            %{--$("#playname").val("${session.user.name}");--}%
+            %{--$("#cnplayname").html("${session.user.name}");--}%
+        %{--</g:else>--}%
+        $('.dropdown-header1').click(
+                function(){
+                    $('.dropdown-menu').css('display','block');
+                    $('.bumenliebiao').toggle(500);
+                }
+
+        )
+        $('.dropdown-header2').click(
+                function(){
+                    $('.dropdown-menu1').css('display','block');
+                    $('.renyuanliebiao').toggle(500);
+                }
+
+        )
+
+        $('.playman').click(function () {
+            $('.fanhui').css('display','none');
+            $('.datatimepicker').css('display', 'none');
+            var bid =${session.user.bid};
+            var cid =${session.company.id};
+
+            $.ajax({
+                url: '${webRequest.baseUrl}/ghbotherapi/subordinateList',
+                dataType: "json",
+                type: "POST",
+                data: {cid: cid, bid: bid},
+                async: 'false',
+                success: function (data) {
+
+                    var bumenList = data.bumenList;
+                    var companyUserList = data.companyUserList;
+                    var html1 = '';
+                    var html2 = '';
+                    for (var i = 0; i < data.bumenList.length; i++) {
+                        html1 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="bumenliebiao">' +
+                                '<a role="menuitem" tabindex="-1" href="javascript:;">' + bumenList[i].name + '<span style="display:none" class="bumen">' + bumenList[i].id + '</span></a>' +
+                                '</li>';
+
+                    }
+                    $('.dropdown-header1').after(html1);
+                    for (var i = 0; i < data.companyUserList.length; i++) {
+                        html2 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="renyuanliebiao">' +
+                                '<a role="menuitem" tabindex="-1" href="javascript:;">' + companyUserList[i].name + '<span style="display:none" class="renyuanid">' + companyUserList[i].id + '</span><span style="display:none" class="renyuanname">' + companyUserList[i].name + '</span><span style="display:none" class="renyuanbid">' + companyUserList[i].bid + '</span></a>' +
+                                '</li>';
+
+                    }
+                    $('.dropdown-header2').after(html2);
+                    $('.bumenname').html(data.ssbname);
+                    $('.bumenid').html(data.ssbid);
+                    $('.dropdown-menu1').css('display', 'block');
+                    xsbumen();
+                    xsrenyuan();
+                }
+            })
+
+        });
+        function xsbumen() {
+            $('.bumenliebiao').click( function () {
+                $('.fanhui').css('display','block');
+                var bid = $(this).find('span.bumen').html();
+                var cid =${session.company.id};
+                $.ajax({
+                    url: '${webRequest.baseUrl}/ghbotherapi/subordinateList',
+                    dataType: "json",
+                    type: "POST",
+                    data: {cid: cid, bid: bid},
+                    async: 'false',
+                    success: function (data) {
+
+                        var bumenList = data.bumenList;
+                        var companyUserList = data.companyUserList;
+                        var html1 = '';
+                        var html2 = '';
+                        for (var i = 0; i < data.bumenList.length; i++) {
+                            html1 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="bumenliebiao">' +
+                                    '<a role="menuitem" tabindex="-1" href="javascript:;">' + bumenList[i].name + '<span style="display:none" class="bumen">' + bumenList[i].id + '</span></a>' +
+                                    '</li>';
+
+                        }
+                        $('.bumenliebiao').remove();
+                        $('.dropdown-header1').after(html1);
+                        for (var i = 0; i < data.companyUserList.length; i++) {
+                            html2 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="renyuanliebiao">' +
+                                    '<a role="menuitem" tabindex="-1" href="javascript:;">' + companyUserList[i].name + '<span style="display:none" class="renyuanid">' + companyUserList[i].id + '</span><span style="display:none" class="renyuanname">' + companyUserList[i].name + '</span><span style="display:none" class="renyuanbid">' + companyUserList[i].bid + '</span></a>' +
+                                    '</li>';
+
+                        }
+                        $('.bumenname').html(data.ssbname);
+                        $('.bumenid').html(data.ssbid);
+                        $('.renyuanliebiao').remove();
+                        $('.dropdown-header2').after(html2);
+                        $('.dropdown-menu1').css('display', 'block');
+                        xsbumen();
+                        xsrenyuan();
+                        fanhui();
+                    }
+                })
+            })
+        }
+        function xsrenyuan(){
+            $('.renyuanliebiao').click(function(){
+                var uid = $(this).find('span.renyuanid').html();
+                var bid= $(this).find('span.renyuanbid').html();
+                var uname= $(this).find('span.renyuanname').html();
+                $('.puid').val(uid);
+                $('.puname').val(uname);
+                $('.pbid').val(bid);
+                $('.zhxr').html(uname);
+                $('.bumenliebiao').remove();
+                $('.renyuanliebiao').remove();
+                $('.dropdown-menu1').css('display','none');
+            });
+
+        }
+        function fanhui(){
+            $('.fanhui').click(function(){
+                var bid=$(this).find('span.bumenid').html();
+
+                var cid=${session.user.cid};
+                $.ajax({
+                    url: '${webRequest.baseUrl}/ghbotherapi/subordinateList',
+                    dataType: "json",
+                    type: "POST",
+                    data: {cid: cid, bid: bid},
+                    async: 'false',
+                    success: function (data) {
+
+                        var bumenList = data.bumenList;
+                        var companyUserList = data.companyUserList;
+                        var html1 = '';
+                        var html2 = '';
+                        for (var i = 0; i < data.bumenList.length; i++) {
+                            html1 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="bumenliebiao">' +
+                                    '<a role="menuitem" tabindex="-1" href="javascript:;">' + bumenList[i].name + '<span style="display:none" class="bumen">' + bumenList[i].id + '</span></a>' +
+                                    '</li>';
+
+                        }
+                        $('.bumenliebiao').remove();
+                        $('.dropdown-header1').after(html1);
+                        for (var i = 0; i < data.companyUserList.length; i++) {
+                            html2 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="renyuanliebiao">' +
+                                    '<a role="menuitem" tabindex="-1" href="javascript:;">' + companyUserList[i].name + '<span style="display:none" class="renyuanid">' + companyUserList[i].id + '</span><span style="display:none" class="renyuanname">' + companyUserList[i].name + '</span><span style="display:none" class="renyuanbid">' + companyUserList[i].bid + '</span></a>' +
+                                    '</li>';
+
+                        }
+                        if(data.ssbid==0||data.ssbid==${session.user.bid}) {
+                            $('.fanhui').css('display','none');
+                        }else{
+                            $('.bumenname').html(data.ssbname);
+                            $('.bumenid').html(data.ssbid);
+                        }
+                        $('.renyuanliebiao').remove();
+                        $('.dropdown-header2').after(html2);
+                        $('.dropdown-menu1').css('display', 'block');
+                        xsbumen();
+                        xsrenyuan();
+                    }
+                })
+
+            })
+        }
+        $('.fa-times').click(function(){
+            $('.bumenliebiao').remove();
+            $('.renyuanliebiao').remove();
+            $('.dropdown-menu1').css('display','none');
+        })
 
     })
 </script>
