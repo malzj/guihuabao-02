@@ -179,7 +179,7 @@
             <g:each in="${showapps}"  var="app">
              <g:if test="${app.companyApp.id<3}"> <li><a href="${app.companyApp.app.appurl}?uid=${session.user.id}&cid=${session.user.cid}&companyappid=${app.companyApp.id}"><img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="30px;" height="30px"/>${app.name}</a></li></g:if>
              <g:else>
-                 <li><a href="${app.companyApp.app.appurl}?uid=${session.user.id}&cid=${session.user.cid}&companyappid=${app.companyApp.id}" target="_blank"><img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="30px;" height="30px"/>${app.name}</a></li>
+                 <li><a href="${app.companyApp.app.appurl}?uid=${session.user.id}&cid=${session.user.cid}&companyappid=${app.companyApp.id}" target="_blank"><img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="30px;" height="30px" style="margin-bottom:5px;"/>${app.name}</a></li>
              </g:else>
             </g:each>
             <li><g:link action="show_app"><img src="${resource(dir:'img',file:'nav_5.png')}" width="30px;" height="30px"/>应用</g:link></li>
