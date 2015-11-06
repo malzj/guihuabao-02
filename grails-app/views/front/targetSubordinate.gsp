@@ -41,31 +41,38 @@
         <g:render template="target_sider" />
         <!--sidebar end-->
         <!--main content start-->
-        <section id="main-content" class="col-xs-10" style="padding-left: 0;">
+        <section id="main-content" class="col-xs-10">
             <section class="wrapper">
-                <div class="middle_content">
-                    <div class="m_box">
-                        <header class="panel-heading">
-                            <span>下属列表</span>
-                        </header>
-                        <g:if test="${bumenList&&session.user.pid!=3}">
-                        <ul class="xsreport">
+                <div class="xstask">
+                    <g:if test="${unfirst}">
+                        <span><a href="javascript:history.go(-1);"><i class="fa fa-chevron-left" style="margin-right: 10px;"></i>返回上一级</a></span>
+                    </g:if>
+                    <g:else><span>下属任务</span></g:else>
+                </div>
+                <g:if test="${bumenList&&session.user.pid!=3}">
+                    <div class="index-group mb0">
+                        <div class="index-head">
+                            <span class="title"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>下属部门</span>
+                        </div>
+                        <ul class="xsreport clearfix">
                             <g:each in="${bumenList}" var="info">
                                 <li><g:link action="targetSubordinate" params="[bid: info.id,cid: info.cid]"><span>${info.name}</span></g:link></li>
                             </g:each>
                         </ul>
-                        </g:if>
-                        <g:if test="${companyUserList}">
-                            <ul class="xsreport">
-                                <g:each in="${companyUserList}" var="info">
-                                    <g:if test="${session.user.id!=info.id}">
-                                    <li><g:link action="xsTargetList" params="[uid: info.id,cid: info.cid]"><span>${info.name}</span></g:link></li>
-                                    </g:if>
-                                </g:each>
-                            </ul>
-                        </g:if>
                     </div>
-                </div>
+                </g:if>
+                <g:if test="${companyUserList}">
+                    <div class="index-group" style="margin-top: -1px;">
+                        <div class="index-head">
+                            <span class="title"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>下属成员</span>
+                        </div>
+                        <ul class="xsreport clearfix">
+                            <g:each in="${companyUserList}" var="info">
+                                <li><g:link action="xsTargetList" params="[uid: info.id,cid: info.cid]"><span>${info.name}</span></g:link></li>
+                            </g:each>
+                        </ul>
+                    </div>
+                </g:if>
             </section>
             <!--main content end-->
 

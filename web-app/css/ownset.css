@@ -5,6 +5,7 @@ body{padding:0;margin:0;}
 .dn{ display:none; }
 .db{ display:block !important; }
 .mr0{margin-right: 0px !important;}
+.mb0{margin-bottom: 0px !important;}
 .mt10{ margin-top:10px !important; }
 .mt20{ margin-top:20px !important; }
 .mt25{ margin-top:25px !important; }
@@ -246,9 +247,10 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .popup_box .m_box .hang p{text-indent: 2em;min-height: 130px;}
 
 /*��������*/
-.xsreport{ margin:0 25px; }
-.xsreport li{ float:left; margin:0 0 20px 30px; position:relative; }
-.xsreport li a{ display:block; width:90px; height:90px; border-radius:50px; border:1px solid #d0d0d0; }
+.xsreport{ background-color:#fff; margin:0;  }
+.xsreport li{ float:left; margin:24px 0 24px 22px; position:relative; }
+.xsreport li a{ display:block; width:90px; height:90px; border-radius:50px; border:1px solid #d0d0d0; color: #797979; }
+.xsreport li a:hover{ border:1px solid #03a9f4; background-color: #03a9f4; color: #fff; }
 .xsreport li span{ display:block; margin:34px auto; width:45px; /*position:absolute; top:50px; left:50px*/}
 .hxzs_content .zhoubao .discuss h4{ background:url("../img/dis_icon.png") no-repeat 0% -27%;}
 .hxzs_content .zhoubao.reset{ width:100%; border-left:none; }
@@ -256,7 +258,7 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .hxzs_content .zhoubao .reply_box .name{ color:#1c7ef3; margin:10px 0; }
 .hxzs_content .zhoubao .reply_box .reply{ margin-left:20px; padding:5px 0 5px 20px; background:url("../img/dis_icon.png") no-repeat 0% 116%;}
 
-/应用/
+/*应用*/
 .app{ margin:0 25px; }
 .app li{ float:left; margin:0 0 20px 30px; position:relative; font-size: 20px;}
 .app li img{margin-top: 21px;}
@@ -355,6 +357,11 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 #task .discuss{padding: 0px 30px;}
 #task .discuss textarea{width:100%; height:130px; padding:10px; -webkit-box-shadow:0px 5px 5px -3px #D5D5D2 inset;box-shadow:0px 6px 5px -3px #D5D5D2 inset; background-color:#fff; border:1px solid #d0d0d0;}
 
+.xstask{ height:46px; font-size:16px; background-color:#f8f8f8; border:1px solid #d2d2d2; margin-bottom: 10px; }
+.xstask a{ color: #797979;}
+.xstask a:hover{ color: #03a9f4;}
+.xstask span{ margin:0 18px; line-height: 46px; }
+
 /*翻页样式*/
 .pagination{width: 100%;text-align: center;}
 .pagination .currentStep{height: 20px;width: 20px;border: 1px solid #d2d2d2;display: inline-block;text-align: center;background-color: #1D70F2;color: #FFF;margin-right:5px;}
@@ -383,6 +390,8 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .index-group .index-img-list li span{position: absolute;top: 30%;left: 40%;font-size: 30px;color: #fff;}
 .index-group .e-list{ background-color:#FFF; margin:0; }
 .col-tb .col-cell.reset{ padding-right:30px;  }
+
+.index-group .index-head .title{margin:0 18px; line-height: 46px; font-size: 16px;}
 
 /*选中输入框样式改变*/
 /*助手菜单*/

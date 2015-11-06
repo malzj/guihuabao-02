@@ -1259,11 +1259,13 @@ class GhbotherapiController {
         def rs = [:]
         def cid = params.cid
         def bid = params.bid
+        def pid = params.pid
         def bumenList
         def companyUserList
-
-        bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
-        companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
+        if(pid!='3'){
+            bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
+            companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
+        }
 
         rs.bumenList=bumenList
         rs.companyUserList=companyUserList
