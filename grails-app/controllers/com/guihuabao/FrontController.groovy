@@ -1184,12 +1184,13 @@ class FrontController {
         }
         def bid = (params.bid)?params.bid:session.user.bid
         def cid = (params.cid)?params.cid:session.user.cid
+        def unfirst =(params.bid)?true:false
         def bumenList
         def companyUserList
         bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
         companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
 
-        [bumenList: bumenList,companyUserList: companyUserList]
+        [bumenList: bumenList,companyUserList: companyUserList,unfirst: unfirst]
     }
 //    (删)
     def reportUserList(){
@@ -2215,12 +2216,13 @@ class FrontController {
         }
         def bid = (params.bid)?params.bid:session.user.bid
         def cid = (params.cid)?params.cid:session.user.cid
+        def unfirst =(params.bid)?true:false
         def bumenList
         def companyUserList
         bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
         companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
 
-        [bumenList: bumenList,companyUserList: companyUserList]
+        [bumenList: bumenList,companyUserList: companyUserList,unfirst: unfirst]
     }
 //    (删)
     def taskUserList(){
@@ -3115,12 +3117,13 @@ class FrontController {
         }
         def bid = (params.bid)?params.bid:session.user.bid
         def cid = (params.cid)?params.cid:session.user.cid
+        def unfirst =(params.bid)?true:false
         def bumenList
         def companyUserList
         bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
         companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
 
-        [bumenList: bumenList,companyUserList: companyUserList]
+        [bumenList: bumenList,companyUserList: companyUserList,unfirst: unfirst]
     }
     def xsTargetList(Integer max) {
         def user = User.findById(params.uid)
@@ -3568,6 +3571,49 @@ class FrontController {
         } else
             render rs as JSON
     }
-    def example_phone(){}
-}
+    def companyBumen(){
+        def user=session.user
+        def company=session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+    }
+//    公司架构
+    def companyStructure(){
+        def rs=[:]
+        def company=session.company
+
+        def cid=company.id
+        def bumenList=findBumen(0,cid)
+        rs.bumenList=bumenList
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+
+    }
+    /*
+    * 递归查询部门
+    * */
+    def findBumen(Long subordinateId,Long cid){
+        def subordinateList=[];
+        def bumenList=Bumen.findAllByAffiliatedAndCid(subordinateId,cid)
+        if(bumenList){
+            for(def bumenInfo in bumenList){
+                def arr=[:]
+                def subordinate=findBumen(bumenInfo.id,cid)
+                arr.id=bumenInfo.id
+                arr.name=bumenInfo.name
+                arr.cid=bumenInfo.cid
+                arr.subordinate=subordinate
+                subordinateList<<arr
+            }
+            return subordinateList
+        }else{
+            return false
+        }
+    }
+ }
 
