@@ -59,8 +59,8 @@
                         </header>
                         <ul id="ul1" class="app clearfix" style="text-align: center;width:100%;height:100%"  style="width:100%;height:100%">
                             <g:each in="${companyAppList}" status="i" var="app">
-                                <li draggable="true" ondragstart="drag(event)" id="${i}" style=" border-radius:5px;border: 1px solid #d0d0d0;width:90px;height:90px;position: relative;" class="c${app.id%5}">
-                                    <img style="line-height: 72px;margin-bottom: 20px;" src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px"/>
+                                <li draggable="true" ondragstart="drag(event)" id="${i}" style=" border-radius:5px;border: 1px solid #d0d0d0;width:70px;height:70px;position: relative;" class="c${app.id%5}">
+                                    <img style="line-height: 70px;margin-bottom: 20px;margin-top:10px;" src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px"/>
                                     <div style="width:100%;height:100%;position: absolute;top:0;"></div>
                                     <span style="display: none;">${app.id}</span>
                                     %{--<span style="margin-bottom: 10px;">${app.name}</span>--}%
@@ -82,7 +82,7 @@
                         <ul id="ul2" class="app clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" >
                             <g:each in="${showapps}"  var="app">
                                 <div style="width:100%;border-bottom: 1px solid #d2d2d2;" class="clearfix">
-                                    <li   style="border-radius:5px;border: 1px solid #d0d0d0;width:90px;height:90px;margin-bottom: 40px;margin-top: 20px;" class="c${app.companyApp.id%5}">
+                                    <li   style="border-radius:5px;border: 1px solid #d0d0d0;width:70px;height:70px;margin-bottom: 40px;margin-top: 20px;" class="c${app.companyApp.id%5}">
                                         <img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px" style="margin-bottom: 20px;"/>
 
                                         <span>${app.name}</span>
@@ -91,7 +91,7 @@
                                     <div class="flag up"><img src="${resource(dir:'images/',file:'up.png')}" title="向上"/><p>上移</p></div>
                                     <span style="display: none">${app.id}</span>
                                     <div class="flag down"><img src="${resource(dir:'images/',file:'down.png')}" title="向下"/><p>下移</p></div>
-                                    <div class="flag delete"><img src="${resource(dir:'images/',file:'delete.png')}" title="删除"/><p>删除</p></div>
+                                    <div class="flag delete" style="border:none;"><img src="${resource(dir:'images/',file:'delete.png')}" title="删除"/><p>删除</p></div>
                                     <span style="display: none">${app.num}</span>
                                 </div>
                             </g:each>
