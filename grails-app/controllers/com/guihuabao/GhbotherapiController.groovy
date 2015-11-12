@@ -899,12 +899,14 @@ class GhbotherapiController {
         def uid = params.uid
         def cid = params.cid
         def replyInstance = ReplyReport.findAllByBpuidAndCidAndStatus(uid, cid, 0, [sort: "date", order: "desc"])
-
+             DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
         if(replyInstance){
             for (def i=0;i<replyInstance.size();i++){
                 def allInfo=replyInstance.get(i)
+
+                allInfo.reportdate=dayFormat.format(replyInstance.get(i).zhoubao.dateCreate)
                 allInfo.reportuid=replyInstance.get(i).zhoubao.uid
-                allInfo.reportdate= replyInstance.get(i).zhoubao.dateCreate
+
                 allInfo.title= replyInstance.get(i).zhoubao.week
                 allInfo.img = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
                 replyInfo<<allInfo
@@ -959,8 +961,10 @@ class GhbotherapiController {
         if(replyInstance){
             for (def i=0;i<replyInstance.size();i++){
                 def allInfo=replyInstance.get(i)
+
+                allInfo.reportdate=dayFormat.format(replyInstance.get(i).zhoubao.dateCreate)
                 allInfo.reportuid=replyInstance.get(i).zhoubao.uid
-                allInfo.reportdate= replyInstance.get(i).zhoubao.dateCreate
+
                 allInfo.title= replyInstance.get(i).zhoubao.week
                 allInfo.img = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
                 replyInfo<<allInfo
