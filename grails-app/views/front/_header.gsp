@@ -47,6 +47,10 @@
             <%def copytomecount = com.guihuabao.Apply.countByCopyuidAndCidAndApplystatusAndCopyremind(session.user.id,session.company.id,1,1)%><!--抄送提醒-->
             <%def allcount = utaskcount+otargetcount+otaskcount+messageTaskFcount+newapplycount+applycount+taskreplycount+utargetcount+finishtargetcount+cytargetcount+copytomecount%>
             <ul>
+                <li class="exit">
+                    <g:link action="companyBumen" target="_blank" >公司架构</g:link>
+                </li>
+                <li>|</li>
                 <li class="msg">
                     <a href="javascript:;"><i class="fa fa-bell"></i>消息<g:if test="${allcount!=0}"><span class="tsh bg-important">${allcount}</span></g:if></a>
                     <ul class="list">

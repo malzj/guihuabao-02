@@ -84,6 +84,12 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>职责：</td>
+                                <td>
+                                    ${userInstance?.responsibility}
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><button type="submit" class="btn btn-info">保存</button></td>
                                 <td></td>
                             </tr>

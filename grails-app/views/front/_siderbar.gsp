@@ -17,6 +17,11 @@
                 </g:link>
             </li>
             <li>
+                <g:link controller="front" action="companyBumen">
+                    <span>公司架构</span>
+                </g:link>
+            </li>
+            <li>
                 <g:link controller="front" action="companyRoleList" style="display:none;">
                     <span>权限管理</span>
                 </g:link>

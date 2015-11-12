@@ -39,6 +39,11 @@ class GuihuabaoapiController {
     def taskSave(){
         def rs = [:]
         def taskInstance = new Task(params)
+        if(params.playuid==params.fzuid){
+            taskInstance.lookstatus = 2
+        }else{
+            taskInstance.lookstatus = 0
+        }
         taskInstance.remindstatus = 0
         taskInstance.dateCreate = new Date()
         if (!taskInstance.save(flush: true)) {

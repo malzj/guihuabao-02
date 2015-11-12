@@ -19,8 +19,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
-    <exclude-output />
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
     <content url="file://$USER_HOME$/.grails/2.2.4/projects/guihuabao/plugins/cache-1.0.1">
       <sourceFolder url="file://$USER_HOME$/.grails/2.2.4/projects/guihuabao/plugins/cache-1.0.1/src/java" isTestSource="false" />
       <sourceFolder url="file://$USER_HOME$/.grails/2.2.4/projects/guihuabao/plugins/cache-1.0.1/src/groovy" isTestSource="false" />

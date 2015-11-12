@@ -3615,5 +3615,112 @@ class FrontController {
             return false
         }
     }
- }
+//    部门成员
+    def bumenMemberList(){
+        def rs=[:]
+        def bumenId=params.id
+        def cid=params.cid
+        def bumenMemberList=CompanyUser.findAllByCidAndBid(cid,bumenId,[sort: 'pid',order: 'asc'])
+        if(bumenMemberList){
+            rs.result=true
+            rs.bumenMemberList=bumenMemberList
+        }else{
+            rs.result=false
+        }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+//    部门信息
+    def bumenInfo(){
+        def rs=[:]
+        def bumenId=params.id
+        def cid=params.cid
+        def bumenInfo=Bumen.findByCidAndId(cid,bumenId)
+        if(bumenInfo){
+            rs.result=true
+            rs.bumenInfo=bumenInfo
+        }else{
+            rs.result=false
+        }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+
+//    试题
+    /*
+    * 试卷列表
+    * */
+    def testPaperList(){
+        params.max = Math.min(max ?: 10, 100)
+        params<<[sort:'dateCreate',order: 'desc']
+        def testPaperInstanceList=TestPaper.findAll(params)
+        [testPaperInstanceList: testPaperInstanceList, testPaperInstanceTotal: TestPaper.count()]
+    }
+     /*
+    * 新建试卷
+    * */
+    def testPaperCreate(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        [testPaperInstance: new TestPaper(params)]
+    }
+    /*
+   * 新建试卷保存
+   * */
+    def testPaperSave(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def testPaperInstance = new TestPaper(params)
+        if (!testPaperInstance.save(flush: true)) {
+            render(view: "create", model: [testPaperInstance: testPaperInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), testPaperInstance.id])
+        redirect(action: "testPaperShow", id: testPaperInstance.id)
+    }
+    /*
+      * 试卷查看
+      * */
+    def testPaperShow(Long id) {
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def testPaperInstance = TestPaper.get(id)
+        if (!testPaperInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), id])
+            redirect(action: "list")
+            return
+        }
+
+        [testPaperInstance: testPaperInstance]
+    }
+    def testPaperEdit(Long id) {
+        def testPaperInstance = TestPaper.get(id)
+        if (!testPaperInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), id])
+            redirect(action: "testPaperList")
+            return
+        }
+
+        [testPaperInstance: testPaperInstance]
+    }
+}
 

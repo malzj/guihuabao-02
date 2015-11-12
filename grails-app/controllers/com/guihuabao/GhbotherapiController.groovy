@@ -227,7 +227,8 @@ class GhbotherapiController {
         def applyInctance = Apply.findByIdAndCid(id,companyId)
         if(userId==applyInctance.applyuid&&applyInctance.applystatus!=0){
             applyInctance.remindstatus = 0
-        }else if(userId == applyInctance.copyuid&&applyInctance.applystatus!=0){
+        }
+        if(userId == applyInctance.copyuid&&applyInctance.applystatus==1){
             applyInctance.copyremind = 0
         }
 
