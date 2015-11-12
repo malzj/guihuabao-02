@@ -148,6 +148,7 @@ class TargetController {
     }
     def missionSave(){
         def rs=[:]
+        def uid=params.uid
         def tid=params.tid
         def targetInstance=Target.get(tid)
         def missionInstance=new Mission(params)
@@ -158,8 +159,11 @@ class TargetController {
         }else{
             missionInstance.issubmit=1
         }
-
-        missionInstance.hasvisited=0
+        if(uid==missionInstance.playuid){
+            missionInstance.hasvisited=2
+        }else {
+            missionInstance.hasvisited = 0
+        }
         missionInstance.dateCreate=new Date()
 //        missionInstance.reply=0
         missionInstance.target=targetInstance
@@ -240,6 +244,7 @@ class TargetController {
     }
     def missionUpdate(){
         def rs=[:]
+        def uid=params.uid
         def id=params.id
         def missionInstance=Mission.get(id)
         if (!missionInstance) {
@@ -248,6 +253,9 @@ class TargetController {
 
         }else{
             missionInstance.properties=params
+            if(missionInstance.playuid==uid){
+                missionInstance.hasvisited=2
+            }
             if(!missionInstance.save(flush: true)){
                 rs.result=false
                 rs.msg="编辑失败！"
@@ -562,6 +570,7 @@ class TargetController {
         }else{
             missionInstance.status=1
             missionInstance.target.percent+=missionInstance.percent
+            missionInstance.target.save()
             if(!missionInstance.save(flush: true)){
                 rs.result=false
                 rs.msg='获取数据失败！'

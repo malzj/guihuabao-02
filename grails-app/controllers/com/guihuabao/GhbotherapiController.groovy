@@ -571,6 +571,7 @@ class GhbotherapiController {
         calendar.setTime(day);
         calendar.add(Calendar.DATE,-7)
         rs.prevweek = dayFormat.format(calendar.getTime())
+        rs.nowweek = date
 
         if(myReportInfo){
             rs.result = true
@@ -634,6 +635,7 @@ class GhbotherapiController {
         calendar.setTime(day);
         calendar.add(Calendar.DATE,-7)
         rs.prevweek = dayFormat.format(calendar.getTime())
+        rs.nowweek = date
 
         if(myReportInfo){
             if(myReportInfo.submit){
@@ -870,13 +872,15 @@ class GhbotherapiController {
     //回复新增
     def reportReplySave(){
         def rs = [:]
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         def id = params.id
         def replyInstance = new ReplyReport(params)
         def zhoubao = Zhoubao.get(id)
         zhoubao.reply = 1
         replyInstance.zhoubao=  zhoubao
 
-        def date = new Date()
+        def date
+        date = dateFormat.format(new Date())
         replyInstance.date = date
         replyInstance.status = 0
         if(!replyInstance.save(flush: true)){
@@ -899,12 +903,13 @@ class GhbotherapiController {
         def uid = params.uid
         def cid = params.cid
         def replyInstance = ReplyReport.findAllByBpuidAndCidAndStatus(uid, cid, 0, [sort: "date", order: "desc"])
-
+        DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
         if(replyInstance){
             for (def i=0;i<replyInstance.size();i++){
                 def allInfo=replyInstance.get(i)
+                allInfo.reportdate=dayFormat.format(replyInstance.get(i).zhoubao.dateCreate)
                 allInfo.reportuid=replyInstance.get(i).zhoubao.uid
-                allInfo.reportdate= replyInstance.get(i).zhoubao.dateCreate
+
                 allInfo.title= replyInstance.get(i).zhoubao.week
                 allInfo.img = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
                 replyInfo<<allInfo
@@ -956,11 +961,13 @@ class GhbotherapiController {
         def uid = params.uid
         def cid = params.cid
         def replyInstance = ReplyReport.findAllByBpuidAndCid(uid, cid, [sort: "date", order: "desc"])
+        DateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
         if(replyInstance){
             for (def i=0;i<replyInstance.size();i++){
                 def allInfo=replyInstance.get(i)
+                allInfo.reportdate=dayFormat.format(replyInstance.get(i).zhoubao.dateCreate)
                 allInfo.reportuid=replyInstance.get(i).zhoubao.uid
-                allInfo.reportdate= replyInstance.get(i).zhoubao.dateCreate
+
                 allInfo.title= replyInstance.get(i).zhoubao.week
                 allInfo.img = CompanyUser.findByIdAndCid(allInfo.puid,cid).img
                 replyInfo<<allInfo
@@ -986,7 +993,7 @@ class GhbotherapiController {
         def rs = [:]
 
         params.max = 8
-        params<<[sort: 'id',order: 'asc']
+        params<<[sort: 'dateCreate',order: 'desc']
         def offset = 0
         def offse = params.offset.toInteger()
         if(offse>0){
@@ -1123,7 +1130,7 @@ class GhbotherapiController {
         def rs = [:]
 
         params.max = 8
-        params<<[sort: 'id',order: 'asc']
+        params<<[sort: 'dateCreate',order: 'desc']
         def offset = 0
         def offse = params.offset.toInteger()
         if(offse>0){
@@ -1190,7 +1197,7 @@ class GhbotherapiController {
         def rs = [:]
 
         params.max = 8
-        params<<[sort: 'id',order: 'asc']
+        params<<[sort: 'dateCreate',order: 'desc']
         def offset = 0
         def offse = params.offset.toInteger()
         if(offse>0){

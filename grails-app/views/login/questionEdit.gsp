@@ -66,7 +66,7 @@
                                     <table>
                                         <g:each in="${optionInstanceList}" var="optionInstance">
                                         <tr>
-                                            <g:hiddenField name="optionId" value="${optionInstance.id}"></g:hiddenField>
+                                            <g:hiddenField name="infos[optionId][]" value="${optionInstance.id}"></g:hiddenField>
                                             <td><input placeholder="选项字母" name="letter" value="${optionInstance?.letter}" /></td>
                                             <td><input placeholder="选项内容" name="content" value="${optionInstance?.content}" /></td>
                                             <td><input placeholder="选项分数" name="score" value="${optionInstance?.score}" /></td>

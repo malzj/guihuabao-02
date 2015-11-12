@@ -1727,7 +1727,6 @@ class LoginController {
         def questionInstance=new Questions(params)
         questionInstance.testPapers=TestPaper.findById(id)
         def questionInfo
-        def optionInfo
         questionInfo=questionInstance.save(flush: true)
         if (!questionInfo) {
             redirect(action: "questionsList", id: id)
@@ -1736,6 +1735,7 @@ class LoginController {
         def count=params.letter.size()
 
         for(def i=0;i<count;i++){
+            def optionInfo=''
             def optionInstance=new Options();
             optionInstance.letter=params.letter[i]
             optionInstance.content=params.content[i]
@@ -1791,16 +1791,16 @@ class LoginController {
             return
         }
         //题目选项更新
-        def questionIds=params.questionId
+        def questionIds=params
         def count=questionIds.size()
         def optionInstance
         for(def i=0;i<count;i++){
+            def optionInfo=''
             optionInstance=Options.findByQuestionsAndId(questionInstance,questionIds[i])
             optionInstance.letter=params.letter[i]
             optionInstance.content=params.content[i]
             optionInstance.analysis=params.analysis[i]
             optionInstance.score=params.score[i].toLong()
-            optionInstance.questions=questionInfo
             optionInfo=optionInstance.save(flush: true)
             if (!optionInfo) {
                 redirect(action: "questionsList", id: id)

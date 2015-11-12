@@ -3722,5 +3722,23 @@ class FrontController {
 
         [testPaperInstance: testPaperInstance]
     }
+
+//    目标规划选时间
+    def choose_date(){
+        def user = session.user
+        def uid=user.id
+        def cid=user.cid
+        def begintime
+        def endtime
+        def choosedate=Guimo.findByCidAndUid(cid,uid)
+        if(!choosedate){
+            begintime=''
+            endtime=''
+        }else {
+            begintime = choosedate.begintime
+            endtime=choosedate.endtime
+        }
+        [begintime: begintime,endtime: endtime]
+    }
 }
 
