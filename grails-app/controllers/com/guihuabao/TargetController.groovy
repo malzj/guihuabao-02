@@ -570,6 +570,7 @@ class TargetController {
         }else{
             missionInstance.status=1
             missionInstance.target.percent+=missionInstance.percent
+            missionInstance.target.save()
             if(!missionInstance.save(flush: true)){
                 rs.result=false
                 rs.msg='获取数据失败！'
