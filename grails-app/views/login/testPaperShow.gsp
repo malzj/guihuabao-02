@@ -22,13 +22,10 @@
     <link href="${resource(dir: 'css', file: 'slidebars.css')}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="${resource(dir: 'css', file: 'style.css')}" rel="stylesheet">
+    <link href="${resource(dir: 'css', file: 'styleone.css')}" rel="stylesheet">
     <link href="${resource(dir: 'css', file: 'style-responsive.css')}" rel="stylesheet">
 
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">
-
-    <!--编辑器样式-->
-    <link rel="stylesheet" type="text/css" href="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'bootstrap-wysihtml5.css')}" />
 </head>
 
 <body>
@@ -36,27 +33,39 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
-    <div style="height:110px;"></div>
     <!--header end-->
     <!--sidebar start-->
-    <div class="row">
-    <div class="col-xs-2" style="height:100%"></div>
-    <g:render template="siderbar" />
+    <g:render template="sidebar" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content" class="col-xs-10" style="padding-left: 0;">
-        <section class="wrapper">
+    <section id="main-content">
+        <section class="wrapper mt80">
             <div class="middle_content">
                 <div class="m_box">
-                    <header class="panel-heading">
-                        <span><i class="yh"></i>修改部门</span>
+
+                    <header class="panel-heading clearfix">
+                        题目
                     </header>
-                    <g:form url="[controller:'front',action:'bumenUpdate']">
-                        <g:hiddenField name="cid" value="${session.company.id}" />
-                        <g:hiddenField name="id" value="${bumenInstance?.id}" />
-                        <g:hiddenField name="version" value="${bumenInstance?.version}" />
-                        <g:render template="bumenForm" />
-                    </g:form>
+                    <table>
+                        <tr>
+                            <td>名称：</td>
+                            <td width="345"><g:fieldValue bean="${testPaperInstance}" field="title"/></td>
+                        </tr>
+                        <tr>
+                            <td>备注：</td>
+                            <td>
+                                ${testPaperInstance.remark}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <g:link action="testPaperEdit" id="${testPaperInstance.id}" class="btn btn-info">编辑</g:link>
+                                <g:link action="testPaperDelete" id="${testPaperInstance.id}" class="btn btn-info" onclick="return confirm('确定删除？');">删除</g:link>
+                                <g:link action="testPaperList" class="btn btn-info">试卷列表</g:link>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </section>
@@ -97,21 +106,28 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
 
-    <!--编辑器-->
-    <script type="text/javascript" src="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'wysihtml5-0.3.0.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'bootstrap-wysihtml5.js')}"></script>
+    %{--<script>--}%
 
-    <script type="text/javascript">
-        $('.wysihtml5').wysihtml5({
-            "font-styles": false,
-            "color": false,
-            "emphasis": true,
-            "lists": true,
-            "html": false,
-            "link": false,
-            "image": false
-        });
-    </script>
+    %{--//owl carousel--}%
+
+    %{--$(document).ready(function() {--}%
+    %{--$("#owl-demo").owlCarousel({--}%
+    %{--navigation : true,--}%
+    %{--slideSpeed : 300,--}%
+    %{--paginationSpeed : 400,--}%
+    %{--singleItem : true,--}%
+    %{--autoPlay:true--}%
+
+    %{--});--}%
+    %{--});--}%
+
+    %{--//custom select box--}%
+
+    %{--$(function(){--}%
+    %{--$('select.styled').customSelect();--}%
+    %{--});--}%
+
+    %{--</script>--}%
 
 </body>
 </html>

@@ -22,13 +22,10 @@
     <link href="${resource(dir: 'css', file: 'slidebars.css')}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="${resource(dir: 'css', file: 'style.css')}" rel="stylesheet">
+    <link href="${resource(dir: 'css', file: 'styleone.css')}" rel="stylesheet">
     <link href="${resource(dir: 'css', file: 'style-responsive.css')}" rel="stylesheet">
 
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">
-
-    <!--编辑器样式-->
-    <link rel="stylesheet" type="text/css" href="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'bootstrap-wysihtml5.css')}" />
 </head>
 
 <body>
@@ -36,42 +33,46 @@
 <section id="container" >
     <!--header start-->
     <g:render template="header" />
-    <div style="height:110px;"></div>
     <!--header end-->
     <!--sidebar start-->
-    <div class="row">
-    <div class="col-xs-2" style="height:100%"></div>
-    <g:render template="siderbar" />
+    <g:render template="sidebar" />
     <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content" class="col-xs-10" style="padding-left: 0;">
-        <section class="wrapper">
+    <section id="main-content">
+        <section class="wrapper mt80">
             <div class="middle_content">
                 <div class="m_box">
+
                     <header class="panel-heading">
-                        <span><i class="yh"></i>修改部门</span>
+                        编辑试卷
                     </header>
-                    <g:form url="[controller:'front',action:'bumenUpdate']">
-                        <g:hiddenField name="cid" value="${session.company.id}" />
-                        <g:hiddenField name="id" value="${bumenInstance?.id}" />
-                        <g:hiddenField name="version" value="${bumenInstance?.version}" />
-                        <g:render template="bumenForm" />
+
+                    <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'testPaperUpdate']" method="post"  enctype= "multipart/form-data">
+                        <g:hiddenField name="id" value="${testPaperInstance?.id}" />
+                        <g:hiddenField name="version" value="${testPaperInstance?.version}" />
+                        <table>
+                            <tr>
+                                <td>名称：</td>
+                                <td width="345"><input name="title" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${testPaperInstance?.title}"></td>
+                            </tr>
+                            <tr>
+                                <td>备注：</td>
+                                <td><input name="remark" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${testPaperInstance?.remark}"></td>
+                            </tr>
+                            %{--<g:hiddenField name="bookId" value="${bookId}"></g:hiddenField>--}%
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button type="submit" class="btn btn-info">保存</button>
+                                    <button class="btn btn-info">返回</button>
+                                </td>
+                            </tr>
+                        </table>
                     </g:form>
                 </div>
             </div>
         </section>
         <!--main content end-->
-
-        <!--footer start-->
-        %{--<footer class="site-footer">--}%
-        %{--<div class="text-center">--}%
-        %{--2013 &copy; FlatLab by VectorLab.--}%
-        %{--<a href="index.html#" class="go-top">--}%
-        %{--<i class="fa fa-angle-up"></i>--}%
-        %{--</a>--}%
-        %{--</div>--}%
-        %{--</footer>--}%
-        <!--footer end-->
     </section>
 
     <!-- js placed at the end of the document so the pages load faster -->
@@ -97,21 +98,28 @@
     <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
     <script src="${resource(dir: 'js', file: 'count.js')}"></script>
 
-    <!--编辑器-->
-    <script type="text/javascript" src="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'wysihtml5-0.3.0.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'bootstrap-wysihtml5.js')}"></script>
+    %{--<script>--}%
 
-    <script type="text/javascript">
-        $('.wysihtml5').wysihtml5({
-            "font-styles": false,
-            "color": false,
-            "emphasis": true,
-            "lists": true,
-            "html": false,
-            "link": false,
-            "image": false
-        });
-    </script>
+    %{--//owl carousel--}%
+
+    %{--$(document).ready(function() {--}%
+    %{--$("#owl-demo").owlCarousel({--}%
+    %{--navigation : true,--}%
+    %{--slideSpeed : 300,--}%
+    %{--paginationSpeed : 400,--}%
+    %{--singleItem : true,--}%
+    %{--autoPlay:true--}%
+
+    %{--});--}%
+    %{--});--}%
+
+    %{--//custom select box--}%
+
+    %{--$(function(){--}%
+    %{--$('select.styled').customSelect();--}%
+    %{--});--}%
+
+    %{--</script>--}%
 
 </body>
 </html>

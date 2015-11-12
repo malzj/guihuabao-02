@@ -1588,4 +1588,147 @@ class LoginController {
         } else
             render rs as JSON
     }
-}
+    //    试题
+    /*
+    * 试卷列表
+    * */
+    def testPaperList(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        params<<[sort:'dateCreate',order: 'desc']
+        def testPaperInstanceList=TestPaper.findAll(params)
+        [testPaperInstanceList: testPaperInstanceList, testPaperInstanceTotal: TestPaper.count()]
+    }
+    /*
+   * 新建试卷
+   * */
+    def testPaperCreate(){
+
+        [testPaperInstance: new TestPaper(params)]
+    }
+    /*
+   * 新建试卷保存
+   * */
+    def testPaperSave(){
+
+        def testPaperInstance = new TestPaper(params)
+        testPaperInstance.dateCreate = new Date()
+        if (!testPaperInstance.save(flush: true)) {
+            render(view: "create", model: [testPaperInstance: testPaperInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), testPaperInstance.id])
+        redirect(action: "testPaperShow", id: testPaperInstance.id)
+    }
+    /*
+      * 试卷查看
+      * */
+    def testPaperShow(Long id) {
+        def testPaperInstance = TestPaper.get(id)
+        if (!testPaperInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), id])
+            redirect(action: "list")
+            return
+        }
+
+        [testPaperInstance: testPaperInstance]
+    }
+    /*
+    * 试卷编辑
+    * */
+    def testPaperEdit(Long id) {
+        def testPaperInstance = TestPaper.get(id)
+        if (!testPaperInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), id])
+            redirect(action: "testPaperList")
+            return
+        }
+
+        [testPaperInstance: testPaperInstance]
+    }
+    /*
+    * 试卷更新
+    * */
+    def testPaperUpdate(Long id, Long version) {
+        def testPaperInstance = TestPaper.get(id)
+        if (!testPaperInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), id])
+            redirect(action: "testPaperList")
+            return
+        }
+
+        if (version != null) {
+            if (testPaperInstance.version > version) {
+                testPaperInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'testPaper.label', default: 'TestPaper')] as Object[],
+                        "Another user has updated this TestPaper while you were editing")
+                render(view: "testPaperEdit", model: [testPaperInstance: testPaperInstance])
+                return
+            }
+        }
+
+        testPaperInstance.properties = params
+
+        if (!testPaperInstance.save(flush: true)) {
+            render(view: "testPaperEdit", model: [testPaperInstance: testPaperInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), testPaperInstance.id])
+        redirect(action: "testPaperShow", id: testPaperInstance.id)
+    }
+    /*
+    * 试卷删除
+    * */
+    def testPaperDelete(Long id) {
+        def testPaperInstance = TestPaper.get(id)
+        if (!testPaperInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), id])
+            redirect(action: "testPaperList")
+            return
+        }
+
+        try {
+            testPaperInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), id])
+            redirect(action: "testPaperList")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), id])
+            redirect(action: "testPaperShow", id: id)
+        }
+    }
+    /*
+    * 题目列表
+    *  参数 id（试卷ID）
+    * */
+    def questionsList(Long id,Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        params<<[sort:'num',order: 'asc']
+        def testPaper=TestPaper.findById(id)
+        def questionsInstanceList=Questions.findAllByTestPapers(testPaper,params)
+        def questionsInstanceTotal=Questions.countByTestPapers(testPaper)
+        [questionsInstanceList: questionsInstanceList, questionsInstanceTotal: questionsInstanceTotal,id: id]
+    }
+    /*
+    * 新建题目
+    * 参数 id（试卷ID）
+    * */
+    def questionCreate(Long id){
+        [questionInstance: new Questions(params),id: id]
+    }
+    /*
+    * 保存题目及选项
+    * 参数 id（试卷ID）
+    * */
+    def questionSave(Long id){
+        def questionInstance=new Questions(params)
+        questionInstance.testPapers=TestPaper.findById(id)
+        def questionId
+        questionId=questionInstance.save(flush: true)
+        if (!questionId) {
+            render(view: "syllabusCreate", model: [syllabusInstance: syllabusInstance])
+            return
+        }
+    }
+ }

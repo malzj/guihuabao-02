@@ -17,6 +17,12 @@
         </td>
     </tr>
     <tr>
+        <td>部门职责：</td>
+        <td>
+            <textarea name="responsibility" class="wysihtml5 form-control" rows="10">${bumenInstance?.responsibility}</textarea>
+        </td>
+    </tr>
+    <tr>
         <td>备注：</td>
         <td><input class="form-control form-control-inline input-medium" type="text" name="remark"  value="${bumenInstance?.remark}" /></td>
     </tr>

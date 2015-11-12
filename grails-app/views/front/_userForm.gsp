@@ -39,7 +39,7 @@
     <tr>
         <td>员工职位：</td>
         <td>
-            <input class="form-control form-control-inline input-medium" type="text" name="position"  value="${companyUserInstance?.position}" />
+            <input class="form-control form-control-inline input-medium" type="text" name="position"  value="${(companyUserInstance.position)?companyUserInstance.position:'员工'}" />
         </td>
     </tr>
     <tr>
