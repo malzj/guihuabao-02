@@ -63,11 +63,11 @@
                     </div>
                     <div class="content">
                         <div style="margin-top:20px;" class="clearfix">
-
-                           开始时间： <input id="startdate" value="${begintime}"/>
-                           结束时间： <input id="enddate" value="${endtime}"/>
-                            <g:link action="user_target" params="">下一步</g:link>
-
+                            <g:form url="[controller:'front',action:'guimoSave']" method="post">
+                               开始时间： <input id="startdate" name="begintime" value="${begintime}"/>
+                               结束时间： <input id="enddate" name="endtime" value="${endtime}"/>
+                                <button type="submit"  class="button" >下一步</button>
+                            </g:form>
 
                         </div>
 
@@ -140,10 +140,10 @@
 <!--上传图片预览 js-->
 <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
 <script type="text/javascript">
-    window.onload = function () {
-        new uploadPreview({ UpBtn: "up_img", DivShow: "imgDefault", ImgShow: "img" });
-        new uploadPreview({ UpBtn: "up_img1", DivShow: "imgDefault1", ImgShow: "img1" });
-    }
+//    window.onload = function () {
+//        new uploadPreview({ UpBtn: "up_img", DivShow: "imgDefault", ImgShow: "img" });
+//        new uploadPreview({ UpBtn: "up_img1", DivShow: "imgDefault1", ImgShow: "img1" });
+//    }
 </script>
 
 
