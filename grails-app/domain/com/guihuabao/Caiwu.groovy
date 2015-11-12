@@ -8,6 +8,9 @@ class Caiwu {
     String mouth
     String now
     String yingshou
+    String maolilv
+    String pingxiaobi
+    String jinglirun
 
     static constraints = {
     }
