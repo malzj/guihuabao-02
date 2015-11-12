@@ -148,6 +148,7 @@ class TargetController {
     }
     def missionSave(){
         def rs=[:]
+        def uid=params.uid
         def tid=params.tid
         def targetInstance=Target.get(tid)
         def missionInstance=new Mission(params)
@@ -158,8 +159,11 @@ class TargetController {
         }else{
             missionInstance.issubmit=1
         }
-
-        missionInstance.hasvisited=0
+        if(uid==missionInstance.playuid){
+            missionInstance.hasvisited=2
+        }else {
+            missionInstance.hasvisited = 0
+        }
         missionInstance.dateCreate=new Date()
 //        missionInstance.reply=0
         missionInstance.target=targetInstance
