@@ -1715,7 +1715,9 @@ class LoginController {
     * 参数 id（试卷ID）
     * */
     def questionCreate(Long id){
-        [questionInstance: new Questions(params),id: id]
+        def testPaperInstance=TestPaper.get(id)
+        def questionInfo=Questions.findByTestPapers(testPaperInstance,[sort: 'num',order: 'desc'])
+        [questionInstance: new Questions(params),id: id,num: questionInfo.num]
     }
     /*
     * 保存题目及选项
@@ -1724,11 +1726,87 @@ class LoginController {
     def questionSave(Long id){
         def questionInstance=new Questions(params)
         questionInstance.testPapers=TestPaper.findById(id)
-        def questionId
-        questionId=questionInstance.save(flush: true)
-        if (!questionId) {
-            render(view: "syllabusCreate", model: [syllabusInstance: syllabusInstance])
+        def questionInfo
+        questionInfo=questionInstance.save(flush: true)
+        if (!questionInfo) {
+            redirect(action: "questionsList", id: id)
             return
         }
+        def count=params.letter.size()
+
+        for(def i=0;i<count;i++){
+            def optionInfo=''
+            def optionInstance=new Options();
+            optionInstance.letter=params.letter[i]
+            optionInstance.content=params.content[i]
+            optionInstance.analysis=params.analysis[i]
+            optionInstance.score=params.score[i].toLong()
+            optionInstance.questions=questionInfo
+            optionInfo=optionInstance.save(flush: true)
+            if (!optionInfo) {
+                redirect(action: "questionsList", id: id)
+                return
+            }
+        }
+        redirect(action: "questionsList", id: id)
     }
+    /*
+    * 题目修改
+    * 参数 id（试卷ID）questionId（题目ID）
+    * */
+    def questionEdit(Long id,Long questionId){
+        def testPaperInstance=TestPaper.get(id)
+        def questionInstance=Questions.findByIdAndTestPapers(questionId,testPaperInstance)
+        def optionInstanceList=Options.findAllByQuestions(questionInstance)
+        [questionInstance:questionInstance,optionInstanceList:optionInstanceList,id:id]
+    }
+    /*
+   * 题目修改更新
+   * 参数 id（试卷ID）questionId（题目ID）
+   * */
+    def questionUpdate(Long id,Long questionId, Long version){
+        def testPaperInstance=TestPaper.get(id)
+        def questionInstance=Questions.findByIdAndTestPapers(questionId,testPaperInstance)
+        if (!questionInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'question.label', default: 'Question'), id])
+            redirect(action: "questionsList")
+            return
+        }
+
+        if (version != null) {
+            if (testPaperInstance.version > version) {
+                testPaperInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'question.label', default: 'Question')] as Object[],
+                        "Another user has updated this TestPaper while you were editing")
+                redirect(action: "questionsList",params: [id:id,questionId:questionId])
+                return
+            }
+        }
+
+        questionInstance.num = params.num.toLong()
+        questionInstance.question = params.question
+
+        if (!testPaperInstance.save(flush: true)) {
+            redirect(action: "questionsList",params: [id:id,questionId:questionId])
+            return
+        }
+        //题目选项更新
+        def optionInstanceList=Options.findAllByQuestions(questionInstance)
+        def questionIds=params.list('letter[1]')
+        def count=optionInstanceList.size()
+        def optionInstance
+        for(def i=0;i<count;i++){
+//            def
+//            optionInstance=Options.findByQuestionsAndId(questionInstance,questionIds[i])
+//            optionInstance.letter=params.list('letter['+optionInstance.id+']').get(0)
+//            optionInstance.content=params.content[i]
+//            optionInstance.analysis=params.analysis[i]
+//            optionInstance.score=params.score[i].toLong()
+//            if (!optionInstance.save(flush: true)) {
+//                redirect(action: "questionsList", id: id)
+//                return
+//            }
+        }
+    }
+
  }

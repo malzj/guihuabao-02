@@ -44,36 +44,35 @@
                 <div class="m_box">
 
                     <header class="panel-heading">
-                        新建试题
+                        编辑试题
                     </header>
 
-                    <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'questionSave']" method="post"  enctype= "multipart/form-data">
+                    <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'questionUpdate']" method="post"  enctype= "multipart/form-data">
                         <table>
                             <g:hiddenField name="id" value="${id}"></g:hiddenField>
+                            <g:hiddenField name="questionId" value="${questionInstance?.id}"></g:hiddenField>
+                            <g:hiddenField name="version" value="${questionInstance?.version}"></g:hiddenField>
                             <tr>
                                 <td>题号：</td>
-                                <td width="345"><input name="num" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${num}"></td>
+                                <td width="345"><input name="num" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${questionInstance?.num}"></td>
                             </tr>
                             <tr>
                                 <td>题目内容：</td>
-                                <td><input name="question" class="form-control form-control-inline input-medium default-date-picker" type="text" value=""></td>
+                                <td><input name="question" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${questionInstance?.question}"></td>
                             </tr>
                             <tr>
                                 <td>选项：</td>
                                 <td>
                                     <table>
+                                        <g:each in="${optionInstanceList}" var="optionInstance">
                                         <tr>
-                                            <td><input placeholder="选项字母" name="letter" value="" /></td>
-                                            <td><input placeholder="选项内容" name="content" value="" /></td>
-                                            <td><input placeholder="选项分数" name="score" value="" /></td>
-                                            <td><input placeholder="选项解析" name="analysis" value="" /></td>
+                                            %{--<g:hiddenField name="infos[optionId]" value="${optionInstance.id}"></g:hiddenField>--}%
+                                            <td><input placeholder="选项字母" name="letter[${optionInstance.id}]" value="${optionInstance?.letter}" /></td>
+                                            <td><input placeholder="选项内容" name="content[${optionInstance.id}]" value="${optionInstance?.content}" /></td>
+                                            <td><input placeholder="选项分数" name="score[${optionInstance.id}]" value="${optionInstance?.score}" /></td>
+                                            <td><input placeholder="选项解析" name="analysis[${optionInstance.id}]" value="${optionInstance?.analysis}" /></td>
                                         </tr>
-                                        <tr>
-                                            <td><input placeholder="选项字母" name="letter" value="" /></td>
-                                            <td><input placeholder="选项内容" name="content" value="" /></td>
-                                            <td><input placeholder="选项分数" name="score" value="" /></td>
-                                            <td><input placeholder="选项解析" name="analysis" value="" /></td>
-                                        </tr>
+                                        </g:each>
                                     </table>
                                 </td>
                             </tr>

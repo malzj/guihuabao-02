@@ -60,7 +60,7 @@
                             <g:each in="${questionsInstanceList}" status="i" var="questionsInstance">
                                 <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                                     <td>${questionsInstance.num}</td>
-                                    <td><g:link controller="login" action="testPaperList" id="${questionsInstance?.id}">${questionsInstance?.question.substring(0,6)}...</g:link></td>
+                                    <td><g:link controller="login" action="questionEdit" params="[id:id,questionId:questionsInstance?.id]">${questionsInstance?.question}</g:link></td>
                                     <td>
                                         <g:link action="testPaperShow" id="${questionsInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
                                         <g:link action="testPaperEdit" id="${questionsInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
