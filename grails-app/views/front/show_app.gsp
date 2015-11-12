@@ -108,6 +108,9 @@
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
 <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
+<script class="include" type="text/javascript" src="${resource(dir: 'js', file: 'jquery.dcjqaccordion.2.7.js')}"></script>
+<script src="${resource(dir: 'js', file: 'jquery.scrollTo.min.js')}"></script>
+<script src="${resource(dir: 'js', file: 'jquery.nicescroll.js')}" type="text/javascript"></script>
 <script type="text/javascript">
     function allowDrop(ev)
     {
@@ -237,5 +240,7 @@
     })
 
 </script>
+<!--common script for all pages-->
+<script src="${resource(dir: 'js', file: 'common-scripts.js')}"></script>
 </body>
 </html>

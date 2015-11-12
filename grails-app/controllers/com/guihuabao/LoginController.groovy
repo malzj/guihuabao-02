@@ -1791,21 +1791,21 @@ class LoginController {
             return
         }
         //题目选项更新
-        def questionIds=params
-        def count=questionIds.size()
+        def optionInstanceList=Options.findAllByQuestions(questionInstance)
+        def questionIds=params.list('letter[1]')
+        def count=optionInstanceList.size()
         def optionInstance
         for(def i=0;i<count;i++){
-            def optionInfo=''
-            optionInstance=Options.findByQuestionsAndId(questionInstance,questionIds[i])
-            optionInstance.letter=params.letter[i]
-            optionInstance.content=params.content[i]
-            optionInstance.analysis=params.analysis[i]
-            optionInstance.score=params.score[i].toLong()
-            optionInfo=optionInstance.save(flush: true)
-            if (!optionInfo) {
-                redirect(action: "questionsList", id: id)
-                return
-            }
+//            def
+//            optionInstance=Options.findByQuestionsAndId(questionInstance,questionIds[i])
+//            optionInstance.letter=params.list('letter['+optionInstance.id+']').get(0)
+//            optionInstance.content=params.content[i]
+//            optionInstance.analysis=params.analysis[i]
+//            optionInstance.score=params.score[i].toLong()
+//            if (!optionInstance.save(flush: true)) {
+//                redirect(action: "questionsList", id: id)
+//                return
+//            }
         }
     }
 
