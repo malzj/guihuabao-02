@@ -83,7 +83,7 @@
 
 <body>
 <div class="tishi" style="border:1px solid #000;background-color: pink;text-align: center;width:300px;height:80px;margin:250px auto;line-height:80px;position: fixed;z-index: 10000;display:none;">${params.msg}</div>
-<section id="container" >
+<section id="container1" style="width:100%;overflow:auto;">
     <!--header start-->
     <g:render template="header" />
 <div style="height:110px;"></div>
@@ -234,7 +234,7 @@
 </div>
 
 <!--目标分解 start-->
-<div class="passwordedit" id="tar_fj" style="overflow: scroll;">
+<div class="passwordedit" id="tar_fj" style="overflow: auto;">
 
     <div class="m_box" style="width:804px;">
         <header class="panel-heading" style="padding:10px 28px;">
@@ -333,7 +333,7 @@
 
 <!--新建任务 start-->
 <div class="passwordedit popup_box" id="newmissiondetail">
-    <div class="m_box" style="width:804px;">
+    <div class="m_box" style="width:804px;height:550px;">
         <header class="panel-heading" style="padding:10px 28px;">
             <span><i class="yh"></i>新建任务</span>
             <div class="close"><a href="javascript:;" class="fa fa-times"></a></div>
@@ -353,62 +353,35 @@
                     <tr>
                         <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>
                         <td width="75%" >
-
-                            <input type="hidden"  name="playuid" value=""  id="newmission_playname" class="nr" title="该字段不能为空！"/>
-                            <input type="hidden" id="playbid" name="bid" value="" class="nr" title="该字段不能为空！"/>
-                            <input type="hidden" id="playname" name="playname" value="" class="nr" title="该字段不能为空！"/>
+                            <g:if test="${session.user.pid<=2}">
+                            <input type="hidden"  name="playuid" value=""  id="newmission_playname" class="nr puid" title="该字段不能为空！"/>
+                            <input type="hidden" id="playbid" name="bid" value="" class="nr pbid" title="该字段不能为空！"/>
+                            <input type="hidden" id="playname" name="playname" value="" class="nr puname" title="该字段不能为空！"/>
                             <div class="dropdown"><span class="zhxr con"></span>
-                                <a  id="playman" style="cursor:pointer;" class="menu"  data-toggle="dropdown"><i class="fa fa-plus-square-o"></i></a>
-                                %{--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="margin:0;" id="topmenu">--}%
-                                    %{--<li class="dropdown-header">下属部门</li>--}%
-                                    %{--<g:if test="${session.user.pid==1}">--}%
-                                        %{--<g:each in="${bumenInstance}" var="bumenInfo">--}%
-                                            %{--<li class="dropdown-submenu "  style="margin-bottom: 0;">--}%
-                                                %{--<a tabindex="-1"  data-toggle="dropdown" class="bumen">${bumenInfo.name}<span style="display:none" >${bumenInfo.id}</span></a>--}%
-                                                %{--<ul class="dropdown-menu"  role="menu" aria-labelledby="dLabel"  style="margin:0;padding-top:10px;padding-bottom: 10px;">--}%
-                                                    %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">--}%
-                                                        %{--<span style="display:none">${session.user.bid}</span>--}%
-                                                         %{--<li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>--}%
-                                                    %{--</g:each>--}%
-                                                %{--</ul>--}%
-                                            %{--</li>--}%
-                                        %{--</g:each>--}%
-                                    %{--</g:if>--}%
-                                    %{--<g:elseif test="${session.user.pid==2}">--}%
-                                         %{--<g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">--}%
-                                            %{--<span style="display:none">${session.user.bid}</span>--}%
-                                            %{--<li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>--}%
-                                         %{--</g:each>--}%
-                                    %{--</g:elseif>--}%
 
-                                    %{--<g:else>--}%
-                                        %{--<span style="display:none">${session.user.bid}</span>--}%
-                                        %{--<li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>--}%
-                                    %{--</g:else>--}%
-                                    %{--<li role="separator" class="divider"></li>--}%
-                                    %{--<li class="dropdown-header">本部门成员</li>--}%
+                                <a  id="playman" style="cursor:pointer;" class="menu playman" ><i class="fa fa-plus-square-o"></i></a>
 
-                                %{--</ul>--}%
 
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="position:fixed;;top:50px;left:auto;margin:0;padding:0;width:300px;height:600px;overflow:auto;">
-                                <h2 style="font-size: 16px;padding:10px 20px;;margin:0px;"><i class="fa fa-chevron-left" style="margin-right: 5px;"></i>返回<span>孵化中心</span></h2>
+                                <ul class="dropdown-menu dropdown-menu1" role="menu" aria-labelledby="dropdownMenu1" style="position:fixed;;top:50px;left:auto;margin:0;padding:0;width:300px;max-height:600px;min-height:300px;overflow:auto;display:none;">
+                                <h2 class="clearfix" style="font-size: 16px;padding:10px 20px;;margin:0px;"><div class="fanhui f-l" style="cursor: pointer;"><i class="fa fa-chevron-left" style="margin-right: 5px;"></i>返回<span class="bumenname"></span><span class="bumenid" style="display: none;"></span></div><i class="fa fa-times f-r" style="cursor:pointer;"></i></h2>
                                 <hr/>
-                                    <li role="presentation" class="dropdown-header" style="margin-bottom: 5px;"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>下属部门</li>
-                                        <g:if test="${session.user.pid==1}">
-                                            <g:each in="${bumenInstance}" var="bumenInfo">
+                                    <li role="presentation" class="dropdown-header dropdown-header1" style="margin-bottom: 5px;cursor: pointer;"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>下属部门</li>
 
-                                                    <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="liebiao">
-                                                        <a role="menuitem" tabindex="-1" href="#">${bumenInfo.name}<span style="display:none" >${bumenInfo.id}</span></a>
-                                                    </li>
-                                            </g:each>
-                                          </g:if>
                                     <li role="presentation" class="divider"></li>
-                                    <li role="presentation" class="dropdown-header" style="margin-bottom: 5px;"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>本部门人员</li>
-                                    <li role="presentation">
-                                        <a role="menuitem" tabindex="-1" href="#" style="margin-bottom: 5px;text-indent: 20px;">ddd</a>
-                                    </li>
+                                    <li role="presentation" class="dropdown-header dropdown-header2" style="margin-bottom: 5px;cursor: pointer;"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>本部门人员</li>
+
                                 </ul>
-                            </div></td>
+                                </div>
+                                </g:if>
+                                <g:else>
+                                    <input type="hidden"  name="playuid" value="${session.user.id}"  id="newmission_playname" class="nr" title="该字段不能为空！"/>
+                                    <input type="hidden" id="playbid" name="bid" value="${session.user.bid}" class="nr" title="该字段不能为空！"/>
+                                    <input type="hidden" id="playname" name="playname" value="${session.user.name}" class="nr" title="该字段不能为空！"/>
+                                    <div class="dropdown"><span class="zhxr con">${session.user.id}</span></div>
+                                </g:else>
+
+
+                            </td>
 
                     </tr>
                     <tr>
@@ -476,41 +449,33 @@
                         <tr>
                             <th style="text-align: center;width:25%;background:#f8f8f8;font-size:16px;font-weight: normal">执行人</th>
                             <td width="75%">
-                                <input type="hidden" id="playuid_edit" name="playuid" value="" title="该字段不能为空！"/>
-                                <input type="hidden" id="playbid_edit" name="playbid" value="" title="该字段不能为空！"/>
-                                <input type="hidden" id="playname_edit" name="playname" value="" title="该字段不能为空！"/>
-                                <div class="dropdown"><span class="zhxr con"></span>
-                                    <a  id="playman_edit" style="cursor:pointer;" class="menu1"  data-toggle="dropdown"><i class="fa fa-plus-square-o"></i></a>
-                                    <span style="display:none;">${session.user.pid}</span>
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="margin:0;" >
+                                <g:if test="${session.user.pid<=2}">
+                                    <input type="hidden" id="playuid_edit" name="playuid" class="puid" value="" title="该字段不能为空！"/>
+                                    <input type="hidden" id="playbid_edit" name="playbid" class="pbid" value="" title="该字段不能为空！"/>
+                                    <input type="hidden" id="playname_edit" name="playname" class="puname" value="" title="该字段不能为空！"/>
+                                    <div class="dropdown"><span class="zhxr con"></span>
+                                        <a  id="playman_edit" style="cursor:pointer;" class="menu1 playman"  data-toggle="dropdown"><i class="fa fa-plus-square-o"></i></a>
+                                        <span style="display:none;">${session.user.pid}</span>
+                                        <ul class="dropdown-menu dropdown-menu1" role="menu" aria-labelledby="dropdownMenu1" style="position:fixed;;top:50px;left:auto;margin:0;padding:0;width:300px;max-height:600px;min-height:300px;overflow:auto;display:none;">
+                                            <h2 class="clearfix" style="font-size: 16px;padding:10px 20px;;margin:0px;"><div class="fanhui f-l" style="cursor: pointer;"><i class="fa fa-chevron-left" style="margin-right: 5px;"></i>返回<span class="bumenname"></span><span class="bumenid" style="display: none;"></span></div><i class="fa fa-times f-r" style="cursor:pointer;"></i></h2>
+                                            <hr/>
+                                            <li role="presentation" class="dropdown-header dropdown-header1" style="margin-bottom: 5px;cursor: pointer;"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>下属部门</li>
 
-                                        <g:if test="${session.user.pid==1}">
-                                            <g:each in="${bumenInstance}" var="bumenInfo">
-                                                <li class="dropdown-submenu "  style="margin-bottom: 0;">
-                                                    <a tabindex="-1"  data-toggle="dropdown" class="bumen">${bumenInfo.name}</a>
-                                                    <ul class="dropdown-menu"  role="menu" aria-labelledby="dLabel"  style="margin:0;padding-top:10px;padding-bottom: 10px;">
-                                                        <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,bumenInfo.id)}" var="userInfo">
-                                                            <span style="display:none" >${session.user.bid}</span>
-                                                            <li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
+                                            <li role="presentation" class="divider"></li>
+                                            <li role="presentation" class="dropdown-header dropdown-header2" style="margin-bottom: 5px;cursor: pointer;"><i class="fa fa-caret-down" style="margin-right: 10px;"></i>本部门人员</li>
 
-                                                        </g:each>
-                                                    </ul>
-                                                </li>
-                                            </g:each>
-                                        </g:if>
-                                        <g:elseif test="${session.user.pid==2}">
-                                            <g:each in="${com.guihuabao.CompanyUser.findAllByCidAndBid(session.company.id,session.user.bid)}" var="userInfo">
-                                                <span style="display:none">${session.user.bid}</span>
-                                               <li  class="dropdown " style="margin-bottom: 0;"><a class="pn user">${userInfo.name}</a><span style="display:none">${userInfo.id}</span></li>
-                                            </g:each>
-                                        </g:elseif>
-                                        <g:else>
-                                            <span style="display:none">${session.user.bid}</span>
-                                            <li  class="dropdown" style="margin-bottom: 0;"><a class="pn user">${session.user.name}</a><span style="display:none">${session.user.id}</span></li>
-                                        </g:else>
-                                    </ul>
+                                        </ul>
+                                    </div>
+                                </g:if>
+                                <g:else>
+                                    <input type="hidden" id="playuid_edit" name="playuid" value="${session.user.id}" title="该字段不能为空！"/>
+                                    <input type="hidden" id="playbid_edit" name="playbid" value="${session.user.bid}" title="该字段不能为空！"/>
+                                    <input type="hidden" id="playname_edit" name="playname" value="${session.user.name}" title="该字段不能为空！"/>
+                                    <div class="dropdown"><span class="zhxr con">${session.user.name}</span></div>
+                                </g:else>
 
-                                </div></td>
+
+                                </td>
 
                         </tr>
                         <tr>
@@ -552,7 +517,7 @@
         <span style="display:none;" id="t_overtime_edit"></span>
         <span style="display:none;" id="t_starttime_edit"></span>
     </div>
-</div>
+
 <!--编辑任务 end-->
 <!--目标详情 start-->
 <div class="passwordedit" id="tar_detail" style="overflow: scroll;">
@@ -616,6 +581,7 @@
         </div>
     </div>
 </div>
+</section>
 <!--评论及反馈 end-->
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
@@ -1210,33 +1176,41 @@
                             $("#tar_detail").css("display","block");
                 })
 
-            $('.menu').click(function(){
-//                $('.bumen').hover(function(){
-//                    $('#playbid').val($(this).find('span:first-child').html());
+//            $('.menu').click(function(){
+////                $('.bumen').hover(function(){
+////                    $('#playbid').val($(this).find('span:first-child').html());
+////                })
+//                $('.user').click(function(){
+//                    $('#playbid').val($(this).parent().prev().html());
+//                    $('#newmission_playname').val($(this).next().html());
+//                    $('#playname').val($(this).text());
+//                    $('.zhxr').html($(this).text());
 //                })
-                $('.user').click(function(){
-                    $('#playbid').val($(this).parent().prev().html());
-                    $('#newmission_playname').val($(this).next().html());
-                    $('#playname').val($(this).text());
-                    $('.zhxr').html($(this).text());
-                })
-            });
-            $('.menu1').click(function(){
-//                $('.bumen').hover(function(){
-//                    $('#playbid_edit').val($(this).find('span:first-child').html());
+//            });
+//            $('.menu1').click(function(){
+////                $('.bumen').hover(function(){
+////                    $('#playbid_edit').val($(this).find('span:first-child').html());
+////                })
+//                $('.user').click(function(){
+//                    $('#playbid_edit').val($(this).parent().prev().html());
+//                    $('#playuid_edit').val($(this).next().html());
+//                    $('#playname_edit').val($(this).text());
+//                    $('.zhxr').html($(this).text());
 //                })
-                $('.user').click(function(){
-                    $('#playbid_edit').val($(this).parent().prev().html());
-                    $('#playuid_edit').val($(this).next().html());
-                    $('#playname_edit').val($(this).text());
-                    $('.zhxr').html($(this).text());
-                })
-            })
+//            })
 
             //新建任务
             $("#newmission").click(function() {
                 $('.nr').val('');
                 $('.con').empty();
+                var pn='${session.user.name}';
+                if(${session.user.pid==3}){
+                    $('.zhxr').html(pn);
+                    $('#newmission_playname').val(${session.user.id});
+                    $('#playname').val(pn);
+                    $('#playbid').val(${session.user.bid});
+                }
+
                 $('#target_id').val($('#var_all').html());
                 var target_id= $('#target_id').val();
                 $.ajax({
@@ -1755,14 +1729,173 @@
                     alert('保存失败！')
                     $('.tishi').html('')
                 }
-//            $('.fa-caret-down').toggle(
-//                function(){
-//                   alert(1);
-//                },
-//                function(){
-//                   alert(2);
-//                }
-//            )
+            $('.dropdown-header1').click(
+                function(){
+                   $('.dropdown-menu').css('display','block');
+                   $('.bumenliebiao').toggle(500);
+                }
+
+            )
+            $('.dropdown-header2').click(
+                    function(){
+                        $('.dropdown-menu1').css('display','block');
+                        $('.renyuanliebiao').toggle(500);
+                    }
+
+            )
+
+                $('.playman').click(function () {
+                    $('.fanhui').css('display','none');
+                    $('.datatimepicker').css('display', 'none');
+                    var bid =${session.user.bid};
+                    var cid =${session.company.id};
+
+                    $.ajax({
+                        url: '${webRequest.baseUrl}/ghbotherapi/subordinateList',
+                        dataType: "json",
+                        type: "POST",
+                        data: {cid: cid, bid: bid},
+                        async: 'false',
+                        success: function (data) {
+
+                            var bumenList = data.bumenList;
+                            var companyUserList = data.companyUserList;
+                            var html1 = '';
+                            var html2 = '';
+                            for (var i = 0; i < data.bumenList.length; i++) {
+                                html1 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="bumenliebiao">' +
+                                        '<a role="menuitem" tabindex="-1" href="javascript:;">' + bumenList[i].name + '<span style="display:none" class="bumen">' + bumenList[i].id + '</span></a>' +
+                                        '</li>';
+
+                            }
+                            $('.dropdown-header1').after(html1);
+                            for (var i = 0; i < data.companyUserList.length; i++) {
+                                html2 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="renyuanliebiao">' +
+                                        '<a role="menuitem" tabindex="-1" href="javascript:;">' + companyUserList[i].name + '<span style="display:none" class="renyuanid">' + companyUserList[i].id + '</span><span style="display:none" class="renyuanname">' + companyUserList[i].name + '</span><span style="display:none" class="renyuanbid">' + companyUserList[i].bid + '</span></a>' +
+                                        '</li>';
+
+                            }
+                            $('.dropdown-header2').after(html2);
+                            $('.bumenname').html(data.ssbname);
+                            $('.bumenid').html(data.ssbid);
+                            $('.dropdown-menu1').css('display', 'block');
+                            xsbumen();
+                            xsrenyuan();
+                        }
+                    })
+
+                });
+            function xsbumen() {
+                $('.bumenliebiao').click( function () {
+                    $('.fanhui').css('display','block');
+                    var bid = $(this).find('span.bumen').html();
+                    var cid =${session.company.id};
+                    $.ajax({
+                        url: '${webRequest.baseUrl}/ghbotherapi/subordinateList',
+                        dataType: "json",
+                        type: "POST",
+                        data: {cid: cid, bid: bid},
+                        async: 'false',
+                        success: function (data) {
+
+                            var bumenList = data.bumenList;
+                            var companyUserList = data.companyUserList;
+                            var html1 = '';
+                            var html2 = '';
+                            for (var i = 0; i < data.bumenList.length; i++) {
+                                html1 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="bumenliebiao">' +
+                                        '<a role="menuitem" tabindex="-1" href="javascript:;">' + bumenList[i].name + '<span style="display:none" class="bumen">' + bumenList[i].id + '</span></a>' +
+                                        '</li>';
+
+                            }
+                            $('.bumenliebiao').remove();
+                            $('.dropdown-header1').after(html1);
+                            for (var i = 0; i < data.companyUserList.length; i++) {
+                                html2 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="renyuanliebiao">' +
+                                        '<a role="menuitem" tabindex="-1" href="javascript:;">' + companyUserList[i].name + '<span style="display:none" class="renyuanid">' + companyUserList[i].id + '</span><span style="display:none" class="renyuanname">' + companyUserList[i].name + '</span><span style="display:none" class="renyuanbid">' + companyUserList[i].bid + '</span></a>' +
+                                        '</li>';
+
+                            }
+                            $('.bumenname').html(data.ssbname);
+                            $('.bumenid').html(data.ssbid);
+                            $('.renyuanliebiao').remove();
+                            $('.dropdown-header2').after(html2);
+                            $('.dropdown-menu1').css('display', 'block');
+                            xsbumen();
+                            xsrenyuan();
+                            fanhui();
+                        }
+                    })
+                })
+            }
+            function xsrenyuan(){
+                $('.renyuanliebiao').click(function(){
+                    var uid = $(this).find('span.renyuanid').html();
+                    var bid= $(this).find('span.renyuanbid').html();
+                    var uname= $(this).find('span.renyuanname').html();
+                    $('.puid').val(uid);
+                    $('.puname').val(uname);
+                    $('.pbid').val(bid);
+                    $('.zhxr').html(uname);
+                    $('.bumenliebiao').remove();
+                    $('.renyuanliebiao').remove();
+                    $('.dropdown-menu1').css('display','none');
+                });
+
+            }
+            function fanhui(){
+                $('.fanhui').click(function(){
+                    var bid=$(this).find('span.bumenid').html();
+
+                    var cid=${session.user.cid};
+                    $.ajax({
+                        url: '${webRequest.baseUrl}/ghbotherapi/subordinateList',
+                        dataType: "json",
+                        type: "POST",
+                        data: {cid: cid, bid: bid},
+                        async: 'false',
+                        success: function (data) {
+
+                            var bumenList = data.bumenList;
+                            var companyUserList = data.companyUserList;
+                            var html1 = '';
+                            var html2 = '';
+                            for (var i = 0; i < data.bumenList.length; i++) {
+                                html1 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="bumenliebiao">' +
+                                        '<a role="menuitem" tabindex="-1" href="javascript:;">' + bumenList[i].name + '<span style="display:none" class="bumen">' + bumenList[i].id + '</span></a>' +
+                                        '</li>';
+
+                            }
+                            $('.bumenliebiao').remove();
+                            $('.dropdown-header1').after(html1);
+                            for (var i = 0; i < data.companyUserList.length; i++) {
+                                html2 += ' <li role="presentation" style="margin-bottom: 5px;text-indent: 20px;" class="renyuanliebiao">' +
+                                        '<a role="menuitem" tabindex="-1" href="javascript:;">' + companyUserList[i].name + '<span style="display:none" class="renyuanid">' + companyUserList[i].id + '</span><span style="display:none" class="renyuanname">' + companyUserList[i].name + '</span><span style="display:none" class="renyuanbid">' + companyUserList[i].bid + '</span></a>' +
+                                        '</li>';
+
+                            }
+                            if(data.ssbid==0||data.ssbid==${session.user.bid}) {
+                                $('.fanhui').css('display','none');
+                            }else{
+                                $('.bumenname').html(data.ssbname);
+                                $('.bumenid').html(data.ssbid);
+                            }
+                            $('.renyuanliebiao').remove();
+                            $('.dropdown-header2').after(html2);
+                            $('.dropdown-menu1').css('display', 'block');
+                            xsbumen();
+                            xsrenyuan();
+                        }
+                    })
+
+                })
+            }
+            $('.fa-times').click(function(){
+                $('.bumenliebiao').remove();
+                $('.renyuanliebiao').remove();
+                $('.dropdown-menu1').css('display','none');
+            })
+
             })
 
 

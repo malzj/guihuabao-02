@@ -1260,17 +1260,25 @@ class GhbotherapiController {
         def rs = [:]
         def cid = params.cid
         def bid = params.bid
-        def pid = params.pid
+
+        def bumen
         def bumenList
         def companyUserList
-        if(pid!='3'){
-            bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
-            companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
-        }
 
+        def ssbumenName
+
+        bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
+        companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
+        bumen=Bumen.findById(bid);
+
+        if(bumen.affiliated!=0) {
+            ssbumenName = Bumen.findById(bumen.affiliated).name
+        }
         rs.bumenList=bumenList
         rs.companyUserList=companyUserList
 
+        rs.ssbname=ssbumenName
+        rs.ssbid=bumen.affiliated
         if (params.callback) {
             render "${params.callback}(${rs as JSON})"
         } else

@@ -76,7 +76,7 @@
                                             <span class="mark <g:if test="${missionInfo.playstatus=='1'}">mark-danger</g:if><g:if test="${missionInfo.playstatus=='2'}">mark-warning</g:if><g:if test="${missionInfo.playstatus=='3'}">mark-safe</g:if><g:if test="${missionInfo.playstatus=='4'}">mark-nomarl</g:if>"><i></i></span>
                                             <span class="sn">${i+1}</span>
                                             <span class="title" data-task-id="${missionInfo.id}">${missionInfo.title}</span>
-                                            <span class="status"><g:if test="${missionInfo.status=="1"}">已完成</g:if><g:else>未完成</g:else></span>
+                                            <span class="status"><g:if test="${missionInfo.status=='0'&&missionInfo.hasvisited=='0'}">未查看</g:if><g:elseif test="${missionInfo.status=='0'&&missionInfo.hasvisited=='1'}">已查看</g:elseif><g:elseif test="${missionInfo.status=='0'&&missionInfo.hasvisited=='2'}">未完成</g:elseif><g:elseif test="${missionInfo.status=='1'&&missionInfo.hasvisited=='2'}">已完成</g:elseif></span>
                                             <div class="right">
                                                 <g:if test="${missionInfo.hasvisited=="2"}"><span class="hsfinish"><a href="javascript:;" onclick="stop_Pro(event)" class="taskedit" data-id="${missionInfo.id}"><i class="fa <g:if test="${missionInfo.status=="1"}">fa-check-square-o</g:if><g:else>fa-square-o</g:else>"></i>标记完成</a></span></g:if>
                                             <span class="date f-r">${missionInfo.overtime}</span>
@@ -236,7 +236,17 @@
 
                         var html="";
                         var html2="";
-                        var status = (data.mission.status=='1')?"已完成":"进行中";
+
+                    var status='';
+                    if(data.mission.hasvisited=='0'&&data.mission.status=='0'){
+                        status='未查看';
+                    }else if(data.mission.hasvisited=='1'&&data.mission.status=='0'){
+                        status='已查看';
+                    }else if(data.mission.hasvisited=='2'&&data.mission.status=='0'){
+                        status='未完成';
+                    }else if(data.mission.hasvisited=='2'&&data.mission.status=='1'){
+                        status='已完成';
+                    }
                         var fzuid=data.target.fzuid;
                         $('.task_line .title').html(data.mission.title);
                         $('.task_line .content').html(data.mission.content);
