@@ -260,10 +260,10 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .hxzs_content .zhoubao .reply_box .reply{ margin-left:20px; padding:5px 0 5px 20px; background:url("../img/dis_icon.png") no-repeat 0% 116%;}
 
 /*应用*/
-.app{ margin:0 25px; }
-.app li{ float:left; margin:0 30px 20px 30px; position:relative; font-size: 18px;}
+.app{}
+.app li{ float:left; margin:0 30px 20px 0px; position:relative; font-size: 16px;}
 .app li img{margin-top: 10px;}
-.app .flag{color:#39c2ff;float: left;text-align: center;height:90px;line-height: 40px;font-size: 18px;margin-top:20px;border-right: 1px solid #d2d2d2;padding:0 10px 0 10px;cursor:pointer;}
+.app .flag{color:#39c2ff;float: left;text-align: center;height:70px;line-height: 40px;font-size: 16px;margin-top:20px;border-right: 1px solid #d2d2d2;padding:0 10px 0 10px;cursor:pointer;}
 .app .flag p{color:#797979;}
 .app .flag p:hover{color:#39c2ff;}
 .app li span{ display:block; margin:0px auto;}

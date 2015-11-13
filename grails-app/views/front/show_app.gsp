@@ -53,13 +53,13 @@
             <section class="wrapper">
                 <div class="middle_content clearfix">
                     %{--<div class="m_box ">--}%
-                    <div style="width:69%;min-height:100%;border:1px solid #d2d2d2;background-color: #fff;margin-right: 1%;" class="f-l">
-                        <header class="panel-heading">
-                            <span>授权应用——您可以将以下的授权应用拖拽到右侧，以方便您在导航栏中快速使用该功能</span>
+                    <div style="width:72%;min-height:100%;border:1px solid #d2d2d2;background-color: #fff;margin-right: 1%;" class="f-l">
+                        <header class="panel-heading" style="background:#f8f8f8;">
+                            <span style="font-size:14px;">授权应用——您可以将以下的授权应用拖拽到右侧，以方便您在导航栏中快速使用该功能</span>
                         </header>
-                        <ul id="ul1" class="app clearfix" style="text-align: center;width:100%;height:100%"  style="width:100%;height:100%">
+                        <ul id="ul1" class="app clearfix" style="text-align: center;width:100%;height:100%;margin-left:25px;">
                             <g:each in="${companyAppList}" status="i" var="app">
-                                <li draggable="true" ondragstart="drag(event)" id="${i}" style=" border-radius:5px;border: 1px solid #d0d0d0;width:70px;height:70px;position: relative;" class="c${app.id%5}">
+                                <li draggable="true" ondragstart="drag(event)" id="${i}" style=" border-radius:5px;width:70px;height:70px;position: relative;" class="c${app.id%5}">
                                     <img style="line-height: 70px;margin-bottom: 20px;margin-top:10px;" src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px"/>
                                     <div style="width:100%;height:100%;position: absolute;top:0;"></div>
                                     <span style="display: none;">${app.id}</span>
@@ -75,24 +75,29 @@
                             </g:each>
                         </ul>
                     </div>
-                    <div style="width:30%;min-height:100%;border:1px solid #d2d2d2;background-color: #fff;" class="f-r">
-                        <header class="panel-heading" style="margin-bottom: 0px;">
-                            <span>显示在导航栏的应用(最多显示4个)</span>
+                    <div style="width:27%;min-height:100%;border:1px solid #d2d2d2;background-color: #fff;" class="f-r">
+                        <header class="panel-heading" style="margin-bottom: 0px;background:#f8f8f8;">
+                            <span style="font-size:14px;">显示在导航栏的应用(最多显示4个)</span>
                         </header>
                         <ul id="ul2" class="app clearfix" style="text-align: center;width:100%;height:100%" ondrop="drop(event)" ondragover="allowDrop(event)" >
                             <g:each in="${showapps}"  var="app">
                                 <div style="width:100%;border-bottom: 1px solid #d2d2d2;" class="clearfix">
-                                    <li   style="border-radius:5px;border: 1px solid #d0d0d0;width:70px;height:70px;margin-bottom: 40px;margin-top: 20px;" class="c${app.companyApp.id%5}">
+                                    <div class="clearfix" style="width:300px;margin:0 auto;">
+                                    <li   style="border-radius:5px;width:70px;height:70px;margin:20px 10px 40px 30px;" class="c${app.companyApp.id%5}">
                                         <img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px" style="margin-bottom: 20px;"/>
 
                                         <span>${app.name}</span>
 
                                     </li>
+
+
                                     <div class="flag up"><img src="${resource(dir:'images/',file:'up.png')}" title="向上"/><p>上移</p></div>
                                     <span style="display: none">${app.id}</span>
                                     <div class="flag down"><img src="${resource(dir:'images/',file:'down.png')}" title="向下"/><p>下移</p></div>
                                     <div class="flag delete" style="border:none;"><img src="${resource(dir:'images/',file:'delete.png')}" title="删除"/><p>删除</p></div>
                                     <span style="display: none">${app.num}</span>
+
+                                    </div>
                                 </div>
                             </g:each>
                         </ul>

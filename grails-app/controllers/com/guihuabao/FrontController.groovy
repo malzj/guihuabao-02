@@ -3726,6 +3726,11 @@ class FrontController {
 //    目标规划选时间
     def choose_date(){
         def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
         def uid=user.id
         def cid=user.cid
         def begintime
@@ -3739,6 +3744,54 @@ class FrontController {
             endtime=choosedate.endtime
         }
         [begintime: begintime,endtime: endtime]
+    }
+    def guimo_target() {
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def uid=user.id
+        def cid=company.id
+        def begintime=params.begintime
+        def endtime=params.endtime
+
+    }
+    def guimoSave() {
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def uid=user.id
+        def cid=company.id
+        def guimoInstance=new Guimo(params)
+        guimoInstance.uid=uid
+        guimoInstance.cid=cid
+        if (!guimoInstance.save(flush: true)) {
+            render(view: "choose_date" , params: [msg: "获取数据失败"])
+            return
+        }
+        redirect(action: "guimo_target", params: [id:guimoInstance.id,begintime: guimoInstance.begintime,endtime: guimoInstance.endtime])
+    }
+    def guimoUpdate(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+
+        def id=params.id
+        def guimoInstance=Guimo.get(id)
+        guimoInstance.properties=params
+        if (!guimoInstance.save(flush: true)) {
+            render(view: "guimo_target" , params: [msg: "保存失败！"])
+            return
+        }
+        redirect(action: "caiwu_target", params: [begintime: guimoInstance.begintime,endtime: guimoInstance.endtime])
     }
 }
 
