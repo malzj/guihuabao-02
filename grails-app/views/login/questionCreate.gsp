@@ -62,8 +62,9 @@
                                 <td>题目类型：</td>
                                 <td>
                                     <select id="type" name="type" class="form-control form-control-inline input-medium">
-                                        <option value="1">选择</option>
-                                        <option value="2">填空</option>
+                                        <option value="1">单选</option>
+                                        <option value="2">多选</option>
+                                        <option value="3">填空</option>
                                     </select>
                                 </td>
                             </tr>
@@ -160,11 +161,11 @@
             $('#type').change(function(){
                var type = $(this).val();
                 var html1
-                if(type==1){
+                if(type==1||type==2){
                     html1='<td>选项：(<a href="javascript:;" id="addoption" class="btn btn-info" style="display:block;">+</a>)</td><td><table id="options">';
                     html1+='<tr><td><input placeholder="选项字母" name="letter" value="" /></td><td><input placeholder="选项内容" name="content" value="" /></td><td><input placeholder="选项分数" name="score" value="" /></td><td><input placeholder="选项解析" name="analysis" value="" /></td></tr>';
                     html1+='</table></td>';
-                }else if(type==2){
+                }else if(type==3){
                     html1='<td>空位数：</td><td><table id="options">';
                     html1+='<tr><td><input placeholder="空位个数" name="blank" value="" /></td></tr>';
                     html1+='</table></td>';

@@ -51,6 +51,7 @@
                         <table class="table table-striped table-advance table-hover">
                             <thead>
                             <tr>
+                                <th>id</th>
                                 <th>题号</th>
                                 <th>题目</th>
                                 <th>操作</th>
@@ -59,6 +60,7 @@
                             <tbody>
                             <g:each in="${questionsInstanceList}" status="i" var="questionsInstance">
                                 <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+                                    <td>${questionsInstance.id}</td>
                                     <td>${questionsInstance.num}</td>
                                     <td><g:link controller="login" action="questionEdit" params="[id:id,questionId:questionsInstance?.id]">${questionsInstance?.question}</g:link></td>
                                     <td>
