@@ -61,12 +61,11 @@
                                 <td><input name="question" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${questionInstance?.question}"></td>
                             </tr>
                             <tr>
-                                <td>选项：</td>
+                                <td>选项：(<a href="javascript:;" id="addoption" class="btn btn-info" style="display:block;">+</a>)</td>
                                 <td>
                                     <table>
                                         <g:each in="${optionInstanceList}" var="optionInstance">
                                         <tr>
-                                            %{--<g:hiddenField name="infos[optionId]" value="${optionInstance.id}"></g:hiddenField>--}%
                                             <td><input placeholder="选项字母" name="letter[${optionInstance.id}]" value="${optionInstance?.letter}" /></td>
                                             <td><input placeholder="选项内容" name="content[${optionInstance.id}]" value="${optionInstance?.content}" /></td>
                                             <td><input placeholder="选项分数" name="score[${optionInstance.id}]" value="${optionInstance?.score}" /></td>
@@ -147,6 +146,7 @@
     %{--});--}%
 
     %{--</script>--}%
+
 
 </body>
 </html>

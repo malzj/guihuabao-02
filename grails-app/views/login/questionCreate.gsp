@@ -59,15 +59,9 @@
                                 <td><input name="question" class="form-control form-control-inline input-medium default-date-picker" type="text" value=""></td>
                             </tr>
                             <tr>
-                                <td>选项：</td>
+                                <td>选项：(<a href="javascript:;" id="addoption" class="btn btn-info" style="display:block;">+</a>)</td>
                                 <td>
-                                    <table>
-                                        <tr>
-                                            <td><input placeholder="选项字母" name="letter" value="" /></td>
-                                            <td><input placeholder="选项内容" name="content" value="" /></td>
-                                            <td><input placeholder="选项分数" name="score" value="" /></td>
-                                            <td><input placeholder="选项解析" name="analysis" value="" /></td>
-                                        </tr>
+                                    <table id="options">
                                         <tr>
                                             <td><input placeholder="选项字母" name="letter" value="" /></td>
                                             <td><input placeholder="选项内容" name="content" value="" /></td>
@@ -148,6 +142,14 @@
     %{--});--}%
 
     %{--</script>--}%
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#addoption').click(function(){
+                var html='<tr><td><input placeholder="选项字母" name="letter" value="" /></td><td><input placeholder="选项内容" name="content" value="" /></td><td><input placeholder="选项分数" name="score" value="" /></td><td><input placeholder="选项解析" name="analysis" value="" /></td></tr>';
+                $('#options').append(html);
+            }) ;
+        });
+    </script>
 
 </body>
 </html>

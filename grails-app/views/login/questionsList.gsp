@@ -62,9 +62,8 @@
                                     <td>${questionsInstance.num}</td>
                                     <td><g:link controller="login" action="questionEdit" params="[id:id,questionId:questionsInstance?.id]">${questionsInstance?.question}</g:link></td>
                                     <td>
-                                        <g:link action="testPaperShow" id="${questionsInstance?.id}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></g:link>
-                                        <g:link action="testPaperEdit" id="${questionsInstance?.id}" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
-                                        <g:link action="testPaperDelete" id="${questionsInstance?.id}" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
+                                        <g:link action="questionEdit" params="[id:id,questionId:questionsInstance?.id]" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></g:link>
+                                        <g:link action="questionDelete" params="[questionId:questionsInstance?.id]" class="btn btn-danger btn-xs" onclick="return confirm('确定删除？');"><i class="fa fa-trash-o "></i></g:link>
                                     </td>
                                 </tr>
                             </g:each>
@@ -72,7 +71,7 @@
                             </tbody>
                         </table>
                         <div class="pagination">
-                            <g:paginate total="${questionsInstanceTotal}" />
+                            <g:paginate total="${questionsInstanceTotal}" params="[id:id]" />
                         </div>
                     </section>
                 </div>
