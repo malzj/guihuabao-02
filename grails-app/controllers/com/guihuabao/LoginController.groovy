@@ -1717,7 +1717,13 @@ class LoginController {
     def questionCreate(Long id){
         def testPaperInstance=TestPaper.get(id)
         def questionInfo=Questions.findByTestPapers(testPaperInstance,[sort: 'num',order: 'desc'])
-        [questionInstance: new Questions(params),id: id,num: questionInfo.num]
+        def num
+        if(questionInfo){
+            num=questionInfo.num
+        }else{
+            num=1
+        }
+        [questionInstance: new Questions(params),id: id,num: num]
     }
     /*
     * 保存题目及选项
