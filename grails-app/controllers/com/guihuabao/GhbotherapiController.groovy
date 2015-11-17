@@ -1267,23 +1267,25 @@ class GhbotherapiController {
         def rs = [:]
         def cid = params.cid
         def bid = params.bid
-
+        def zjbid=params.zjbid
         def bumen
         def bumenList
         def companyUserList
-
+        def zjssbid
+        def zjssbumen
         def ssbumenName
 
         bumenList = Bumen.findAllByAffiliatedAndCid(bid,cid)
         companyUserList=CompanyUser.findAllByCidAndBid(cid,bid)
         bumen=Bumen.findById(bid);
+        zjssbid=Bumen.findById(zjbid).affiliated
 
         if(bumen.affiliated!=0) {
             ssbumenName = Bumen.findById(bumen.affiliated).name
         }
         rs.bumenList=bumenList
         rs.companyUserList=companyUserList
-
+        rs.zjssbid=zjssbid
         rs.ssbname=ssbumenName
         rs.ssbid=bumen.affiliated
         if (params.callback) {

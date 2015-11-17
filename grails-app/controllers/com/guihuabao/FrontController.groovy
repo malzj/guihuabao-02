@@ -2638,13 +2638,21 @@ class FrontController {
     def missionSave() {
         def rs = [:]
         def mission = new Mission(params)
+        def uid=session.user.id
         mission.status='0'
-        mission.hasvisited='0'
+        if(mission.playuid.toLong()==uid){
+            mission.hasvisited=2
+        }else {
+            mission.hasvisited = '0'
+        }
         mission.issubmit='0'
 
         def targetInstance = Target.get(params.target_id)
         if(targetInstance.issubmit=='1'){
             mission.issubmit='1'
+        }
+        if(mission.playuid==uid){
+            mission.hasvisited=2
         }
 
         mission.target = targetInstance
@@ -2815,12 +2823,15 @@ class FrontController {
     def mupdate() {
         def rs = [:]
         def mid = params.mid
-
+        def uid=session.user.id
         def mission = Mission.get(mid)
         def target = mission.target
 
         if(mission.status=='0') {
             mission.properties = params
+            if(mission.playuid==uid){
+                mission.hasvisited=2
+            }
             if(mission.status=='1'){
                 target.percent+=mission.percent
             }
@@ -2994,7 +3005,7 @@ class FrontController {
         }
         params.max = Math.min(max ?: 10, 100)
 //        def cid=company.id
-        def playname = session.user.name
+        def playuid = session.user.id
 
         def selected = params.selected
 //        def order1 = [sort: "overtime", order: "desc"]
@@ -3003,16 +3014,16 @@ class FrontController {
         def missionInstanceTotal
         if (selected == "1") {
             params<<[sort:"overtime",order: "desc"]
-            missionInstance = Mission.findAllByPlaynameAndStatus(playname,'0' , params)
-            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, 0)
+            missionInstance = Mission.findAllByPlayuidAndStatus(playuid,'0' , params)
+            missionInstanceTotal = Mission.countByPlayuidAndStatus(playuid, 0)
         } else if (selected == "2") {
             params<<[sort:"dateCreate",order: "desc"]
-            missionInstance = Mission.findAllByPlaynameAndStatus(playname, 0, params)
-            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, 0)
+            missionInstance = Mission.findAllByPlayuidAndStatus(playuid, 0, params)
+            missionInstanceTotal = Mission.countByPlayuidAndStatus(playuid, 0)
         } else {
             params<<[sort:"dateCreate",order: "desc"]
-            missionInstance = Mission.findAllByPlaynameAndStatus( playname, '0', params)
-            missionInstanceTotal = Mission.countByPlaynameAndStatus( playname, 0)
+            missionInstance = Mission.findAllByPlayuidAndStatus( playuid, '0', params)
+            missionInstanceTotal = Mission.countByPlayuidAndStatus( playuid, 0)
       }
         [missionInstance:missionInstance,missionInstanceTotal:missionInstanceTotal, selected: selected]
     }
@@ -3174,7 +3185,7 @@ class FrontController {
         }
         params.max = Math.min(max ?: 10, 100)
 //        def cid=company.id
-        def playname = session.user.name
+        def playuid = session.user.id
 
         def selected = params.selected
 //        def order1 = [sort: "overtime", order: "desc"]
@@ -3183,15 +3194,15 @@ class FrontController {
         def missionInstanceTotal
         if (selected == "1") {
             params<<[sort:"overtime",order: "desc"]
-            missionInstance = Mission.findAllByPlaynameAndStatus(playname,'1' , params)
-            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, '1')
+            missionInstance = Mission.findAllByPlayuidAndStatus(playuid,'1' , params)
+            missionInstanceTotal = Mission.countByPlayuidAndStatus(playuid, '1')
         } else if (selected == "2") {
             params<<[sort:"dateCreate",order: "desc"]
-            missionInstance = Mission.findAllByPlaynameAndStatus(playname, '1', params)
-            missionInstanceTotal = Mission.countByPlaynameAndStatus(playname, '1')
+            missionInstance = Mission.findAllByPlayuidAndStatus(playuid, '1', params)
+            missionInstanceTotal = Mission.countByPlayuidAndStatus(playuid, '1')
         } else {
-            missionInstance = Mission.findAllByPlaynameAndStatus( playname, '1', params)
-            missionInstanceTotal = Mission.countByPlaynameAndStatus( playname, '1')
+            missionInstance = Mission.findAllByPlayuidAndStatus( playuid, '1', params)
+            missionInstanceTotal = Mission.countByPlayuidAndStatus( playuid, '1')
         }
         [missionInstance:missionInstance,missionInstanceTotal:missionInstanceTotal, selected: selected]
     }
