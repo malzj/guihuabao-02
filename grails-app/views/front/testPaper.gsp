@@ -34,9 +34,6 @@
     <!--header start-->
     <g:render template="header" />
     <!--header end-->
-    <!--sidebar start-->
-    <g:render template="sidebar" />
-    <!--sidebar end-->
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper mt80">
@@ -47,50 +44,29 @@
                         编辑试题
                     </header>
 
-                    <g:form class="form-horizontal tasi-form" url="[controller:'login',action:'questionUpdate']" method="post"  enctype= "multipart/form-data">
-                        <table>
-                            <g:hiddenField name="id" value="${id}"></g:hiddenField>
-                            <g:hiddenField name="questionId" value="${questionInstance?.id}"></g:hiddenField>
-                            <g:hiddenField name="version" value="${questionInstance?.version}"></g:hiddenField>
-                            <tr>
-                                <td>题号：</td>
-                                <td width="345"><input name="num" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${questionInstance?.num}"></td>
-                            </tr>
-                            <tr>
-                                <td>题目内容：</td>
-                                <td><input name="question" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${questionInstance?.question}"></td>
-                            </tr>
-                            <tr>
-                                <g:if test="${questionInstance.type==1||questionInstance.type==2}">
-                                <td>选项：(<a href="javascript:;" id="addoption" class="btn btn-info" style="display:block;">+</a>)</td>
-                                <td>
-                                    <table>
-                                            <g:each in="${optionInstanceList}" var="optionInstance">
-                                            <tr>
-                                                <td><input placeholder="选项字母" name="letter[${optionInstance.id}]" value="${optionInstance?.letter}" /></td>
-                                                <td><input placeholder="选项内容" name="content[${optionInstance.id}]" value="${optionInstance?.content}" /></td>
-                                                <td><input placeholder="选项分数" name="score[${optionInstance.id}]" value="${optionInstance?.score}" /></td>
-                                                <td><input placeholder="选项解析" name="analysis[${optionInstance.id}]" value="${optionInstance?.analysis}" /></td>
-                                            </tr>
-                                            </g:each>
-                                    </table>
-                                </td>
-                                </g:if>
-                                <g:elseif test="${questionInstance.type==3}">
-                                    <td>空位数：</td><td><table id="options">
-                                    <tr><td><input placeholder="空位个数" name="blank" value="${questionInstance?.blank}" /></td></tr>
-                                    </table></td>
-                                </g:elseif>
-
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <button type="submit" class="btn btn-info">保存</button>
-                                    <button class="btn btn-info">返回</button>
-                                </td>
-                            </tr>
-                        </table>
+                    <g:form class="form-horizontal tasi-form" url="[controller:'front',action:'testEvaluate']" method="post"  enctype= "multipart/form-data">
+                        <g:hiddenField name="testPaperId" value="${testPaperId}"></g:hiddenField>
+                        <div>1.您在企业的职位？年龄？学历？</div>
+                        <div>
+                            <input type="text" name="infos[22]" />
+                            <input type="text" name="infos[22]" />
+                            <input type="text" name="infos[22]" />
+                        </div>
+                        <div>2.您的企业品牌名称是?</div>
+                        <div>
+                            <input type="text" name="infos[23]" />
+                        </div>
+                        <div>3、当前企业所属行业？</div>
+                        <div>
+                            <input type="radio" name="infos[24]" value="A" />餐饮业
+                            <input type="radio" name="infos[24]" value="B" />美容美发
+                            <input type="radio" name="infos[24]" value="C" />汽车后市场
+                            <input type="radio" name="infos[24]" value="D" />金融
+                            <input type="radio" name="infos[24]" value="E" />教育
+                            <input class="other" type="radio" name="infos[24]" />
+                            <input class="other-info" disabled="disabled"/>
+                        </div>
+                        <button type="submit" class="btn btn-info">保存</button>
                     </g:form>
                 </div>
             </div>
@@ -154,7 +130,25 @@
     %{--});--}%
 
     %{--</script>--}%
+    <!--其他选项js-->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.other').change(function(){
 
+                var select=$(this).is(':checked');
+
+                if(select){
+                    $(this).siblings('.other-info').removeAttr('disabled');
+                }else{
+                    $(this).siblings('.other-info').attr('disabled','disabled');
+                }
+            });
+            $('.other-info').blur(function(){
+                var info=$(this).val();
+                $(this).siblings('.other').val(info);
+            })
+        })
+    </script>
 
 </body>
 </html>

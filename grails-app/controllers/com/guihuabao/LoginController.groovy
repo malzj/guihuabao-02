@@ -1717,7 +1717,13 @@ class LoginController {
     def questionCreate(Long id){
         def testPaperInstance=TestPaper.get(id)
         def questionInfo=Questions.findByTestPapers(testPaperInstance,[sort: 'num',order: 'desc'])
-        [questionInstance: new Questions(params),id: id,num: questionInfo.num]
+        def num
+        if(questionInfo){
+            num=questionInfo.num+1
+        }else{
+            num=1
+        }
+        [questionInstance: new Questions(params),id: id,num: num]
     }
     /*
     * 保存题目及选项
@@ -1732,20 +1738,22 @@ class LoginController {
             redirect(action: "questionsList", id: id)
             return
         }
-        def count=params.letter.size()
+        if(params.type.toLong()==1||params.type.toLong()==2) {
+            def count = params.letter.size()
 
-        for(def i=0;i<count;i++){
-            def optionInfo=''
-            def optionInstance=new Options();
-            optionInstance.letter=params.letter[i]
-            optionInstance.content=params.content[i]
-            optionInstance.analysis=params.analysis[i]
-            optionInstance.score=params.score[i].toLong()
-            optionInstance.questions=questionInfo
-            optionInfo=optionInstance.save(flush: true)
-            if (!optionInfo) {
-                redirect(action: "questionsList", id: id)
-                return
+            for (def i = 0; i < count; i++) {
+                def optionInfo = ''
+                def optionInstance = new Options();
+                optionInstance.letter = params.letter[i]
+                optionInstance.content = params.content[i]
+                optionInstance.analysis = params.analysis[i]
+                optionInstance.score = params.score[i].toLong()
+                optionInstance.questions = questionInfo
+                optionInfo = optionInstance.save(flush: true)
+                if (!optionInfo) {
+                    redirect(action: "questionsList", id: id)
+                    return
+                }
             }
         }
         redirect(action: "questionsList", id: id)
@@ -1785,28 +1793,55 @@ class LoginController {
 
         questionInstance.num = params.num.toLong()
         questionInstance.question = params.question
+        questionInstance.type = params.type.toLong()
+        questionInstance.blank = params.blank.toLong()
 
         if (!testPaperInstance.save(flush: true)) {
             redirect(action: "questionsList",params: [id:id,questionId:questionId])
             return
         }
         //题目选项更新
-        def optionInstanceList=Options.findAllByQuestions(questionInstance)
-        def questionIds=params.list('letter[1]')
-        def count=optionInstanceList.size()
-        def optionInstance
-        for(def i=0;i<count;i++){
-//            def
-//            optionInstance=Options.findByQuestionsAndId(questionInstance,questionIds[i])
-//            optionInstance.letter=params.list('letter['+optionInstance.id+']').get(0)
-//            optionInstance.content=params.content[i]
-//            optionInstance.analysis=params.analysis[i]
-//            optionInstance.score=params.score[i].toLong()
-//            if (!optionInstance.save(flush: true)) {
-//                redirect(action: "questionsList", id: id)
-//                return
-//            }
+        if(questionInstance.type==1||questionInstance.type==2) {
+            def optionInstanceList = Options.findAllByQuestions(questionInstance)
+            def count = optionInstanceList.size()
+            def optionInstance
+            for (def i = 0; i < count; i++) {
+                optionInstance = optionInstanceList.get(i)
+                optionInstance.letter = params.list('letter[' + optionInstance.id + ']').get(0)
+                optionInstance.content = params.list('content[' + optionInstance.id + ']').get(0)
+                optionInstance.analysis = params.list('analysis[' + optionInstance.id + ']').get(0)
+                optionInstance.score = params.list('score[' + optionInstance.id + ']').get(0).toLong()
+                if (!optionInstance.save(flush: true)) {
+                    redirect(action: "questionsList", id: id)
+                    return
+                }
+            }
+        }
+        redirect(action: "questionsList", id: id)
+    }
+    /*
+    * 题目删除
+    * 参数
+    * questionId（题目ID）
+    * */
+    def questionDelete(Long questionId){
+        def questionInstance = Questions.get(questionId)
+        if (!questionInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'question.label', default: 'Question'), questionId])
+            redirect(action: "questionsList", id: questionInstance.testPapers.id)
+            return
+        }
+
+        try {
+            questionInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'question.label', default: 'Question'), questionId])
+            redirect(action: "questionsList", id: questionInstance.testPapers.id)
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), questionId])
+            redirect(action: "questionsList", id: questionInstance.testPapers.id)
         }
     }
+
 
  }

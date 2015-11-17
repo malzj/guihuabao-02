@@ -3663,26 +3663,37 @@ class FrontController {
             render rs as JSON
     }
 
-//    试题
+//    测试
     /*
-    * 试卷列表
+    * 测试试卷
+    * 测试试卷id为1（手动定义）
     * */
-    def testPaperList(){
-        params.max = Math.min(max ?: 10, 100)
-        params<<[sort:'dateCreate',order: 'desc']
-        def testPaperInstanceList=TestPaper.findAll(params)
-        [testPaperInstanceList: testPaperInstanceList, testPaperInstanceTotal: TestPaper.count()]
+    def testPaper(){
+        def testPaperId=1
+
+        [testPaperId:testPaperId]
     }
      /*
-    * 新建试卷
+    * 测试结果
+    * 保存所做题目及结果分数
     * */
-    def testPaperCreate(){
+    def testEvaluate(){
         def user = session.user
         def company = session.company
         if(!user&&!company){
             redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
             return
         }
+        def testPaperId=params.testPaperId
+        def testPaperInstance=TestPaper.findById(testPaperId)
+        def questionInstancList=Questions.findAllByTestPapers(testPaperInstance)
+        for(def i in questionInstancList){
+            def info=questionInstancList.get(i)
+        }
+//        def a={1, 2, 3, 4, 5}
+        def c=a.join('===')
+        println(c)
+        def b=params.list('infos[24]')
         [testPaperInstance: new TestPaper(params)]
     }
     /*

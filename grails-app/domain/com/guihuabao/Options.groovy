@@ -7,6 +7,8 @@ class Options {
     String analysis //题目解析
     static belongsTo = [questions: Questions]
     static constraints = {
+        letter(nullable: true)
+        content(nullable: true)
         score(nullable: true)
         analysis(nullable: true)
     }
