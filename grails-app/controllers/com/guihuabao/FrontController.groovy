@@ -3651,7 +3651,21 @@ class FrontController {
         } else
             render rs as JSON
     }
-
+//  规划
+    def programme(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
+        if(doneTest){
+//            redirect(action: "testPaperShow", id: testPaperInstance.id)
+//            return
+        }
+        redirect(action: "testPaper")
+    }
 //    测试
     /*
     * 测试试卷
@@ -3662,6 +3676,22 @@ class FrontController {
 
         [testPaperId:testPaperId]
     }
+
+    /*
+    * 字符串拼接
+    * 参数 arr (要转换成字符串的数组)
+    * */
+    def strImplode(ArrayList arr){
+        StringBuilder str = new StringBuilder();
+        int offset = arr.size() - 1;
+        for( int i = 0; i < offset; i++ )
+        {
+            str.append(arr[i]).append("|||||");
+        }
+        str.append(arr[offset]);
+        return  str.toString();
+    }
+
      /*
     * 测试结果
     * 保存所做题目及结果分数
@@ -3676,62 +3706,170 @@ class FrontController {
         def testPaperId=params.testPaperId
         def testPaperInstance=TestPaper.findById(testPaperId)
         def questionInstancList=Questions.findAllByTestPapers(testPaperInstance)
-        for(def i in questionInstancList){
-            def info=questionInstancList.get(i)
+        def totalScore=0
+        def a=params
+        for(def info in questionInstancList){
+            //实例化用户评测表
+            def userEvaluate=new Evaluate()
+            userEvaluate.cid=company.id
+            userEvaluate.uid=user.id
+            userEvaluate.testPaperId=params.testPaperId
+            userEvaluate.questionId=info.id
+            userEvaluate.type=info.type
+            def formInfo=params.list("infos["+info.id+"]")
+            if(info.type==1){
+                if(info.id==54){
+                    userEvaluate.letters=formInfo.get(0)+','+params["infos[54].area"]
+                }else{
+                    userEvaluate.letters=formInfo.get(0)
+                }
+                //计算分数
+                def result=Options.findByQuestionsAndLetter(info,formInfo.get(0))
+                if(info.id!=24) {
+                    if(result){
+                        totalScore += result.score
+                    }else{
+                        totalScore += 3
+                    }
+                }
+            }else if(info.type==2) {
+                def count = formInfo.size()
+                if (info.id == 31) {
+                    if (count == 1) {
+                        totalScore += 1
+                    } else if (count >= 2 && count <= 4) {
+                        totalScore += 2
+                    } else if (count > 4) {
+                        totalScore += 3
+                    }
+                }
+                if (info.id == 39) {
+                    if (count == 1) {
+                        totalScore += 0
+                    } else if (count==2) {
+                        totalScore += 1
+                    } else if (count > 2 && count <= 4) {
+                        totalScore += 2
+                    } else if (count > 4) {
+                        totalScore += 3
+                    }
+                }
+            }else if(info.type==3){
+                userEvaluate.letters=formInfo
+                //计算分数
+                if(info.id==30||info.id==40||info.id==41){
+                    if(formInfo.get(0)){
+                        totalScore+=3
+                    }
+                }else if(info.id==32){
+                    totalScore+=4
+                }else if(info.id==33){
+                    def sj=Float.parseFloat(formInfo.get(0))
+                    if(sj<0){
+                        totalScore+=-1
+                    }else{
+                        def bs=Math.ceil(sj/Float.parseFloat(params['infos[32]']))
+                        if(bs<=1){
+                            totalScore+=2
+                        }else if(bs>1&&bs<=3){
+                            totalScore+=3
+                        }else{
+                            totalScore+=4
+                        }
+                    }
+                }else if(info.id==34){
+                    def sj=Float.parseFloat(formInfo.get(0))
+                    def bs=Math.ceil(sj/Float.parseFloat(params['infos[32]']))
+                    if(bs<=1){
+                        totalScore+=1
+                    }else if(bs>1&&bs<=2){
+                        totalScore+=2
+                    }else if(bs>2&&bs<=5){
+                        totalScore+=3
+                    }else if(bs>5){
+                        totalScore+=4
+                    }
+                }else if(info.id==35||info.id==36){
+                    totalScore+=4
+                }else if(info.id==48){
+                    def yye=formInfo.get(0)
+                    yye=  Float.parseFloat(yye)
+                    if(yye>3){
+                        totalScore+=4
+                    }else if(yye<=3&&yye>1.5){
+                        totalScore+=3
+                    }else if(yye>1&&yye<=1.5){
+                        totalScore+=2
+                    }else if(yye>0.5&&yye<=1){
+                        totalScore+=1
+                    }else if(yye<=0.5){
+                        totalScore+=0.5
+                    }
+                }else if(info.id==49){
+                    def mlr=Float.parseFloat(formInfo.get(0))
+                    if(mlr>60){
+                        totalScore+=4
+                    }else if(mlr>50&&mlr<=60){
+                        totalScore+=3
+                    }else if(mlr>40&&mlr<=50){
+                        totalScore+=2
+                    }else if(mlr<=40){
+                        totalScore+=1
+                    }
+                }else if(info.id==50){
+                    def jlr=Float.parseFloat(formInfo.get(0))
+                    if(jlr>20){
+                        totalScore+=4
+                    }else if(jlr>15&&jlr<=20){
+                        totalScore+=3
+                    }else if(jlr>10&&jlr<=15){
+                        totalScore+=2
+                    }else if(jlr<=10){
+                        totalScore+=1
+                    }
+                }else if(info.id==51){
+                    def dc=Float.parseFloat(formInfo.get(0))
+                    if(dc>300){
+                        totalScore+=4
+                    }else if(dc>200&&dc<=300){
+                        totalScore+=3
+                    }else if(dc>100&&dc<=200){
+                        totalScore+=2
+                    }else if(dc<=100){
+                        totalScore+=1
+                    }
+                }
+            }
+            //保存评测结果
+            userEvaluate.save(flush: true)
         }
-//        def a={1, 2, 3, 4, 5}
-        def c=a.join('===')
-        println(c)
-        def b=params.list('infos[24]')
-        [testPaperInstance: new TestPaper(params)]
+//        def c=strImplode(arr)
+//        def c=params.list('infos[24]')
+        println(totalScore)
+        def userDoneTest=new DonePaper()
+        userDoneTest.cid=company.id
+        userDoneTest.uid=user.id
+        userDoneTest.paperId=params.testPaperId
+        userDoneTest.totalScore=totalScore
+        userDoneTest.dateCreate= new Date()
+        if (!userDoneTest.save(flush: true)) {
+            redirect(action: "programme")
+            return
+        }
+        redirect(action: "testResult")
     }
     /*
-   * 新建试卷保存
-   * */
-    def testPaperSave(){
+    * 测试结果展示页面
+    * */
+    def testResult(){
         def user = session.user
         def company = session.company
         if(!user&&!company){
             redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
             return
         }
-        def testPaperInstance = new TestPaper(params)
-        if (!testPaperInstance.save(flush: true)) {
-            render(view: "create", model: [testPaperInstance: testPaperInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.created.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), testPaperInstance.id])
-        redirect(action: "testPaperShow", id: testPaperInstance.id)
-    }
-    /*
-      * 试卷查看
-      * */
-    def testPaperShow(Long id) {
-        def user = session.user
-        def company = session.company
-        if(!user&&!company){
-            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
-            return
-        }
-        def testPaperInstance = TestPaper.get(id)
-        if (!testPaperInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [testPaperInstance: testPaperInstance]
-    }
-    def testPaperEdit(Long id) {
-        def testPaperInstance = TestPaper.get(id)
-        if (!testPaperInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'testPaper.label', default: 'TestPaper'), id])
-            redirect(action: "testPaperList")
-            return
-        }
-
-        [testPaperInstance: testPaperInstance]
+        def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
+        [doneTest:doneTest]
     }
 
 //    目标规划选时间
