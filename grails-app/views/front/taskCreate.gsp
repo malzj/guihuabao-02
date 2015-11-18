@@ -698,12 +698,12 @@
             $('.datatimepicker').css('display', 'none');
             var bid =${session.user.bid};
             var cid =${session.company.id};
-
+            var zjbid=${session.user.bid}
             $.ajax({
                 url: '${webRequest.baseUrl}/ghbotherapi/subordinateList',
                 dataType: "json",
                 type: "POST",
-                data: {cid: cid, bid: bid},
+                data: {cid: cid, bid: bid,zjbid:zjbid},
                 async: 'false',
                 success: function (data) {
 
@@ -739,11 +739,12 @@
                 $('.fanhui').css('display','block');
                 var bid = $(this).find('span.bumen').html();
                 var cid =${session.company.id};
+                var zjbid=${session.user.bid}
                 $.ajax({
                     url: '${webRequest.baseUrl}/ghbotherapi/subordinateList',
                     dataType: "json",
                     type: "POST",
-                    data: {cid: cid, bid: bid},
+                    data: {cid: cid, bid: bid,zjbid:zjbid},
                     async: 'false',
                     success: function (data) {
 
@@ -795,13 +796,13 @@
         function fanhui(){
             $('.fanhui').click(function(){
                 var bid=$(this).find('span.bumenid').html();
-
+                var zjbid=${session.user.bid}
                 var cid=${session.user.cid};
                 $.ajax({
                     url: '${webRequest.baseUrl}/ghbotherapi/subordinateList',
                     dataType: "json",
                     type: "POST",
-                    data: {cid: cid, bid: bid},
+                    data: {cid: cid, bid: bid,zjbid:zjbid},
                     async: 'false',
                     success: function (data) {
 
@@ -823,7 +824,7 @@
                                     '</li>';
 
                         }
-                        if(data.ssbid==0||data.ssbid==${session.user.bid}) {
+                        if(data.ssbid==0||data.ssbid==data.zjssbid) {
                             $('.fanhui').css('display','none');
                         }else{
                             $('.bumenname').html(data.ssbname);

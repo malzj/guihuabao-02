@@ -416,7 +416,7 @@ class TargetController {
         def rs=[:]
         def cid=params.cid
         def uid=params.uid
-
+        def fzname
         params.max = 5
         params<<[sort:"dateCreate",order: "desc"]
         def offset = 0;
@@ -429,8 +429,10 @@ class TargetController {
         if(targetsize>offse) {
             def targetlist = Target.findAllByFzuidAndCidAnd(uid, cid, params)
             if (targetlist) {
+                fzname=CompanyUser.findById(uid).name
                 rs.result = true
                 rs.targetlist = targetlist
+                rs.fzname=fzname
             } else {
                 rs.result = false
                 rs.msg = "已加载所有数据"
