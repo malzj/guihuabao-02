@@ -34,19 +34,19 @@
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'assets/bootstrap-timepicker/compiled', file: 'timepicker.css')}" />
     <style>
 
-        .gmt{width:100%;height:100%;background:#e5e5e5;border:none;text-align: center;}
-        .gmt1{width:100%;height:100%;background:#c7eeff;border:none;text-align: center;}
-        th,td{text-align:center;}
-        body{background:#fff;}
-        .toolkit{border:none;border-bottom:1px dashed #e5e5e5; }
-        .content table{background:#e5e5e5;border:1px solid #fff;}
-        .th1{background:#27bdff;color:#fff;}
-        .th2{background:#c7eeff;color:#000;}
-        .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th{border:1px solid #fff;}
-        input{margin:0;padding:0;border:1px solid #e5e5e5;}
-        .table-bordered>tbody>tr>td,.table>tbody>tr>td{padding:0;margin:0 !important;}
-        .table tbody > tr > th.jdc,.table>tbody>tr>th.jdc{padding:0;margin:0 !important;}
-        td.month{padding:10px !important;}
+    .gmt{width:100%;height:100%;background:#e5e5e5;border:none;text-align: center;}
+    .gmt1{width:100%;height:100%;background:#c7eeff;border:none;text-align: center;}
+    th,td{text-align:center;}
+    body{background:#fff;}
+    .toolkit{border:none;border-bottom:1px dashed #e5e5e5; }
+    .content table{background:#e5e5e5;border:1px solid #fff;}
+    .th1{background:#27bdff;color:#fff;}
+    .th2{background:#c7eeff;color:#000;}
+    .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th{border:1px solid #fff;}
+    input{margin:0;padding:0;border:1px solid #e5e5e5;}
+    .table-bordered>tbody>tr>td,.table>tbody>tr>td{padding:0;margin:0 !important;}
+    .table tbody > tr > th.jdc,.table>tbody>tr>th.jdc{padding:0;margin:0 !important;}
+    td.month{padding:10px !important;}
     </style>
 </head>
 
@@ -69,13 +69,10 @@
                     <div class="col-cell">
                         <div class="toolkit">
                             <div style="width:200px;margin:0 auto;text-align: center;font-size: 26px;color:#27bdff">规划目标表单</div>
-
-
-
                         </div>
                         <div style="margin-top:10px;color:#000;">提示：此日期选择是您目标规划的时间区间，建议以两年为时间周期进行规划。</div>
                         <div class="content">
-                            <div style="margin-top:20px;" class="clearfix">
+                        <div style="margin-top:20px;" class="clearfix">
                             <g:form url="[controller:'front',action:'caiwu_target']" method="post" class="form-horizontal">
                                 <table class="table table-bordered table1">
                                     <tr class="th1">
@@ -204,14 +201,14 @@
                                     </tr>
                                 </table>
                                 <input type="hidden" id="guimoId" name="id" value="${guimoInstance.id}"/>
-                            </div>
-                            <div class="" style="width:300px;margin:0 auto;">
-                                %{--<g:form url="[controller:'front',action:'choose_date']" method="post" id="choose_date" class="form-horizontal">--}%
-                                    %{--<button class="button" type="submit" form="choose_date" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;">返回上一步</button>--}%
-                                %{--</g:form>--}%
+                                </div>
+                                <div class="" style="width:300px;margin:0 auto;">
+                            %{--<g:form url="[controller:'front',action:'choose_date']" method="post" id="choose_date" class="form-horizontal">--}%
+                            %{--<button class="button" type="submit" form="choose_date" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;">返回上一步</button>--}%
+                            %{--</g:form>--}%
                                 <input type="submit"  class="button" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;">确认提交</button>
                             </div>
-                           </g:form>
+                            </g:form>
 
                             <span style="display:none;" id="begintime">${guimoInstance.begintime}</span>
                             <span style="display: none;" id="endtime">${guimoInstance.endtime}</span>
@@ -282,121 +279,121 @@
 <!--上传图片预览 js-->
 <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
 <script type="text/javascript">
- $(function(){
+    $(function(){
 
-     $('input.con').attr('disabled','disabled');
-     $('input.con1').attr('disabled','disabled');
-     var begintime=$('#begintime').html();
-     var endtime=$('#endtime').html();
-     var bstr = begintime.replace(/-/g,"/");
-     var estr = endtime.replace(/-/g,"/");
-     var bdate = new Date(bstr);
-     var edate=new Date(estr);
+        $('input.con').attr('disabled','disabled');
+        $('input.con1').attr('disabled','disabled');
+        var begintime=$('#begintime').html();
+        var endtime=$('#endtime').html();
+        var bstr = begintime.replace(/-/g,"/");
+        var estr = endtime.replace(/-/g,"/");
+        var bdate = new Date(bstr);
+        var edate=new Date(estr);
 
-     var byear=bdate.getFullYear();
-     var eyear=edate.getFullYear();
+        var byear=bdate.getFullYear();
+        var eyear=edate.getFullYear();
 
-     var bmonth=bdate.getMonth()+1;
-     var emonth=edate.getMonth()+1;
-     var smonth=(eyear-byear)*12+(emonth-bmonth);
-     var sjd=Math.ceil(smonth/3)+1;
-     var k=0;
-     var j=1;
-     var y=1;
-     var index=getmindex(bmonth);
-     var jdindex=getjd(bmonth);
-     var guimoId=$('#guimoId').val();
-     $.ajax({
-         url: '${webRequest.baseUrl}/front/guimoAjax',
-         method: 'post',
-         dataType: 'json',
-         data: {id:guimoId},
-         success: function (data) {
+        var bmonth=bdate.getMonth()+1;
+        var emonth=edate.getMonth()+1;
+        var smonth=(eyear-byear)*12+(emonth-bmonth);
+        var sjd=Math.ceil(smonth/3)+1;
+        var k=0;
+        var j=1;
+        var y=1;
+        var index=getmindex(bmonth);
+        var jdindex=getjd(bmonth);
+        var guimoId=$('#guimoId').val();
+        $.ajax({
+            url: '${webRequest.baseUrl}/front/guimoAjax',
+            method: 'post',
+            dataType: 'json',
+            data: {id:guimoId},
+            success: function (data) {
 
-             for(var i=0;i<=smonth;i++) {
+                for(var i=0;i<=smonth;i++) {
 
-                 k=bmonth+i;
+                    k=bmonth+i;
 
-                 if(k<=12) {
+                    if(k<=12) {
 
-                     var pro1='m'+(i+1)+'1';
-                     var pro2='m'+(i+1)+'2';
-                    var m1=data.guimoInstance[pro1];
-                    var m2=data.guimoInstance[pro2];
+                        var pro1='m'+(i+1)+'1';
+                        var pro2='m'+(i+1)+'2';
+                        var m1=data.guimoInstance[pro1];
+                        var m2=data.guimoInstance[pro2];
 
-                     $('td.month').eq(index).html(k+'月');
-                     $('input.con').eq(index).attr("name",'m'+(i+1)+'1')
-                     $('input.con').eq(index).val(m1);
-                     $('input.con1').eq(index).val(m2);
-                     $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
-                     $('input.con').eq(index).removeAttr("disabled");
-                     $('input.con1').eq(index).removeAttr("disabled");
-                     index++;
-                 }else{
-                     $('td.month').eq(index).html(j+'月');
-                     $('input.con').eq(index).attr("name",'m'+(i+1)+'1').val();
-                     $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
-                     $('input.con').eq(index).val(m1);
-                     $('input.con1').eq(index).val(m2);
-                     $('input.con').eq(index).removeAttr("disabled");
-                     $('input.con1').eq(index).removeAttr("disabled");
-                     j++;
-                     index++;
-                 }
-
-
-             }
-         },
-         error: function () {
-            alert('获取数据失败');
-         }
-     });
-     for(var i=0;i<sjd;i++){
-         var a=jdindex+i;
-         if(a<=4){
-             $('th.jd').eq(i).html(byear+'年第'+a+'季度');
-         }else{
-             $('th.jd').eq(i).html(eyear+'年第'+y+'季度');
-             y++;
-         }
-
-     }
-     %{--for(var i=0;i<=smonth;i++) {--}%
-
-         %{--k=bmonth+i;--}%
-         %{--if(k<=12) {--}%
-
-             %{--var pro='m'+i+'1';--}%
-         %{----}%
-                    %{--alert(guimoInstance);--}%
-             %{--$('td.month').eq(index).html(k+'月');--}%
-             %{--$('input.con').eq(index).attr("name",'m'+(i+1)+'1')--}%
-             %{--$('input.con').eq(index).val(${guimoInstance.constraints('m'+(i+1)+'1')});--}%
-             %{--$('input.con1').eq(index).val(${guimoInstance.getProperty('m'+(i+1)+'2')});--}%
-             %{--$('input.con1').eq(index).attr("name",'m'+(i+1)+'2');--}%
-             %{--$('input.con').eq(index).removeAttr("disabled");--}%
-             %{--$('input.con1').eq(index).removeAttr("disabled");--}%
-             %{--index++;--}%
-         %{--}else{--}%
-             %{--$('td.month').eq(index).html(j+'月');--}%
-             %{--$('input.con').eq(index).attr("name",'m'+(i+1)+'1').val();--}%
-             %{--$('input.con1').eq(index).attr("name",'m'+(i+1)+'2');--}%
-             %{--$('input.con').eq(index).removeAttr("disabled");--}%
-             %{--$('input.con1').eq(index).removeAttr("disabled");--}%
-             %{--j++;--}%
-             %{--index++;--}%
-         %{--}--}%
+                        $('td.month').eq(index).html(k+'月');
+                        $('input.con').eq(index).attr("name",'m'+(i+1)+'1')
+                        $('input.con').eq(index).val(m1);
+                        $('input.con1').eq(index).val(m2);
+                        $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
+                        $('input.con').eq(index).removeAttr("disabled");
+                        $('input.con1').eq(index).removeAttr("disabled");
+                        index++;
+                    }else{
+                        $('td.month').eq(index).html(j+'月');
+                        $('input.con').eq(index).attr("name",'m'+(i+1)+'1').val();
+                        $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
+                        $('input.con').eq(index).val(m1);
+                        $('input.con1').eq(index).val(m2);
+                        $('input.con').eq(index).removeAttr("disabled");
+                        $('input.con1').eq(index).removeAttr("disabled");
+                        j++;
+                        index++;
+                    }
 
 
-     %{--}--}%
-    $('input').focus(function(){
-        $(this).css('border','1px solid #27bdff')
+                }
+            },
+            error: function () {
+                alert('获取数据失败');
+            }
+        });
+        for(var i=0;i<sjd;i++){
+            var a=jdindex+i;
+            if(a<=4){
+                $('th.jd').eq(i).html(byear+'年第'+a+'季度');
+            }else{
+                $('th.jd').eq(i).html(eyear+'年第'+y+'季度');
+                y++;
+            }
 
+        }
+        %{--for(var i=0;i<=smonth;i++) {--}%
+
+        %{--k=bmonth+i;--}%
+        %{--if(k<=12) {--}%
+
+        %{--var pro='m'+i+'1';--}%
+        %{----}%
+        %{--alert(guimoInstance);--}%
+        %{--$('td.month').eq(index).html(k+'月');--}%
+        %{--$('input.con').eq(index).attr("name",'m'+(i+1)+'1')--}%
+        %{--$('input.con').eq(index).val(${guimoInstance.constraints('m'+(i+1)+'1')});--}%
+        %{--$('input.con1').eq(index).val(${guimoInstance.getProperty('m'+(i+1)+'2')});--}%
+        %{--$('input.con1').eq(index).attr("name",'m'+(i+1)+'2');--}%
+        %{--$('input.con').eq(index).removeAttr("disabled");--}%
+        %{--$('input.con1').eq(index).removeAttr("disabled");--}%
+        %{--index++;--}%
+        %{--}else{--}%
+        %{--$('td.month').eq(index).html(j+'月');--}%
+        %{--$('input.con').eq(index).attr("name",'m'+(i+1)+'1').val();--}%
+        %{--$('input.con1').eq(index).attr("name",'m'+(i+1)+'2');--}%
+        %{--$('input.con').eq(index).removeAttr("disabled");--}%
+        %{--$('input.con1').eq(index).removeAttr("disabled");--}%
+        %{--j++;--}%
+        %{--index++;--}%
+        %{--}--}%
+
+
+        %{--}--}%
+        $('input').focus(function(){
+            $(this).css('border','1px solid #27bdff')
+
+        })
+        $('input').blur(function(){
+            $(this).css('border','1px solid #e5e5e5')
+        })
     })
-     $('input').blur(function(){
-         $(this).css('border','1px solid #e5e5e5')
-     })
- })
     function getjd(month){
         var jd;
         switch (month){
