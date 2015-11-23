@@ -13,6 +13,7 @@ body{padding:0;margin:0;}
 .ml20{ margin-left:20px !important; }
 .ml25{ margin-left:25px !important; }
 .btn-blue{ background-color:#4a8bf6;}
+h2,ul{padding: 0;margin: 0;}
 .clearfix:after { content:"/20"; display:block; visibility:hidden; clear:both; font-size:0; line-height:0; height:0; }
 .clearfix { *zoom:1; }
 .tsh{display: inline-block;min-width: 10px;padding: 2px 5px;font-size: 12px;line-height: 1;color: #FFF;text-align: center;white-space: nowrap;vertical-align: baseline;background-color: #ff0200;border-radius: 10px;}
@@ -404,4 +405,19 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .draftbtn{color: #FFF;background-color: #878787;border-color: #878787;}
 .draftbtn:hover{background-color: #6f6f6f;border-color: #6f6f6f;}
 
-/*公共弹层*/
+/*测试题页面样式*/
+.testPaper{width: 998px; margin: 15px auto 0px;}
+.steps{margin:24px 0px;}
+.testPaper .steps li{float: left;}
+.testPaper .steps .stp{width: 124px;height: 60px;background-color: #FFF;text-align: center;padding: 10px 0; border: 1px solid #d2d2d2;border-radius: 10px;-moz-border-radius: 10px;-webkit-border-radius: 10px; }
+.testPaper .steps .stp.active{width: 124px;height: 60px;background-color: #27bdff; border: 1px solid #27bdff; color:#FFF;text-align: center;padding: 10px 0;}
+.testPaper .steps .stp p{font-size: 14px;}
+.testPaper .steps .arrow{width: 94px;height: 60px;background:url("../img/arrow.png");}
+.testPaper .test-question{padding: 42px 102px 62px; background-color: #FFF; border: 1px solid #d2d2d2;}
+.testPaper .test-title{font-size: 20px; color: #27bdff;border-bottom: 1px dashed #d2d2d2;padding-bottom: 27px;text-align: center;}
+.test-question h2{font-size: 18px;margin-top: 20px;}
+.test-question .info{padding-bottom:20px;border-bottom: 1px dashed #d2d2d2;}
+.test-question .info .question{padding-top:10px;}
+.test-question .info .question .options,.test-question .question1 .options{margin-left: 20px;}
+.test-question .info .question input[type=text],.test-question .question1 input[type=text]{border: none;border-bottom: 1px solid #797979;padding-left: 10px;}
+.test-question .question1{padding: 10px 0;border-bottom: 1px solid #efefef;}
