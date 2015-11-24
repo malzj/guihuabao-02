@@ -398,6 +398,17 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .index-group .index-head .title{margin:0 18px; line-height: 46px; font-size: 16px;}
 
 /*选中输入框样式改变*/
+
+/*可移动弹层样式*/
+.layer{width:50%;height:50%;padding-bottom: 20px;background-color: #FFF;border-radius: 4px;position:absolute;top:24%;left:24%;z-index:1004;font-family: 'Microsoft YaHei','Open Sans', sans-serif;}
+.layer .panel-heading{height:45px; overflow: hidden;border-bottom:1px #d2d2d2 solid;background-color:#fff;margin-bottom:30px;}
+.layer .panel-heading span{font-size:16px;color:#666;}
+.layer .panel-heading span{margin:0 0 0 12px; padding-top:9px;}
+.layer .panel-heading span .yh{display:inline-block; height:21px; width:30px; background:url("../img/yh.png") no-repeat;}
+.layer .panel-heading .btn{ margin-left:10px; padding:2px 12px; }
+.layer .lay-content{padding: 0 25px 10px;}
+#over{width:100%;height:100%;opacity:0.8;filter:alpha(opacity=80);position:absolute;top:0;left:0;z-index:1003;background: #000;}
+
 /*助手菜单*/
 #allbookmenu{height: 100%}
 
@@ -421,3 +432,224 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .test-question .info .question .options,.test-question .question1 .options{margin-left: 20px;}
 .test-question .info .question input[type=text],.test-question .question1 input[type=text]{border: none;border-bottom: 1px solid #797979;padding-left: 10px;}
 .test-question .question1{padding: 10px 0;border-bottom: 1px solid #efefef;}
+
+/*组织架构*/
+.testPaper .test-question.reset{padding: 42px 40px 0px;}
+.frame-remark {margin: 17px 0 30px;}
+.frame-img{padding: 17px 0 40px;border-bottom: 1px solid #EFEFEF;}
+.frame-img span{width: 60px;}
+.frame-img img{width: 793px;}
+.all-department{width: 916px;min-height: 178px;margin-top:32px;padding:0 17px;background-color: #c7eeff;border:1px dashed #27bdff;border-radius: 10px;-moz-border-radius: 10px;-webkit-border-radius: 10px;}
+.all-department p,.fra-department p{margin-top: 17px;}
+.all-department p .tk,.fra-department p .tk{height: 24px; width: 26px;margin-right:10px;background: url("../img/tk.png") no-repeat;}
+.all-department p span,.fra-department p span{display: inline-block;vertical-align: middle; }
+.all-department ul{width: 855px;margin: 17px 0 19px;}
+.all-department ul li{margin-left:17px;margin-bottom:15px;float:left; cursor: pointer;}
+.all-department ul li span{height: 32px; line-height: 32px;color:#FFF;padding: 0 17px;background-color: #03a9f4;border-radius: 3px;-moz-border-radius: 3px;-webkit-border-radius: 3px;display: block;}
+.fra-department{width: 916px;min-height: 178px;margin-top:23px;padding:0 17px;background-color: #eee;border:1px dashed #27bdff;border-radius: 10px;-moz-border-radius: 10px;-webkit-border-radius: 10px;}
+
+.org-chart {display: block;clear: both;margin-bottom: 30px;position: relative;}
+.org-chart.cf:before, .org-chart.cf:after {content: " ";/* 1 */display: table;/* 2 */}
+.org-chart.cf:after {
+    clear: both;
+}
+.org-chart.cf {
+    *zoom: 1;
+}
+.org-chart ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.org-chart ul li {
+    position: relative;
+}
+.org-chart ul.column li span {
+    display: block;
+    height:32px;
+    line-height:32px;
+    text-align: center;
+    text-decoration: none;
+    color: #FFF;
+    font-size: 12px;
+    background: #1d71f2;
+    border-radius:3px;
+    padding:0 10px;
+}
+.finally-solve {
+    letter-spacing: -4px;/*根据不同字体字号或许需要做一定的调整*/
+    word-spacing: -4px;
+    font-size: 0;
+    text-align:center;
+}
+.finally-solve li {
+    font-size: 16px;
+    letter-spacing: normal;
+    word-spacing: normal;
+    display:inline-block;
+    *display: inline;
+    vertical-align:top;
+    zoom:1;
+}
+.org-chart .board {
+    width: 345px;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+}
+.org-chart .board:before {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 162px;
+    width: 0px;
+    border-left: 1px solid #d2d2d2;
+    margin-left: 50%;
+    top: 15px;
+}
+.org-chart ul.columnOne {
+    height: 32px;
+    position: relative;
+    width: 100%;
+    display: block;
+    clear: both;
+}
+.org-chart ul.columnOne li {
+    width: 30%;
+    margin: 0px auto;
+}
+.org-chart ul.columnTwo {
+    position: relative;
+    width: 100%;
+    display: block;
+    height: 32px;
+    clear: both;
+}
+.org-chart ul.columnTwo li:first-child {
+    width: 30%;
+    float: left;
+    top:0px;
+}
+.org-chart ul.columnTwo li {
+    width: 30%;
+    float: right;
+}
+.org-chart ul.columnTwo:before {
+    content: "";
+    display: block;
+    position: relative;
+    width: 80%;
+    border-top: 1px solid #d2d2d2;
+    margin: 0 auto;
+    top: 50%;
+}
+.org-chart ul.columnThree {
+    position: relative;
+    width: 100%;
+    display: block;
+    clear: both;
+}
+.org-chart ul.columnThree li:first-child {
+    width: 30%;
+    float: left;
+    margin-left: 0;
+}
+.org-chart ul.columnThree li {
+    width: 30%;
+    margin-left: 5%;
+    float: left;
+}
+.org-chart ul.columnThree li:last-child {
+    width: 30%;
+    float: right;
+    margin-left: 0;
+}
+.org-chart ul.columnThree:before {
+    content: "";
+    display: block;
+    position: relative;
+    width: 80%;
+    height: 10px;
+    border-top: 2px solid orange;
+    margin: 0 auto;
+    top: 40px;
+}
+.org-chart .departments {
+    width: 100%;
+    display: block;
+    margin-top:32px;
+    clear: both;
+}
+.org-chart .department {
+    width: 10%;
+    cursor: pointer;
+}
+.org-chart .department:before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 100%;
+    border-top: 1px solid #d2d2d2;
+    top: -16px;
+}
+.org-chart .department.reset:before{
+    display: none;
+}
+.org-chart .department:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 10px;
+    height: 16px;
+    border-left: 1px solid #d2d2d2;
+    left: 50%;
+    top: -16px;
+}
+.org-chart .department:first-child:before{
+    width:50%;
+    margin-left:50%;
+}
+
+.org-chart .department:last-child:before {
+    width:50%;
+}
+.org-chart .department span {
+    display: inline-block;
+    height:32px;
+    line-height:32px;
+    text-align: center;
+    text-decoration: none;
+    color: #FFF;
+    font-size: 12px;
+    background: #03a9f4;
+    border-radius:3px;
+    margin:0 5%;
+    position: relative;
+}
+.org-chart .department span input{
+    border: none;
+    background: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.org-chart .department li {
+    padding-left: 25px;
+    border-bottom: 2px solid orange;
+    height: 80px;
+}
+.org-chart .department li span {
+    background: #92D4A8;
+    top: 38px;
+    position: absolute;
+    z-index: 1;
+    width: 95%;
+    height: auto;
+    vertical-align: middle;
+    right: 0px;
+    line-height: 14px;
+    border: 3px solid orange;
+}
+.org-chart .department .sections {
+    margin-top: -20px;
+}

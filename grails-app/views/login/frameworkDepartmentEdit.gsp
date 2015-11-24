@@ -34,61 +34,30 @@
 <!--header start-->
 <g:render template="header" />
 <!--header end-->
+<!--sidebar start-->
+<g:render template="sidebar" />
+<!--sidebar end-->
 <!--main content start-->
-<section id="main-content" style="margin-left: 0px;">
-<section class="wrapper" style="margin-top: 94px;">
-<div class="testPaper">
-    <ul class="steps clearfix">
-        <li class="stp active">
-            <span>第一步</span>
-            <p>现状评估</p>
-        </li>
-        <li class="arrow"></li>
-        <li class="stp">
-            <span>第二步</span>
-            <p>规模目标</p>
-        </li>
-        <li class="arrow"></li>
-        <li class="stp">
-            <span>第三步</span>
-            <p>财务目标</p>
-        </li>
-        <li class="arrow"></li>
-        <li class="stp">
-            <span>第四步</span>
-            <p>组织架构</p>
-        </li>
-        <li class="arrow"></li>
-        <li class="stp">
-            <span>第五步</span>
-            <p>工作推进</p>
-        </li>
-    </ul>
-<div class="test-question">
-    <div class="score">您的公司连锁规划评分为<span>${doneTest.totalScore}分</span></div>
-    <div class="test-title">客户自填信息</div>
-    <div class="analysis">
-        <g:if test="${doneTest.totalScore<50}">
-            1
-        </g:if>
-        <g:elseif test="${doneTest.totalScore>=50&&doneTest.totalScore<65}">
-            2
-        </g:elseif>
-        <g:elseif test="${doneTest.totalScore>=65&&doneTest.totalScore<80}">
-            3
-        </g:elseif>
-        <g:elseif test="${doneTest.totalScore>=80&&doneTest.totalScore<90}">
-            4
-        </g:elseif>
-        <g:elseif test="${doneTest.totalScore>=90&&doneTest.totalScore<100}">
-            5
-        </g:elseif>
-    </div>
+<section id="main-content">
+    <section class="wrapper">
+        <div class="middle_content">
+            <div class="m_box">
 
-</div>
-</div>
-</section>
+                <header class="panel-heading">
+                    编辑用户
+                </header>
+                <div class="panel-body">
+                    <g:form class="form-horizontal tasi-form" action="frameworkDepartmentUpdate" method="post">
+                        <g:hiddenField name="id" value="${frameworkDepartmentInstance?.id}" />
+                        <g:hiddenField name="version" value="${frameworkDepartmentInstance?.version}" />
+                        <g:render template="departmentForm" />
+                    </g:form>
+                </div>
+            </div>
+        </div>
 
+    </section>
+    <!--main content end-->
 </section>
 
 <!-- js placed at the end of the document so the pages load faster -->
@@ -114,28 +83,21 @@
 <script src="${resource(dir: 'js', file: 'easy-pie-chart.js')}"></script>
 <script src="${resource(dir: 'js', file: 'count.js')}"></script>
 
-%{--<script>--}%
+<!--编辑器-->
+<script type="text/javascript" src="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'wysihtml5-0.3.0.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'assets/bootstrap-wysihtml5', file: 'bootstrap-wysihtml5.js')}"></script>
 
-%{--//owl carousel--}%
-
-%{--$(document).ready(function() {--}%
-%{--$("#owl-demo").owlCarousel({--}%
-%{--navigation : true,--}%
-%{--slideSpeed : 300,--}%
-%{--paginationSpeed : 400,--}%
-%{--singleItem : true,--}%
-%{--autoPlay:true--}%
-
-%{--});--}%
-%{--});--}%
-
-%{--//custom select box--}%
-
-%{--$(function(){--}%
-%{--$('select.styled').customSelect();--}%
-%{--});--}%
-
-%{--</script>--}%
+<script type="text/javascript">
+    $('.wysihtml5').wysihtml5({
+        "font-styles": false,
+        "color": false,
+        "emphasis": true,
+        "lists": true,
+        "html": false,
+        "link": false,
+        "image": false
+    });
+</script>
 
 </body>
 </html>
