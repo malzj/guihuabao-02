@@ -47,6 +47,7 @@
     .table-bordered>tbody>tr>td,.table>tbody>tr>td{padding:0;margin:0 !important;}
     .table tbody > tr > th.jdc,.table>tbody>tr>th.jdc{padding:0;margin:0 !important;}
     td.month{padding:10px !important;}
+    textarea{padding:0 !important;}
     </style>
 </head>
 
@@ -73,147 +74,114 @@
                         <div style="margin-top:10px;color:#000;">提示：此日期选择是您目标规划的时间区间，建议以两年为时间周期进行规划。</div>
                         <div class="content">
                         <div style="margin-top:20px;" class="clearfix">
-                            <g:form url="[controller:'front',action:'caiwu_target']" method="post" class="form-horizontal">
+                            <g:form url="[controller:'front',action:'caiwu_targetup']" method="post" class="form-horizontal" id="caiwu_targetup">
                                 <table class="table table-bordered table1">
                                     <tr class="th1">
-                                        <th colspan="3">季度</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="3" class="th2">开店数量（家）</th>
-                                        <th colspan="3" class="jdc"><input name="jd1" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd2" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd3" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd4" class="gmt"/></th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="3" class="th2">月份</th>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                    </tr>
-                                    <tr>
-                                        <th rowspan="2" colspan="2" class="th2"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
-                                        <th class="th2"><input class="gmt1" value="直营" disabled/></th>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                    </tr>
-                                    <tr>
+                                        <th><input  disabled style="background:none;text-align: center;border:none;width:100%;" value="年份"></th>
+                                        <th >当前</th>
+                                        <th class="nf">--</th>
+                                        <th class="nf">--</th>
 
-                                        <th class="th2"><input name="jd1" class="gmt1" value="加盟" disabled/></th>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <th class="th2">月份</th>
+                                        <td class="th2"></td>
+                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">--</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="th2">营收（万元）</th>
+                                        <th><input class="gmt con"/></th>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="th2">毛利率（%）</th>
+                                        <th><input class="gmt con"/></th>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="th2">净利润（万元）</th>
+                                        <th><input class="gmt con"/></th>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="th2">评效比（数值）</th>
+                                        <th><input class="gmt con"/></th>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
+                                        <td><input class="gmt con"/></td>
                                     </tr>
                                 </table>
-                                <table class="table table-bordered table2">
-                                    <tr class="th1">
-                                        <th colspan="3">季度</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="3" class="th2">开店数量（家）</th>
-                                        <th colspan="3" class="jdc"><input name="jd1" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd2" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd3" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd4" class="gmt"/></th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="3" class="th2">月份</th>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                    </tr>
-                                    <tr>
-                                        <th rowspan="2" colspan="2" class="th2"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
-                                        <th class="th2"><input class="gmt1" value="直营" disabled/></th>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                    </tr>
-                                    <tr>
+                                <input type="hidden" id="caiwuId" name="id" value="${caiwuInstance.id}"/>
 
-                                        <th class="th2"><input name="jd1" class="gmt1" value="加盟" disabled/></th>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                        <td><input class="gmt con1"/></td>
-                                    </tr>
-                                </table>
-                                <input type="hidden" id="guimoId" name="id" value="${guimoInstance.id}"/>
                                 </div>
-                                <div class="" style="width:300px;margin:0 auto;">
-                            %{--<g:form url="[controller:'front',action:'choose_date']" method="post" id="choose_date" class="form-horizontal">--}%
-                            %{--<button class="button" type="submit" form="choose_date" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;">返回上一步</button>--}%
-                            %{--</g:form>--}%
-                                <input type="submit"  class="button" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;">确认提交</button>
-                            </div>
+
                             </g:form>
+                            <div class="clearfix" style="width:300px;margin:0 auto;">
+                                <g:form url="[controller:'front',action:'guimo_target']" method="post" id="choose_date" class="form-horizontal f-l">
+                                    <input class="button" type="submit" form="choose_date" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;" value="返回上一步" >
+                                </g:form>
+                                <input type="submit"  class="button f-l" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;margin-left:20px;" value="确认提交" form="caiwu_targetup"/>
+                            </div>
 
-                            <span style="display:none;" id="begintime">${guimoInstance.begintime}</span>
-                            <span style="display: none;" id="endtime">${guimoInstance.endtime}</span>
+
                         </div>
-
+                        <span style="display:none;" id="begintime">${caiwuInstance.begintime}</span>
+                        <span style="display: none;" id="endtime">${caiwuInstance.endtime}</span>
 
                     </div>
                 </div>
@@ -221,16 +189,6 @@
             </section>
             <!--main content end-->
 
-            <!--footer start-->
-            %{--<footer class="site-footer">--}%
-            %{--<div class="text-center">--}%
-            %{--2013 &copy; FlatLab by VectorLab.--}%
-            %{--<a href="index.html#" class="go-top">--}%
-            %{--<i class="fa fa-angle-up"></i>--}%
-            %{--</a>--}%
-            %{--</div>--}%
-            %{--</footer>--}%
-            <!--footer end-->
         </section>
 
 
@@ -281,8 +239,8 @@
 <script type="text/javascript">
     $(function(){
 
-        $('input.con').attr('disabled','disabled');
-        $('input.con1').attr('disabled','disabled');
+//        $('input.con').attr('disabled','disabled');
+//        $('input.con1').attr('disabled','disabled');
         var begintime=$('#begintime').html();
         var endtime=$('#endtime').html();
         var bstr = begintime.replace(/-/g,"/");
@@ -296,18 +254,25 @@
         var bmonth=bdate.getMonth()+1;
         var emonth=edate.getMonth()+1;
         var smonth=(eyear-byear)*12+(emonth-bmonth);
-        var sjd=Math.ceil(smonth/3)+1;
+        if(byear==eyear){
+            $('th.nf').eq(0).attr('colspan',smonth).html(byear);
+            $('th.nf').eq(1).remove();
+        }else{
+            $('th.nf').eq(0).attr('colspan',12-bmonth+1).html(byear);
+            $('th.nf').eq(1).attr('colspan',emonth).html(eyear);
+        }
+
         var k=0;
         var j=1;
-        var y=1;
-        var index=getmindex(bmonth);
-        var jdindex=getjd(bmonth);
-        var guimoId=$('#guimoId').val();
+//        var y=1;
+        var index=0;
+//        var jdindex=getjd(bmonth);
+        var caiwuId=$('#caiwuId').val();
         $.ajax({
-            url: '${webRequest.baseUrl}/front/guimoAjax',
+            url: '${webRequest.baseUrl}/front/caiwuAjax',
             method: 'post',
             dataType: 'json',
-            data: {id:guimoId},
+            data: {id:caiwuId},
             success: function (data) {
 
                 for(var i=0;i<=smonth;i++) {
@@ -316,27 +281,27 @@
 
                     if(k<=12) {
 
-                        var pro1='m'+(i+1)+'1';
-                        var pro2='m'+(i+1)+'2';
-                        var m1=data.guimoInstance[pro1];
-                        var m2=data.guimoInstance[pro2];
+//                        var pro1='m'+(i+1)+'1';
+//                        var pro2='m'+(i+1)+'2';
+//                        var m1=data.guimoInstance[pro1];
+//                        var m2=data.guimoInstance[pro2];
 
                         $('td.month').eq(index).html(k+'月');
-                        $('input.con').eq(index).attr("name",'m'+(i+1)+'1')
-                        $('input.con').eq(index).val(m1);
-                        $('input.con1').eq(index).val(m2);
-                        $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
-                        $('input.con').eq(index).removeAttr("disabled");
-                        $('input.con1').eq(index).removeAttr("disabled");
+//                        $('input.con').eq(index).attr("name",'m'+(i+1)+'1')
+//                        $('input.con').eq(index).val(m1);
+//                        $('input.con1').eq(index).val(m2);
+//                        $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
+//                        $('input.con').eq(index).removeAttr("disabled");
+//                        $('input.con1').eq(index).removeAttr("disabled");
                         index++;
                     }else{
                         $('td.month').eq(index).html(j+'月');
-                        $('input.con').eq(index).attr("name",'m'+(i+1)+'1').val();
-                        $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
-                        $('input.con').eq(index).val(m1);
-                        $('input.con1').eq(index).val(m2);
-                        $('input.con').eq(index).removeAttr("disabled");
-                        $('input.con1').eq(index).removeAttr("disabled");
+//                        $('input.con').eq(index).attr("name",'m'+(i+1)+'1').val();
+//                        $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
+//                        $('input.con').eq(index).val(m1);
+//                        $('input.con1').eq(index).val(m2);
+//                        $('input.con').eq(index).removeAttr("disabled");
+//                        $('input.con1').eq(index).removeAttr("disabled");
                         j++;
                         index++;
                     }
@@ -348,44 +313,17 @@
                 alert('获取数据失败');
             }
         });
-        for(var i=0;i<sjd;i++){
-            var a=jdindex+i;
-            if(a<=4){
-                $('th.jd').eq(i).html(byear+'年第'+a+'季度');
-            }else{
-                $('th.jd').eq(i).html(eyear+'年第'+y+'季度');
-                y++;
-            }
+//        for(var i=0;i<sjd;i++){
+//            var a=jdindex+i;
+//            if(a<=4){
+//                $('th.jd').eq(i).html(byear+'年第'+a+'季度');
+//            }else{
+//                $('th.jd').eq(i).html(eyear+'年第'+y+'季度');
+//                y++;
+//            }
+//
+//        }
 
-        }
-        %{--for(var i=0;i<=smonth;i++) {--}%
-
-        %{--k=bmonth+i;--}%
-        %{--if(k<=12) {--}%
-
-        %{--var pro='m'+i+'1';--}%
-        %{----}%
-        %{--alert(guimoInstance);--}%
-        %{--$('td.month').eq(index).html(k+'月');--}%
-        %{--$('input.con').eq(index).attr("name",'m'+(i+1)+'1')--}%
-        %{--$('input.con').eq(index).val(${guimoInstance.constraints('m'+(i+1)+'1')});--}%
-        %{--$('input.con1').eq(index).val(${guimoInstance.getProperty('m'+(i+1)+'2')});--}%
-        %{--$('input.con1').eq(index).attr("name",'m'+(i+1)+'2');--}%
-        %{--$('input.con').eq(index).removeAttr("disabled");--}%
-        %{--$('input.con1').eq(index).removeAttr("disabled");--}%
-        %{--index++;--}%
-        %{--}else{--}%
-        %{--$('td.month').eq(index).html(j+'月');--}%
-        %{--$('input.con').eq(index).attr("name",'m'+(i+1)+'1').val();--}%
-        %{--$('input.con1').eq(index).attr("name",'m'+(i+1)+'2');--}%
-        %{--$('input.con').eq(index).removeAttr("disabled");--}%
-        %{--$('input.con1').eq(index).removeAttr("disabled");--}%
-        %{--j++;--}%
-        %{--index++;--}%
-        %{--}--}%
-
-
-        %{--}--}%
         $('input').focus(function(){
             $(this).css('border','1px solid #27bdff')
 
@@ -394,45 +332,7 @@
             $(this).css('border','1px solid #e5e5e5')
         })
     })
-    function getjd(month){
-        var jd;
-        switch (month){
-            case 1:jd=1;break;
-            case 2:jd=1;break;
-            case 3:jd=1;break;
-            case 4:jd=2;break;
-            case 5:jd=2;break;
-            case 6:jd=2;break;
-            case 7:jd=3;break;
-            case 8:jd=3;break;
-            case 9:jd=3;break;
-            case 10:jd=4;break;
-            case 11:jd=4;break;
-            case 12:jd=4;break;
-        }
-        return jd;
-    }
-    function getmindex(month){
-        var index;
-        switch (month){
-            case 1:index=0;break;
-            case 2:index=1;break;
-            case 3:index=2;break;
-            case 4:index=0;break;
-            case 5:index=1;break;
-            case 6:index=2;break;
-            case 7:index=0;break;
-            case 8:index=1;break;
-            case 9:index=2;break;
-            case 10:index=0;break;
-            case 11:index=1;break;
-            case 12:index=2;break;
-        }
-        return index;
-    }
+
 </script>
-
-
-
 </body>
 </html>

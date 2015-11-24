@@ -76,7 +76,7 @@
                         <div style="margin-top:10px;color:#000;">提示：此日期选择是您目标规划的时间区间，建议以两年为时间周期进行规划。</div>
                         <div class="content">
                             <div style="margin-top:20px;" class="clearfix">
-                            <g:form url="[controller:'front',action:'caiwu_target']" method="post" class="form-horizontal">
+                            <g:form url="[controller:'front',action:'caiwu_target']" method="post" class="form-horizontal" id="caiwu_target">
                                 <table class="table table-bordered table1">
                                     <tr class="th1">
                                         <th colspan="3">季度</th>
@@ -205,13 +205,14 @@
                                 </table>
                                 <input type="hidden" id="guimoId" name="id" value="${guimoInstance.id}"/>
                             </div>
-                            <div class="" style="width:300px;margin:0 auto;">
-                                %{--<g:form url="[controller:'front',action:'choose_date']" method="post" id="choose_date" class="form-horizontal">--}%
-                                    %{--<button class="button" type="submit" form="choose_date" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;">返回上一步</button>--}%
-                                %{--</g:form>--}%
-                                <input type="submit"  class="button" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;">确认提交</button>
+                            </g:form>
+                            <div class="clearfix" style="width:300px;margin:0 auto;">
+                                <g:form url="[controller:'front',action:'choose_date']" method="post" id="choose_date" class="form-horizontal f-l">
+                                    <input class="button" type="submit" form="choose_date" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;" value="返回上一步" >
+                                </g:form>
+                                <input type="submit"  class="button f-l" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;margin-left:20px;" value="确认提交" form="caiwu_target"/>
                             </div>
-                           </g:form>
+
 
                             <span style="display:none;" id="begintime">${guimoInstance.begintime}</span>
                             <span style="display: none;" id="endtime">${guimoInstance.endtime}</span>

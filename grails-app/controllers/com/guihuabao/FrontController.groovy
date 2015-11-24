@@ -4000,16 +4000,40 @@ class FrontController {
             render(view: "guimo_target" , params: [msg: "保存失败！"])
             return
         }else {
-            def caiwuInstance = new Caiwu()
-            caiwuInstance.uid = user.id
-            caiwuInstance.cid = company.id
-            caiwuInstance.begintime=guimoInstance.begintime
-            caiwuInstance.endtime=guimoInstance.endtime
-            if (!caiwuInstance.save(flush: true)) {
-                render(view: "guimo_target" , params: [msg: "保存失败！"])
-                return
+            def caiwuInstance=Caiwu.findByCidAndUid(user.id,company.id)
+            if(!caiwuInstance) {
+                 caiwuInstance = new Caiwu()
+                caiwuInstance.uid = user.id
+                caiwuInstance.cid = company.id
+                caiwuInstance.begintime = guimoInstance.begintime
+                caiwuInstance.endtime = guimoInstance.endtime
+                if (!caiwuInstance.save(flush: true)) {
+                    render(view: "guimo_target", params: [msg: "保存失败！"])
+                    return
+                }
+            }else{
+                caiwuInstance=Caiwu.findByUidAndCidAndBegintimeAndEndtime(user.id,company.id,guimoInstance.begintime,guimoInstance.endtime)
             }
+            [caiwuInstance:caiwuInstance]
         }
+
+    }
+    def caiwuAjax(){
+        def rs=[:]
+
+        def id=params.id
+        def caiwuInstance=Caiwu.findById(id)
+        if(!caiwuInstance){
+            rs.result=false
+            rs.msg='获取数据失败！'
+        }else{
+            rs.result=true
+            rs.caiwuInstance=caiwuInstance
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
 }
 
