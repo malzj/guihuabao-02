@@ -1842,6 +1842,207 @@ class LoginController {
             redirect(action: "questionsList", id: questionInstance.testPapers.id)
         }
     }
+//  架构示例图
+    def frameworkImgList(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        [frameworkImgInstanceList: FrameworkImg.list(params), frameworkImgInstanceTotal: FrameworkImg.count()]
+    }
+    def frameworkImgCreate(){
+        [frameworkImgInstance: new FrameworkImg(params)]
+    }
+    def frameworkImgSave(){
+        def frameworkImgInstance = new FrameworkImg(params)
+        def  fileName
+        MultipartFile f = request.getFile('file')
+        if(!f.empty) {
+            def date= new Date().getTime()
+            Random random =new Random()
+            def x = random.nextInt(100)
+            def str =f.originalFilename
+            String [] strs = str.split("[.]")
+            fileName=date.toString()+x.toString()+"."+strs[1]
+            def webRootDir = servletContext.getRealPath("/")
+            println webRootDir
+            def userDir = new File(webRootDir, "/uploadfile/images/")
+            userDir.mkdirs()
+            f.transferTo( new File( userDir, fileName))
+
+            frameworkImgInstance.img=fileName
+        }
+        if(!frameworkImgInstance.save(flush: true)){
+            render(view: "frameworkImgCreate",model: [frameworkImgInstance: frameworkImgInstance])
+        }
+
+        flash.message =message(code: 'default.created.message', args: [message(code: 'frameworkImg.label', default: 'FrameworkImg'), frameworkImgInstance.id])
+        redirect(action: "frameworkImgShow", id:frameworkImgInstance.id)
+    }
+    def frameworkImgShow(Long id) {
+        def frameworkImgInstance = FrameworkImg.get(id)
+        if (!frameworkImgInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'frameworkImg.label', default: 'FrameworkImg'), id])
+            redirect(action: "frameworkList")
+            return
+        }
+
+        [frameworkImgInstance: frameworkImgInstance]
+    }
+    def frameworkImgDelete(Long id){
+        def frameworkImgInstance = FrameworkImg.get(id)
+        if (!frameworkImgInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'frameworkImg.label', default: 'FrameworkImg'), id])
+            redirect(action: "frameworkList")
+            return
+        }
+
+        try {
+            frameworkImgInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'frameworkImg.label', default: 'FrameworkImg'), id])
+            redirect(action: "frameworkList")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'frameworkImg.label', default: 'FrameworkImg'), id])
+            redirect(action: "frameworkImgShow", id: id)
+        }
+    }
+    def frameworkImgEdit(Long id){
+        def frameworkImgInstance = FrameworkImg.get(id)
+        [frameworkImgInstance: frameworkImgInstance]
+    }
+    def frameworkImgUpdate(Long id, Long version){
+        def frameworkImgInstance = FrameworkImg.get(id)
+        def  fileName
+        MultipartFile f = request.getFile('file')
+        if(!f.empty) {
+            def date= new Date().getTime()
+            Random random =new Random()
+            def x = random.nextInt(100)
+            def str =f.originalFilename
+            String [] strs = str.split("[.]")
 
 
+            fileName=date.toString()+x.toString()+"."+strs[1]
+            def webRootDir = servletContext.getRealPath("/")
+            println webRootDir
+            def userDir = new File(webRootDir, "/uploadfile/images/")
+            userDir.mkdirs()
+            f.transferTo( new File( userDir, fileName))
+            frameworkImgInstance.img=fileName
+        }
+
+
+
+        if (!frameworkImgInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'frameworkImg.label', default: 'FrameworkImg'), id])
+            redirect(action: "frameworkImgShow", id: frameworkImgInstance.id)
+            return
+        }
+
+        if (version != null) {
+            if (frameworkImgInstance.version > version) {
+                frameworkImgInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'frameworkImg.label', default: 'FrameworkImg')] as Object[],
+                        "Another user has updated this Book while you were editing")
+                render(view: "frameworkImgEdit", model: [frameworkImgInstance: frameworkImgInstance])
+                return
+            }
+        }
+
+        frameworkImgInstance.properties = params
+
+
+        if (!frameworkImgInstance.save(flush: true)) {
+            render(view: "frameworkImgEdit", model: [frameworkImgInstance: frameworkImgInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'frameworkImg.label', default: 'FrameworkImg'), frameworkImgInstance.id])
+        redirect(action: "frameworkImgShow", id: frameworkImgInstance.id)
+
+    }
+//    框架默认部门
+    def frameworkDepartmentList(Integer max){
+        params.max = Math.min(max ?: 10, 100)
+        [frameworkDepartmentInstanceList:FrameworkDepartment.list(params), frameworkDepartmentInstanceTotal: FrameworkDepartment.count()]
+    }
+    def frameworkDepartmentCreate(){
+
+        [frameworkDepartmentInstance: new FrameworkDepartment(params)]
+    }
+    def frameworkDepartmentSave(){
+        def frameworkDepartmentInstance = new FrameworkDepartment(params)
+        if (!frameworkDepartmentInstance.save(flush: true)) {
+            render(view: "frameworkDepartmentCreate")
+            return
+        }
+
+        flash.message = message(code: 'default.created.message', args: [message(code: 'frameworkDepartment.label', default: 'FrameworkDepartment'), frameworkDepartmentInstance.id])
+        redirect(action: "frameworkDepartmentShow", id: frameworkDepartmentInstance.id)
+    }
+    def frameworkDepartmentShow(Long id) {
+
+        def frameworkDepartmentInstance = FrameworkDepartment.get(id)
+        if (!frameworkDepartmentInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'frameworkDepartment.label', default: 'FrameworkDepartment'), id])
+            redirect(action: "frameworkDepartmentList")
+            return
+        }
+
+        [frameworkDepartmentInstance: frameworkDepartmentInstance]
+    }
+    def frameworkDepartmentEdit(Long id) {
+        def frameworkDepartmentInstance = FrameworkDepartment.get(id)
+        if (!frameworkDepartmentInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'frameworkDepartment.label', default: 'FrameworkDepartment'), id])
+            redirect(action: "frameworkDepartmentList")
+            return
+        }
+
+        [frameworkDepartmentInstance: frameworkDepartmentInstance]
+    }
+    def frameworkDepartmentUpdate(Long id, Long version) {
+        def frameworkDepartmentInstance = FrameworkDepartment.get(id)
+        if (!frameworkDepartmentInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'frameworkDepartment.label', default: 'FrameworkDepartment'), id])
+            redirect(action: "frameworkDepartmentList")
+            return
+        }
+
+        if (version != null) {
+            if (frameworkDepartmentInstance.version > version) {
+                frameworkDepartmentInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+                        [message(code: 'frameworkDepartment.label', default: 'FrameworkDepartment')] as Object[],
+                        "Another user has updated this User while you were editing")
+                render(view: "frameworkDepartmentEdit", model: [frameworkDepartmentInstance: frameworkDepartmentInstance])
+                return
+            }
+        }
+
+        frameworkDepartmentInstance.properties = params
+
+        if (!frameworkDepartmentInstance.save(flush: true)) {
+            render(view: "frameworkDepartmentEdit", model: [frameworkDepartmentInstance: frameworkDepartmentInstance])
+            return
+        }
+
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'frameworkDepartment.label', default: 'FrameworkDepartment'), frameworkDepartmentInstance.id])
+        redirect(action: "frameworkDepartmentShow", id: frameworkDepartmentInstance.id)
+    }
+    def  frameworkDepartmentDelete(Long id) {
+        def frameworkDepartmentInstance = FrameworkDepartment.get(id)
+        if (!frameworkDepartmentInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'frameworkDepartment.label', default: 'FrameworkDepartment'), id])
+            redirect(action: "frameworkDepartmentList")
+            return
+        }
+
+        try {
+            frameworkDepartmentInstance.delete(flush: true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'frameworkDepartment.label', default: 'FrameworkDepartment'), id])
+            redirect(action: "bumenList")
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'frameworkDepartment.label', default: 'FrameworkDepartment'), id])
+            redirect(action: "bumenShow", id: id)
+        }
+    }
  }

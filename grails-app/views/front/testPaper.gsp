@@ -39,31 +39,31 @@
         <section class="wrapper" style="margin-top: 94px;">
             <div class="testPaper">
                 <ul class="steps clearfix">
-                    <li class="stp active">
-                        <span>第一步</span>
-                        <p>现状评估</p>
-                    </li>
-                    <li class="arrow"></li>
-                    <li class="stp">
-                        <span>第一步</span>
-                        <p>现状评估</p>
-                    </li>
-                    <li class="arrow"></li>
-                    <li class="stp">
-                        <span>第一步</span>
-                        <p>现状评估</p>
-                    </li>
-                    <li class="arrow"></li>
-                    <li class="stp">
-                        <span>第一步</span>
-                        <p>现状评估</p>
-                    </li>
-                    <li class="arrow"></li>
-                    <li class="stp">
-                        <span>第一步</span>
-                        <p>现状评估</p>
-                    </li>
-                </ul>
+                <li class="stp active">
+                    <span>第一步</span>
+                    <p>现状评估</p>
+                </li>
+                <li class="arrow"></li>
+                <li class="stp">
+                    <span>第二步</span>
+                    <p>规模目标</p>
+                </li>
+                <li class="arrow"></li>
+                <li class="stp">
+                    <span>第三步</span>
+                    <p>财务目标</p>
+                </li>
+                <li class="arrow"></li>
+                <li class="stp">
+                    <span>第四步</span>
+                    <p>组织架构</p>
+                </li>
+                <li class="arrow"></li>
+                <li class="stp">
+                    <span>第五步</span>
+                    <p>工作推进</p>
+                </li>
+            </ul>
                 <div class="test-question">
                     <div class="test-title">客户自填信息</div>
                     <g:form class="form-horizontal tasi-form" url="[controller:'front',action:'testEvaluate']" method="post"  enctype= "multipart/form-data">

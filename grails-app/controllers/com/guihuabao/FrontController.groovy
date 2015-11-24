@@ -3672,10 +3672,16 @@ class FrontController {
         }
         def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
         if(doneTest){
-//            redirect(action: "testPaperShow", id: testPaperInstance.id)
-//            return
+            redirect(action: "startProgramme")
+            return
         }
-        redirect(action: "testPaper")
+        redirect(action: "programmeModule")
+    }
+    def startProgramme(){
+
+    }
+    def programmeModule(){
+
     }
 //    测试
     /*
@@ -3714,17 +3720,21 @@ class FrontController {
             redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
             return
         }
+//        def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
+//        if(doneTest){
+//            redirect(action: "startProgramme")
+//            return
+//        }
         def testPaperId=params.testPaperId
         def testPaperInstance=TestPaper.findById(testPaperId)
         def questionInstancList=Questions.findAllByTestPapers(testPaperInstance)
         def totalScore=0
-        def a=params
         for(def info in questionInstancList){
             //实例化用户评测表
             def userEvaluate=new Evaluate()
             userEvaluate.cid=company.id
             userEvaluate.uid=user.id
-            userEvaluate.testPaperId=params.testPaperId
+            userEvaluate.testPaperId=testPaperInstance.id
             userEvaluate.questionId=info.id
             userEvaluate.type=info.type
             def formInfo=params.list("infos["+info.id+"]")
@@ -3854,13 +3864,10 @@ class FrontController {
             //保存评测结果
             userEvaluate.save(flush: true)
         }
-//        def c=strImplode(arr)
-//        def c=params.list('infos[24]')
-        println(totalScore)
         def userDoneTest=new DonePaper()
         userDoneTest.cid=company.id
         userDoneTest.uid=user.id
-        userDoneTest.paperId=params.testPaperId
+        userDoneTest.paperId=testPaperInstance.id
         userDoneTest.totalScore=totalScore
         userDoneTest.dateCreate= new Date()
         if (!userDoneTest.save(flush: true)) {
@@ -3953,5 +3960,153 @@ class FrontController {
         }
         redirect(action: "caiwu_target", params: [begintime: guimoInstance.begintime,endtime: guimoInstance.endtime])
     }
-}
+
+//    组织架构
+    def framework(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def tradeInstance=Evaluate.findByTestPaperIdAndQuestionIdAndCidAndUid(1,24,company.id,user.id)
+        if(!tradeInstance){
+            redirect(action: 'testPaper', params: [msg: "您还没有完成规划测试！"])
+            return
+        }
+        def frameworkImgList=FrameworkImg.findAllByTrade(tradeInstance.letters)
+        if(!frameworkImgList){
+            frameworkImgList=FrameworkImg.findAllByTrade('F')
+        }
+        [frameworkImgList:frameworkImgList]
+    }
+    /*
+    * 选择架构部门
+    * */
+    def selectDepartment(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def selectDepartmentList=SelectDepartment.findAllByCidAndUid(company.id,user.id)
+        if(selectDepartmentList){
+            redirect(action: 'selectDepartmentEdit')
+            return
+        }
+        def frameworkDepartmentList=FrameworkDepartment.findAll();
+        [frameworkDepartmentList:frameworkDepartmentList]
+    }
+    /*
+    * 编辑架构部门
+    * */
+    def selectDepartmentEdit(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def selectDepartmentList=SelectDepartment.findAllByCidAndUid(company.id,user.id)
+        def sql=''
+        for(def i=0;i<selectDepartmentList.size();i++){
+            if(i==0){
+                sql+=selectDepartmentList.get(i).departmentId
+            }else{
+                sql+=','+selectDepartmentList.get(i).departmentId
+            }
+        }
+        def frameworkDepartmentList=FrameworkDepartment.findAll("from FrameworkDepartment as b where b.id not in("+sql+")");
+        [frameworkDepartmentList:frameworkDepartmentList,selectDepartmentList:selectDepartmentList]
+    }
+    /*
+    * 获取部门信息
+    * */
+    def ajaxDepartment(){
+        def rs=[:]
+        def departmentId=params.id
+        def frameworkDepartmentInstance=FrameworkDepartment.get(departmentId);
+        if(frameworkDepartmentInstance){
+            rs.result=true
+            rs.frameworkDepartmentInstance=frameworkDepartmentInstance
+        }else{
+            rs.result=false
+        }
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+    /*
+    * 保存架构部门
+    * */
+    def selectDepartmentSave(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def paramsIdInfo=params.list('id');
+        def paramsNameInfo=params.list('name');
+        def paramsNumInfo=params.list('num');
+        for(def i=0;i<paramsIdInfo.size();i++){
+            def selectDepartmentInstance=new SelectDepartment()
+            selectDepartmentInstance.departmentId=Integer.parseInt(paramsIdInfo.get(i))
+            selectDepartmentInstance.cid=company.id
+            selectDepartmentInstance.uid=user.id
+            selectDepartmentInstance.name=paramsNameInfo.get(i)
+            selectDepartmentInstance.num=Integer.parseInt(paramsNumInfo.get(i))
+            selectDepartmentInstance.save(flush: true)
+        }
+        redirect(action: "frameworkShow")
+    }
+    def frameworkShow(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def departmentInstance=[]
+        def cid=company.id
+        def uid=user.id
+        def selectDepartmentInstance=SelectDepartment.findAllByCidAndUid(cid,uid,[sort: 'num',order: 'asc'])
+        for(def i=0;i<selectDepartmentInstance.size();i++){
+            def data=[:]
+            data.id=selectDepartmentInstance.get(i).id
+            data.name=selectDepartmentInstance.get(i).name
+            data.jobs=FrameworkDepartment.findById(selectDepartmentInstance.get(i).departmentId).jobs.split(',')
+            departmentInstance<<data
+        }
+        def a= departmentInstance
+        [departmentInstance:departmentInstance]
+    }
+    /*
+    * 更新架构部门
+    * */
+    def selectDepartmentUpdate(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def paramsIdInfo=params.list('id');
+        def paramsNameInfo=params.list('name');
+        def paramsNumInfo=params.list('num');
+        for(def i=0;i<paramsIdInfo.size();i++){
+            def selectDepartmentInstance=new SelectDepartment()
+            selectDepartmentInstance.departmentId=Integer.parseInt(paramsIdInfo.get(i))
+            selectDepartmentInstance.cid=company.id
+            selectDepartmentInstance.uid=user.id
+            selectDepartmentInstance.name=paramsNameInfo.get(i)
+            selectDepartmentInstance.num=Integer.parseInt(paramsNumInfo.get(i))
+            selectDepartmentInstance.save(flush: true)
+        }
+        redirect(action: "frameworkShow")
+    }
+ }
 
