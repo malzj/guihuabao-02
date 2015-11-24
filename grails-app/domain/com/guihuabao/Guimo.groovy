@@ -13,8 +13,8 @@ class Guimo {
     String jd6
     String jd7
     String jd8
-//    String m11
-//    String m12
+    String m11
+    String m12
     String m21
     String m22
     String m31
@@ -75,6 +75,8 @@ class Guimo {
         jd6(nullable: true)
         jd7(nullable: true)
         jd8(nullable: true)
+        m11(nullable: true)
+        m12(nullable: true)
         m21(nullable: true)
         m22(nullable: true)
         m31(nullable: true)

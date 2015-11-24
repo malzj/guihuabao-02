@@ -466,7 +466,7 @@ class TargetController {
                     info.plimg = CompanyUser.findById(allInfo.puid).img
                     replyInfo<<info
                 }
-                rs.replyInfo = unreadcomment
+                rs.replyInfo = replyInfo
 //                rs.mission=unreadcomment.mission
                 rs.result = true
             }

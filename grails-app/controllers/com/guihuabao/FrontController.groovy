@@ -3900,17 +3900,19 @@ class FrontController {
         }
         def uid=user.id
         def cid=user.cid
-        def begintime
-        def endtime
-        def choosedate=Guimo.findByCidAndUid(cid,uid)
-        if(!choosedate){
-            begintime=''
-            endtime=''
-        }else {
-            begintime = choosedate.begintime
-            endtime=choosedate.endtime
+        def guimoInstance
+        guimoInstance =Guimo.findByCidAndUid(cid,uid)
+        if(!guimoInstance){
+            guimoInstance=new Guimo()
+            guimoInstance.uid=uid
+            guimoInstance.cid=cid
+            if (!guimoInstance.save(flush: true)) {
+                render(view: "choose_date" , params: [msg: "获取数据失败"])
+                return
+            }
         }
-        [begintime: begintime,endtime: endtime]
+        [guimoInstance:guimoInstance]
+
     }
     def guimo_target() {
         def user = session.user
@@ -3921,9 +3923,39 @@ class FrontController {
         }
         def uid=user.id
         def cid=company.id
-        def begintime=params.begintime
-        def endtime=params.endtime
-
+        def id=params.id
+        def guimoInstance=Guimo.findById(id)
+        if(!guimoInstance){
+            render(view: "choose_date" , params: [msg: "获取数据失败"])
+            return
+        }else{
+            guimoInstance.properties=params
+            if (!guimoInstance.save(flush: true)) {
+                render(view: "choose_date" , params: [msg: "获取数据失败"])
+                return
+            }
+        }
+     [guimoInstance:guimoInstance]
+    }
+    def guimoAjax(){
+        def rs=[:]
+        def user = session.user
+        def company = session.company
+        def uid=user.id
+        def cid=company.id
+        def id=params.id
+        def guimoInstance=Guimo.findById(id)
+        if(!guimoInstance){
+            rs.result=false
+            rs.msg='获取数据失败！'
+        }else{
+            rs.result=true
+            rs.guimoInstance=guimoInstance
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
     def guimoSave() {
         def user = session.user
@@ -4108,5 +4140,25 @@ class FrontController {
         }
         redirect(action: "frameworkShow")
     }
- }
+    def caiwu_target(){
+
+        def id=params.id
+        def guimoInstance=Guimo.get(id)
+        guimoInstance.properties=params
+        if (!guimoInstance.save(flush: true)) {
+            render(view: "guimo_target" , params: [msg: "保存失败！"])
+            return
+        }else {
+            def caiwuInstance = new Caiwu()
+            caiwuInstance.uid = user.id
+            caiwuInstance.cid = company.id
+            caiwuInstance.begintime=guimoInstance.begintime
+            caiwuInstance.endtime=guimoInstance.endtime
+            if (!caiwuInstance.save(flush: true)) {
+                render(view: "guimo_target" , params: [msg: "保存失败！"])
+                return
+            }
+        }
+    }
+}
 
