@@ -79,8 +79,8 @@
                                     <tr class="th1">
                                         <th><input  disabled style="background:none;text-align: center;border:none;width:100%;" value="年份"></th>
                                         <th >当前</th>
-                                        <th class="nf">--</th>
-                                        <th class="nf">--</th>
+                                        <th class="nf" colspan="12" >--</th>
+
 
 
                                     </tr>
@@ -88,82 +88,183 @@
                                     <tr>
                                         <th class="th2">月份</th>
                                         <td class="th2"></td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">1月</td>
+                                        <td class="th2 month">2月</td>
+                                        <td class="th2 month">3月</td>
+                                        <td class="th2 month">4月</td>
+                                        <td class="th2 month">5月</td>
+                                        <td class="th2 month">6月</td>
+                                        <td class="th2 month">7月</td>
+                                        <td class="th2 month">8月</td>
+                                        <td class="th2 month">9月</td>
+                                        <td class="th2 month">10月</td>
+                                        <td class="th2 month">11月</td>
+                                        <td class="th2 month">12月</td>
+
                                     </tr>
                                     <tr>
                                         <th class="th2">营收（万元）</th>
-                                        <th><input class="gmt con"/></th>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
+                                        <th><input class="gmt con y" name="n1"/></th>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+
                                     </tr>
                                     <tr>
                                         <th class="th2">毛利率（%）</th>
-                                        <th><input class="gmt con"/></th>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
+                                        <th><input class="gmt con" name="n2"/></th>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+
                                     </tr>
                                     <tr>
                                         <th class="th2">净利润（万元）</th>
-                                        <th><input class="gmt con"/></th>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
+                                        <th><input class="gmt con j" name="n3"/></th>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+
                                     </tr>
                                     <tr>
                                         <th class="th2">评效比（数值）</th>
-                                        <th><input class="gmt con"/></th>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
-                                        <td><input class="gmt con"/></td>
+                                        <th><input class="gmt con" name="n4"/></th>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+
+                                    </tr>
+                                </table>
+                                <table class="table table-bordered table1">
+                                    <tr class="th1">
+                                        <th><input  disabled style="background:none;text-align: center;border:none;width:100%;" value="年份"></th>
+                                        <th >当前</th>
+                                        <th class="nf" colspan="12">--</th>
+
+
+
+                                    </tr>
+
+                                    <tr>
+                                        <th class="th2">月份</th>
+                                        <td class="th2"></td>
+                                        <td class="th2 month">1月</td>
+                                        <td class="th2 month">2月</td>
+                                        <td class="th2 month">3月</td>
+                                        <td class="th2 month">4月</td>
+                                        <td class="th2 month">5月</td>
+                                        <td class="th2 month">6月</td>
+                                        <td class="th2 month">7月</td>
+                                        <td class="th2 month">8月</td>
+                                        <td class="th2 month">9月</td>
+                                        <td class="th2 month">10月</td>
+                                        <td class="th2 month">11月</td>
+                                        <td class="th2 month">12月</td>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="th2">营收（万元）</th>
+                                        <th><input class="gmt con y" name="n1"/></th>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+                                        <td><input class="gmt con y"/></td>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="th2">毛利率（%）</th>
+                                        <th><input class="gmt con" name="n2"/></th>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+                                        <td><input class="gmt con m"/></td>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="th2">净利润（万元）</th>
+                                        <th><input class="gmt con j" name="n3"/></th>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+                                        <td><input class="gmt con j"/></td>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="th2">评效比（数值）</th>
+                                        <th><input class="gmt con" name="n4"/></th>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+                                        <td><input class="gmt con p"/></td>
+
                                     </tr>
                                 </table>
                                 <input type="hidden" id="caiwuId" name="id" value="${caiwuInstance.id}"/>
@@ -172,8 +273,9 @@
 
                             </g:form>
                             <div class="clearfix" style="width:300px;margin:0 auto;">
-                                <g:form url="[controller:'front',action:'guimo_target']" method="post" id="choose_date" class="form-horizontal f-l">
-                                    <input class="button" type="submit" form="choose_date" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;" value="返回上一步" >
+                                <g:form url="[controller:'front',action:'guimo_target']" method="post" id="guimo_target" class="form-horizontal f-l">
+                                    <input type="hidden" id="caiwuId" name="id" value="${guimoInstance.id}"/>
+                                    <input class="button" type="submit" form="guimo_target" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;" value="返回上一步" >
                                 </g:form>
                                 <input type="submit"  class="button f-l" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;margin-left:20px;" value="确认提交" form="caiwu_targetup"/>
                             </div>
@@ -239,8 +341,8 @@
 <script type="text/javascript">
     $(function(){
 
-//        $('input.con').attr('disabled','disabled');
-//        $('input.con1').attr('disabled','disabled');
+        $('input.con').attr('disabled','disabled');
+        $('input.con1').attr('disabled','disabled');
         var begintime=$('#begintime').html();
         var endtime=$('#endtime').html();
         var bstr = begintime.replace(/-/g,"/");
@@ -254,19 +356,14 @@
         var bmonth=bdate.getMonth()+1;
         var emonth=edate.getMonth()+1;
         var smonth=(eyear-byear)*12+(emonth-bmonth);
-        if(byear==eyear){
-            $('th.nf').eq(0).attr('colspan',smonth).html(byear);
-            $('th.nf').eq(1).remove();
-        }else{
-            $('th.nf').eq(0).attr('colspan',12-bmonth+1).html(byear);
-            $('th.nf').eq(1).attr('colspan',emonth).html(eyear);
-        }
+
+            $('th.nf').eq(0).html(byear+'年');
+            $('th.nf').eq(1).html(eyear+'年');
+
 
         var k=0;
         var j=1;
-//        var y=1;
-        var index=0;
-//        var jdindex=getjd(bmonth);
+        var index=bmonth-1;
         var caiwuId=$('#caiwuId').val();
         $.ajax({
             url: '${webRequest.baseUrl}/front/caiwuAjax',
@@ -279,32 +376,37 @@
 
                     k=bmonth+i;
 
-                    if(k<=12) {
+//                    if(k<=12) {
 
-//                        var pro1='m'+(i+1)+'1';
-//                        var pro2='m'+(i+1)+'2';
-//                        var m1=data.guimoInstance[pro1];
-//                        var m2=data.guimoInstance[pro2];
+                        var p='p'+(i+1);
+                        var m='m'+(i+1);
+                        var y='y'+(i+1);
+                        var j='j'+(i+1);
+                        var p1=data.caiwuInstance[p];
+                        var m1=data.caiwuInstance[m];
+                        var y1=data.caiwuInstance[y];
+                        var j1=data.caiwuInstance[j];
 
-                        $('td.month').eq(index).html(k+'月');
-//                        $('input.con').eq(index).attr("name",'m'+(i+1)+'1')
-//                        $('input.con').eq(index).val(m1);
-//                        $('input.con1').eq(index).val(m2);
-//                        $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
-//                        $('input.con').eq(index).removeAttr("disabled");
-//                        $('input.con1').eq(index).removeAttr("disabled");
+                        $('input.j').eq(index).attr("name",j)
+                        $('input.m').eq(index).attr("name",m)
+                        $('input.p').eq(index).attr("name",p)
+                        $('input.y').eq(index).attr("name",y)
+                        if(isupdate=='false'){
+                            $('input.j').eq(index).val(j1)
+                            $('input.m').eq(index).val(m1)
+                            $('input.p').eq(index).val(p1)
+                            $('input.y').eq(index).val(y1)
+                        }else{
+                            $('input.j').eq(index).val('')
+                            $('input.m').eq(index).val('')
+                            $('input.p').eq(index).val('')
+                            $('input.y').eq(index).val('')
+                        }
+
+                        $('input.con').eq(index).removeAttr("disabled");
+
                         index++;
-                    }else{
-                        $('td.month').eq(index).html(j+'月');
-//                        $('input.con').eq(index).attr("name",'m'+(i+1)+'1').val();
-//                        $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
-//                        $('input.con').eq(index).val(m1);
-//                        $('input.con1').eq(index).val(m2);
-//                        $('input.con').eq(index).removeAttr("disabled");
-//                        $('input.con1').eq(index).removeAttr("disabled");
-                        j++;
-                        index++;
-                    }
+
 
 
                 }
