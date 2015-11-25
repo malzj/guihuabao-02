@@ -215,7 +215,7 @@
             }
             newEl.setAttribute('data-id',data);
             var idInput=document.createElement("input");
-            idInput.name='id';
+            idInput.name='departmentId';
             idInput.type='hidden';
             idInput.value=data;
             var numInput=document.createElement("input");

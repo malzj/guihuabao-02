@@ -85,62 +85,6 @@
             }
         });
         var event = {
-
-            %{--mouseover:function(){--}%
-
-                %{--var thisElement=$(this);--}%
-                %{--var id=$(this).attr('data-id');--}%
-                %{--var cid=$(this).attr('data-cid');--}%
-                %{--var etop=$(this).offset().top;--}%
-                %{--var eleft=$(this).offset().left;--}%
-                %{--var ewidth=$(this).outerWidth();--}%
-                %{--var ehight=$(this).outerHeight();--}%
-                %{--var winWidth=$(document).width();--}%
-                %{--var winHeight=$(document).height();--}%
-
-                %{--var listLeft;--}%
-                %{--var witchSide;--}%
-                %{--if(winWidth<(eleft+ewidth+150)){--}%
-                    %{--listLeft=eleft-150;--}%
-                    %{--witchSide='right';--}%
-                %{--}else{--}%
-                    %{--listLeft=eleft+ewidth+20;--}%
-                    %{--witchSide='left';--}%
-                %{--}--}%
-                %{--$.ajax({--}%
-                    %{--url:'${webRequest.baseUrl}/front/bumenMemberList',--}%
-                    %{--dataType: "jsonp",--}%
-                    %{--jsonp: "callback",--}%
-                    %{--async:false,--}%
-                    %{--data:{id:id,cid:cid},--}%
-                    %{--success: function(data) {--}%
-
-                        %{--var html3 = '<div class="bumenmember '+witchSide+'"style="position: absolute;top:'+etop+';left:'+listLeft+'"><div class="arrow"></div><ul>';--}%
-                        %{--if (data.result) {--}%
-                            %{--var i=1;--}%
-                            %{--var style;--}%
-                            %{--for (var info in data.bumenMemberList) {--}%
-                                %{--if(i==1){--}%
-                                    %{--style=' class="nbt"';--}%
-                                %{--}else{--}%
-                                    %{--style='';--}%
-                                %{--}--}%
-                                %{--html3 += '<li'+style+'>' + data.bumenMemberList[info].name +'-'+data.bumenMemberList[info].position+ '</li>';--}%
-                                %{--i++;--}%
-                            %{--}--}%
-                        %{--} else {--}%
-
-                            %{--html3 += '<li class="nbt">无成员</li>';--}%
-                        %{--}--}%
-                        %{--html3 += '</ul></div>';--}%
-                        %{--$('html').append(html3);--}%
-                    %{--}--}%
-                %{--});--}%
-            %{--},--}%
-
-            %{--mouseout:function(){--}%
-                %{--$('.bumenmember').remove();--}%
-            %{--},--}%
             click:function(){
                 var id=$(this).attr('data-id');
                 var cid=$(this).attr('data-cid');

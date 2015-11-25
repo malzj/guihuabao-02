@@ -1293,4 +1293,36 @@ class GhbotherapiController {
         } else
             render rs as JSON
     }
- }
+    /*
+    * 更多应用列表
+    *参数cid
+    * */
+    def moreApps(){
+        def rs = [:]
+        def cid = params.cid
+        def companyAppInstanceList=CompanyApps.findAllByCid(cid,[sort:'buydate',order:'desc'])
+        def companyAppList=[]
+        for(def i=0;i<companyAppInstanceList.size();i++){
+            def data=[:]
+            if(companyAppInstanceList.get(i).app.apptype=='2'){
+                data.appName=companyAppInstanceList.get(i).app.appName
+                data.appImg=companyAppInstanceList.get(i).app.appImg
+                data.companyappid=companyAppInstanceList.get(i).id
+                data.appId=companyAppInstanceList.get(i).app.id
+                companyAppList<<data
+            }
+        }
+        if(companyAppList){
+            rs.result = false
+            rs.companyAppList = companyAppList
+        }else{
+            rs.result = false
+            rs.msg = "没有更多应用"
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+
+    }
+}

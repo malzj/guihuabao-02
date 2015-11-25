@@ -58,6 +58,13 @@
                             <td width="345">${appsInstance.appurl}</td>
                         </tr>
                         <tr>
+                            <td>应用类型：</td>
+                            <td width="345">
+                                <g:if test="${appsInstance?.apptype=='1'}">基础应用</g:if>
+                                <g:elseif test="${appsInstance?.apptype=='2'}">更多应用</g:elseif>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>封面：</td>
                             <td>
                                 <div id="imgdiv" class="zsimg"><img id="imgShow" src="${resource(dir: 'uploadfile/appimg', file: ''+appsInstance.appImg+'')}" /></div>
