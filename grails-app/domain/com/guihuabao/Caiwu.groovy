@@ -32,7 +32,7 @@ class Caiwu {
     String m21
     String m22
     String m23
-
+    String m24
     String y1
     String y2
     String y3
@@ -56,7 +56,7 @@ class Caiwu {
     String y21
     String y22
     String y23
-
+    String y24
     String p1
     String p2
     String p3
@@ -80,7 +80,7 @@ class Caiwu {
     String p21
     String p22
     String p23
-
+    String p24
     String j1
     String j2
     String j3
@@ -104,7 +104,7 @@ class Caiwu {
     String j21
     String j22
     String j23
-
+    String j24
 
 
     static constraints = {
@@ -139,7 +139,7 @@ class Caiwu {
          m21(nullable: true)
          m22(nullable: true)
          m23(nullable: true)
-
+        m24(nullable: true)
          y1(nullable: true)
         y2(nullable: true)
          y3(nullable: true)
@@ -163,7 +163,7 @@ class Caiwu {
          y21(nullable: true)
          y22(nullable: true)
          y23(nullable: true)
-
+        y24(nullable: true)
          p1(nullable: true)
          p2(nullable: true)
          p3(nullable: true)
@@ -187,7 +187,7 @@ class Caiwu {
          p21(nullable: true)
          p22(nullable: true)
          p23(nullable: true)
-
+        p24(nullable: true)
          j1(nullable: true)
          j2(nullable: true)
          j3(nullable: true)
@@ -211,6 +211,6 @@ class Caiwu {
          j21(nullable: true)
          j22(nullable: true)
          j23(nullable: true)
-
+        j24(nullable: true)
     }
 }

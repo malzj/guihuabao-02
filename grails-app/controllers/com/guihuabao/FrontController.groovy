@@ -3925,6 +3925,8 @@ class FrontController {
         def cid=company.id
         def id=params.id
         def guimoInstance=Guimo.findById(id)
+        def v1=guimoInstance.version
+        def isupdate=false
         if(!guimoInstance){
             render(view: "choose_date" , params: [msg: "获取数据失败"])
             return
@@ -3934,17 +3936,23 @@ class FrontController {
                 render(view: "choose_date" , params: [msg: "获取数据失败"])
                 return
             }
+            def v2=guimoInstance.version
+            if(v2>v1){
+                isupdate=true
+            }
         }
-     [guimoInstance:guimoInstance]
+     [guimoInstance:guimoInstance,isupdate:isupdate]
     }
     def guimoAjax(){
         def rs=[:]
-        def user = session.user
-        def company = session.company
-        def uid=user.id
-        def cid=company.id
+//        def user = session.user
+//        def company = session.company
+//        def uid=user.id
+//        def cid=company.id
+        def begintime=params.begintime
+        def endtime=params.endtime
         def id=params.id
-        def guimoInstance=Guimo.findById(id)
+        def guimoInstance=Guimo.findByIdAndBegintimeAndEndtime(id,begintime,endtime)
         if(!guimoInstance){
             rs.result=false
             rs.msg='获取数据失败！'
@@ -4141,7 +4149,12 @@ class FrontController {
         redirect(action: "frameworkShow")
     }
     def caiwu_target(){
-
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
         def id=params.id
         def guimoInstance=Guimo.get(id)
         guimoInstance.properties=params
@@ -4163,7 +4176,7 @@ class FrontController {
             }else{
                 caiwuInstance=Caiwu.findByUidAndCidAndBegintimeAndEndtime(user.id,company.id,guimoInstance.begintime,guimoInstance.endtime)
             }
-            [caiwuInstance:caiwuInstance]
+            [caiwuInstance:caiwuInstance,guimoInstance: guimoInstance]
         }
 
     }

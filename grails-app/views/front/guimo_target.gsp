@@ -80,10 +80,10 @@
                                 <table class="table table-bordered table1">
                                     <tr class="th1">
                                         <th colspan="3">季度</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
+                                        <th colspan="3" class="jdb">--</th>
+                                        <th colspan="3" class="jdb">--</th>
+                                        <th colspan="3" class="jdb">--</th>
+                                        <th colspan="3" class="jdb">--</th>
                                     </tr>
                                     <tr>
                                         <th colspan="3" class="th2">开店数量（家）</th>
@@ -94,18 +94,18 @@
                                     </tr>
                                     <tr>
                                         <th colspan="3" class="th2">月份</th>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">1月</td>
+                                        <td class="th2 month">2月</td>
+                                        <td class="th2 month">3月</td>
+                                        <td class="th2 month">4月</td>
+                                        <td class="th2 month">5月</td>
+                                        <td class="th2 month">6月</td>
+                                        <td class="th2 month">7月</td>
+                                        <td class="th2 month">8月</td>
+                                        <td class="th2 month">9月</td>
+                                        <td class="th2 month">10月</td>
+                                        <td class="th2 month">11月</td>
+                                        <td class="th2 month">12月</td>
                                     </tr>
                                     <tr>
                                         <th rowspan="2" colspan="2" class="th2"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
@@ -143,10 +143,10 @@
                                 <table class="table table-bordered table2">
                                     <tr class="th1">
                                         <th colspan="3">季度</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
-                                        <th colspan="3" class="jd">--</th>
+                                        <th colspan="3" class="jde">--</th>
+                                        <th colspan="3" class="jde">--</th>
+                                        <th colspan="3" class="jde">--</th>
+                                        <th colspan="3" class="jde">--</th>
                                     </tr>
                                     <tr>
                                         <th colspan="3" class="th2">开店数量（家）</th>
@@ -157,18 +157,18 @@
                                     </tr>
                                     <tr>
                                         <th colspan="3" class="th2">月份</th>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
-                                        <td class="th2 month">--</td>
+                                        <td class="th2 month">1月</td>
+                                        <td class="th2 month">2月</td>
+                                        <td class="th2 month">3月</td>
+                                        <td class="th2 month">4月</td>
+                                        <td class="th2 month">5月</td>
+                                        <td class="th2 month">6月</td>
+                                        <td class="th2 month">7月</td>
+                                        <td class="th2 month">8月</td>
+                                        <td class="th2 month">9月</td>
+                                        <td class="th2 month">10月</td>
+                                        <td class="th2 month">11月</td>
+                                        <td class="th2 month">12月</td>
                                     </tr>
                                     <tr>
                                         <th rowspan="2" colspan="2" class="th2"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
@@ -216,6 +216,7 @@
 
                             <span style="display:none;" id="begintime">${guimoInstance.begintime}</span>
                             <span style="display: none;" id="endtime">${guimoInstance.endtime}</span>
+                            <span style="display: none;" id="isupdate">${isupdate}</span>
                         </div>
 
 
@@ -287,6 +288,7 @@
 
      $('input.con').attr('disabled','disabled');
      $('input.con1').attr('disabled','disabled');
+     var isupdate=$('#isupdate').html();
      var begintime=$('#begintime').html();
      var endtime=$('#endtime').html();
      var bstr = begintime.replace(/-/g,"/");
@@ -300,50 +302,62 @@
      var bmonth=bdate.getMonth()+1;
      var emonth=edate.getMonth()+1;
      var smonth=(eyear-byear)*12+(emonth-bmonth);
-     var sjd=Math.ceil(smonth/3)+1;
+//     var sjd=Math.ceil(smonth/3)+1;
      var k=0;
      var j=1;
      var y=1;
-     var index=getmindex(bmonth);
-     var jdindex=getjd(bmonth);
+     var index=bmonth-1;
+//     var jdindex=getjd(bmonth);
      var guimoId=$('#guimoId').val();
      $.ajax({
          url: '${webRequest.baseUrl}/front/guimoAjax',
          method: 'post',
          dataType: 'json',
-         data: {id:guimoId},
+         data: {id:guimoId,begintime:begintime,endtime:endtime},
          success: function (data) {
 
              for(var i=0;i<=smonth;i++) {
 
                  k=bmonth+i;
 
-                 if(k<=12) {
+//                 if(k<=12) {
 
                      var pro1='m'+(i+1)+'1';
                      var pro2='m'+(i+1)+'2';
                     var m1=data.guimoInstance[pro1];
                     var m2=data.guimoInstance[pro2];
 
-                     $('td.month').eq(index).html(k+'月');
+//                     $('td.month').eq(index).html(k+'月');
                      $('input.con').eq(index).attr("name",'m'+(i+1)+'1')
-                     $('input.con').eq(index).val(m1);
-                     $('input.con1').eq(index).val(m2);
                      $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
+                     if(isupdate=='false') {
+                         $('input.con').eq(index).val(m1);
+                         $('input.con1').eq(index).val(m2);
+                     }else{
+                         $('input.con').eq(index).val('');
+                         $('input.con1').eq(index).val('');
+                     }
+
                      $('input.con').eq(index).removeAttr("disabled");
                      $('input.con1').eq(index).removeAttr("disabled");
+                 $('input.con').eq(index).parent().css("background","#d2d2d2");
+                 $('input.con1').eq(index).parent().css("background","#d2d2d2");
+                 $('input.con').eq(index).css("border","1px solid #d2d2d2");
+                 $('input.con1').eq(index).css("border","1px solid #d2d2d2");
+                 $('input.con').eq(index).css("background","#d2d2d2");
+                 $('input.con1').eq(index).css("background","#d2d2d2");
                      index++;
-                 }else{
-                     $('td.month').eq(index).html(j+'月');
-                     $('input.con').eq(index).attr("name",'m'+(i+1)+'1').val();
-                     $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
-                     $('input.con').eq(index).val(m1);
-                     $('input.con1').eq(index).val(m2);
-                     $('input.con').eq(index).removeAttr("disabled");
-                     $('input.con1').eq(index).removeAttr("disabled");
-                     j++;
-                     index++;
-                 }
+//                 }else{
+//                     $('td.month').eq(index).html(j+'月');
+//                     $('input.con').eq(index).attr("name",'m'+(i+1)+'1').val();
+//                     $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
+//                     $('input.con').eq(index).val(m1);
+//                     $('input.con1').eq(index).val(m2);
+//                     $('input.con').eq(index).removeAttr("disabled");
+//                     $('input.con1').eq(index).removeAttr("disabled");
+//                     j++;
+//                     index++;
+//                 }
 
 
              }
@@ -352,88 +366,61 @@
             alert('获取数据失败');
          }
      });
-     for(var i=0;i<sjd;i++){
-         var a=jdindex+i;
-         if(a<=4){
-             $('th.jd').eq(i).html(byear+'年第'+a+'季度');
-         }else{
-             $('th.jd').eq(i).html(eyear+'年第'+y+'季度');
-             y++;
-         }
+     for(var i=1;i<=4;i++){
+
+
+             $('th.jdb').eq(i-1).html(byear+'年第'+i+'季度');
+
+             $('th.jde').eq(i-1).html(eyear+'年第'+i+'季度');
+
+
 
      }
-     %{--for(var i=0;i<=smonth;i++) {--}%
 
-         %{--k=bmonth+i;--}%
-         %{--if(k<=12) {--}%
-
-             %{--var pro='m'+i+'1';--}%
-         %{----}%
-                    %{--alert(guimoInstance);--}%
-             %{--$('td.month').eq(index).html(k+'月');--}%
-             %{--$('input.con').eq(index).attr("name",'m'+(i+1)+'1')--}%
-             %{--$('input.con').eq(index).val(${guimoInstance.constraints('m'+(i+1)+'1')});--}%
-             %{--$('input.con1').eq(index).val(${guimoInstance.getProperty('m'+(i+1)+'2')});--}%
-             %{--$('input.con1').eq(index).attr("name",'m'+(i+1)+'2');--}%
-             %{--$('input.con').eq(index).removeAttr("disabled");--}%
-             %{--$('input.con1').eq(index).removeAttr("disabled");--}%
-             %{--index++;--}%
-         %{--}else{--}%
-             %{--$('td.month').eq(index).html(j+'月');--}%
-             %{--$('input.con').eq(index).attr("name",'m'+(i+1)+'1').val();--}%
-             %{--$('input.con1').eq(index).attr("name",'m'+(i+1)+'2');--}%
-             %{--$('input.con').eq(index).removeAttr("disabled");--}%
-             %{--$('input.con1').eq(index).removeAttr("disabled");--}%
-             %{--j++;--}%
-             %{--index++;--}%
-         %{--}--}%
-
-
-     %{--}--}%
     $('input').focus(function(){
         $(this).css('border','1px solid #27bdff')
 
     })
      $('input').blur(function(){
-         $(this).css('border','1px solid #e5e5e5')
+         $(this).css('border','1px solid #d2d2d2')
      })
  })
-    function getjd(month){
-        var jd;
-        switch (month){
-            case 1:jd=1;break;
-            case 2:jd=1;break;
-            case 3:jd=1;break;
-            case 4:jd=2;break;
-            case 5:jd=2;break;
-            case 6:jd=2;break;
-            case 7:jd=3;break;
-            case 8:jd=3;break;
-            case 9:jd=3;break;
-            case 10:jd=4;break;
-            case 11:jd=4;break;
-            case 12:jd=4;break;
-        }
-        return jd;
-    }
-    function getmindex(month){
-        var index;
-        switch (month){
-            case 1:index=0;break;
-            case 2:index=1;break;
-            case 3:index=2;break;
-            case 4:index=0;break;
-            case 5:index=1;break;
-            case 6:index=2;break;
-            case 7:index=0;break;
-            case 8:index=1;break;
-            case 9:index=2;break;
-            case 10:index=0;break;
-            case 11:index=1;break;
-            case 12:index=2;break;
-        }
-        return index;
-    }
+//    function getjd(month){
+//        var jd;
+//        switch (month){
+//            case 1:jd=1;break;
+//            case 2:jd=1;break;
+//            case 3:jd=1;break;
+//            case 4:jd=2;break;
+//            case 5:jd=2;break;
+//            case 6:jd=2;break;
+//            case 7:jd=3;break;
+//            case 8:jd=3;break;
+//            case 9:jd=3;break;
+//            case 10:jd=4;break;
+//            case 11:jd=4;break;
+//            case 12:jd=4;break;
+//        }
+//        return jd;
+//    }
+//    function getmindex(month){
+//        var index;
+//        switch (month){
+//            case 1:index=0;break;
+//            case 2:index=1;break;
+//            case 3:index=2;break;
+//            case 4:index=0;break;
+//            case 5:index=1;break;
+//            case 6:index=2;break;
+//            case 7:index=0;break;
+//            case 8:index=1;break;
+//            case 9:index=2;break;
+//            case 10:index=0;break;
+//            case 11:index=1;break;
+//            case 12:index=2;break;
+//        }
+//        return index;
+//    }
 </script>
 
 
