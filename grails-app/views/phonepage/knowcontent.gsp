@@ -51,7 +51,6 @@
     $('#next').click(function(){
         var id=$('#id').val();
         var offset=$('#offset').val()
-        console.log(offset+"11111111111111111111");
         if(offset==''){
                   offset=0+1;
         }else{
