@@ -224,4 +224,43 @@ class PhonepageController {
             render rs as JSON
 
     }
+    //    公司架构
+    def structure(){
+        def cid=params.cid;
+        [cid:cid]
+    }
+    /*
+    * 递归查询部门
+    * */
+    def findBumen(Long subordinateId,Long cid){
+        def subordinateList=[];
+        def bumenList=Bumen.findAllByAffiliatedAndCid(subordinateId,cid)
+        if(bumenList){
+            for(def bumenInfo in bumenList){
+                def arr=[:]
+                def subordinate=findBumen(bumenInfo.id,cid)
+                arr.id=bumenInfo.id
+                arr.name=bumenInfo.name
+                arr.cid=bumenInfo.cid
+                arr.subordinate=subordinate
+                subordinateList<<arr
+            }
+            return subordinateList
+        }else{
+            return false
+        }
+    }
+
+    def companyStructure(){
+        def rs=[:]
+        def cid=params.cid.toLong()
+        def bumenList=findBumen(0,cid)
+        rs.bumenList=bumenList
+
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+
+    }
 }
