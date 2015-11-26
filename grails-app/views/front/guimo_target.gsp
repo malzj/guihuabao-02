@@ -76,7 +76,7 @@
                         <div style="margin-top:10px;color:#000;">提示：此日期选择是您目标规划的时间区间，建议以两年为时间周期进行规划。</div>
                         <div class="content">
                             <div style="margin-top:20px;" class="clearfix">
-                            <g:form url="[controller:'front',action:'caiwu_target']" method="post" class="form-horizontal" id="caiwu_target">
+                            <g:form url="[controller:'front',action:'guimoUpdate']" method="post" class="form-horizontal" id="caiwu_target">
                                 <table class="table table-bordered table1">
                                     <tr class="th1">
                                         <th colspan="3">季度</th>
@@ -204,6 +204,7 @@
                                     </tr>
                                 </table>
                                 <input type="hidden" id="guimoId" name="id" value="${guimoInstance.id}"/>
+                                <input type="hidden" name="sign" value="guimo_target"/>
                             </div>
                             </g:form>
                             <div class="clearfix" style="width:300px;margin:0 auto;">
