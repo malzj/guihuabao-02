@@ -70,11 +70,11 @@
                 <p><span class="tk"></span><span>提示：请根据需求选择虚线框内部门，点击按钮查看部门职能，拖拽按钮到下图框中以生成企业组织架构图。</span></p>
                 <ul class="clearfix">
                     <g:each in="${frameworkDepartmentList}" var="frameworkInstance">
-                        <li><span id="${frameworkInstance.id}" data-id="${frameworkInstance.id}" draggable="true" ondragstart="drag(event)">${frameworkInstance.name}</span></li>
+                        <li><span id="${frameworkInstance.id}" data-departmentId="${frameworkInstance.id}" draggable="true" ondragstart="drag(event)">${frameworkInstance.name}</span></li>
                     </g:each>
                 </ul>
             </div>
-            <g:form url="[controller:'front',action:'selectDepartmentSave']">
+            <g:form url="[controller:'front',action:'selectDepartmentUpdate']">
                 <div class="fra-department" ondrop="drop(event)" ondragover="allowDrop(event)">
                     <p><span class="tk"></span><span>提示：右击按钮进行部门编辑与删除。</span></p>
                     <figure class="org-chart cf">
@@ -115,7 +115,7 @@
                         </div>
                         <ul id="departments" class="departments finally-solve">
                             <g:each in="${selectDepartmentList}" var="selectDepartmentInstance">
-                            <li class="department" data-id="${selectDepartmentInstance.departmentId}">
+                            <li class="department" data-departmentId="${selectDepartmentInstance.departmentId}">
                                 <span>
                                     <input type="text" name="name" value="${selectDepartmentInstance.name}" readonly="readonly"/>
                                 </span>
@@ -207,7 +207,7 @@
             var nb=$('#departments').children('.one').length;
             var data = ev.dataTransfer.getData("Text");
             var span = document.getElementById(data);
-            var par=span.parentNode
+            var par=span.parentNode;
             par.parentNode.removeChild(par);
             var newEl=document.createElement('li');
             if(nb){
@@ -218,11 +218,15 @@
                 $('#departments .department').removeClass('reset');
                 newEl.className='department';
             }
-            newEl.setAttribute('data-id',data);
+            newEl.setAttribute('data-departmentId',data);
+            var departmentIdInput=document.createElement("input");
+            departmentIdInput.name='departmentId';
+            departmentIdInput.type='hidden';
+            departmentIdInput.value=data;
             var idInput=document.createElement("input");
-            idInput.name='departmentId';
+            idInput.name='id';
             idInput.type='hidden';
-            idInput.value=data;
+            idInput.value=0;
             var numInput=document.createElement("input");
             numInput.name='num';
             numInput.type='hidden';
@@ -237,6 +241,7 @@
             newEl.appendChild(departSpan);
             newEl.appendChild(idInput);
             newEl.appendChild(numInput);
+            newEl.appendChild(departmentIdInput);
             var departments=document.getElementById('departments');
             departments.appendChild(newEl);
         }
@@ -244,12 +249,21 @@
     $(function(){
         var event = {
             mousedown:function(e){
+                e.stopPropagation();
+
                 if(e.which==3){
-                    var id=$(this).attr('data-id');
-                    alert(id);
+                    var id=$(this).attr('data-departmentId');
+                    var mouseX= e.pageX;
+                    var mouseY= e.pageY;
+
+                    var menuHtml='<div id="menulist"><ul><li class="edit" data-departmentId="'+id+'">编辑</li><li class="delete">删除</li></ul></div>';
+                    $('body').append(menuHtml);
+                    $('#menulist').css('top', mouseY);
+                    $('#menulist').css('left', mouseX);
+
 
                 }else if(e.which==1){
-                    var id=$(this).attr('data-id');
+                    var id=$(this).attr('data-departmentId');
                     var winWidth=$(document).width();
                     var winHeight=$(document).height();
                     $.ajax({
@@ -275,8 +289,9 @@
                 }
             }
         }
-        $(document).on('click','.all-department li span',function(){
-            var id=$(this).attr('data-id');
+
+        $(document).on('click','.all-department li span',function(e){
+            var id=$(this).attr('data-departmentId');
             var winWidth=$(document).width();
             var winHeight=$(document).height();
             $.ajax({
@@ -300,7 +315,24 @@
                 }
             });
         });
-        $(document).on(event,'#departments .department');
+//        点击右击菜单选项
+        $(document).on('click','#menulist li',function(e){
+            var cz=$(this).attr('class');
+            var data_departmentId=$(this).attr('data-departmentId');
+            if(cz=='edit'){
+
+
+                $('#departments .department[data-departmentId='+data_departmentId+'] span input[name=name]').removeAttr('readonly').focus();
+
+            }
+        });
+//        清除右击菜单
+        $(document).click(function(){
+            $("#menulist").remove();
+        });
+        $(document).on(event,'#departments .department').bind('contextmenu',function(){
+            return false;
+        });
         var x_max = $(window).width();
         var y_max = $(window).height();
         var div_width = $(".layer").width() + 2;//20是边框

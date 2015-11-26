@@ -4089,7 +4089,7 @@ class FrontController {
             redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
             return
         }
-        def paramsIdInfo=params.list('id');
+        def paramsIdInfo=params.list('departmentId');
         def paramsNameInfo=params.list('name');
         def paramsNumInfo=params.list('num');
         for(def i=0;i<paramsIdInfo.size();i++){
@@ -4135,16 +4135,27 @@ class FrontController {
             return
         }
         def paramsIdInfo=params.list('id');
+        def paramsDepartmentId=params.list('departmentId');
         def paramsNameInfo=params.list('name');
         def paramsNumInfo=params.list('num');
         for(def i=0;i<paramsIdInfo.size();i++){
-            def selectDepartmentInstance=SelectDepartment.findBy()
-            selectDepartmentInstance.departmentId=Integer.parseInt(paramsIdInfo.get(i))
-            selectDepartmentInstance.cid=company.id
-            selectDepartmentInstance.uid=user.id
-            selectDepartmentInstance.name=paramsNameInfo.get(i)
-            selectDepartmentInstance.num=Integer.parseInt(paramsNumInfo.get(i))
-            selectDepartmentInstance.save(flush: true)
+            if(paramsIdInfo.get(i)!='0'){
+                def selectDepartmentInstance=SelectDepartment.findById(paramsIdInfo.get(i))
+                selectDepartmentInstance.departmentId=Integer.parseInt(paramsDepartmentId.get(i))
+                selectDepartmentInstance.cid=company.id
+                selectDepartmentInstance.uid=user.id
+                selectDepartmentInstance.name=paramsNameInfo.get(i)
+                selectDepartmentInstance.num=Integer.parseInt(paramsNumInfo.get(i))
+                selectDepartmentInstance.save(flush: true)
+            }else{
+                def selectDepartmentInstance=new SelectDepartment()
+                selectDepartmentInstance.departmentId=Integer.parseInt(paramsDepartmentId.get(i))
+                selectDepartmentInstance.cid=company.id
+                selectDepartmentInstance.uid=user.id
+                selectDepartmentInstance.name=paramsNameInfo.get(i)
+                selectDepartmentInstance.num=Integer.parseInt(paramsNumInfo.get(i))
+                selectDepartmentInstance.save(flush: true)
+            }
         }
         redirect(action: "frameworkShow")
     }
