@@ -4026,7 +4026,7 @@ class FrontController {
         def paramsNameInfo=params.list('name');
         def paramsNumInfo=params.list('num');
         for(def i=0;i<paramsIdInfo.size();i++){
-            def selectDepartmentInstance=new SelectDepartment()
+            def selectDepartmentInstance=SelectDepartment.findBy()
             selectDepartmentInstance.departmentId=Integer.parseInt(paramsIdInfo.get(i))
             selectDepartmentInstance.cid=company.id
             selectDepartmentInstance.uid=user.id

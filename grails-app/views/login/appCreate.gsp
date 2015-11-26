@@ -58,6 +58,15 @@
                                 <td width="345"><input name="appurl" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${appsInstance?.appurl}"></td>
                             </tr>
                             <tr>
+                                <td>应用分类：</td>
+                                <td width="345">
+                                    <select name="apptype">
+                                        <option value="1">基础应用</option>
+                                        <option value="2">更多应用</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>封面：</td>
                                 <td>
                                     <input id="up_img" name="file" type="file" value="${appsInstance?.appImg}" />
