@@ -63,7 +63,7 @@
                     <div style="margin-top:10px;color:#000;">注：此日期选择是您目标规划的时间区间，建议以两年为时间周期进行规划。</div>
                     <div class="content">
                         <div style="margin:60px auto;width:400px;" class="clearfix row">
-                            <g:form url="[controller:'front',action:'guimo_target']" method="post" class="form-horizontal">
+                            <g:form url="[controller:'front',action:'guimoUpdate']" method="post" class="form-horizontal">
                                 <label for="startdate" class="col-sm-3 control-label">开始时间：</label>
                                 <div class="col-sm-9" style="position: relative;">
                                     <input id="startdate" class="form-control" name="begintime" value="${guimoInstance.begintime}"/><br/>
@@ -75,6 +75,7 @@
                                     <div style="position: absolute;top:10px;right:25px;z-index: 10000;"><i class="fa fa-calendar" ></i></div>
                                 </div>
                                 <input type="hidden" name="id" value="${guimoInstance.id}"/>
+                                <input type="hidden" name="sign" value="choose_date"/>
                                 <label class="col-sm-3 control-label"></label>
                                 <div class="col-sm-9" style="position: relative;">
                                     <button type="submit"  class="button" style="width:90px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;">确定</button>

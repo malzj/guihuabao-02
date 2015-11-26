@@ -45,7 +45,7 @@
     .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th{border:1px solid #fff;}
     input{margin:0;padding:0;border:1px solid #e5e5e5;}
     .table-bordered>tbody>tr>td,.table>tbody>tr>td{padding:0;margin:0 !important;}
-    .table tbody > tr > th.jdc,.table>tbody>tr>th.jdc{padding:0;margin:0 !important;}
+    .table tbody > tr > th.n,.table>tbody>tr>th.n{padding:0;margin:0 !important;}
     td.month{padding:10px !important;}
     textarea{padding:0 !important;}
     </style>
@@ -74,7 +74,7 @@
                         <div style="margin-top:10px;color:#000;">提示：此日期选择是您目标规划的时间区间，建议以两年为时间周期进行规划。</div>
                         <div class="content">
                         <div style="margin-top:20px;" class="clearfix">
-                            <g:form url="[controller:'front',action:'caiwu_targetup']" method="post" class="form-horizontal" id="caiwu_targetup">
+                            <g:form url="[controller:'front',action:'caiwuUpdate']" method="post" class="form-horizontal" id="caiwu_targetup">
                                 <table class="table table-bordered table1">
                                     <tr class="th1">
                                         <th><input  disabled style="background:none;text-align: center;border:none;width:100%;" value="年份"></th>
@@ -87,7 +87,7 @@
 
                                     <tr>
                                         <th class="th2">月份</th>
-                                        <td class="th2"></td>
+                                        <td class="th2 n"></td>
                                         <td class="th2 month">1月</td>
                                         <td class="th2 month">2月</td>
                                         <td class="th2 month">3月</td>
@@ -104,7 +104,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2">营收（万元）</th>
-                                        <th><input class="gmt con y" name="n1"/></th>
+                                        <th class="n"><input class="gmt con n" name="n1"/></th>
                                         <td><input class="gmt con y"/></td>
                                         <td><input class="gmt con y"/></td>
                                         <td><input class="gmt con y"/></td>
@@ -121,7 +121,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2">毛利率（%）</th>
-                                        <th><input class="gmt con" name="n2"/></th>
+                                        <th  class="n"><input class="gmt con n" name="n2"/></th>
                                         <td><input class="gmt con m"/></td>
                                         <td><input class="gmt con m"/></td>
                                         <td><input class="gmt con m"/></td>
@@ -138,7 +138,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2">净利润（万元）</th>
-                                        <th><input class="gmt con j" name="n3"/></th>
+                                        <th class="n"><input class="gmt con n" name="n3"/></th>
                                         <td><input class="gmt con j"/></td>
                                         <td><input class="gmt con j"/></td>
                                         <td><input class="gmt con j"/></td>
@@ -155,7 +155,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2">评效比（数值）</th>
-                                        <th><input class="gmt con" name="n4"/></th>
+                                        <th class="n"><input class="gmt con n" name="n4"/></th>
                                         <td><input class="gmt con p"/></td>
                                         <td><input class="gmt con p"/></td>
                                         <td><input class="gmt con p"/></td>
@@ -183,7 +183,7 @@
 
                                     <tr>
                                         <th class="th2">月份</th>
-                                        <td class="th2"></td>
+                                        <td class="th2 "></td>
                                         <td class="th2 month">1月</td>
                                         <td class="th2 month">2月</td>
                                         <td class="th2 month">3月</td>
@@ -200,7 +200,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2">营收（万元）</th>
-                                        <th><input class="gmt con y" name="n1"/></th>
+                                        <th class="n"><input class="gmt con "/></th>
                                         <td><input class="gmt con y"/></td>
                                         <td><input class="gmt con y"/></td>
                                         <td><input class="gmt con y"/></td>
@@ -217,7 +217,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2">毛利率（%）</th>
-                                        <th><input class="gmt con" name="n2"/></th>
+                                        <th class="n"><input class="gmt con "/></th>
                                         <td><input class="gmt con m"/></td>
                                         <td><input class="gmt con m"/></td>
                                         <td><input class="gmt con m"/></td>
@@ -234,7 +234,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2">净利润（万元）</th>
-                                        <th><input class="gmt con j" name="n3"/></th>
+                                        <th class="n"><input class="gmt con "/></th>
                                         <td><input class="gmt con j"/></td>
                                         <td><input class="gmt con j"/></td>
                                         <td><input class="gmt con j"/></td>
@@ -251,7 +251,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2">评效比（数值）</th>
-                                        <th><input class="gmt con" name="n4"/></th>
+                                        <th class="n"><input class="gmt con " name="n4"/></th>
                                         <td><input class="gmt con p"/></td>
                                         <td><input class="gmt con p"/></td>
                                         <td><input class="gmt con p"/></td>
@@ -274,7 +274,7 @@
                             </g:form>
                             <div class="clearfix" style="width:300px;margin:0 auto;">
                                 <g:form url="[controller:'front',action:'guimo_target']" method="post" id="guimo_target" class="form-horizontal f-l">
-                                    <input type="hidden" id="caiwuId" name="id" value="${guimoInstance.id}"/>
+                                    <input type="hidden" id="caiwuId" name="id" value="${guimoId}"/>
                                     <input class="button" type="submit" form="guimo_target" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;" value="返回上一步" >
                                 </g:form>
                                 <input type="submit"  class="button f-l" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;margin-left:20px;" value="确认提交" form="caiwu_targetup"/>
@@ -284,7 +284,7 @@
                         </div>
                         <span style="display:none;" id="begintime">${caiwuInstance.begintime}</span>
                         <span style="display: none;" id="endtime">${caiwuInstance.endtime}</span>
-
+                        <span style="display: none;" id="version">${version}</span>
                     </div>
                 </div>
 
@@ -340,9 +340,10 @@
 <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
 <script type="text/javascript">
     $(function(){
-
         $('input.con').attr('disabled','disabled');
         $('input.con1').attr('disabled','disabled');
+        $('input.n').removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2');
+
         var begintime=$('#begintime').html();
         var endtime=$('#endtime').html();
         var bstr = begintime.replace(/-/g,"/");
@@ -356,9 +357,9 @@
         var bmonth=bdate.getMonth()+1;
         var emonth=edate.getMonth()+1;
         var smonth=(eyear-byear)*12+(emonth-bmonth);
-
-            $('th.nf').eq(0).html(byear+'年');
-            $('th.nf').eq(1).html(eyear+'年');
+        var isupdate=$('#version').html();
+        $('th.nf').eq(0).html(byear+'年');
+        $('th.nf').eq(1).html(eyear+'年');
 
 
         var k=0;
@@ -387,10 +388,10 @@
                         var y1=data.caiwuInstance[y];
                         var j1=data.caiwuInstance[j];
 
-                        $('input.j').eq(index).attr("name",j)
-                        $('input.m').eq(index).attr("name",m)
-                        $('input.p').eq(index).attr("name",p)
-                        $('input.y').eq(index).attr("name",y)
+                        $('input.j').eq(index).attr("name",j).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                        $('input.m').eq(index).attr("name",m).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                        $('input.p').eq(index).attr("name",p).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                        $('input.y').eq(index).attr("name",y).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
                         if(isupdate=='false'){
                             $('input.j').eq(index).val(j1)
                             $('input.m').eq(index).val(m1)
@@ -403,7 +404,7 @@
                             $('input.y').eq(index).val('')
                         }
 
-                        $('input.con').eq(index).removeAttr("disabled");
+
 
                         index++;
 
@@ -415,23 +416,13 @@
                 alert('获取数据失败');
             }
         });
-//        for(var i=0;i<sjd;i++){
-//            var a=jdindex+i;
-//            if(a<=4){
-//                $('th.jd').eq(i).html(byear+'年第'+a+'季度');
-//            }else{
-//                $('th.jd').eq(i).html(eyear+'年第'+y+'季度');
-//                y++;
-//            }
-//
-//        }
 
         $('input').focus(function(){
             $(this).css('border','1px solid #27bdff')
 
         })
         $('input').blur(function(){
-            $(this).css('border','1px solid #e5e5e5')
+            $(this).css('border','1px solid #d2d2d2')
         })
     })
 
