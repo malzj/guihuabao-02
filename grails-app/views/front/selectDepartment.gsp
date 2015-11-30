@@ -70,7 +70,7 @@
                         <p><span class="tk"></span><span>提示：请根据需求选择虚线框内部门，点击按钮查看部门职能，拖拽按钮到下图框中以生成企业组织架构图。</span></p>
                         <ul class="clearfix">
                             <g:each in="${frameworkDepartmentList}" var="frameworkInstance">
-                            <li><span id="${frameworkInstance.id}" data-id="${frameworkInstance.id}" draggable="true" ondragstart="drag(event)">${frameworkInstance.name}</span></li>
+                            <li><span id="${frameworkInstance.id}" data-departmentId="${frameworkInstance.id}" draggable="true" ondragstart="drag(event)">${frameworkInstance.name}</span></li>
                             </g:each>
                         </ul>
                     </div>
@@ -213,7 +213,7 @@
                 $('#departments .department').removeClass('reset');
                 newEl.className='department';
             }
-            newEl.setAttribute('data-id',data);
+            newEl.setAttribute('data-departmentId',data);
             var idInput=document.createElement("input");
             idInput.name='departmentId';
             idInput.type='hidden';
@@ -240,11 +240,11 @@
         var event = {
             mousedown:function(e){
                 if(e.which==3){
-                    var id=$(this).attr('data-id');
+                    var id=$(this).attr('data-departmentId');
                     alert(id);
 
                 }else if(e.which==1){
-                    var id=$(this).attr('data-id');
+                    var id=$(this).attr('data-departmentId');
                     var winWidth=$(document).width();
                     var winHeight=$(document).height();
                     $.ajax({
@@ -271,7 +271,7 @@
             }
         }
         $(document).on('click','.all-department li span',function(){
-            var id=$(this).attr('data-id');
+            var id=$(this).attr('data-departmentId');
             var winWidth=$(document).width();
             var winHeight=$(document).height();
             $.ajax({
