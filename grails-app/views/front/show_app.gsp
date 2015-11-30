@@ -28,11 +28,12 @@
 
     <link href="${resource(dir: 'css', file: 'ownset.css')}" rel="stylesheet">
     <style>
-        .c0{background-color: #3494ed;}
-        .c1{background-color: #ed7159;}
-        .c2{background-color: #4ec6a2;}
-        .c3{background-color: #b772c7;}
-        .c4{background-color: #56bc4e;}
+        .c0{background-color: #81bd00;}
+        .c1{background-color: #1ad7cb;}
+        .c2{background-color: #ff186a;}
+        .c3{background-color: #02a9f5;}
+        .c4{background-color: #9b4c9b;}
+        .c5{background-color: #fd8d00;}
     </style>
 </head>
 
@@ -59,7 +60,7 @@
                         </header>
                         <ul id="ul1" class="app clearfix" style="text-align: center;width:100%;height:100%;margin-left:25px;">
                             <g:each in="${companyAppList}" status="i" var="app">
-                                <li draggable="true" ondragstart="drag(event)" id="${i}" style=" border-radius:5px;width:70px;height:70px;position: relative;" class="c${app.id%5}">
+                                <li draggable="true" ondragstart="drag(event)" id="${i}" style=" border-radius:5px;width:70px;height:70px;position: relative;" class="c${app.id%6}">
                                     <img style="line-height: 70px;margin-bottom: 20px;margin-top:10px;" src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px"/>
                                     <div style="width:100%;height:100%;position: absolute;top:0;"></div>
                                     <span style="display: none;">${app.id}</span>
@@ -83,7 +84,7 @@
                             <g:each in="${showapps}"  var="app">
                                 <div style="width:100%;border-bottom: 1px solid #d2d2d2;" class="clearfix">
                                     <div class="clearfix" style="width:300px;margin:0 auto;">
-                                    <li   style="border-radius:5px;width:70px;height:70px;margin:20px 10px 40px 30px;" class="c${app.companyApp.id%5}">
+                                    <li   style="border-radius:5px;width:70px;height:70px;margin:20px 10px 40px 30px;" class="c${app.companyApp.id%6}">
                                         <img src="${resource(dir:'uploadfile/appimg',file:''+app.img+'')}" width="48px" height="48px" style="margin-bottom: 20px;"/>
 
                                         <span>${app.name}</span>
