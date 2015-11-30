@@ -3720,15 +3720,16 @@ class FrontController {
             redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
             return
         }
-//        def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
-//        if(doneTest){
-//            redirect(action: "startProgramme")
-//            return
-//        }
+        def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
+        if(doneTest){
+            redirect(action: "testResult")
+            return
+        }
         def testPaperId=params.testPaperId
         def testPaperInstance=TestPaper.findById(testPaperId)
         def questionInstancList=Questions.findAllByTestPapers(testPaperInstance)
         def totalScore=0
+        def analysis=''
         for(def info in questionInstancList){
             //实例化用户评测表
             def userEvaluate=new Evaluate()
@@ -3749,6 +3750,7 @@ class FrontController {
                 if(info.id!=24) {
                     if(result){
                         totalScore += result.score
+                        analysis+=result.analysis
                     }else{
                         totalScore += 3
                     }
@@ -3788,14 +3790,18 @@ class FrontController {
                     def sj=Float.parseFloat(formInfo.get(0))
                     if(sj<0){
                         totalScore+=-1
+                        analysis+='利润情况十分不理想；'
                     }else{
                         def bs=Math.ceil(sj/Float.parseFloat(params['infos[32]']))
                         if(bs<=1){
                             totalScore+=2
+                            analysis+='公司利润一般，急需改善；'
                         }else if(bs>1&&bs<=3){
                             totalScore+=3
+                            analysis+='公司财务支付能力尚可，具备发展的能力；'
                         }else{
                             totalScore+=4
+                            analysis+='具备一定的抗风险和扩大投资能力；'
                         }
                     }
                 }else if(info.id==34){
@@ -3803,10 +3809,13 @@ class FrontController {
                     def bs=Math.ceil(sj/Float.parseFloat(params['infos[32]']))
                     if(bs<=1){
                         totalScore+=1
+                        analysis+='公司现金流抗风险能力较差，在扩张上需谨慎稳妥；'
                     }else if(bs>1&&bs<=2){
                         totalScore+=2
+                        analysis+='现金流具有抗风险能力，可适度投资；'
                     }else if(bs>2&&bs<=5){
                         totalScore+=3
+                        analysis+='公司现金流较为充沛，可扩大投资；'
                     }else if(bs>5){
                         totalScore+=4
                     }
@@ -3830,12 +3839,16 @@ class FrontController {
                     def mlr=Float.parseFloat(formInfo.get(0))
                     if(mlr>60){
                         totalScore+=4
+                        analysis+='毛利率可观；'
                     }else if(mlr>50&&mlr<=60){
                         totalScore+=3
+                        analysis+='毛利率有进一步提升空间；'
                     }else if(mlr>40&&mlr<=50){
                         totalScore+=2
+                        analysis+='毛利率不是太理想；'
                     }else if(mlr<=40){
                         totalScore+=1
+                        analysis+='急需专业团队改进和优化；'
                     }
                 }else if(info.id==50){
                     def jlr=Float.parseFloat(formInfo.get(0))
@@ -3869,6 +3882,7 @@ class FrontController {
         userDoneTest.uid=user.id
         userDoneTest.paperId=testPaperInstance.id
         userDoneTest.totalScore=totalScore
+        userDoneTest.analysis=analysis
         userDoneTest.dateCreate= new Date()
         if (!userDoneTest.save(flush: true)) {
             redirect(action: "programme")
@@ -3986,7 +4000,7 @@ class FrontController {
             selectDepartmentInstance.cid=company.id
             selectDepartmentInstance.uid=user.id
             selectDepartmentInstance.name=paramsNameInfo.get(i)
-            selectDepartmentInstance.num=Integer.parseInt(paramsNumInfo.get(i))
+            selectDepartmentInstance.num=i+1
             selectDepartmentInstance.save(flush: true)
         }
         redirect(action: "frameworkShow")
@@ -3998,7 +4012,7 @@ class FrontController {
             redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
             return
         }
-        def departmentInstance=[]
+        def departmentList=[]
         def cid=company.id
         def uid=user.id
         def selectDepartmentInstance=SelectDepartment.findAllByCidAndUid(cid,uid,[sort: 'num',order: 'asc'])
@@ -4007,10 +4021,9 @@ class FrontController {
             data.id=selectDepartmentInstance.get(i).id
             data.name=selectDepartmentInstance.get(i).name
             data.jobs=FrameworkDepartment.findById(selectDepartmentInstance.get(i).departmentId).jobs.split(',')
-            departmentInstance<<data
+            departmentList<<data
         }
-        def a= departmentInstance
-        [departmentInstance:departmentInstance]
+        [departmentList:departmentList]
     }
     /*
     * 更新架构部门
@@ -4025,7 +4038,6 @@ class FrontController {
         def paramsIdInfo=params.list('id');
         def paramsDepartmentId=params.list('departmentId');
         def paramsNameInfo=params.list('name');
-        def paramsNumInfo=params.list('num');
         for(def i=0;i<paramsIdInfo.size();i++){
             if(paramsIdInfo.get(i)!='0'){
                 def selectDepartmentInstance=SelectDepartment.findById(paramsIdInfo.get(i))
@@ -4033,7 +4045,7 @@ class FrontController {
                 selectDepartmentInstance.cid=company.id
                 selectDepartmentInstance.uid=user.id
                 selectDepartmentInstance.name=paramsNameInfo.get(i)
-                selectDepartmentInstance.num=Integer.parseInt(paramsNumInfo.get(i))
+                selectDepartmentInstance.num=i+1
                 selectDepartmentInstance.save(flush: true)
             }else{
                 def selectDepartmentInstance=new SelectDepartment()
@@ -4041,13 +4053,41 @@ class FrontController {
                 selectDepartmentInstance.cid=company.id
                 selectDepartmentInstance.uid=user.id
                 selectDepartmentInstance.name=paramsNameInfo.get(i)
-                selectDepartmentInstance.num=Integer.parseInt(paramsNumInfo.get(i))
+                selectDepartmentInstance.num=i+1
                 selectDepartmentInstance.save(flush: true)
             }
         }
         redirect(action: "frameworkShow")
     }
-//    目标规划选时间
+    /*
+    * 删除架构部门
+    * 参数id（选择部门信息ID）
+    * */
+    def selectDepartmentDelete(){
+        def rs=[:]
+        def id=params.id
+        def uid=session.user.id
+        def cid=session.company.id
+        def selectDepartmentInstance=SelectDepartment.get(id)
+        def num=selectDepartmentInstance.num
+        if (!selectDepartmentInstance) {
+            rs.result=false
+            rs.msg='删除失败！'
+        }else{
+            selectDepartmentInstance.delete(flush: true)
+            def selectDepartmentList=SelectDepartment.findAllByCidAndUidAndNumGreaterThan(cid,uid,num,[sort: 'num',order: 'asc'])
+            for(def i=0;i<selectDepartmentList.size();i++){
+                selectDepartmentList.get(i).num=num
+                num++
+            }
+            rs.result=true
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
+    }
+ //    目标规划选时间
     def choose_date(){
         def user = session.user
         def company = session.company

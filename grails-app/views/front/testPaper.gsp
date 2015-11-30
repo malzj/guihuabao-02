@@ -112,7 +112,7 @@
                         </div>
                     </div>
                     <div class="classify-title">
-                        <h2>一、团队能力指标：(满分15分 每题最高3分)</h2>
+                        <h2>一、团队能力指标：<span>(满分15分 每题最高3分)</span></h2>
                     </div>
                     <div class="question1">
                         <p>1、企业总部团队员工数量？</p>
@@ -161,7 +161,7 @@
                         </p>
                     </div>
                         <div class="classify-title">
-                            <h2>二、财务支付指标：（满分20分 每题最高4分）</h2>
+                            <h2>二、财务支付指标：<span>（满分20分 每题最高4分）</span></h2>
                         </div>
                         <div class="question1">
                             <p>1、单店开店成本是多少万元？</p>
@@ -194,7 +194,7 @@
                             </p>
                         </div>
                         <div class="classify-title">
-                            <h2>三、规模发展指标: （满分30分 每题最高3分）</h2>
+                            <h2>三、规模发展指标: <span>（满分30分 每题最高3分）</span></h2>
                         </div>
                         <div class="question1">
                             <p>1、您的品牌是否有品牌定位、VI手册、营建手册 ？</p>
@@ -288,7 +288,7 @@
                         </p>
                     </div>
                     <div class="classify-title">
-                        <h2>四、单店盈利能力：（满分20分 每题最高4分）</h2>
+                        <h2>四、单店盈利能力：<span>（满分20分 每题最高4分）</span></h2>
                     </div>
                     <div class="question1">
                         <p>1、单店营业面积是多少？</p>
@@ -324,7 +324,7 @@
                         </p>
                     </div>
                     <div class="classify-title">
-                        <h2>五、产品复制能力：（满分15分 每题最高3分）</h2>
+                        <h2>五、产品复制能力：<span>（满分15分 每题最高3分）</span></h2>
                     </div>
                     <div class="question1">
                         <p>1、产品技术是否申请专利？</p>

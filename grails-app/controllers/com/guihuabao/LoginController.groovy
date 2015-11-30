@@ -1782,8 +1782,8 @@ class LoginController {
         }
 
         if (version != null) {
-            if (testPaperInstance.version > version) {
-                testPaperInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+            if (questionInstance.version > version) {
+                questionInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'question.label', default: 'Question')] as Object[],
                         "Another user has updated this TestPaper while you were editing")
                 redirect(action: "questionsList",params: [id:id,questionId:questionId])
@@ -1791,10 +1791,10 @@ class LoginController {
             }
         }
 
-        questionInstance.num = params.num.toLong()
+        questionInstance.num = Float.parseFloat(params.num)
         questionInstance.question = params.question
-        questionInstance.type = params.type.toLong()
-        questionInstance.blank = params.blank.toLong()
+        questionInstance.type = Float.parseFloat(params.type)
+        questionInstance.blank = params.blank?Float.parseFloat(params.blank):0
 
         if (!testPaperInstance.save(flush: true)) {
             redirect(action: "questionsList",params: [id:id,questionId:questionId])

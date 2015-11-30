@@ -115,13 +115,12 @@
                         </div>
                         <ul id="departments" class="departments finally-solve">
                             <g:each in="${selectDepartmentList}" var="selectDepartmentInstance">
-                            <li class="department" data-departmentId="${selectDepartmentInstance.departmentId}">
+                            <li class="department" data-id="${selectDepartmentInstance.id}" data-departmentid="${selectDepartmentInstance.departmentId}">
                                 <span>
-                                    <input type="text" name="name" value="${selectDepartmentInstance.name}" readonly="readonly"/>
+                                    <input name="name" value="${selectDepartmentInstance.name}" class="edit-input" readonly="readonly">
                                 </span>
                                 <input type="hidden" name="id" value="${selectDepartmentInstance.id}"/>
                                 <input type="hidden" name="departmentId" value="${selectDepartmentInstance.departmentId}"/>
-                                <input type="hidden" name="num" value="${selectDepartmentInstance.num}"/>
                             </li>
                             </g:each>
                         </ul>
@@ -227,10 +226,6 @@
             idInput.name='id';
             idInput.type='hidden';
             idInput.value=0;
-            var numInput=document.createElement("input");
-            numInput.name='num';
-            numInput.type='hidden';
-            numInput.value=count+1;
             var textInput=document.createElement("input");
             textInput.name='name';
             textInput.value=span.innerHTML;
@@ -240,7 +235,6 @@
             departSpan.appendChild(textInput);
             newEl.appendChild(departSpan);
             newEl.appendChild(idInput);
-            newEl.appendChild(numInput);
             newEl.appendChild(departmentIdInput);
             var departments=document.getElementById('departments');
             departments.appendChild(newEl);
@@ -252,11 +246,12 @@
                 e.stopPropagation();
 
                 if(e.which==3){
-                    var id=$(this).attr('data-departmentId');
+                    var id=$(this).attr('data-id');
+                    var departmentId=$(this).attr('data-departmentId');
                     var mouseX= e.pageX;
                     var mouseY= e.pageY;
 
-                    var menuHtml='<div id="menulist"><ul><li class="edit" data-departmentId="'+id+'">编辑</li><li class="delete">删除</li></ul></div>';
+                    var menuHtml='<div id="menulist"><ul><li class="edit" data-departmentId="'+departmentId+'">编辑</li><li class="delete" data-id="'+id+'" data-departmentId="'+departmentId+'">删除</li></ul></div>';
                     $('body').append(menuHtml);
                     $('#menulist').css('top', mouseY);
                     $('#menulist').css('left', mouseX);
@@ -319,11 +314,24 @@
         $(document).on('click','#menulist li',function(e){
             var cz=$(this).attr('class');
             var data_departmentId=$(this).attr('data-departmentId');
+            var data_id=$(this).attr('data-id');
             if(cz=='edit'){
-
-
                 $('#departments .department[data-departmentId='+data_departmentId+'] span input[name=name]').removeAttr('readonly').focus();
-
+            }else if(cz=='delete'){
+                $.ajax({
+                    url: '${webRequest.baseUrl}/front/selectDepartmentDelete',
+                    dataType: "jsonp",
+                    jsonp: "callback",
+                    async: false,
+                    data: {id: data_id,departmentId: data_departmentId},
+                    success: function(data){
+                        if(data.result) {
+                            location.reload();
+                        }else {
+                            alert(data.msg);
+                        }
+                    }
+                });
             }
         });
 //        清除右击菜单

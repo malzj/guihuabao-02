@@ -52,6 +52,7 @@
                             <g:hiddenField name="id" value="${id}"></g:hiddenField>
                             <g:hiddenField name="questionId" value="${questionInstance?.id}"></g:hiddenField>
                             <g:hiddenField name="version" value="${questionInstance?.version}"></g:hiddenField>
+                            <g:hiddenField name="type" value="${questionInstance?.type}"></g:hiddenField>
                             <tr>
                                 <td>题号：</td>
                                 <td width="345"><input name="num" class="form-control form-control-inline input-medium default-date-picker" type="text" value="${questionInstance?.num}"></td>
