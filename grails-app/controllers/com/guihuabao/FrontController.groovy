@@ -4,7 +4,7 @@ import grails.converters.JSON
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.multipart.MultipartFile
 
-
+import java.awt.Frame
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.logging.Logger
@@ -3977,7 +3977,7 @@ class FrontController {
             redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
             return
         }
-        def paramsIdInfo=params.list('departmentId');
+        def paramsIdInfo=params.list('id');
         def paramsNameInfo=params.list('name');
         def paramsNumInfo=params.list('num');
         for(def i=0;i<paramsIdInfo.size();i++){
@@ -4023,27 +4023,16 @@ class FrontController {
             return
         }
         def paramsIdInfo=params.list('id');
-        def paramsDepartmentId=params.list('departmentId');
         def paramsNameInfo=params.list('name');
         def paramsNumInfo=params.list('num');
         for(def i=0;i<paramsIdInfo.size();i++){
-            if(paramsIdInfo.get(i)!='0'){
-                def selectDepartmentInstance=SelectDepartment.findById(paramsIdInfo.get(i))
-                selectDepartmentInstance.departmentId=Integer.parseInt(paramsDepartmentId.get(i))
-                selectDepartmentInstance.cid=company.id
-                selectDepartmentInstance.uid=user.id
-                selectDepartmentInstance.name=paramsNameInfo.get(i)
-                selectDepartmentInstance.num=Integer.parseInt(paramsNumInfo.get(i))
-                selectDepartmentInstance.save(flush: true)
-            }else{
-                def selectDepartmentInstance=new SelectDepartment()
-                selectDepartmentInstance.departmentId=Integer.parseInt(paramsDepartmentId.get(i))
-                selectDepartmentInstance.cid=company.id
-                selectDepartmentInstance.uid=user.id
-                selectDepartmentInstance.name=paramsNameInfo.get(i)
-                selectDepartmentInstance.num=Integer.parseInt(paramsNumInfo.get(i))
-                selectDepartmentInstance.save(flush: true)
-            }
+            def selectDepartmentInstance=SelectDepartment.findBy()
+            selectDepartmentInstance.departmentId=Integer.parseInt(paramsIdInfo.get(i))
+            selectDepartmentInstance.cid=company.id
+            selectDepartmentInstance.uid=user.id
+            selectDepartmentInstance.name=paramsNameInfo.get(i)
+            selectDepartmentInstance.num=Integer.parseInt(paramsNumInfo.get(i))
+            selectDepartmentInstance.save(flush: true)
         }
         redirect(action: "frameworkShow")
     }
@@ -4285,6 +4274,7 @@ class FrontController {
     def bumenrenwuEdit(){
         def user = session.user
         def company = session.company
+        def responsibility
         if (!user && !company) {
             redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
             return
@@ -4295,8 +4285,11 @@ class FrontController {
         if(!bumenrenwuInstance){
             render(view: "bumenrenwuList", params: [msg: "保存失败！"])
             return
+        }else{
+            def department=SelectDepartment.findById(bumenrenwuInstance.sid)
+            responsibility=FrameworkDepartment.findById(department.departmentId).responsibility
         }
-           [bumenrenwuInstance:bumenrenwuInstance,selectDepartmentList:selectDepartmentList]
+           [bumenrenwuInstance:bumenrenwuInstance,selectDepartmentList:selectDepartmentList,responsibility:responsibility]
         }
 
     def bumenrenwuUpdate(){
@@ -4347,7 +4340,8 @@ class FrontController {
             render(view: "bumenrenwuList", params: [msg: "查找失败！"])
             return
         }else{
-            redirect(action: 'bumenrenwuSave', params: [sid: selectDepartmentInstance.id,sname: selectDepartmentInstance.name,sign:sign])
+            def responsibility=FrameworkDepartment.findById(selectDepartmentInstance.departmentId).responsibility
+            redirect(action: 'bumenrenwuSave', params: [sid: selectDepartmentInstance.id,sname: selectDepartmentInstance.name,sign:sign,responsibility:responsibility])
         }
 
     }

@@ -90,7 +90,7 @@
 
 
         </div>
-            <g:form url="[controller:'front',action:'bumenrenwuAdd']" class="clearfix" id="form" style="width:370px;height:286px;margin:30px auto;border:1px solid #dedede;box-shadow: 0 0 3px #dedede;;border-top:4px solid #27bdff;background: #fff;padding:15px;display:none;">
+            <g:form url="[controller:'front',action:'bumenrenwuAdd']" class="clearfix" id="form" style="width:370px;min-height:286px;margin:30px auto;border:1px solid #dedede;box-shadow: 0 0 3px #dedede;;border-top:4px solid #27bdff;background: #fff;padding:15px;display:none;">
                 <div class="form-header clearfix" style="margin: 5px 0;">
                     <p style="font-size: 16px;font-weight:bold;float: left;"><i class="fa fa-save"></i><span style="margin-left: 10px;" id="renwuheader"></span>任务</p>
                     <span class="f-r close" style="margin-top: 3px;cursor: pointer"><i class="fa fa-times"></i></span>
@@ -120,7 +120,10 @@
                 </div>
 
                         <button type="submit" id="submit" class="button" style="width:78px;background:#27bdff;border:none;height:30px;border-radius: 3px;color:#fff;margin-left:66px;">确定</button>
+                <div class="line clearfix" style="margin-top: 20px;">
+                    <p class="f-l">职能提示：</p><p class="f-l" style="word-wrap:break-word;width:200px;" >${responsibility}</p>
 
+                </div>
 
             </g:form>
             <span style="display: none" id="sign">${sign}</span>
@@ -176,7 +179,20 @@ $(function(){
         $('#sid').val(sid)
         $('#sname').val(sname)
         $('#renwuheader').html(sname);
-        $('#form').css('display','block');
+        $.ajax({
+            url: '${webRequest.baseUrl}/front/caiwuAjax',
+            method: 'post',
+            dataType: 'json',
+            data: {id:caiwuId},
+            success: function (data) {
+                
+            },
+            error:function(){
+                alert('获取数据失败！');
+            }
+        }
+
+                $('#form').css('display','block');
     })
     $('.close').click(function(){
         $('.con').val('');

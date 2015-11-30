@@ -90,7 +90,7 @@
 
 
                 </div>
-                <g:form url="[controller:'front',action:'bumenrenwuUpdate']" class="clearfix" style="width:370px;height:286px;margin:30px auto;border:1px solid #dedede;box-shadow: 0 0 3px #dedede;;border-top:4px solid #27bdff;background: #fff;padding:15px;">
+                <g:form url="[controller:'front',action:'bumenrenwuUpdate']" class="clearfix" style="width:370px;min-height:286px;margin:30px auto;border:1px solid #dedede;box-shadow: 0 0 3px #dedede;;border-top:4px solid #27bdff;background: #fff;padding:15px;">
                     <div class="form-header clearfix" style="margin: 5px 0;">
                         <p style="font-size: 16px;font-weight:bold;float: left;"><i class="fa fa-save"></i><span style="margin-left: 10px;">${bumenrenwuInstance.sname}</span>任务</p>
                     </div>
@@ -120,7 +120,10 @@
 
                     <button type="submit" id="submit" class="button" style="width:78px;background:#27bdff;border:none;height:30px;border-radius: 3px;color:#fff;margin-left:66px;">确定</button>
 
+                    <div class="line clearfix" style="margin-top: 20px;">
+                        <p class="f-l">职能提示：</p><p class="f-l" style="word-wrap:break-word;width:200px;" >${responsibility}</p>
 
+                    </div>
                 </g:form>
             </div>
         </section></section>
