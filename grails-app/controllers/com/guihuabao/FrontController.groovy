@@ -4097,6 +4097,8 @@ class FrontController {
         }
         def uid=user.id
         def cid=user.cid
+        def isupdate=params.isupdate
+
         def guimoInstance=Guimo.findByCidAndUid(cid,uid)
         if(!guimoInstance){
             guimoInstance=new Guimo()
@@ -4107,7 +4109,7 @@ class FrontController {
                 return
             }
         }
-        [guimoInstance:guimoInstance]
+        [guimoInstance:guimoInstance,isupdate:isupdate]
 
     }
     def guimo_target() {
@@ -4118,6 +4120,7 @@ class FrontController {
             return
         }
         def id=params.id
+        def isupdate=params.isupdate
         def guimoInstance=Guimo.findById(id)
 
 
@@ -4126,7 +4129,7 @@ class FrontController {
             return
         }
 
-     [guimoInstance:guimoInstance]
+     [guimoInstance:guimoInstance,isupdate: isupdate]
     }
     def guimoAjax(){
         def rs=[:]
@@ -4150,24 +4153,7 @@ class FrontController {
         } else
             render rs as JSON
     }
-//    def guimoSave() {
-//        def user = session.user
-//        def company = session.company
-//        if (!user && !company) {
-//            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
-//            return
-//        }
-//        def uid=user.id
-//        def cid=company.id
-//        def guimoInstance=new Guimo(params)
-//        guimoInstance.uid=uid
-//        guimoInstance.cid=cid
-//        if (!guimoInstance.save(flush: true)) {
-//            render(view: "choose_date" , params: [msg: "获取数据失败"])
-//            return
-//        }
-//        redirect(action: "guimo_target", params: [id:guimoInstance.id,begintime: guimoInstance.begintime,endtime: guimoInstance.endtime])
-//    }
+
     def guimoUpdate(){
         def user = session.user
         def company = session.company
@@ -4175,10 +4161,13 @@ class FrontController {
             redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
             return
         }
-
+        def isupdate=0
         def id=params.id
         def sign=params.sign
+        def isu=params.isupdate
         def guimoInstance=Guimo.get(id)
+        def begintime=guimoInstance.begintime
+        def endtime=guimoInstance.endtime
         guimoInstance.properties=params
 
             if(sign=='choose_date'){
@@ -4186,14 +4175,23 @@ class FrontController {
                     render(view: "choose_date", params: [msg: "保存失败！"])
                     return
                 }else{
-                    redirect(action: "guimo_target", params: [id:id])
+                    def begintime1=guimoInstance.begintime
+                    def endtime1=guimoInstance.endtime
+                    if(begintime!=begintime1||endtime!=endtime1||isu=='1'){
+                        isupdate=1
+                    }
+                    redirect(action: "guimo_target", params: [id:id,isupdate:isupdate])
                 }
             }else {
                 if (!guimoInstance.save(flush: true)) {
-                    render(view: "guimo_target", params: [msg: "保存失败！",guimoInstance:guimoInstance,id:id])
+                    render(view: "guimo_target", params: [msg: "保存失败！",guimoInstance:guimoInstance,id:id,isupdate:isupdate])
                     return
                 }else{
-                    redirect(action: "caiwu_target", params: [begintime:guimoInstance.begintime,endtime:guimoInstance.endtime,id:guimoInstance.id])
+                    def isup=params.isupdate
+                    if(isup=='1'){
+                        isupdate=1
+                    }
+                    redirect(action: "caiwu_target", params: [begintime:guimoInstance.begintime,endtime:guimoInstance.endtime,id:guimoInstance.id,isupdate:isupdate])
                 }
             }
 
@@ -4211,6 +4209,7 @@ class FrontController {
             return
         }
         def guimoId=params.id
+        def isupdate=params.isupdate
         def uid=user.id
         def cid=company.id
         def begintime=params.begintime
@@ -4228,7 +4227,7 @@ class FrontController {
                     return
                 }
             }
-            [caiwuInstance:caiwuInstance,guimoId:guimoId]
+            [caiwuInstance:caiwuInstance,guimoId:guimoId,isupdate:isupdate]
         }
 
     def caiwuUpdate(){
@@ -4249,7 +4248,7 @@ class FrontController {
                 render(view: "caiwu_target", params: [msg: "保存失败！",id: id])
                 return
             }else{
-                redirect(action: "choose_date")
+                redirect(action: "selectDepartment")
             }
         }
 
@@ -4282,5 +4281,141 @@ class FrontController {
             rs.caiwuInstance=caiwuInstance
         }
     }
+    //工作推进
+    def bumenrenwuSave(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def selectDepartmentList=SelectDepartment.findAllByCidAndUid(company.id,user.id)
+        def sid=params.sid
+        def sname=params.sname
+        def sign=params.sign
+//        if(selectDepartmentList){
+//            redirect(action: 'selectDepartmentEdit')
+//            return
+//        }
+//        def frameworkDepartmentList=FrameworkDepartment.findAll();
+        [selectDepartmentList:selectDepartmentList,sid:sid,sname:sname,sign:sign]
+    }
+    def bumenrenwuAdd(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def bumenrenwuInstance=new Bumenrenwu(params)
+        def uid=user.id
+        def cid=company.id
+        def dateCteate=new Date()
+        bumenrenwuInstance.uid=uid
+        bumenrenwuInstance.cid=cid
+        bumenrenwuInstance.dateCreate=dateCteate
+        if (!bumenrenwuInstance.save(flush: true)) {
+            render(view: "bumenrenwuSave", params: [msg: "保存失败！"])
+            return
+        }else{
+            redirect(action: "bumenrenwuList")
+        }
+
+    }
+    def bumenrenwuEdit(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def selectDepartmentList=SelectDepartment.findAllByCidAndUid(company.id,user.id)
+        def id=params.id
+        def bumenrenwuInstance=Bumenrenwu.get(id)
+        if(!bumenrenwuInstance){
+            render(view: "bumenrenwuList", params: [msg: "保存失败！"])
+            return
+        }
+           [bumenrenwuInstance:bumenrenwuInstance,selectDepartmentList:selectDepartmentList]
+        }
+
+    def bumenrenwuUpdate(){
+        def id=params.id
+        def bumenrenwuInstance=Bumenrenwu.get(id)
+        if(!bumenrenwuInstance){
+            render(view: "bumenrenwuList", params: [msg: "保存失败！"])
+            return
+        }else{
+            bumenrenwuInstance.properties=params
+            if (!bumenrenwuInstance.save(flush: true)) {
+                render(view: "bumenrenwuEdit", params: [msg: "保存失败！"])
+                return
+            }else {
+                redirect(action: 'bumenrenwuList')
+            }
+        }
+    }
+    def bumenrenwuDelete(){
+        def id=params.id
+        def bumenrenwuInstance=Bumenrenwu.get(id)
+        if(!bumenrenwuInstance){
+            render(view: "bumenrenwuList", params: [msg: "查找失败！"])
+            return
+        }else{
+            bumenrenwuInstance.delete(flush: true)
+            redirect(action: 'bumenrenwuList')
+        }
+    }
+    def bumenrenwuList(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+
+        def selectDepartmentList=SelectDepartment.findAllByCidAndUid(company.id,user.id)
+
+        def bumenrenwulist=Bumenrenwu.findAllByCidAndUid(company.id,user.id)
+        [selectDepartmentList:selectDepartmentList,bumenrenwulist: bumenrenwulist]
+    }
+    def bumenSelect(){
+        def sign=1
+        def id=params.id
+        def selectDepartmentInstance=SelectDepartment.findById(id)
+        if(!selectDepartmentInstance){
+            render(view: "bumenrenwuList", params: [msg: "查找失败！"])
+            return
+        }else{
+            redirect(action: 'bumenrenwuSave', params: [sid: selectDepartmentInstance.id,sname: selectDepartmentInstance.name,sign:sign])
+        }
+
+    }
+    def gongzuotuijin(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        Calendar cal = Calendar.getInstance();
+        def year=cal.get(Calendar.YEAR);
+        def month1list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-01')
+        def month2list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-02')
+        def month3list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-03')
+        def month4list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-04')
+        def month5list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-05')
+        def month6list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-06')
+        def month7list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-07')
+        def month8list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-08')
+        def month9list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-09')
+        def month10list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-10')
+        def month11list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-11')
+        def month12list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-12')
+        [month1list:month1list,month2list:month2list,month3list:month3list,month4list:month4list,month5list:month5list,month6list:month6list,month7list:month7list,month8list:month8list,month9list:month9list,month10list:month10list,month11list:month11list,month12list:month12list]
+    }
+
 }
+
+
 

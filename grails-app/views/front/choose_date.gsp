@@ -33,34 +33,56 @@
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'assets/bootstrap-daterangepicker', file: 'daterangepicker-bs3.css')}" />
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'assets/bootstrap-timepicker/compiled', file: 'timepicker.css')}" />
     <style>
-    body{background:#fff;}
-    .toolkit{border:none;border-bottom:1px dashed #e5e5e5;color:#000; }
+    body{background: #f1f2f7}
+    .toolkit{border:none;border-bottom:1px dashed #e5e5e5;color:#000; height:30px;}
     .form-control{background:#f2f2f3;border:1px solid #e5e5e5;}
     .datetimepicker table tr td span {width:30%;}
     </style>
 </head>
 
 <body>
-<div class="tishi" style="border:1px solid #000;background-color: pink;text-align: center;width:300px;height:80px;margin:250px auto;line-height:80px;position: fixed;z-index: 10000;display:none;">${params.msg}</div>
-<section id="container1" style="width:100%;overflow-x:hidden;">
+<section id="container" >
 <!--header start-->
 <g:render template="header" />
-<div style="height:110px;"></div>
 <!--header end-->
-<!--sidebar start-->
-<div class="row">
-    %{--<div class="col-xs-2" style="height:100%"></div>--}%
-    %{--<g:render template="guihua_siderbar" />--}%
-    <!--sidebar end-->
-    <!--main content start-->
-    <section id="main-content" class="col-xs-12" style="padding-left:0;">
-        <section class="wrapper" style="width:90%;margin:0 auto;display:block;">
+<!--main content start-->
+<section id="main-content" style="margin-left: 0px;">
+    <section class="wrapper" style="margin-top: 94px;">
+        <div class="testPaper">
+            <ul class="steps clearfix">
+                <li class="stp">
+                    <span>第一步</span>
+                    <p>现状评估</p>
+                </li>
+                <li class="arrow"></li>
+                <li class="stp active">
+                    <span>第二步</span>
+                    <p>规模目标</p>
+                </li>
+                <li class="arrow"></li>
+                <li class="stp">
+                    <span>第三步</span>
+                    <p>财务目标</p>
+                </li>
+                <li class="arrow"></li>
+                <li class="stp">
+                    <span>第四步</span>
+                    <p>组织架构</p>
+                </li>
+                <li class="arrow"></li>
+                <li class="stp">
+                    <span>第五步</span>
+                    <p>工作推进</p>
+                </li>
+            </ul>
+            <div class="test-question reset">
+        <section class="wrapper" style="width:100%;margin:0 auto;display:block;">
             <div class="col-tb">
                 <div class="col-cell">
                     <div class="toolkit">
-                        <div style="width:200px;margin:0 auto;text-align: center;font-size: 26px;color:#27bdff">规划目标表单</div>
+                        <div style="margin-top:10px;color:#000;">注：此日期选择是您目标规划的时间区间，建议以两年为时间周期进行规划。</div>
                     </div>
-                    <div style="margin-top:10px;color:#000;">注：此日期选择是您目标规划的时间区间，建议以两年为时间周期进行规划。</div>
+
                     <div class="content">
                         <div style="margin:60px auto;width:400px;" class="clearfix row">
                             <g:form url="[controller:'front',action:'guimoUpdate']" method="post" class="form-horizontal">
@@ -69,16 +91,17 @@
                                     <input id="startdate" class="form-control" name="begintime" value="${guimoInstance.begintime}"/><br/>
                                     <div style="position: absolute;top:10px;right:25px;z-index: 10000;"><i class="fa fa-calendar" ></i></div>
                                 </div>
-                                <label for="enddate" class="col-sm-3 control-label">开始时间：</label>
+                                <label for="enddate" class="col-sm-3 control-label">结束时间：</label>
                                 <div class="col-sm-9" style="position: relative;">
-                                    <input id="enddate"  class="form-control" name="endtime" value="${guimoInstance.endtime}"/><br/>
+                                    <input id="enddate"  class="form-control" name="endtime" value="${guimoInstance.endtime}" title="结束时间不能小于开始时间，并且不能大于第二年年底"/><br/>
                                     <div style="position: absolute;top:10px;right:25px;z-index: 10000;"><i class="fa fa-calendar" ></i></div>
                                 </div>
                                 <input type="hidden" name="id" value="${guimoInstance.id}"/>
                                 <input type="hidden" name="sign" value="choose_date"/>
+                                <input type="hidden" name="isupdate" value="${isupdate}"/>
                                 <label class="col-sm-3 control-label"></label>
                                 <div class="col-sm-9" style="position: relative;">
-                                    <button type="submit"  class="button" style="width:90px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;">确定</button>
+                                    <button type="submit" id="submit" class="button" style="width:90px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;">确定</button>
 
                                 </div>
 
@@ -96,7 +119,7 @@
 
         </section>
         <!--main content end-->
-
+</div></div>
         <!--footer start-->
         %{--<footer class="site-footer">--}%
         %{--<div class="text-center">--}%
@@ -110,6 +133,7 @@
     </section>
 
 
+</section>
 </section>
 <!--评论及反馈 end-->
 <!-- js placed at the end of the document so the pages load faster -->
@@ -156,26 +180,78 @@
 %{--<!--上传图片预览 js-->--}%
 %{--<script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>--}%
 <script type="text/javascript">
-//    $(function () {
+    $(function () {
+        var bt=$('#startdate').val();
+        $('#startdate1').html(bt);
+
         $('#startdate').datetimepicker({
             language:'zh-CN',
             format: 'yyyy-mm',
+            startDate:new Date(),
             startView:3,
             minView:3,
+            todayHighlight:true,
             autoclose: 1,
             pickerPosition: "bottom-left",
             forceParse: 0,　　
-    });
-$('#enddate').datetimepicker({
-    language:'zh-CN',
-    format: 'yyyy-mm',
-    startView:3,
-    minView:3,
-    autoclose: 1,
-    pickerPosition: "bottom-left",
-    forceParse: 0,　　
-});
+
+
+    })
+// .on('changeMonth',function(ev){
+//        var byear=new Date(ev.date.valueOf()).getFullYear();
+//        var bmonth=new Date(ev.date.valueOf()).getMonth()+1;
+//        var b=byear+'-'+bmonth;
+//        $('#startdate1').html(b);
 //    });
+
+
+    $('#enddate').datetimepicker({
+        language: 'zh-CN',
+        format: 'yyyy-mm',
+        startView: 3,
+        startDate: new Date(),
+
+        minView: 3,
+        autoclose: 1,
+        pickerPosition: "bottom-left",
+        forceParse: 0,
+    　　
+    });
+
+
+    $('#submit').click(function(){
+        var btime=$('#startdate').val();
+        var etime=$('#enddate').val();
+        var bstr = btime.replace(/-/g,"/");
+        var bdate = new Date(bstr);
+        var byear=bdate.getFullYear();
+        var emonth=byear+1+'-12';
+        if(btime>etime||etime>emonth){
+            $('#enddate').css('border-color','red');
+            return false;
+        }
+    })
+
+    });
+//    $('#startdate').datetimepicker().on('changeMonth',function(ev){
+//
+//        var bmonth=new Date(ev.date.valueOf())+'';
+//        var byear=new Date(ev.date.valueOf()).getFullYear();
+//        var emonth=byear+1+'-12';
+//        $('#enddate').datetimepicker({
+//            language: 'zh-CN',
+//            format: 'yyyy-mm',
+//            startView: 3,
+//            startDate:bmonth,
+//            endDate: emonth,
+//            minView: 3,
+//            autoclose: 1,
+//            pickerPosition: "bottom-left",
+//            forceParse: 0,
+//    　　
+//    });
+//    })
+
 </script>
 
 
