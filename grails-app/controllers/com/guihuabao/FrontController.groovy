@@ -3698,16 +3698,16 @@ class FrontController {
     * 字符串拼接
     * 参数 arr (要转换成字符串的数组)
     * */
-    def strImplode(ArrayList arr){
-        StringBuilder str = new StringBuilder();
-        int offset = arr.size() - 1;
-        for( int i = 0; i < offset; i++ )
-        {
-            str.append(arr[i]).append("|||||");
-        }
-        str.append(arr[offset]);
-        return  str.toString();
-    }
+//    def strImplode(ArrayList arr){
+//        StringBuilder str = new StringBuilder();
+//        int offset = arr.size() - 1;
+//        for( int i = 0; i < offset; i++ )
+//        {
+//            str.append(arr[i]).append("|||||");
+//        }
+//        str.append(arr[offset]);
+//        return  str.toString();
+//    }
 
      /*
     * 测试结果
