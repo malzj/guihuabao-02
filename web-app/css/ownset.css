@@ -677,5 +677,5 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .testPaper .title h2{font-size: 48px;color: #FFF;}
 .testPaper .title p{font-size: 20px;color: #FFF;margin: 24px 0 70px;}
 
-.page-background{position: absolute;top: 110px;left: 0px;z-index: -1;}
+.page-background{width:100%;position: absolute;top: 110px;left: 0px;z-index: -1;}
 

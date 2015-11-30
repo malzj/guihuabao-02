@@ -28,7 +28,7 @@
     <g:render template="header" />
     <!--header end-->
     <!--main content start-->
-    <section id="main-content" style="margin-left: 0px;">
+    <section id="main-content" style="margin-left: 0px;background: url(${resource(dir: 'img', file: 'background.png')}) center top;background-size: cover;">
         <section class="wrapper" style="margin-top: 94px;">
             <div class="testPaper">
                 <div class="title">
@@ -38,11 +38,11 @@
                 <div style="text-align: center">
                 <img src="${resource(dir: 'img', file: 'img1.png')}" />
                 </div>
-                <div style="text-align: center;margin-top: 80px;">
+                <div style="text-align: center;margin: 80px 0 326px;">
                     <g:link action="testPaper" class="btn btn-op">开始规划</g:link>
                 </div>
             </div>
-            <img class="page-background" src="${resource(dir: 'img', file: 'background.png')}" />
+            %{--<img class="page-background" src="${resource(dir: 'img', file: 'background.png')}" />--}%
         </section>
 
     </section>
