@@ -110,7 +110,7 @@
                             </g:form>
                         </span>
                     </div>
-                    <div class=>
+                    <div >
                         <div class="line clearfix">
                             <p class="f-l">任务标题：</p><p class="f-l" style="word-wrap:break-word;width:200px;" >${bumenrenwuInstance.title}</p>
 
