@@ -3671,11 +3671,23 @@ class FrontController {
             return
         }
         def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
-        if(doneTest){
-            redirect(action: "startProgramme")
+        def guimoInstance=Guimo.findByCidAndUid(company.id,user.id)
+        def selectDepartmentList=SelectDepartment.findAllByCidAndUid(company.id,user.id)
+        def bumenrenwulist=Bumenrenwu.findAllByCidAndUid(company.id,user.id)
+        if(doneTest&&!guimoInstance){
+            redirect(action: "choose_date")
+            return
+        }else if(doneTest&&guimoInstance&&!selectDepartmentList){
+            redirect(action: "selectDepartment")
+            return
+        }else if(doneTest&&guimoInstance&&selectDepartmentList&&!bumenrenwulist){
+            redirect(action: "bumenrenwuList")
+            return
+        }else if(doneTest&&guimoInstance&&selectDepartmentList&&bumenrenwulist){
+            redirect(action: "programmeModule")
             return
         }
-        redirect(action: "programmeModule")
+        redirect(action: "startProgramme")
     }
     /*
     * 开始规划界面
