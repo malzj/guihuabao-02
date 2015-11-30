@@ -175,6 +175,9 @@
         <!--logo end-->
         <ul class="nav">
             <li><g:link action="frontIndex"><img src="${resource(dir:'img',file:'nav_1.png')}" width="30px;" height="30px"/>首页</g:link></li>
+            <g:if test="${session.user.pid==1}">
+            <li><g:link action="programme"><img src="${resource(dir:'img',file:'nav_9.png')}" width="30px;" height="30px"/>规划</g:link></li>
+            </g:if>
             <li><g:link action="user_target"><img src="${resource(dir:'img',file:'nav_2.png')}" width="30px;" height="30px"/>目标</g:link></li>
             <li><g:link action="taskCreate"><img src="${resource(dir:'img',file:'nav_3.png')}" width="30px;" height="30px"/>任务</g:link></li>
             %{--<li><g:link action="apply"><i class="apply"></i>申请</g:link></li>--}%
