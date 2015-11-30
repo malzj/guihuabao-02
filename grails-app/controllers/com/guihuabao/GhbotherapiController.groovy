@@ -1313,7 +1313,7 @@ class GhbotherapiController {
             }
         }
         if(companyAppList){
-            rs.result = false
+            rs.result = true
             rs.companyAppList = companyAppList
         }else{
             rs.result = false

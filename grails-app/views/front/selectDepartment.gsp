@@ -218,10 +218,6 @@
             idInput.name='departmentId';
             idInput.type='hidden';
             idInput.value=data;
-            var numInput=document.createElement("input");
-            numInput.name='num';
-            numInput.type='hidden';
-            numInput.value=count+1;
             var textInput=document.createElement("input");
             textInput.name='name';
             textInput.value=span.innerHTML;
@@ -231,7 +227,6 @@
             departSpan.appendChild(textInput);
             newEl.appendChild(departSpan);
             newEl.appendChild(idInput);
-            newEl.appendChild(numInput);
             var departments=document.getElementById('departments');
             departments.appendChild(newEl);
         }
@@ -240,9 +235,19 @@
         var event = {
             mousedown:function(e){
                 if(e.which==3){
-                    var id=$(this).attr('data-departmentId');
-                    alert(id);
+                    var id=$(this).attr('data-id');
+                    var departmentId=$(this).attr('data-departmentId');
+                    var mouseX= e.pageX;
+                    var mouseY= e.pageY;
 
+                    var menuHtml='<div id="menulist"><ul><li class="edit" data-departmentId="'+departmentId+'">编辑</li><li class="delete" data-id="'+id+'" data-departmentId="'+departmentId+'">删除</li></ul></div>';
+                    if($('#menulist').size()>0){
+                        return false;
+                    }else{
+                        $('body').append(menuHtml);
+                        $('#menulist').css('top', mouseY);
+                        $('#menulist').css('left', mouseX);
+                    }
                 }else if(e.which==1){
                     var id=$(this).attr('data-departmentId');
                     var winWidth=$(document).width();
@@ -295,7 +300,29 @@
                 }
             });
         });
-        $(document).on(event,'#departments .department');
+        //        点击右击菜单选项
+        $(document).on('click','#menulist li',function(e){
+            var cz=$(this).attr('class');
+            var data_departmentId=$(this).attr('data-departmentId');
+            var data_id=$(this).attr('data-id');
+            if(cz=='edit'){
+                $('#departments .department[data-departmentId='+data_departmentId+'] span input[name=name]').removeAttr('readonly').focus();
+            }else if(cz=='delete'){
+                var departli=$('#departments .department[data-departmentId='+data_departmentId+']');
+                var departmentname=departli.children('span').children('input').val();
+
+                $('#departments .department[data-departmentId='+data_departmentId+']').remove();
+                var html1='<li><span id="'+data_departmentId+'" data-departmentId="'+data_departmentId+'" draggable="true" ondragstart="drag(event)">'+departmentname+'</span></li>';
+                $('.all-department ul').append(html1);
+            }
+        });
+//        清除右击菜单
+        $(document).click(function(){
+            $("#menulist").remove();
+        });
+        $(document).on(event,'#departments .department').bind('contextmenu',function(){
+            return false;
+        });
         var x_max = $(window).width();
         var y_max = $(window).height();
         var div_width = $(".layer").width() + 2;//20是边框

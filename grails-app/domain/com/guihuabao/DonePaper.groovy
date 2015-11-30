@@ -5,6 +5,7 @@ class DonePaper {
     Integer cid
     Integer uid
     Integer totalScore
+    String analysis
     Date dateCreate
     static constraints = {
     }
