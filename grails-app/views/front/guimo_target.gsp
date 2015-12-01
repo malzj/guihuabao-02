@@ -375,7 +375,7 @@
 //                     $('td.month').eq(index).html(k+'月');
 //                     $('input.con').eq(index).attr("name",'m'+(i+1)+'1')
 //                     $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
-                     if(isupdate=='0') {
+                     if(isupdate!='1') {
                          $('input.con').eq(i).val(m1);
                          $('input.con1').eq(i).val(m2);
                      }else{

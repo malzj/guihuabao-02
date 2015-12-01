@@ -229,7 +229,10 @@
                                 <dt>12月</dt>
                             </li>
                         </ul>
-                        <g:link action="bumenrenwuList" class="button" style="display:block;text-align:center;line-height:37px;width:106px;background:#27bdff;border:none;height:37px;margin:50px auto;border-radius: 3px;color:#fff;font-size:14px;">返回上一步</g:link>
+                        <div style="width:250px;margin:50px auto;">
+                        <g:link action="bumenrenwuList" class="button" style="display:inline-block;text-align:center;line-height:37px;width:106px;background:#27bdff;border:none;height:37px;border-radius: 3px;color:#fff;font-size:14px;margin-right: 20px;">返回上一步</g:link>
+                        <g:link action="programmeModule" class="button" style="display:inline-block;text-align:center;line-height:37px;width:106px;background:#27bdff;border:none;height:37px;border-radius: 3px;color:#fff;font-size:14px;">确定</g:link>
+                        </div>
                     </div>
 
 
