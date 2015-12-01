@@ -92,8 +92,9 @@
             <section class="wrapper" style="width:100%;margin:0 auto;display:block;">
                 <div class="col-tb">
                     <div class="col-cell">
-                        <div class="toolkit">
+                        <div class="toolkit" style="position: relative;">
                             <div style="width:200px;margin:0 auto;text-align: center;font-size: 26px;color:#27bdff">财务目标表单</div>
+                            <g:link action="choose_date" style="display:block;position: absolute;right:0px;top:54px;text-align:center;padding:0;line-height:37px;width:86px;background:#27bdff;border:none;height:37px;border-radius: 3px;color:#fff;font-size:14px;">修改时间</g:link>
                         </div>
                         <div style="margin-top:10px;color:#000;">提示：此日期选择是您目标规划的时间区间，建议以两年为时间周期进行规划。</div>
                         <div class="content">

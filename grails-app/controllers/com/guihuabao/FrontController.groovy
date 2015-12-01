@@ -4176,6 +4176,25 @@ class FrontController {
 
      [guimoInstance:guimoInstance,isupdate: isupdate]
     }
+    def guimo_target_show() {
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def cid=company.id
+        def uid=user.id
+
+        def guimoInstance=Guimo.findByUidAndCid(uid,cid)
+
+
+        if(!guimoInstance){
+            render(view: "programModule" , params: [msg: "获取数据失败"])
+            return
+        }
+        [guimoInstance:guimoInstance]
+    }
     def guimoAjax(){
         def rs=[:]
 //        def user = session.user
@@ -4260,9 +4279,9 @@ class FrontController {
         def begintime=params.begintime
         def endtime=params.endtime
 
-            def caiwuInstance=Caiwu.findByUidAndCidAndBegintimeAndEndtime(user.id,company.id,begintime,endtime)
+            def caiwuInstance=Caiwu.findByUidAndCidAnd(user.id,company.id)
             if(!caiwuInstance) {
-                 caiwuInstance = new Caiwu()
+                caiwuInstance = new Caiwu()
                 caiwuInstance.uid = user.id
                 caiwuInstance.cid = company.id
                 caiwuInstance.begintime = begintime
@@ -4274,6 +4293,23 @@ class FrontController {
             }
             [caiwuInstance:caiwuInstance,guimoId:guimoId,isupdate:isupdate]
         }
+    def caiwu_target_show(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+
+        def caiwuInstance=Caiwu.findByUidAndCid(user.id,company.id)
+        if(!caiwuInstance) {
+
+                render(view: "programModule", params: [msg: "获取数据失败！"])
+                return
+
+        }
+        [caiwuInstance:caiwuInstance]
+    }
 
     def caiwuUpdate(){
         def user = session.user
@@ -4293,7 +4329,7 @@ class FrontController {
                 render(view: "caiwu_target", params: [msg: "保存失败！",id: id])
                 return
             }else{
-                redirect(action: "selectDepartment")
+                redirect(action: "framework")
             }
         }
 
@@ -4330,6 +4366,7 @@ class FrontController {
     def bumenrenwuSave(){
         def user = session.user
         def company = session.company
+        def responsibility
         if (!user && !company) {
             redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
             return
@@ -4338,12 +4375,16 @@ class FrontController {
         def sid=params.sid
         def sname=params.sname
         def sign=params.sign
-//        if(selectDepartmentList){
-//            redirect(action: 'selectDepartmentEdit')
-//            return
-//        }
-//        def frameworkDepartmentList=FrameworkDepartment.findAll();
-        [selectDepartmentList:selectDepartmentList,sid:sid,sname:sname,sign:sign]
+        def selectDepartmentInstance=SelectDepartment.findById(sid)
+        if(!selectDepartmentInstance){
+            render(view: "bumenrenwuList", params: [msg: "查找失败！"])
+            return
+        }else{
+
+            def fid=selectDepartmentInstance.departmentId
+            responsibility =FrameworkDepartment.findById(fid).responsibility
+        }
+        [selectDepartmentList:selectDepartmentList,sid:sid,sname:sname,sign:sign,responsibility: responsibility]
     }
     def bumenrenwuAdd(){
         def user = session.user
@@ -4366,6 +4407,25 @@ class FrontController {
             redirect(action: "bumenrenwuList")
         }
 
+    }
+    def getresponsibility(){
+        def rs=[:]
+        def sid=params.sid
+        def responsibility
+        def selectDepartment=SelectDepartment.findById(sid)
+        if(!selectDepartment){
+            rs.result=false
+            rs.msg='获取数据失败！'
+
+        }else{
+            rs.result=true
+            responsibility =FrameworkDepartment.findById(selectDepartment.departmentId).responsibility
+            rs.responsibility=responsibility
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
     def bumenrenwuEdit(){
         def user = session.user
@@ -4427,12 +4487,15 @@ class FrontController {
     def bumenSelect(){
         def sign=1
         def id=params.id
+
         def selectDepartmentInstance=SelectDepartment.findById(id)
         if(!selectDepartmentInstance){
             render(view: "bumenrenwuList", params: [msg: "查找失败！"])
             return
         }else{
-            redirect(action: 'bumenrenwuSave', params: [sid: selectDepartmentInstance.id,sname: selectDepartmentInstance.name,sign:sign])
+
+            redirect(action: 'bumenrenwuSave',type:'post', params: [sid: selectDepartmentInstance.id,sname: selectDepartmentInstance.name,sign:sign])
+
         }
 
     }
@@ -4443,8 +4506,16 @@ class FrontController {
             redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
             return
         }
-        Calendar cal = Calendar.getInstance();
-        def year=cal.get(Calendar.YEAR);
+
+        def year=params.year
+        if(!year){
+            Calendar cal = Calendar.getInstance();
+            year=cal.get(Calendar.YEAR).toInteger();
+        }else{
+            year=year.toInteger();
+        }
+
+
         def month1list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-01')
         def month2list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-02')
         def month3list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-03')
@@ -4457,7 +4528,63 @@ class FrontController {
         def month10list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-10')
         def month11list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-11')
         def month12list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-12')
-        [month1list:month1list,month2list:month2list,month3list:month3list,month4list:month4list,month5list:month5list,month6list:month6list,month7list:month7list,month8list:month8list,month9list:month9list,month10list:month10list,month11list:month11list,month12list:month12list]
+        [year:year,month1list:month1list,month2list:month2list,month3list:month3list,month4list:month4list,month5list:month5list,month6list:month6list,month7list:month7list,month8list:month8list,month9list:month9list,month10list:month10list,month11list:month11list,month12list:month12list]
+    }
+    def bumentuijin(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def sid=params.sid
+        def sname=params.sname
+        def year=params.year
+        if(!year){
+            Calendar cal = Calendar.getInstance();
+            year=cal.get(Calendar.YEAR).toInteger();
+        }else{
+            year=year.toInteger();
+        }
+
+        def month1list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-01',sid)
+        def month2list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-02',sid)
+        def month3list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-03',sid)
+        def month4list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-04',sid)
+        def month5list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-05',sid)
+        def month6list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-06',sid)
+        def month7list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-07',sid)
+        def month8list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-08',sid)
+        def month9list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-09',sid)
+        def month10list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-10',sid)
+        def month11list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-11',sid)
+        def month12list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-12',sid)
+        [year:year,sname:sname,sid:sid,month1list:month1list,month2list:month2list,month3list:month3list,month4list:month4list,month5list:month5list,month6list:month6list,month7list:month7list,month8list:month8list,month9list:month9list,month10list:month10list,month11list:month11list,month12list:month12list]
+    }
+    def bumentuijinAjax(){
+        def rs=[:]
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def id=params.id
+        def renwuInstance=Bumenrenwu.findById(id)
+        if(!renwuInstance){
+            rs.result=false
+            rs.msg='获取数据失败！'
+        }else{
+            rs.result=true
+            def selectdepartment=SelectDepartment.findById(renwuInstance.sid)
+            def responsibility=FrameworkDepartment.findById(selectdepartment.departmentId).responsibility
+            rs.renwuInstance=renwuInstance
+            rs.responsibility=responsibility
+        }
+        if (params.callback) {
+            render "${params.callback}(${rs as JSON})"
+        } else
+            render rs as JSON
     }
 
 }
