@@ -38,58 +38,39 @@
 <section id="main-content" style="margin-left: 0px;">
 <section class="wrapper" style="margin-top: 94px;">
 <div class="testPaper">
-    <ul class="steps clearfix">
-        <li class="stp active">
-            <span>第一步</span>
-            <p>现状评估</p>
-        </li>
-        <li class="arrow"></li>
-        <li class="stp">
-            <span>第二步</span>
-            <p>规模目标</p>
-        </li>
-        <li class="arrow"></li>
-        <li class="stp">
-            <span>第三步</span>
-            <p>财务目标</p>
-        </li>
-        <li class="arrow"></li>
-        <li class="stp">
-            <span>第四步</span>
-            <p>组织架构</p>
-        </li>
-        <li class="arrow"></li>
-        <li class="stp">
-            <span>第五步</span>
-            <p>工作推进</p>
-        </li>
-    </ul>
 <div class="test-question">
     <div class="score">
-        <p>您的公司连锁规划评分为<span>${doneTest.totalScore}分</span></p>
+        <p>您的公司连锁规划评分为<span>${doneTest?.totalScore}分</span></p>
         <div class="analysis">
-            <g:if test="${doneTest.totalScore<50}">
-                您当前各方面基础尚弱，连锁发展成功概率小于20%。
+            <g:if test="${doneTest}">
+                <g:if test="${doneTest?.totalScore<50}">
+                    您当前各方面基础尚弱，连锁发展成功概率小于20%。
+                </g:if>
+                <g:elseif test="${doneTest?.totalScore>=50&&doneTest?.totalScore<65}">
+                    您当前连锁发展成功概率30%,需要集中精力在基础工作上扎实推进。
+                </g:elseif>
+                <g:elseif test="${doneTest?.totalScore>=65&&doneTest?.totalScore<80}">
+                    您具备一定的连锁发展基础，通过专业连锁模式规划和资源聚焦，可以实现超过50%的成功概率。
+                </g:elseif>
+                <g:elseif test="${doneTest?.totalScore>=80&&doneTest?.totalScore<90}">
+                    您各方面的基础较好，连锁发展成功概率超过60%,在模式和体系建设上仍急需完善。
+                </g:elseif>
+                <g:elseif test="${doneTest?.totalScore>=90&&doneTest?.totalScore<100}">
+                    您的连锁发展基础已经很优秀，补充些连锁体系建设能力，连锁发展成功概率超过70%。
+                </g:elseif>
+                ${doneTest?.analysis}
             </g:if>
-            <g:elseif test="${doneTest.totalScore>=50&&doneTest.totalScore<65}">
-                您当前连锁发展成功概率30%,需要集中精力在基础工作上扎实推进。
-            </g:elseif>
-            <g:elseif test="${doneTest.totalScore>=65&&doneTest.totalScore<80}">
-                您具备一定的连锁发展基础，通过专业连锁模式规划和资源聚焦，可以实现超过50%的成功概率。
-            </g:elseif>
-            <g:elseif test="${doneTest.totalScore>=80&&doneTest.totalScore<90}">
-                您各方面的基础较好，连锁发展成功概率超过60%,在模式和体系建设上仍急需完善。
-            </g:elseif>
-            <g:elseif test="${doneTest.totalScore>=90&&doneTest.totalScore<100}">
-                您的连锁发展基础已经很优秀，补充些连锁体系建设能力，连锁发展成功概率超过70%。
-            </g:elseif>
-            ${doneTest.analysis}
+            <g:else>
+                您还没有进行规划评分，请进行<g:link action="testPaper" params="[finish:1]" style="color:#03a9f4">规划测评</g:link>
+            </g:else>
         </div>
     </div>
+<g:if test="${doneTest}">
     <div style="text-align: center;margin-top: 55px;">
-        <g:link action="testAgain" id="${doneTest.id}" type="submit" class="btn btn-set">重做</g:link>
+        <a onclick="window.confirm('重新测试将删除历史结果,是否重新测试？')?(window.location.href='${webRequest.baseUrl}/front/testAgain'): false;" class="btn btn-set">重做</a>
         <g:link action="programmeModule" type="submit" class="btn btn-info">返回</g:link>
     </div>
+</g:if>
 </div>
 </div>
 </section>

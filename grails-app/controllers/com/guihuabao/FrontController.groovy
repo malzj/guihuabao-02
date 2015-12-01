@@ -3706,10 +3706,10 @@ class FrontController {
     * 测试试卷
     * 测试试卷id为1（手动定义）
     * */
-    def testPaper(){
+    def testPaper(Long finish){
         def testPaperId=1
 
-        [testPaperId:testPaperId]
+        [testPaperId:testPaperId,finish:finish]
     }
 
     /*
@@ -3731,7 +3731,7 @@ class FrontController {
     * 测试结果
     * 保存所做题目及结果分数
     * */
-    def testEvaluate(){
+    def testEvaluate(Long finish){
         def user = session.user
         def company = session.company
         if(!user&&!company){
@@ -3906,7 +3906,11 @@ class FrontController {
             redirect(action: "programme")
             return
         }
-        redirect(action: "testResult")
+        if(finish==1){
+            redirect(action: "testResultShow")
+            return
+        }else
+        redirect(action: "testResult");
     }
     /*
     * 测试结果展示页面
@@ -3931,18 +3935,22 @@ class FrontController {
         def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
         [doneTest:doneTest]
     }
-    def testAgain(Long id){
+    def testAgain(){
         def user = session.user
         def company = session.company
         if(!user&&!company){
             redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
             return
         }
-        def doneTest=DonePaper.get(id)
-        def deleteResult=Evaluate.executeUpdate("delete Evaluate b where b.cid=:cid and b.uid=:uid and testPaperId=:testpaperid", [cid:company.id,uid: user.id,testpaperid: id])
+        def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
+        def selectOptionList=Evaluate.findAllByCidAndUidAndTestPaperId(company.id,user.id,1)
+        for(def i=0;i<selectOptionList.size();i++){
+            def option=selectOptionList.get(i)
+            option.delete(flush: true)
+        }
         try {
             doneTest.delete(flush: true)
-            redirect(action: "testPaper")
+            redirect(action: "testPaper",params: [finish:1])
         }
         catch (DataIntegrityViolationException e) {
             redirect(action: "testResultShow")
@@ -3989,6 +3997,25 @@ class FrontController {
     * 编辑架构部门
     * */
     def selectDepartmentEdit(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def selectDepartmentList=SelectDepartment.findAllByCidAndUid(company.id,user.id)
+        def sql=''
+        for(def i=0;i<selectDepartmentList.size();i++){
+            if(i==0){
+                sql+=selectDepartmentList.get(i).departmentId
+            }else{
+                sql+=','+selectDepartmentList.get(i).departmentId
+            }
+        }
+        def frameworkDepartmentList=FrameworkDepartment.findAll("from FrameworkDepartment as b where b.id not in("+sql+")");
+        [frameworkDepartmentList:frameworkDepartmentList,selectDepartmentList:selectDepartmentList]
+    }
+    def selectDepartmentEdit1(){
         def user = session.user
         def company = session.company
         if (!user && !company) {
@@ -4070,6 +4097,26 @@ class FrontController {
         }
         [departmentList:departmentList]
     }
+    def frameworkShow1(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def departmentList=[]
+        def cid=company.id
+        def uid=user.id
+        def selectDepartmentInstance=SelectDepartment.findAllByCidAndUid(cid,uid,[sort: 'num',order: 'asc'])
+        for(def i=0;i<selectDepartmentInstance.size();i++){
+            def data=[:]
+            data.id=selectDepartmentInstance.get(i).id
+            data.name=selectDepartmentInstance.get(i).name
+            data.jobs=FrameworkDepartment.findById(selectDepartmentInstance.get(i).departmentId).jobs.split(',')
+            departmentList<<data
+        }
+        [departmentList:departmentList]
+    }
     /*
     * 更新架构部门
     * */
@@ -4103,6 +4150,37 @@ class FrontController {
             }
         }
         redirect(action: "frameworkShow")
+    }
+    def selectDepartmentUpdate1(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def paramsIdInfo=params.list('id');
+        def paramsDepartmentId=params.list('departmentId');
+        def paramsNameInfo=params.list('name');
+        for(def i=0;i<paramsIdInfo.size();i++){
+            if(paramsIdInfo.get(i)!='0'){
+                def selectDepartmentInstance=SelectDepartment.findById(paramsIdInfo.get(i))
+                selectDepartmentInstance.departmentId=Integer.parseInt(paramsDepartmentId.get(i))
+                selectDepartmentInstance.cid=company.id
+                selectDepartmentInstance.uid=user.id
+                selectDepartmentInstance.name=paramsNameInfo.get(i)
+                selectDepartmentInstance.num=i+1
+                selectDepartmentInstance.save(flush: true)
+            }else{
+                def selectDepartmentInstance=new SelectDepartment()
+                selectDepartmentInstance.departmentId=Integer.parseInt(paramsDepartmentId.get(i))
+                selectDepartmentInstance.cid=company.id
+                selectDepartmentInstance.uid=user.id
+                selectDepartmentInstance.name=paramsNameInfo.get(i)
+                selectDepartmentInstance.num=i+1
+                selectDepartmentInstance.save(flush: true)
+            }
+        }
+        redirect(action: "frameworkShow1")
     }
     /*
     * 删除架构部门
