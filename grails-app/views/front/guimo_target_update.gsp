@@ -104,14 +104,14 @@
             <div class="col-cell">
                 <div class="toolkit" style="position: relative">
                     <div style="width:200px;margin:0 auto;text-align: center;font-size: 26px;color:#27bdff">规划目标表单</div>
-                    %{--<g:link action="choose_date" style="display:block;position: absolute;right:0px;top:54px;text-align:center;padding:0;line-height:37px;width:86px;background:#27bdff;border:none;height:37px;border-radius: 3px;color:#fff;font-size:14px;">修改时间</g:link>--}%
+                    <g:link action="choose_date_update" style="display:block;position: absolute;right:0px;top:54px;text-align:center;padding:0;line-height:37px;width:86px;background:#27bdff;border:none;height:37px;border-radius: 3px;color:#fff;font-size:14px;">修改时间</g:link>
 
 
                 </div>
-                %{--<div style="margin-top:10px;color:#000;">提示：若修改时间，则规模目标和财务目标的内容将清空。</div>--}%
+                <div style="margin-top:10px;color:#000;">提示：若修改时间，则规模目标和财务目标的内容将清空。</div>
                 <div class="content">
                 <div style="margin-top:20px;" class="clearfix">
-                    <g:form url="[controller:'front',action:'guimoUpdate']" method="post" class="form-horizontal" id="caiwu_target">
+                    <g:form url="[controller:'front',action:'timeUpdate']" method="post" class="form-horizontal" id="caiwu_target">
                         <table class="table table-bordered table1">
                             <tr class="th1">
                                 <th colspan="3">季度</th>
@@ -239,17 +239,17 @@
                             </tr>
                         </table>
                         <input type="hidden" id="guimoId" name="id" value="${guimoInstance.id}"/>
-                        <input type="hidden" name="sign" value="guimo_target"/>
+                        <input type="hidden" name="sign" id="sign" value="update"/>
                         <input type="hidden" name="isupdate" value="${isupdate}"/>
                         </div>
                     </g:form>
-                    %{--<div class="clearfix" style="width:300px;margin:46px auto 140px;">--}%
+                    <div class="clearfix" style="width:300px;margin:46px auto 140px;">
                         %{--<g:form url="[controller:'front',action:'choose_date']" method="post" id="choose_date" class="form-horizontal f-l">--}%
                             %{--<input type="hidden" name="isupdate" value="${isupdate}"/>--}%
                             %{--<input class="button" type="submit" form="choose_date" style="width:120px;background:#fff;border:1px solid #d9d9d9;height:40px;border-radius: 3px;color:#000;" value="返回上一步" >--}%
                         %{--</g:form>--}%
-                        %{--<input type="submit"  class="button f-l" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;margin-left:20px;" value="确认提交" form="caiwu_target"/>--}%
-                    %{--</div>--}%
+                        <input type="submit"  class="button f-l" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;margin-left:20px;" value="确认提交" form="caiwu_target"/>
+                    </div>
 
 
                     <span style="display:none;" id="begintime">${guimoInstance.begintime}</span>
@@ -327,7 +327,11 @@
         $('input.con').attr('disabled','disabled');
         $('input.con1').attr('disabled','disabled');
         $('th.jdc input').attr('disabled','disabled');
-//        var isupdate=$('#isupdate').html();
+        var isupdate=$('#isupdate').html();
+        if(isupdate=='1'){
+            $('#sign').val('guimo_target_update');
+        }
+
         var begintime=$('#begintime').html();
         var endtime=$('#endtime').html();
         var bstr = begintime.replace(/-/g,"/");
@@ -355,7 +359,7 @@
             data: {id:guimoId,begintime:begintime,endtime:endtime},
             success: function (data) {
                 for(var i=0;i<sjd;i++){
-                    $('th.jdc input').eq(jdindex).css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                    $('th.jdc input').eq(jdindex).removeAttr('disabled').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
                     jdindex++;
                 }
                 for(var i=0;i<8;i++){
@@ -375,18 +379,18 @@
 //                     $('td.month').eq(index).html(k+'月');
 //                     $('input.con').eq(index).attr("name",'m'+(i+1)+'1')
 //                     $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
-//                    if(isupdate=='0') {
+                    if(isupdate!='1') {
                         $('input.con').eq(i).val(m1);
                         $('input.con1').eq(i).val(m2);
-//                    }else{
-//                        $('input.con').val('');
-//                        $('input.con1').val('');
-//                        $('th.jdc input').val('');
-//                    }
+                    }else{
+                        $('input.con').val('');
+                        $('input.con1').val('');
+                        $('th.jdc input').val('');
+                    }
                 }
                 for(var i=0;i<=smonth;i++) {
-                    $('input.con').eq(index)
-                    $('input.con1').eq(index)
+                    $('input.con').eq(index).removeAttr("disabled");
+                    $('input.con1').eq(index).removeAttr("disabled");
                     $('input.con').eq(index).parent().css("background","#d2d2d2");
                     $('input.con1').eq(index).parent().css("background","#d2d2d2");
                     $('input.con').eq(index).css("border","1px solid #d2d2d2");

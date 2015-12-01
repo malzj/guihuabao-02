@@ -239,8 +239,9 @@
                                     </tr>
                                 </table>
                                 <input type="hidden" id="guimoId" name="id" value="${guimoInstance.id}"/>
-                                <input type="hidden" name="sign" value="guimo_target"/>
+                                <input type="hidden" name="sign" value="new"/>
                                 <input type="hidden" name="isupdate" value="${isupdate}"/>
+
                             </div>
                             </g:form>
                             <div class="clearfix" style="width:300px;margin:46px auto 140px;">
