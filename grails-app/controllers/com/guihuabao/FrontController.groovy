@@ -3678,7 +3678,7 @@ class FrontController {
             redirect(action: "choose_date")
             return
         }else if(doneTest&&guimoInstance&&!selectDepartmentList){
-            redirect(action: "selectDepartment")
+            redirect(action: "framework")
             return
         }else if(doneTest&&guimoInstance&&selectDepartmentList&&!bumenrenwulist){
             redirect(action: "bumenrenwuList")
@@ -3920,6 +3920,33 @@ class FrontController {
         }
         def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
         [doneTest:doneTest]
+    }
+    def testResultShow(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
+        [doneTest:doneTest]
+    }
+    def testAgain(Long id){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def doneTest=DonePaper.get(id)
+        def deleteResult=Evaluate.executeUpdate("delete Evaluate b where b.cid=:cid and b.uid=:uid and testPaperId=:testpaperid", [cid:company.id,uid: user.id,testpaperid: id])
+        try {
+            doneTest.delete(flush: true)
+            redirect(action: "testPaper")
+        }
+        catch (DataIntegrityViolationException e) {
+            redirect(action: "testResultShow")
+        }
     }
 //    组织架构
     def framework(){

@@ -679,3 +679,13 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 
 .page-background{width:100%;position: absolute;top: 110px;left: 0px;z-index: -1;}
 
+/*规划模块*/
+.pro-mod-list{margin-top: 55px;}
+.pro-mod-list li{float: left;width:315px;height: 252px;margin:0 22px 22px 0;background-color: #FFF;border: 1px solid #dedede;}
+.pro-mod-list li:hover{border: 1px solid #27bdff;}
+.pro-mod-list li .pro-step{font-size: 18px;margin: 15px 0;padding: 0 17px 0 20px;}
+.pro-mod-list li .pro-step p{font-size: 20px;float: right;color: #797979;margin-top: 10px;}
+.pro-mod-list li .pro-step p:hover{color: #27bdff;}
+.pro-mod-list li .pro-img{text-align: center;margin-bottom: 29px;min-height: 126px;}
+.pro-mod-list li .pro-name{height: 40px; line-height: 40px;font-size: 18px;text-align: center;color:#FFF;background-color: #31393c;}
+
