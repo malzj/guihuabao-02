@@ -121,7 +121,7 @@
 
                         <button type="submit" id="submit" class="button" style="width:78px;background:#27bdff;border:none;height:30px;border-radius: 3px;color:#fff;margin-left:66px;">确定</button>
                 <div class="line clearfix" style="margin-top: 20px;">
-                    <p class="f-l">职能提示：</p><p class="f-l" style="word-wrap:break-word;width:200px;" >${responsibility}</p>
+                    <p class="f-l">职能提示：</p><p class="f-l" id="responsibility" style="word-wrap:break-word;width:200px;font-size:14px;" >${responsibility}</p>
 
                 </div>
 
@@ -168,6 +168,9 @@ $(function(){
     if(sign!=''){
         var sid="${sid}";
         var sname="${sname}";
+        var responsibility="${responsibility}";
+
+        $('#responsibility').html(responsibility)
         $('#sid').val(sid);
         $('#sname').val(sname);
         $('#renwuheader').html(sname);
@@ -180,17 +183,19 @@ $(function(){
         $('#sname').val(sname)
         $('#renwuheader').html(sname);
         $.ajax({
-            url: '${webRequest.baseUrl}/front/caiwuAjax',
+            url: '${webRequest.baseUrl}/front/getresponsibility',
             method: 'post',
             dataType: 'json',
-            data: {id:caiwuId},
+            data: {sid:sid},
             success: function (data) {
-                
+                if(data.result){
+                    $('#responsibility').html(data.responsibility)
+                }
             },
             error:function(){
                 alert('获取数据失败！');
             }
-        }
+        })
 
                 $('#form').css('display','block');
     })
@@ -207,8 +212,7 @@ $(function(){
         todayHighlight:true,
         autoclose: 1,
         pickerPosition: "bottom-left",
-        forceParse: 0,　　
-
+        forceParse: 0
 
 })
 })
