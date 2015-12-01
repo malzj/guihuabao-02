@@ -4235,6 +4235,27 @@ class FrontController {
         [guimoInstance:guimoInstance,isupdate:isupdate]
 
     }
+    def choose_date_update(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def uid=user.id
+        def cid=user.cid
+//        def isupdate=params.isupdate
+
+        def guimoInstance=Guimo.findByCidAndUid(cid,uid)
+        if(!guimoInstance){
+
+                render(view: "programmeModule" , params: [msg: "获取数据失败"])
+                return
+
+        }
+        [guimoInstance:guimoInstance]
+
+    }
     def guimo_target() {
         def user = session.user
         def company = session.company
@@ -4273,6 +4294,26 @@ class FrontController {
         }
         [guimoInstance:guimoInstance]
     }
+    def guimo_target_update() {
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def cid=company.id
+        def uid=user.id
+        def isupdate=params.isupdate
+        def guimoInstance=Guimo.findByUidAndCid(uid,cid)
+
+
+        if(!guimoInstance){
+            render(view: "programModule" , params: [msg: "获取数据失败"])
+            return
+        }
+        [guimoInstance:guimoInstance,isupdate:isupdate]
+    }
+
     def guimoAjax(){
         def rs=[:]
 //        def user = session.user
@@ -4322,9 +4363,10 @@ class FrontController {
                     if(begintime!=begintime1||endtime!=endtime1||isu=='1'){
                         isupdate=1
                     }
+
                     redirect(action: "guimo_target", params: [id:id,isupdate:isupdate])
                 }
-            }else {
+            }else if(sign=='new') {
                 if (!guimoInstance.save(flush: true)) {
                     render(view: "guimo_target", params: [msg: "保存失败！",guimoInstance:guimoInstance,id:id,isupdate:isupdate])
                     return
@@ -4335,12 +4377,60 @@ class FrontController {
                     }
                     redirect(action: "caiwu_target", params: [begintime:guimoInstance.begintime,endtime:guimoInstance.endtime,id:guimoInstance.id,isupdate:isupdate])
                 }
+            }else if(sign=='update'){
+                if (!guimoInstance.save(flush: true)) {
+                    render(view: "caiwu_target_update", params: [msg: "保存失败！"])
+                    return
+                }else{
+                    redirect(action: "programmeModule")
+                }
             }
 
 
         }
 
+    def timeUpdate(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def isupdate=0
+        def sign=params.sign
+        def guimoInstance=Guimo.findByCidAndUid(company.id,user.id)
+        def begintime=guimoInstance.begintime
+        def endtime=guimoInstance.endtime
+        guimoInstance.properties=params
+        def caiwuInstance=Caiwu.findByCidAndUid(company.id,user.id)
+        caiwuInstance.begintime=begintime
+        caiwuInstance.endtime=endtime
+        if(sign=='choose_date_update') {
+            if (!guimoInstance.save(flush: true) || !caiwuInstance.save(flush: true)) {
+                render(view: "choose_date_update", params: [msg: "保存失败！"])
+                return
+            } else {
+                def begintime1 = guimoInstance.begintime
+                def endtime1 = guimoInstance.endtime
+                if (begintime != begintime1 || endtime != endtime1) {
+                    isupdate = 1
+                }
 
+                redirect(action: "guimo_target_update", params: [isupdate: isupdate])
+            }
+        }else if(sign=='guimo_target_update'){
+            if (!guimoInstance.save(flush: true) || !caiwuInstance.save(flush: true)) {
+                render(view: "guimo_target_update", params: [msg: "保存失败！"])
+                return
+            } else {
+                def isup=params.isupdate
+                redirect(action: "caiwu_target_update", params: [isupdate: isup])
+            }
+        }
+
+
+
+    }
 
 
     def caiwu_target(){
@@ -4368,6 +4458,13 @@ class FrontController {
                     render(view: "guimo_target", params: [msg: "保存失败！"])
                     return
                 }
+            }else{
+                caiwuInstance.begintime=begintime
+                caiwuInstance.endtime=endtime
+                if (!caiwuInstance.save(flush: true)) {
+                    render(view: "guimo_target", params: [msg: "保存失败！"])
+                    return
+                }
             }
             [caiwuInstance:caiwuInstance,guimoId:guimoId,isupdate:isupdate]
         }
@@ -4388,7 +4485,23 @@ class FrontController {
         }
         [caiwuInstance:caiwuInstance]
     }
+    def caiwu_target_update(){
+        def user = session.user
+        def company = session.company
+        if (!user && !company) {
+            redirect(action: index(), params: [msg: "登陆已过期，请重新登陆"])
+            return
+        }
+        def isupdate=params.isupdate
+        def caiwuInstance=Caiwu.findByUidAndCid(user.id,company.id)
+        if(!caiwuInstance) {
 
+            render(view: "programModule", params: [msg: "获取数据失败！"])
+            return
+
+        }
+        [caiwuInstance:caiwuInstance,isupdate:isupdate]
+    }
     def caiwuUpdate(){
         def user = session.user
         def company = session.company
@@ -4407,7 +4520,12 @@ class FrontController {
                 render(view: "caiwu_target", params: [msg: "保存失败！",id: id])
                 return
             }else{
-                redirect(action: "framework")
+                def sign=params.sign
+                if(sign=='new') {
+                    redirect(action: "framework")
+                }else if(sign=='update'){
+                    redirect(action: "programmeModule")
+                }
             }
         }
 

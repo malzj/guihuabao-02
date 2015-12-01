@@ -239,8 +239,9 @@
                                     </tr>
                                 </table>
                                 <input type="hidden" id="guimoId" name="id" value="${guimoInstance.id}"/>
-                                <input type="hidden" name="sign" value="guimo_target"/>
+                                <input type="hidden" name="sign" value="new"/>
                                 <input type="hidden" name="isupdate" value="${isupdate}"/>
+
                             </div>
                             </g:form>
                             <div class="clearfix" style="width:300px;margin:46px auto 140px;">
@@ -375,7 +376,7 @@
 //                     $('td.month').eq(index).html(k+'月');
 //                     $('input.con').eq(index).attr("name",'m'+(i+1)+'1')
 //                     $('input.con1').eq(index).attr("name",'m'+(i+1)+'2');
-                     if(isupdate=='0') {
+                     if(isupdate!='1') {
                          $('input.con').eq(i).val(m1);
                          $('input.con1').eq(i).val(m2);
                      }else{

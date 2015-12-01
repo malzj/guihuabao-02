@@ -46,7 +46,7 @@
     .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th{border:1px solid #fff;}
     input{margin:0;padding:0;border:1px solid #e5e5e5;}
     .table-bordered>tbody>tr>td,.table>tbody>tr>td{padding:0;margin:0 !important;}
-    .table tbody > tr > th.n,.table>tbody>tr>th.n{padding:0;margin:0 !important;}
+    .table tbody > tr > th.n,.table>tbody>tr>th.n{padding:0 !important;margin:0 !important;}
     td.month{padding:10px !important;}
     textarea{padding:0 !important;}
     .th3{width:106px;font-size: 14px;}
@@ -92,10 +92,11 @@
 <section class="wrapper" style="width:100%;margin:0 auto;display:block;">
 <div class="col-tb">
 <div class="col-cell">
-<div class="toolkit">
+<div class="toolkit" style="position: relative;">
     <div style="width:200px;margin:0 auto;text-align: center;font-size: 26px;color:#27bdff">财务目标表单</div>
+    <g:link action="choose_date_update" style="display:block;position: absolute;right:0px;top:54px;text-align:center;padding:0;line-height:37px;width:86px;background:#27bdff;border:none;height:37px;border-radius: 3px;color:#fff;font-size:14px;">修改时间</g:link>
 </div>
-%{--<div style="margin-top:10px;color:#000;">提示：此日期选择是您目标规划的时间区间，建议以两年为时间周期进行规划。</div>--}%
+<div style="margin-top:10px;color:#000;">提示：若修改时间，则规模目标和财务目标的内容将清空。</div>
 <div class="content">
 <div style="margin-top:20px;" class="clearfix">
 <g:form url="[controller:'front',action:'caiwuUpdate']" method="post" class="form-horizontal" id="caiwu_targetup">
@@ -292,23 +293,24 @@
         </tr>
     </table>
     <input type="hidden" id="caiwuId" name="id" value="${caiwuInstance.id}"/>
-
+    <input type="hidden" id="sign" name="sign" value="update"/>
     </div>
 
 </g:form>
-%{--<div class="clearfix" style="width:300px;margin:46px auto 140px;">--}%
+<div class="clearfix" style="width:300px;margin:46px auto 140px;">
     %{--<g:form url="[controller:'front',action:'guimo_target']" method="post" id="guimo_target" class="form-horizontal f-l">--}%
         %{--<input type="hidden" id="caiwuId" name="id" value="${guimoId}"/>--}%
-        %{--<input type="hidden" id="caiwuId" name="isupdate" value="0"/>--}%
+        %{--<input type="hidden" id="isupdate" name="isupdate" value="0"/>--}%
         %{--<input class="button" type="submit" form="guimo_target" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;" value="返回上一步" >--}%
     %{--</g:form>--}%
-    %{--<input type="submit"  class="button f-l" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;margin-left:20px;" value="确认提交" form="caiwu_targetup"/>--}%
-%{--</div>--}%
+    <input type="submit"  class="button f-l" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;margin-left:20px;" value="确认提交" form="caiwu_targetup"/>
+</div>
 
 
 </div>
 <span style="display:none;" id="begintime">${caiwuInstance.begintime}</span>
 <span style="display: none;" id="endtime">${caiwuInstance.endtime}</span>
+
 <span  id="version" style="display: none;">${isupdate}</span>
 </div>
 </div>
@@ -367,7 +369,7 @@
     $(function(){
         $('input.con').attr('disabled','disabled');
         $('input.con1').attr('disabled','disabled');
-        $('input.n').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2');
+        $('input.n').removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2');
 
         var begintime=$('#begintime').html();
         var endtime=$('#endtime').html();
@@ -382,7 +384,7 @@
         var bmonth=bdate.getMonth()+1;
         var emonth=edate.getMonth()+1;
         var smonth=(eyear-byear)*12+(emonth-bmonth);
-//        var isupdate=$('#version').html();
+        var isupdate=$('#version').html();
         if(byear==eyear){
             $('th.nf').eq(0).html(byear + '年');
             $('table.table2').css('display','none');
@@ -410,10 +412,10 @@
 
 
 
-                    $('input.j').eq(index).css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
-                    $('input.m').eq(index).css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
-                    $('input.p').eq(index).css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
-                    $('input.y').eq(index).css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                    $('input.j').eq(index).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                    $('input.m').eq(index).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                    $('input.p').eq(index).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                    $('input.y').eq(index).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
 
 
 
@@ -432,27 +434,27 @@
                     var m1=data.caiwuInstance[m];
                     var y1=data.caiwuInstance[y];
                     var j1=data.caiwuInstance[j];
-//                    if(isupdate=='0'){
+                    if(isupdate!='1'){
                         $('input.j').eq(i).val(j1)
                         $('input.m').eq(i).val(m1)
                         $('input.p').eq(i).val(p1)
                         $('input.y').eq(i).val(y1)
-//                    }else{
-//                        $('input.j').eq(i).val('')
-//                        $('input.m').eq(i).val('')
-//                        $('input.p').eq(i).val('')
-//                        $('input.y').eq(i).val('')
-//
-//                    }
+                    }else{
+                        $('input.j').eq(i).val('')
+                        $('input.m').eq(i).val('')
+                        $('input.p').eq(i).val('')
+                        $('input.y').eq(i).val('')
+
+                    }
                 }
                 for(var i=0;i<8;i++){
                     var n='n'+(i+1);
                     var n1=data.caiwuInstance[n];
-//                    if(isupdate!='1') {
+                    if(isupdate!='1') {
                         $('input.n').eq(i).val(n1)
-//                    }else{
-//                        $('input.n').eq(i).val('')
-//                    }
+                    }else{
+                        $('input.n').eq(i).val('')
+                    }
                 }
             },
             error: function () {

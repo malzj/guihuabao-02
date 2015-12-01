@@ -46,7 +46,7 @@
     .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th{border:1px solid #fff;}
     input{margin:0;padding:0;border:1px solid #e5e5e5;}
     .table-bordered>tbody>tr>td,.table>tbody>tr>td{padding:0;margin:0 !important;}
-    .table tbody > tr > th.n,.table>tbody>tr>th.n{padding:0;margin:0 !important;}
+    .table tbody > tr > th.n,.table>tbody>tr>th.n{padding:0 !important;margin:0 !important;}
     td.month{padding:10px !important;}
     textarea{padding:0 !important;}
     .th3{width:106px;font-size: 14px;}
@@ -94,7 +94,7 @@
                     <div class="col-cell">
                         <div class="toolkit" style="position: relative;">
                             <div style="width:200px;margin:0 auto;text-align: center;font-size: 26px;color:#27bdff">财务目标表单</div>
-                            <g:link action="choose_date" style="display:block;position: absolute;right:0px;top:54px;text-align:center;padding:0;line-height:37px;width:86px;background:#27bdff;border:none;height:37px;border-radius: 3px;color:#fff;font-size:14px;">修改时间</g:link>
+
                         </div>
                         <div style="margin-top:10px;color:#000;">提示：此日期选择是您目标规划的时间区间，建议以两年为时间周期进行规划。</div>
                         <div class="content">
@@ -293,7 +293,7 @@
                                     </tr>
                                 </table>
                                 <input type="hidden" id="caiwuId" name="id" value="${caiwuInstance.id}"/>
-
+                                <input type="hidden" id="sign" name="sign" value="new"/>
                                 </div>
 
                             </g:form>
@@ -383,6 +383,7 @@
         var bmonth=bdate.getMonth()+1;
         var emonth=edate.getMonth()+1;
         var smonth=(eyear-byear)*12+(emonth-bmonth);
+
         var isupdate=$('#version').html();
         if(byear==eyear){
             $('th.nf').eq(0).html(byear + '年');
@@ -433,7 +434,7 @@
                     var m1=data.caiwuInstance[m];
                     var y1=data.caiwuInstance[y];
                     var j1=data.caiwuInstance[j];
-                    if(isupdate=='0'){
+                    if(isupdate!='1'){
                         $('input.j').eq(i).val(j1)
                         $('input.m').eq(i).val(m1)
                         $('input.p').eq(i).val(p1)
