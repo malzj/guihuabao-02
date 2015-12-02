@@ -29,8 +29,8 @@
     <!--header end-->
     <!--main content start-->
     <section id="main-content" style="margin-left: 0px;background: url(${resource(dir: 'img', file: 'background.png')}) center top;background-size: cover;">
-        <section class="wrapper" style="margin-top: 94px;">
-            <div class="testPaper">
+        <section class="wrapper" style="margin-top: 110px;position: relative">
+            <div class="sec-content">
                 <div class="title">
                     <h2>专业易用的连锁规划</h2>
                     <p>快速制作网络问卷、收集数据并生成精美报表，助你完成连锁规划之路。</p>
@@ -38,13 +38,11 @@
                 <div style="text-align: center">
                 <img src="${resource(dir: 'img', file: 'img1.png')}" />
                 </div>
-                <div style="text-align: center;margin: 80px 0 326px;">
+                <div style="text-align: center;margin-top: 80px;">
                     <g:link action="testPaper" class="btn btn-op">开始规划</g:link>
                 </div>
             </div>
-            %{--<img class="page-background" src="${resource(dir: 'img', file: 'background.png')}" />--}%
         </section>
-
     </section>
 
     <!-- js placed at the end of the document so the pages load faster -->
@@ -81,6 +79,23 @@
     %{--});--}%
 
     %{--</script>--}%
+<script type="text/javascript">
+    $(function(){
+        function getWindowHeight(){
+            var windowHeight=$(window).height()-110;
+            if(windowHeight<658){
+                windowHeight=658;
+            }
+            return windowHeight;
+        }
+        var height=getWindowHeight();
+        $('.wrapper').css("height",height+'px');
 
+        $(window).resize(function(){
+            height=getWindowHeight();
+            $('.wrapper').css("height",height+'px');
+        });
+    });
+</script>
 </body>
 </html>
