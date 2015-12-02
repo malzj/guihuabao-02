@@ -241,7 +241,7 @@
             </div>
         </section></section>
 </section>
-<div class="passwordedit"  ">
+<div class="passwordedit"  >
     <g:form url="[controller:'front',action:'bumenrenwuAdd']" class="clearfix" id="form" style="width:370px;min-height:286px;margin:200px auto;border:1px solid #dedede;box-shadow: 0 0 3px #dedede;;border-top:4px solid #27bdff;background: #fff;padding:15px;">
         <div class="form-header clearfix" style="margin: 5px 0;">
             <p style="font-size: 16px;font-weight:bold;float: left;"><i class="fa fa-save"></i><span style="margin-left: 10px;" id="renwuheader"></span>任务</p>
@@ -328,6 +328,7 @@
                 data: {id:id},
                 success: function (data) {
                     if(data.result){
+                        $('#renwuheader').html(data.renwuInstance.sname)
                         $('#show_title').val(data.renwuInstance.title)
                         $('#show_content').val(data.renwuInstance.content)
                         $('#show_etime').val(data.renwuInstance.etime)
