@@ -143,7 +143,7 @@
                                 <td class="th2 month">12月</td>
                             </tr>
                             <tr>
-                                <th rowspan="2" colspan="2" class="th2"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
+                                <th rowspan="2" colspan="2" class="th2"  style="padding:5px;"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
                                 <th class="th2"><input class="gmt1" value="直营" disabled/></th>
                                 <td><input class="gmt con" name="m11"/></td>
                                 <td><input class="gmt con" name="m21"/></td>
@@ -206,7 +206,7 @@
                                 <td class="th2 month">12月</td>
                             </tr>
                             <tr>
-                                <th rowspan="2" colspan="2" class="th2"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
+                                <th rowspan="2" colspan="2" class="th2"  style="padding:5px;"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
                                 <th class="th2"><input class="gmt1" value="直营" disabled/></th>
                                 <td><input class="gmt con" name="m131"/></td>
                                 <td><input class="gmt con" name="m141"/></td>
@@ -323,6 +323,7 @@
 <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
 <script type="text/javascript">
     $(function(){
+        $('input').attr('autocomplete','off')
         $('input.con').removeAttr('readonly');
         $('input.con1').removeAttr('readonly');
         $('input.jdc').removeAttr('readonly');
@@ -404,7 +405,7 @@
                 }
                 $('input.con').attr('readonly','readonly');
                 $('input.con1').attr('readonly','readonly');
-                $('th.jdc').attr('readonly','readonly');
+                $('input.jdc').attr('readonly','readonly');
                 for(var i=0;i<sjd;i++){
                     $('input.jdc').eq(jdindex).removeAttr('readonly').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
                     jdindex++;
@@ -444,13 +445,13 @@
             }
         }
 
-        $('input').focus(function(){
-            $(this).css('border','1px solid #27bdff')
-
-        })
-        $('input').blur(function(){
-            $(this).css('border','1px solid #d2d2d2')
-        })
+//        $('input').focus(function(){
+//            $(this).css('border','1px solid #27bdff')
+//
+//        })
+//        $('input').blur(function(){
+//            $(this).css('border','1px solid #d2d2d2')
+//        })
     })
     function getjd(month){
         var jd;

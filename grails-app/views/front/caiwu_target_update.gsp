@@ -297,7 +297,7 @@
     </div>
 
 </g:form>
-<div class="clearfix" style="width:300px;margin:46px auto 140px;">
+<div class="clearfix" style="width:120px;margin:46px auto 140px;">
     %{--<g:form url="[controller:'front',action:'guimo_target']" method="post" id="guimo_target" class="form-horizontal f-l">--}%
         %{--<input type="hidden" id="caiwuId" name="id" value="${guimoId}"/>--}%
         %{--<input type="hidden" id="isupdate" name="isupdate" value="0"/>--}%
@@ -367,6 +367,7 @@
 <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
 <script type="text/javascript">
     $(function(){
+        $('input').attr('autocomplete','off')
         $('input.con').removeAttr('readonly');
 //        $('input.con1').removeAttr('readonly');
         $('input.n').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2');

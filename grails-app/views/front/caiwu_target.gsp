@@ -366,7 +366,7 @@
 <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
 <script type="text/javascript">
     $(function(){
-
+        $('input').attr('autocomplete','off')
         $('input.con').removeAttr('readonly');
 //        $('input.con1').removeAttr('readonly');
         $('input.n').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2');

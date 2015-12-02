@@ -296,14 +296,14 @@
     </div>
 
 </g:form>
-%{--<div class="clearfix" style="width:300px;margin:46px auto 140px;">--}%
+<div class="clearfix" style="width:76px;margin:46px auto 140px;">
     %{--<g:form url="[controller:'front',action:'guimo_target']" method="post" id="guimo_target" class="form-horizontal f-l">--}%
         %{--<input type="hidden" id="caiwuId" name="id" value="${guimoId}"/>--}%
         %{--<input type="hidden" id="caiwuId" name="isupdate" value="0"/>--}%
         %{--<input class="button" type="submit" form="guimo_target" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;" value="返回上一步" >--}%
     %{--</g:form>--}%
-    %{--<input type="submit"  class="button f-l" style="width:120px;background:#27bdff;border:none;height:40px;border-radius: 3px;color:#fff;margin-left:20px;" value="确认提交" form="caiwu_targetup"/>--}%
-%{--</div>--}%
+    <g:link action="programmeModule" class="button f-l" style="display:block;width:76px;background:#27bdff;border:none;height:40px;line-height:40px;text-align:center;border-radius: 3px;color:#fff;margin-left:20px;" >确认</g:link>
+</div>
 
 
 </div>

@@ -4426,6 +4426,13 @@ class FrontController {
                 def isup=params.isupdate
                 redirect(action: "caiwu_target_update", params: [isupdate: isup])
             }
+        }else if(sign=='update'){
+            if (!guimoInstance.save(flush: true)) {
+                render(view: "caiwu_target_update", params: [msg: "保存失败！"])
+                return
+            }else{
+                redirect(action: "programmeModule")
+            }
         }
 
 
