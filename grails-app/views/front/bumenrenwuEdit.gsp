@@ -160,17 +160,42 @@
 <script type="text/javascript" src="${resource(dir: 'assets/bootstrap-timepicker/js', file: 'bootstrap-timepicker.js')}"></script>
 <script>
 $(function(){
-    $('#etime').datetimepicker({
-        language:'zh-CN',
-        format: 'yyyy-mm',
-        startDate:new Date(),
-        startView:3,
-        minView:3,
-        todayHighlight:true,
-        autoclose: 1,
-        pickerPosition: "bottom-left",
-        forceParse: 0,　　
+    $('#submit').click(function(){
+        if($('#title').val()==''){
+            $('#title').css('border','1px solid red');
+            return false
+        }else{
 
+            $('#title').css('border-color','#d8d8d8');
+        }
+
+        if($('#content').val()==''){
+            $('#content').css('border','1px solid red');
+            return false
+        }else{
+
+            $('#content').css('border-color','#d8d8d8');
+        }
+        var z= /^\d{4}-\d{2}$/;
+        if($('#etime').val()==''||!z.test($('#etime').val())){
+            $('#etime').css('border','1px solid red');
+            return false
+        }else{
+
+            $('#etime').css('border-color','#d8d8d8');
+        }
+    })
+
+$('#etime').datetimepicker({
+    language:'zh-CN',
+    format: 'yyyy-mm',
+    startDate:new Date(),
+    startView:3,
+    minView:3,
+    todayHighlight:true,
+    autoclose: 1,
+    pickerPosition: "bottom-left",
+    forceParse: 0
 
 })
 })

@@ -97,6 +97,7 @@
                             <div class="form-header clearfix" style="font-size: 16px;padding:15px;background:#fafafa;border-bottom: 1px solid #eee;">
                                 <p style="font-weight:bold;float: left;margin:0;"><i class="fa fa-save"></i><span style="margin-left: 10px;">${bumenrenwuInstance.sname}</span>任务</p>
                                 <span class="f-r" style="margin-left: 16px;margin-top: 3px;cursor: pointer;">
+                                    %{--<g:link action="bumenrenwuDelete" id="${bumenrenwuInstance.id}" style="display:block;width:14px;height:14px;"><i class="fa fa-trash-o"></i></g:link>--}%
                                     <i class="fa fa-trash-o"></i>
                                     <g:form url="[controller:'front',action:'bumenrenwuDelete']" style="display:none;">
                                         <input name="id" value="${bumenrenwuInstance.id}">
@@ -169,6 +170,7 @@ $(function(){
         $(this).next().submit();
     })
     $('.fa-trash-o').click(function(){
+
         if(!confirm('确定删除么？')){
             return false
         }else{

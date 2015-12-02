@@ -193,7 +193,7 @@
             todayHighlight:true,
             autoclose: 1,
             pickerPosition: "bottom-left",
-            forceParse: 0,　　
+            forceParse: 0
 
 
     })
@@ -214,8 +214,7 @@
         minView: 3,
         autoclose: 1,
         pickerPosition: "bottom-left",
-        forceParse: 0,
-    　　
+        forceParse: 0
     });
 
 
@@ -226,12 +225,25 @@
         var bdate = new Date(bstr);
         var byear=bdate.getFullYear();
         var emonth=byear+1+'-12';
+        if(btime==''){
+            $('#startdate').css('border-color','red');
+            return false;
+        }else{
+            $('#startdate').css('border-color','#d8d8d8');
+        }
+        if(etime==''){
+            $('#enddate').css('border-color','red');
+            return false;
+        }else{
+            $('#enddate').css('border-color','#d8d8d8');
+        }
         if(btime>etime||etime>emonth){
             $('#enddate').css('border-color','red');
             return false;
+        }else{
+            $('#enddate').css('border-color','#d8d8d8');
         }
     })
-
     });
     //    $('#startdate').datetimepicker().on('changeMonth',function(ev){
     //

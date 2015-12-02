@@ -89,8 +89,8 @@
                         </g:link>
                     </li>
                     <li>
-                        <g:link class="pro-edit"  action="testAgain"><i class="fa fa-edit tar_edit" title="编辑"></i></g:link>
-                        <g:link action="">
+                        <g:link class="pro-edit"  action="bumenrenwuList"><i class="fa fa-edit tar_edit" title="编辑"></i></g:link>
+                        <g:link action="bumenrenwuList">
                         <div class="pro-step">
                             <span>Step5</span>
                         </div>
