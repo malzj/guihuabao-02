@@ -129,7 +129,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2 th3">营收（万元）</th>
-                                        <th class="n"><input class="gmt con n" name="n1"/></th>
+                                        <th class="n"><input class="gmt n" name="n1"/></th>
                                         <td><input class="gmt con y" name="y1"/></td>
                                         <td><input class="gmt con y" name="y2"/></td>
                                         <td><input class="gmt con y" name="y3"/></td>
@@ -146,7 +146,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2 th3">毛利率（%）</th>
-                                        <th  class="n"><input class="gmt con n" name="n2"/></th>
+                                        <th  class="n"><input class="gmt n" name="n2"/></th>
                                         <td><input class="gmt con m" name="m1"/></td>
                                         <td><input class="gmt con m" name="m2"/></td>
                                         <td><input class="gmt con m" name="m3"/></td>
@@ -163,7 +163,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2 th3">净利润（万元）</th>
-                                        <th class="n"><input class="gmt con n" name="n3"/></th>
+                                        <th class="n"><input class="gmt n" name="n3"/></th>
                                         <td><input class="gmt con j" name="j1"/></td>
                                         <td><input class="gmt con j" name="j2"/></td>
                                         <td><input class="gmt con j" name="j3"/></td>
@@ -180,7 +180,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2 th3">评效比（数值）</th>
-                                        <th class="n"><input class="gmt con n" name="n4"/></th>
+                                        <th class="n"><input class="gmt n" name="n4"/></th>
                                         <td><input class="gmt con p" name="p1"/></td>
                                         <td><input class="gmt con p" name="p2"/></td>
                                         <td><input class="gmt con p" name="p3"/></td>
@@ -276,7 +276,7 @@
                                     </tr>
                                     <tr>
                                         <th class="th2 th3">评效比（数值）</th>
-                                        <th class="n"><input class="gmt con " name="n4"/></th>
+                                        <th class="n"><input class="gmt con "/></th>
                                         <td><input class="gmt con p" name="p13"/></td>
                                         <td><input class="gmt con p" name="p14"/></td>
                                         <td><input class="gmt con p" name="p15"/></td>
@@ -366,9 +366,10 @@
 <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
 <script type="text/javascript">
     $(function(){
-        $('input.con').attr('disabled','disabled');
-        $('input.con1').attr('disabled','disabled');
-        $('input.n').removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2');
+
+        $('input.con').removeAttr('readonly');
+//        $('input.con1').removeAttr('readonly');
+        $('input.n').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2');
 
         var begintime=$('#begintime').html();
         var endtime=$('#endtime').html();
@@ -404,27 +405,7 @@
             data: {id:caiwuId},
             success: function (data) {
 
-                for(var i=0;i<=smonth;i++) {
 
-//                    k=bmonth+i;
-
-//                    if(k<=12) {
-
-
-
-                        $('input.j').eq(index).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
-                        $('input.m').eq(index).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
-                        $('input.p').eq(index).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
-                        $('input.y').eq(index).removeAttr("disabled").css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
-
-
-
-
-                        index++;
-
-
-
-                }
                 for(var i=0;i<24;i++){
                     var p='p'+(i+1);
                     var m='m'+(i+1);
@@ -447,14 +428,24 @@
 
                     }
                 }
-                for(var i=0;i<8;i++){
+                for(var i=0;i<5;i++){
                     var n='n'+(i+1);
                     var n1=data.caiwuInstance[n];
-                    if(isupdate=='0') {
+                    if(isupdate!='1') {
                         $('input.n').eq(i).val(n1)
                     }else{
-                        $('input.n').eq(i).val('')
+                        $('input.n').eq(i).val('');
                     }
+                }
+
+                $('input.con').attr('readonly','readonly');
+//                $('input.con1').attr('readonly','readonly');
+                for(var i=0;i<=smonth;i++) {
+                    $('input.j').eq(index).removeAttr("readonly").addClass('border').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                    $('input.m').eq(index).removeAttr("readonly").addClass('border').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                    $('input.p').eq(index).removeAttr("readonly").addClass('border').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                    $('input.y').eq(index).removeAttr("readonly").addClass('border').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                    index++;
                 }
             },
             error: function () {
@@ -462,13 +453,14 @@
             }
         });
 
-        $('input').focus(function(){
-            $(this).css('border','1px solid #27bdff')
+//        $('.border').focus(function(){
+//            $(this).css('border','1px solid #27bdff')
+//
+//        })
+//        $('.border').blur(function(){
+//            $(this).css('border','1px solid #d2d2d2')
+//        })
 
-        })
-        $('input').blur(function(){
-            $(this).css('border','1px solid #d2d2d2')
-        })
     })
 
 </script>

@@ -122,10 +122,10 @@
                                     </tr>
                                     <tr>
                                         <th colspan="3" class="th2">开店数量（家）</th>
-                                        <th colspan="3" class="jdc"><input name="jd1" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd2" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd3" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd4" class="gmt"/></th>
+                                        <th colspan="3" class="jdc"><input name="jd1" class="gmt jdc"/></th>
+                                        <th colspan="3" class="jdc"><input name="jd2" class="gmt jdc"/></th>
+                                        <th colspan="3" class="jdc"><input name="jd3" class="gmt jdc"/></th>
+                                        <th colspan="3" class="jdc"><input name="jd4" class="gmt jdc"/></th>
                                     </tr>
                                     <tr>
                                         <th colspan="3" class="th2">月份</th>
@@ -185,10 +185,10 @@
                                     </tr>
                                     <tr>
                                         <th colspan="3" class="th2">开店数量（家）</th>
-                                        <th colspan="3" class="jdc"><input name="jd5" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd6" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd7" class="gmt"/></th>
-                                        <th colspan="3" class="jdc"><input name="jd8" class="gmt"/></th>
+                                        <th colspan="3" class="jdc"><input name="jd5" class="gmt jdc"/></th>
+                                        <th colspan="3" class="jdc"><input name="jd6" class="gmt jdc"/></th>
+                                        <th colspan="3" class="jdc"><input name="jd7" class="gmt jdc"/></th>
+                                        <th colspan="3" class="jdc"><input name="jd8" class="gmt jdc"/></th>
                                     </tr>
                                     <tr>
                                         <th colspan="3" class="th2">月份</th>
@@ -324,10 +324,11 @@
 <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
 <script type="text/javascript">
  $(function(){
+     $('input.con').removeAttr('readonly');
+     $('input.con1').removeAttr('readonly');
+     $('input.jdc').removeAttr('readonly');
 
-     $('input.con').attr('disabled','disabled');
-     $('input.con1').attr('disabled','disabled');
-     $('th.jdc input').attr('disabled','disabled');
+
      var isupdate=$('#isupdate').html();
      var begintime=$('#begintime').html();
      var endtime=$('#endtime').html();
@@ -342,7 +343,18 @@
      var bmonth=bdate.getMonth()+1;
      var emonth=edate.getMonth()+1;
      var smonth=(eyear-byear)*12+(emonth-bmonth);
-     var sjd=Math.ceil(smonth/3)+1;
+     var sjd
+     if(byear==eyear){
+         sjd=getjd(emonth)-getjd(bmonth)+1
+     }else{
+         sjd=5-getjd(bmonth)+getjd(emonth)
+     }
+//     if((smonth+1)%3!=0) {
+//         sjd = Math.ceil((smonth+1) / 3) + 1;
+//     }else{
+//         sjd=((smonth+1) / 3);
+//     }
+
      var k=0;
      var j=1;
      var y=1;
@@ -355,14 +367,15 @@
          dataType: 'json',
          data: {id:guimoId,begintime:begintime,endtime:endtime},
          success: function (data) {
-             for(var i=0;i<sjd;i++){
-                 $('th.jdc input').eq(jdindex).removeAttr('disabled').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
-                 jdindex++;
-             }
+
              for(var i=0;i<8;i++){
                  var j = 'jd' + (i + 1);
                  var j1 = data.guimoInstance[j];
-                 $('th.jdc input').eq(i).val(j1);
+                 if(isupdate!='1') {
+                     $('input.jdc').eq(i).val(j1);
+                 }else{
+                     $('input.jdc').eq(i).val('');
+                 }
              }
              for(var i=0;i<24;i++) {
 
@@ -380,14 +393,22 @@
                          $('input.con').eq(i).val(m1);
                          $('input.con1').eq(i).val(m2);
                      }else{
-                         $('input.con').val('');
-                         $('input.con1').val('');
-                         $('th.jdc input').val('');
+                         $('input.con').eq(i).val('');
+                         $('input.con1').eq(i).val('');
+
+
                      }
              }
+             $('input.con').attr('readonly','readonly');
+             $('input.con1').attr('readonly','readonly');
+             $('input.jdc').attr('readonly','readonly');
+             for(var i=0;i<sjd;i++){
+                 $('input.jdc').eq(jdindex).removeAttr('readonly').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                 jdindex++;
+             }
              for(var i=0;i<=smonth;i++) {
-                 $('input.con').eq(index).removeAttr("disabled");
-                 $('input.con1').eq(index).removeAttr("disabled");
+                 $('input.con').eq(index).removeAttr("readonly");
+                 $('input.con1').eq(index).removeAttr("readonly");
                  $('input.con').eq(index).parent().css("background","#d2d2d2");
                  $('input.con1').eq(index).parent().css("background","#d2d2d2");
                  $('input.con').eq(index).css("border","1px solid #d2d2d2");
@@ -420,13 +441,13 @@
          }
      }
 
-    $('input').focus(function(){
-        $(this).css('border','1px solid #27bdff')
-
-    })
-     $('input').blur(function(){
-         $(this).css('border','1px solid #d2d2d2')
-     })
+//    $('input').focus(function(){
+//        $(this).css('border','1px solid #27bdff')
+//
+//    })
+//     $('input').blur(function(){
+//         $(this).css('border','1px solid #d2d2d2')
+//     })
  })
     function getjd(month){
         var jd;

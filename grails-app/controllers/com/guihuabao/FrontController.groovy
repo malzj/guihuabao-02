@@ -4432,6 +4432,7 @@ class FrontController {
             return
         }
         def id=params.id
+        def a=params
         def caiwuInstance=Caiwu.findById(id)
         if(!caiwuInstance){
             render(view: "caiwu_target", params: [msg: "获取数据失败！",id:id])
