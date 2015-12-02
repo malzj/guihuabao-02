@@ -163,7 +163,31 @@
 <script>
 $(function(){
     var sign=$('#sign').html();
+    $('#submit').click(function(){
+        if($('#title').val()==''){
+            $('#title').css('border','1px solid red');
+            return false
+        }else{
 
+                $('#title').css('border-color','#d8d8d8');
+            }
+
+        if($('#content').val()==''){
+            $('#content').css('border','1px solid red');
+            return false
+        }else{
+
+            $('#content').css('border-color','#d8d8d8');
+        }
+        var z= /^\d{4}-\d{2}$/;
+        if($('#etime').val()==''||!z.test($('#etime').val())){
+            $('#etime').css('border','1px solid red');
+            return false
+        }else{
+
+            $('#etime').css('border-color','#d8d8d8');
+        }
+    })
 
     if(sign!=''){
         var sid="${sid}";
