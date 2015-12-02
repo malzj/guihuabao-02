@@ -38,7 +38,8 @@
     <section id="main-content" style="margin-left: 0px;">
         <section class="wrapper" style="margin-top: 94px;">
             <div class="testPaper">
-                <ul class="steps clearfix">
+            <g:if test="${finish!=1}">
+            <ul class="steps clearfix">
                 <li class="stp active">
                     <span>第一步</span>
                     <p>现状评估</p>
@@ -64,10 +65,12 @@
                     <p>工作推进</p>
                 </li>
             </ul>
+            </g:if>
                 <div class="test-question">
                     <div class="test-title">客户自填信息</div>
                     <g:form class="form-horizontal tasi-form" url="[controller:'front',action:'testEvaluate']" method="post"  enctype= "multipart/form-data">
                         <g:hiddenField name="testPaperId" value="${testPaperId}"></g:hiddenField>
+                        <g:hiddenField name="finish" value="${finish}"></g:hiddenField>
                     <div class="info">
                         <div class="classify-title">
                             <h2>企业基础信息：</h2>
