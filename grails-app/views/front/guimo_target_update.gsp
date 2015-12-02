@@ -121,11 +121,11 @@
                                 <th colspan="3" class="jdb">--</th>
                             </tr>
                             <tr>
-                                <th colspan="3" class="th2">开店数量（家）</th>
-                                <th colspan="3" class="jdc"><input name="jd1" class="gmt"/></th>
-                                <th colspan="3" class="jdc"><input name="jd2" class="gmt"/></th>
-                                <th colspan="3" class="jdc"><input name="jd3" class="gmt"/></th>
-                                <th colspan="3" class="jdc"><input name="jd4" class="gmt"/></th>
+                                <th colspan="3" class="th2">开店数量(家)</th>
+                                <th colspan="3" class="jdc"><input name="jd1" class="gmt jdc"/></th>
+                                <th colspan="3" class="jdc"><input name="jd2" class="gmt jdc"/></th>
+                                <th colspan="3" class="jdc"><input name="jd3" class="gmt jdc"/></th>
+                                <th colspan="3" class="jdc"><input name="jd4" class="gmt jdc"/></th>
                             </tr>
                             <tr>
                                 <th colspan="3" class="th2">月份</th>
@@ -143,7 +143,7 @@
                                 <td class="th2 month">12月</td>
                             </tr>
                             <tr>
-                                <th rowspan="2" colspan="2" class="th2"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
+                                <th rowspan="2" colspan="2" class="th2"  style="padding:5px;"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
                                 <th class="th2"><input class="gmt1" value="直营" disabled/></th>
                                 <td><input class="gmt con" name="m11"/></td>
                                 <td><input class="gmt con" name="m21"/></td>
@@ -185,10 +185,10 @@
                             </tr>
                             <tr>
                                 <th colspan="3" class="th2">开店数量（家）</th>
-                                <th colspan="3" class="jdc"><input name="jd5" class="gmt"/></th>
-                                <th colspan="3" class="jdc"><input name="jd6" class="gmt"/></th>
-                                <th colspan="3" class="jdc"><input name="jd7" class="gmt"/></th>
-                                <th colspan="3" class="jdc"><input name="jd8" class="gmt"/></th>
+                                <th colspan="3" class="jdc"><input name="jd5" class="gmt jdc"/></th>
+                                <th colspan="3" class="jdc"><input name="jd6" class="gmt jdc"/></th>
+                                <th colspan="3" class="jdc"><input name="jd7" class="gmt jdc"/></th>
+                                <th colspan="3" class="jdc"><input name="jd8" class="gmt jdc"/></th>
                             </tr>
                             <tr>
                                 <th colspan="3" class="th2">月份</th>
@@ -206,7 +206,7 @@
                                 <td class="th2 month">12月</td>
                             </tr>
                             <tr>
-                                <th rowspan="2" colspan="2" class="th2"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
+                                <th rowspan="2" colspan="2" class="th2"  style="padding:5px;"><textarea class="gmt1" disabled style="resize: none;overflow: hidden;">开店数量（家）</textarea></th>
                                 <th class="th2"><input class="gmt1" value="直营" disabled/></th>
                                 <td><input class="gmt con" name="m131"/></td>
                                 <td><input class="gmt con" name="m141"/></td>
@@ -243,7 +243,7 @@
                         <input type="hidden" name="isupdate" value="${isupdate}"/>
                         </div>
                     </g:form>
-                    <div class="clearfix" style="width:300px;margin:46px auto 140px;">
+                    <div class="clearfix" style="width:120px;margin:46px auto 140px;">
                         %{--<g:form url="[controller:'front',action:'choose_date']" method="post" id="choose_date" class="form-horizontal f-l">--}%
                             %{--<input type="hidden" name="isupdate" value="${isupdate}"/>--}%
                             %{--<input class="button" type="submit" form="choose_date" style="width:120px;background:#fff;border:1px solid #d9d9d9;height:40px;border-radius: 3px;color:#000;" value="返回上一步" >--}%
@@ -323,12 +323,15 @@
 <script src="${resource(dir: 'js', file: 'uploadPreview.js')}"></script>
 <script type="text/javascript">
     $(function(){
+        $('input').attr('autocomplete','off')
+        $('input.con').removeAttr('readonly');
+        $('input.con1').removeAttr('readonly');
+        $('input.jdc').removeAttr('readonly');
 
-        $('input.con').attr('disabled','disabled');
-        $('input.con1').attr('disabled','disabled');
-        $('th.jdc input').attr('disabled','disabled');
+
+
         var isupdate=$('#isupdate').html();
-        if(isupdate=='1'){
+        if(isupdate!=''){
             $('#sign').val('guimo_target_update');
         }
 
@@ -345,7 +348,17 @@
         var bmonth=bdate.getMonth()+1;
         var emonth=edate.getMonth()+1;
         var smonth=(eyear-byear)*12+(emonth-bmonth);
-        var sjd=Math.ceil(smonth/3)+1;
+        var sjd
+        if(byear==eyear){
+            sjd=getjd(emonth)-getjd(bmonth)+1
+        }else{
+            sjd=5-getjd(bmonth)+getjd(emonth)
+        }
+//        if((smonth+1)%3!=0) {
+//            sjd = Math.ceil((smonth+1) / 3) + 1;
+//        }else{
+//            sjd=((smonth+1) / 3);
+//        }
         var k=0;
         var j=1;
         var y=1;
@@ -358,14 +371,15 @@
             dataType: 'json',
             data: {id:guimoId,begintime:begintime,endtime:endtime},
             success: function (data) {
-                for(var i=0;i<sjd;i++){
-                    $('th.jdc input').eq(jdindex).removeAttr('disabled').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
-                    jdindex++;
-                }
+
                 for(var i=0;i<8;i++){
                     var j = 'jd' + (i + 1);
                     var j1 = data.guimoInstance[j];
-                    $('th.jdc input').eq(i).val(j1);
+                    if(isupdate!='1') {
+                        $('input.jdc').eq(i).val(j1);
+                    }else{
+                        $('input.jdc').eq(i).val('');
+                    }
                 }
                 for(var i=0;i<24;i++) {
 
@@ -383,14 +397,22 @@
                         $('input.con').eq(i).val(m1);
                         $('input.con1').eq(i).val(m2);
                     }else{
-                        $('input.con').val('');
-                        $('input.con1').val('');
-                        $('th.jdc input').val('');
+                        $('input.con').eq(i).val('');
+
+                        $('input.con1').eq(i).val('');
+
                     }
                 }
+                $('input.con').attr('readonly','readonly');
+                $('input.con1').attr('readonly','readonly');
+                $('input.jdc').attr('readonly','readonly');
+                for(var i=0;i<sjd;i++){
+                    $('input.jdc').eq(jdindex).removeAttr('readonly').css('background','#d2d2d2').css('border','1px solid #d2d2d2').parent().css('background','#d2d2d2')
+                    jdindex++;
+                }
                 for(var i=0;i<=smonth;i++) {
-                    $('input.con').eq(index).removeAttr("disabled");
-                    $('input.con1').eq(index).removeAttr("disabled");
+                    $('input.con').eq(index).removeAttr("readonly");
+                    $('input.con1').eq(index).removeAttr("readonly");
                     $('input.con').eq(index).parent().css("background","#d2d2d2");
                     $('input.con1').eq(index).parent().css("background","#d2d2d2");
                     $('input.con').eq(index).css("border","1px solid #d2d2d2");
@@ -423,13 +445,13 @@
             }
         }
 
-        $('input').focus(function(){
-            $(this).css('border','1px solid #27bdff')
-
-        })
-        $('input').blur(function(){
-            $(this).css('border','1px solid #d2d2d2')
-        })
+//        $('input').focus(function(){
+//            $(this).css('border','1px solid #27bdff')
+//
+//        })
+//        $('input').blur(function(){
+//            $(this).css('border','1px solid #d2d2d2')
+//        })
     })
     function getjd(month){
         var jd;
