@@ -1305,8 +1305,8 @@ class GhbotherapiController {
         for(def i=0;i<companyAppInstanceList.size();i++){
             def data=[:]
             if(companyAppInstanceList.get(i).app.apptype=='2'){
-                data.appName=companyAppInstanceList.get(i).app.appName
-                data.appImg=companyAppInstanceList.get(i).app.appImg
+                data.appName=companyAppInstanceList.get(i)name
+                data.appImg=companyAppInstanceList.get(i).img
                 data.companyappid=companyAppInstanceList.get(i).id
                 data.appId=companyAppInstanceList.get(i).app.id
                 companyAppList<<data
