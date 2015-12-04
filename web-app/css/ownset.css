@@ -437,7 +437,9 @@ ul.sidebar-menu.reset ul.sub li a{padding-left:0 !important;}
 .score{min-height: 330px;}
 .score p{text-align: center;font-size: 28px;color: #333;}
 .score span{font-size: 36px;}
-.analysis{margin-top: 25px;}
+.score .question1 p{font-size: 14px;color: #797979;text-align: left;padding-top: 10px;}
+.score .question1 p .mark{background: transparent url("../img/label.png") no-repeat scroll -5% 0%;height: 11px;width: 2px;display: inline-block;vertical-align: middle;padding:0 3px;margin-top: -2px;}
+.analysis{margin-top: 25px;border-top: 1px dashed #d2d2d2;}
 /*组织架构*/
 .testPaper .test-question.reset{padding: 42px 40px 0px;}
 .frame-remark {margin: 17px 0 30px;}

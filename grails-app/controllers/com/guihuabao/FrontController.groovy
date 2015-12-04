@@ -3953,7 +3953,8 @@ class FrontController {
             return
         }
         def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
-        [doneTest:doneTest]
+        def analysis=doneTest.analysis.split("；")
+        [doneTest:doneTest,analysis:analysis]
     }
     def testResultShow(){
         def user = session.user
@@ -3963,7 +3964,8 @@ class FrontController {
             return
         }
         def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
-        [doneTest:doneTest]
+        def analysis=doneTest.analysis.split('；')
+        [doneTest:doneTest,analysis:analysis]
     }
     def testAgain(){
         def user = session.user
