@@ -451,7 +451,7 @@ class TargetController {
 
         def uid=params.uid
         def cid=params.cid
-        def replyInfo = []
+        def replyInfo = [:]
         params<<[sort:"date",order: "desc"]
             def unreadcomment = ReplyMission.findAllByBpuidAndStatus(uid,0,params)
             if(!unreadcomment){
@@ -462,9 +462,21 @@ class TargetController {
                     def info= [:]
                     def allInfo=unreadcomment.get(i)
 
-                    info.allInfo=allInfo
-                    info.plimg = CompanyUser.findById(allInfo.puid).img
-                    replyInfo<<info
+//                    info.allInfo=allInfo
+                    def plimg = CompanyUser.findById(allInfo.puid).img
+
+                    replyInfo.id=allInfo.id
+                    replyInfo.cid=allInfo.cid
+                    replyInfo.bpuid=allInfo.bpuid
+                    replyInfo.bpuname=allInfo.bpuname
+                    replyInfo.puid=allInfo.puid
+                    replyInfo.puname=allInfo.puname
+                    replyInfo.date=allInfo.date
+                    replyInfo.content=allInfo.content
+                    replyInfo.missionId=allInfo.mission.id
+                    replyInfo.status=allInfo.status
+                    replyInfo.title=allInfo.title
+                    replyInfo.plimg=plimg
                 }
                 rs.replyInfo = replyInfo
 //                rs.mission=unreadcomment.mission
