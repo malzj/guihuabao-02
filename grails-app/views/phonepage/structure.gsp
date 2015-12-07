@@ -8,6 +8,7 @@
     <link href="${resource(dir: 'assets/font-awesome/css', file: 'font-awesome.css')}" rel="stylesheet">
     <link href="${resource(dir: 'css', file: 'jquery.jOrgChart.css')}" rel="stylesheet">
     <style type="text/css">
+        body{background: none;}
     #chart table{margin: 0 auto;}
     .bumenmember{min-width:126px;background-color:#434a54; border-radius: 3px;-moz-border-radius: 3px;}
     .bumenmember.left .arrow{border-bottom: 8px solid transparent;border-top: 8px solid transparent;border-right:8px solid #434a54;display: block;height: 0;left: -7px;position: absolute;top: 13px;width: 0;}
@@ -29,17 +30,14 @@
 </head>
 
 <body>
-<div>
-    <div>
-        <div id="chart" style="padding-top: 50px;"></div>
-    </div>
-</div>
+    <div id="chart" style="padding-top: 50px;"></div>
 <script src="${resource(dir: 'js', file: 'jquery.min.js')}"></script>
 <script src="${resource(dir: 'js', file: 'jquery-ui.min.js')}"></script>
 <script src="${resource(dir: 'js', file: 'jquery.jOrgChart.js')}"></script>
 <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
 <script>
     jQuery(document).ready(function() {
+
         function bumenfor(bumenInfo){
             var html = '';
             html+='<li><div class="member" data-id="'+bumenInfo.id+'" data-cid="'+bumenInfo.cid+'">'+bumenInfo.name+'</div>';
@@ -60,7 +58,7 @@
                 html1+='<ul id="org'+i+'" style="display:none;">';
                 html1+=bumenfor(bumenList[info]);
                 html1+='</ul><div id="chart'+i+'" class="orgChart"></div>';
-                i++
+                i++;
             }
             return html1;
         }

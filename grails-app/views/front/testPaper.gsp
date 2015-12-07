@@ -67,7 +67,7 @@
             </ul>
             </g:if>
                 <div class="test-question">
-                    <div class="test-title">客户自填信息</div>
+                    <div class="test-title">现状评估信息</div>
                     <g:form class="form-horizontal tasi-form" url="[controller:'front',action:'testEvaluate']" method="post"  enctype= "multipart/form-data">
                         <g:hiddenField name="testPaperId" value="${testPaperId}"></g:hiddenField>
                         <g:hiddenField name="finish" value="${finish}"></g:hiddenField>

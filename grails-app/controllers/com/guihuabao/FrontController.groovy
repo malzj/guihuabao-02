@@ -3683,11 +3683,41 @@ class FrontController {
         }else if(doneTest&&guimoInstance&&selectDepartmentList&&!bumenrenwulist){
             redirect(action: "bumenrenwuList")
             return
-        }else if(doneTest&&guimoInstance&&selectDepartmentList&&bumenrenwulist){
+        }else if(guimoInstance&&selectDepartmentList&&bumenrenwulist){
             redirect(action: "programmeModule")
             return
         }
         redirect(action: "startProgramme")
+    }
+    /*
+    * 重新规划
+    * */
+    def reprogramme(){
+        def user = session.user
+        def company = session.company
+        if(!user&&!company){
+            redirect (action: index(),params: [msg:  "登陆已过期，请重新登陆"])
+            return
+        }
+        def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
+        def selectOptionList=Evaluate.findAllByCidAndUidAndTestPaperId(company.id,user.id,1)
+        def guimoInstance=Guimo.findByUidAndCid(user.id,company.id)
+        def caiwuInstance=Caiwu.findByUidAndCidAnd(user.id,company.id)
+
+//        删除测试结果
+        for(def i=0;i<selectOptionList.size();i++){
+            def option=selectOptionList.get(i)
+            option.delete(flush: true)
+        }
+        try {
+            doneTest.delete(flush: true)//        删除测试结果
+            guimoInstance.delete(flush: true)//        删除规模目标
+            caiwuInstance.delete(flush: true)//        删除财务目标
+            redirect(action: "programme",params: [finish:1])
+        }
+        catch (DataIntegrityViolationException e) {
+            redirect(action: "testResultShow")
+        }
     }
     /*
     * 开始规划界面
@@ -3923,7 +3953,8 @@ class FrontController {
             return
         }
         def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
-        [doneTest:doneTest]
+        def analysis=doneTest.analysis.split("；")
+        [doneTest:doneTest,analysis:analysis]
     }
     def testResultShow(){
         def user = session.user
@@ -3933,7 +3964,8 @@ class FrontController {
             return
         }
         def doneTest=DonePaper.findByCidAndUid(company.id,user.id)
-        [doneTest:doneTest]
+        def analysis=doneTest.analysis.split('；')
+        [doneTest:doneTest,analysis:analysis]
     }
     def testAgain(){
         def user = session.user
@@ -4065,7 +4097,6 @@ class FrontController {
         }
         def paramsIdInfo=params.list('departmentId');
         def paramsNameInfo=params.list('name');
-        def paramsNumInfo=params.list('num');
         for(def i=0;i<paramsIdInfo.size();i++){
             def selectDepartmentInstance=new SelectDepartment()
             selectDepartmentInstance.departmentId=Integer.parseInt(paramsIdInfo.get(i))
