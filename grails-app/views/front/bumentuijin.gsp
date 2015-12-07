@@ -31,11 +31,16 @@
     input{width:75px;height:39px;border:none;text-align: center;cursor: pointer;}
     .line{margin:20px 20px 4px 20px;}
     ul.liebiao{display:inline-block;width:76px;margin:0px;font-size: 12px}
-    dt{text-align: center;width:100%;border: 1px solid #dedede;border-bottom:none;height:40px;line-height: 40px;}
+    dt{text-align: center;width:100%;border: 1px solid #dedede;border-bottom:none;height:20px;line-height: 20px;}
     dd{text-align: center;border:1px solid #dedede;border-bottom: none;height:40px;line-height: 40px;cursor: pointer;overflow:hidden;}
     input:hover{background:#27bdff;color:#fff;}
     li.liebiao{bottom: 0px;width:100%;}
     form{margin-bottom:0px;}
+    #nextyear,#prevyear{background:#fff;color:#797979;position: absolute;text-align:center;line-height:37px;width:86px;border:1px solid #d2d2d2;height:37px;border-radius: 3px;font-size:14px;}
+    #nextyear:hover,#prevyear:hover{background:#27bdff;color:#fff;border:none}
+    .passwordedit input{text-align: left;}
+    .form-control[readonly]{background:#fff;cursor:auto;}
+        .menuitem:hover{background:#d8d8d8;}
     </style>
 </head>
 
@@ -76,10 +81,10 @@
                     </li>
                 </ul>
                 <div class="test-question reset">
-                    <div style="position: relative;margin-bottom: 20px;" >
-                        <div class="test-title">${sname}工作推进</div>
-                        <button  id="nextyear" style="position: absolute;right:40px;top:0;text-align:center;line-height:37px;width:86px;background:#27bdff;border:none;height:37px;border-radius: 3px;color:#fff;font-size:14px;">下一年</button>
-                        <button  id="prevyear" style="position: absolute;right:146px;top:0;text-align:center;line-height:37px;width:86px;background:#27bdff;border:none;height:37px;border-radius: 3px;color:#fff;font-size:14px;">上一年</button>
+                    <div style="position: relative;">
+                        <div class="test-title"><span>${year}</span>年度<span>${sname}</span>工作</div>
+                        <button  id="nextyear" style="right:0px;top:0;">下一年<i class="fa fa-caret-right" style="margin-left:5px;"></i></button>
+                        <button  id="prevyear" style="left:0px;top:0;"><i class="fa fa-caret-left" style="margin-right: 5px;"></i>上一年</button>
                         <g:form url="[controller:'front',action:'bumentuijin']" style="display:none;" id="nextform">
                             <input name="year" value="${year+1}">
                             <input name="sid" value="${sid}">
@@ -90,14 +95,23 @@
                             <input name="sid" value="${sid}">
                             <input name="sname" value="${sname}">
                         </g:form>
+                        <div class="dropdown" style="right:0px;top:74px;position: absolute;">
+                            <a  id="playman" style="display:block;width:86px;height:30px;line-height: 30px;color:#797979;cursor:pointer;text-align: center;" class="menu playman" data-toggle="dropdown">切换部门<i class="fa fa-caret-down" style="margin-left: 10px;"></i></a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="min-width: 86px;">
+                                <g:each in="${selectDepartmentList}" var="selectDepartment">
+                                    <li  role="menuitem" class="menuitem"><g:link action="bumentuijin" params="[sid:selectDepartment.id,sname:selectDepartment.name]">${selectDepartment.name}</g:link></li>
+                                </g:each>
+
+                            </ul>
+                        </div>
                     </div>
-                    %{--<p style="margin-top:10px;"><span class="tk1"></span><span>提示：点击部门按钮查看部门工作任务。</span></p>--}%
-                    <div class="all-department1" style="border:none;background:#fff;padding:0;min-height:1px;position: relative;margin-bottom: 200px;font-size: 0;">
+                    <p style="margin:10px 0 40px 0;"><span class="tk1"></span><span>提示：点击部门按钮查看部门工作任务。</span></p>
+                    <div class="all-department1" style="border:none;background:#fff;padding:0;min-height:1px;position: relative;margin-bottom: 200px;margin-top:60px;font-size: 0;">
                         <ul class="liebiao">
                             <li class="liebiao">
                                 <g:each in="${month1list}" var="month1">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month1.title}"/></dd>
+                                        <dd><input class="con" name="sname" value="${month1.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month1.id}"/>
                                     </g:form>
                                 </g:each>
@@ -108,7 +122,7 @@
                             <li class="liebiao">
                                 <g:each in="${month2list}" var="month2">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month2.title}"/></dd>
+                                        <dd><input class="con" name="sname" value="${month2.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month2.id}"/>
                                     </g:form>
                                 </g:each>
@@ -119,7 +133,7 @@
                             <li class="liebiao">
                                 <g:each in="${month3list}" var="month3">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month3.title}"/></dd>
+                                        <dd><input class="con" name="sname" value="${month3.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month3.id}"/>
                                     </g:form>
                                 </g:each>
@@ -131,7 +145,7 @@
                             <li class="liebiao">
                                 <g:each in="${month4list}" var="month4">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month4.title}"/></dd>
+                                        <dd><input class="con" name="sname" value="${month4.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month4.id}"/>
                                     </g:form>
                                 </g:each>
@@ -142,7 +156,7 @@
                             <li class="liebiao">
                                 <g:each in="${month5list}" var="month5">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month5.title}"/></dd>
+                                        <dd><input  class="con" name="sname" value="${month5.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month5.id}"/>
                                     </g:form>
                                 </g:each>
@@ -153,7 +167,7 @@
                             <li class="liebiao">
                                 <g:each in="${month6list}" var="month6">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month6.sname}"/></dd>
+                                        <dd><input class="con" name="sname" value="${month6.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month6.sid}"/>
                                     </g:form>
                                 </g:each>
@@ -164,7 +178,7 @@
                             <li class="liebiao">
                                 <g:each in="${month7list}" var="month7">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month7.title}"/></dd>
+                                        <dd><input class="con" name="sname" value="${month7.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month7.id}"/>
                                     </g:form>
                                 </g:each>
@@ -177,7 +191,7 @@
                             <li class="liebiao">
                                 <g:each in="${month8list}" var="month8">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month8.title}"/></dd>
+                                        <dd><input class="con" name="sname" value="${month8.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month8.id}"/>
                                     </g:form>
                                 </g:each>
@@ -188,7 +202,7 @@
                             <li class="liebiao">
                                 <g:each in="${month9list}" var="month9">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month9.title}"/></dd>
+                                        <dd><input class="con" name="sname" value="${month9.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month9.id}"/>
                                     </g:form>
                                 </g:each>
@@ -199,7 +213,7 @@
                             <li class="liebiao">
                                 <g:each in="${month10list}" var="month10">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month10.title}"/></dd>
+                                        <dd><input class="con" name="sname" value="${month10.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month10.id}"/>
                                     </g:form>
                                 </g:each>
@@ -210,7 +224,7 @@
                             <li class="liebiao">
                                 <g:each in="${month11list}" var="month11">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month11.title}"/></dd>
+                                        <dd><input  class="con" name="sname" value="${month11.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month11.id}"/>
                                     </g:form>
                                 </g:each>
@@ -221,7 +235,7 @@
                             <li class="liebiao">
                                 <g:each in="${month12list}" var="month12">
                                     <g:form url="[controller:'front',action:'bumentuijin']" style="margin-bottom:0 !important;">
-                                        <dd><input name="sname" value="${month12.title}"/></dd>
+                                        <dd><input class="con" name="sname" value="${month12.sname}"/></dd>
                                         <input name="sid" type="hidden" value="${month12.id}"/>
                                     </g:form>
                                 </g:each>
@@ -237,7 +251,44 @@
             </div>
         </section></section>
 </section>
+<div class="passwordedit"  >
+    <g:form url="[controller:'front',action:'bumenrenwuAdd']" class="clearfix" id="form" style="width:370px;min-height:286px;margin:200px auto;border:1px solid #dedede;box-shadow: 0 0 3px #dedede;;border-top:4px solid #27bdff;background: #fff;padding:15px;">
+        <div class="form-header clearfix" style="margin: 5px 0;">
+            <p style="font-size: 16px;font-weight:bold;float: left;"><i class="fa fa-save"></i><span style="margin-left: 10px;" id="renwuheader"></span>任务</p>
+            <span class="f-r close" style="margin-top: 3px;cursor: pointer"><i class="fa fa-times"></i></span>
+        </div>
+    %{--<input id="sid" type="hidden" class="form-control" name="sid" value=""/>--}%
+    %{--<input id="sname" type="hidden" class="form-control" name="sname" value=""/>--}%
+        <div class="clearfix">
+            <label for="show_title" class="f-l control-label">任务标题：</label>
+            <div class="f-l" style="position: relative;">
+                <input id="show_title" readonly class="form-control con" name="title" value=""/><br/>
 
+            </div>
+        </div>
+        <div class="clearfix">
+            <label for="show_content" class="f-l control-label">任务内容：</label>
+            <div class="f-l" style="position: relative;">
+                <input id="show_content" readonly class="form-control con" name="content" value="" /><br/>
+
+            </div>
+        </div>
+        <div class="clearfix">
+            <label for="show_etime" class="f-l control-label">完成时间：</label>
+            <div class="f-l" style="position: relative;">
+                <input id="show_etime" readonly class="form-control con" name="etime" value="" title="结束时间不能小于开始时间，并且不能大于第二年年底"/><br/>
+
+            </div>
+        </div>
+
+    %{--<button type="submit" id="submit" class="button" style="width:78px;background:#27bdff;border:none;height:30px;border-radius: 3px;color:#fff;margin-left:66px;">确定</button>--}%
+        <div class="clearfix" style="margin-top: 20px;">
+            <p class="f-l">职能提示：</p><p class="f-l" id="responsibility" style="word-wrap:break-word;width:200px;font-size:14px;" >${responsibility}</p>
+
+        </div>
+
+    </g:form>
+</div>
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="${resource(dir: 'js', file: 'jquery.js')}"></script>
 <script src="${resource(dir: 'js', file: 'bootstrap.min.js')}"></script>
@@ -263,7 +314,7 @@
 
 <script>
     $(function(){
-        $('input').attr('disabled','disabled')
+//        $('input').attr('disabled','disabled')
         var list=$('ul.liebiao')
         for(var i=1;i<list.length;i++) {
             $('ul.liebiao').eq(i).css('margin-left', '-1px')
@@ -277,6 +328,44 @@
 //        $('dd').click(function(){
 //            $(this).parent().submit();
 //        });
+        $('input.con').attr('readonly','readonly');
+        $('.fa-times').click(function(){
+            $('.passwordedit').css('display','none');
+        })
+        var list=$('ul.liebiao')
+        for(var i=1;i<list.length;i++) {
+            $('ul.liebiao').eq(i).css('margin-left', '-1px')
+        }
+        $('#nextyear').click(function(){
+            $('#nextform').submit();
+        });
+        $('#prevyear').click(function(){
+            $('#prevform').submit();
+        });
+        $('dd').click(function(){
+
+            var id=$(this).next().val();
+            $.ajax({
+                url: '${webRequest.baseUrl}/front/bumentuijinAjax',
+                method: 'post',
+                dataType: 'json',
+                data: {id:id},
+                success: function (data) {
+                    if(data.result){
+                        $('#renwuheader').html(data.renwuInstance.sname)
+                        $('#show_title').val(data.renwuInstance.title)
+                        $('#show_content').val(data.renwuInstance.content)
+                        $('#show_etime').val(data.renwuInstance.etime)
+                        $('#responsibility').html(data.responsibility)
+                        $('.passwordedit').css('display','block')
+                    }
+                },
+                error:function(){
+                    alert('获取数据失败！');
+                }
+            })
+
+        });
     })
 
 </script>

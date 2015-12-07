@@ -31,7 +31,7 @@
     input{width:75px;height:39px;border:none;text-align: center;cursor: pointer;}
     .line{margin:20px 20px 4px 20px;}
     ul.liebiao{display:inline-block;width:76px;margin:0px;font-size: 12px}
-    dt{text-align: center;width:100%;border: 1px solid #dedede;border-bottom:none;height:40px;line-height: 40px;}
+    dt{text-align: center;width:100%;border: 1px solid #dedede;border-bottom:none;height:20px;line-height: 20px;}
     dd{text-align: center;border:1px solid #dedede;border-bottom: none;height:40px;line-height: 40px;cursor: pointer;overflow: hidden;}
 
     li.liebiao{bottom: 0px;width:100%;}
@@ -41,6 +41,9 @@
     input:hover{background:#27bdff;color:#fff;}
     .form-control[readonly]{background:#fff;cursor:auto;}
     .passwordedit input{text-align: left;}
+    #nextyear,#prevyear{background:#fff;color:#797979;position: absolute;text-align:center;line-height:37px;width:86px;border:1px solid #d2d2d2;height:37px;border-radius: 3px;font-size:14px;}
+    #nextyear:hover,#prevyear:hover{background:#27bdff;color:#fff;border:none}
+        /*li.menuitem{width:100px;}*/
     </style>
 </head>
 
@@ -82,18 +85,27 @@
                 </ul>
                 <div class="test-question reset">
                     <div style="position: relative">
-                        <div class="test-title">部门工作推进</div>
-                        <button  id="nextyear" style="position: absolute;right:0px;top:74px;text-align:center;line-height:37px;width:86px;background:#27bdff;border:none;height:37px;border-radius: 3px;color:#fff;font-size:14px;">下一年</button>
-                        <button  id="prevyear" style="position: absolute;right:106px;top:74px;text-align:center;line-height:37px;width:86px;background:#27bdff;border:none;height:37px;border-radius: 3px;color:#fff;font-size:14px;">上一年</button>
+                        <div class="test-title"><span>${year}</span>年度工作</div>
+                        <button  id="nextyear" style="right:0px;top:0px;">下一年</button>
+                        <button  id="prevyear" style="left:0px;top:0px;">上一年</button>
                         <g:form url="[controller:'front',action:'gongzuotuijin']" style="display:none;" id="nextform">
                             <input name="year" value="${year+1}">
                         </g:form>
                         <g:form url="[controller:'front',action:'gongzuotuijin']" style="display:none;" id="prevform">
                             <input name="year" value="${year-1}">
                         </g:form>
+                        <div class="dropdown" style="right:0px;top:74px;position: absolute;">
+                            <a  id="playman" style="display:block;width:86px;height:30px;line-height: 30px;color:#797979;cursor:pointer;text-align: center;" class="menu playman" data-toggle="dropdown">选择部门<i class="fa fa-caret-down" style="margin-left: 10px;"></i></a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="min-width: 86px;">
+                                <g:each in="${selectDepartmentList}" var="selectDepartment">
+                                    <li  role="menuitem" class="menuitem"><g:link action="bumentuijin" params="[sid:selectDepartment.id,sname:selectDepartment.name]">${selectDepartment.name}</g:link></li>
+                               </g:each>
+
+                            </ul>
+                        </div>
                     </div>
                     <p style="margin:10px 0 40px 0;"><span class="tk1"></span><span>提示：点击部门按钮查看部门工作任务。</span></p>
-                    <div class="all-department1" style="border:none;background:#fff;padding:0;min-height:1px;position: relative;margin-bottom: 200px;font-size: 0;">
+                    <div class="all-department1" style="border:none;background:#fff;padding:0;min-height:1px;position: relative;margin-bottom: 200px;margin-top:60px;font-size: 0;">
                         <ul class="liebiao">
                             <li class="liebiao">
                                 <g:each in="${month1list}" var="month1">

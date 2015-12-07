@@ -4712,6 +4712,7 @@ class FrontController {
         }
 
         def year=params.year
+        def selectDepartmentList=SelectDepartment.findAllByCidAndUid(company.id,user.id)
         if(!year){
             Calendar cal = Calendar.getInstance();
             year=cal.get(Calendar.YEAR).toInteger();
@@ -4732,7 +4733,7 @@ class FrontController {
         def month10list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-10')
         def month11list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-11')
         def month12list=Bumenrenwu.findAllByCidAndUidAndEtime(company.id,user.id,year+'-12')
-        [year:year,month1list:month1list,month2list:month2list,month3list:month3list,month4list:month4list,month5list:month5list,month6list:month6list,month7list:month7list,month8list:month8list,month9list:month9list,month10list:month10list,month11list:month11list,month12list:month12list]
+        [year:year,selectDepartmentList:selectDepartmentList,month1list:month1list,month2list:month2list,month3list:month3list,month4list:month4list,month5list:month5list,month6list:month6list,month7list:month7list,month8list:month8list,month9list:month9list,month10list:month10list,month11list:month11list,month12list:month12list]
     }
     def bumentuijin(){
         def user = session.user
@@ -4744,6 +4745,7 @@ class FrontController {
         def sid=params.sid
         def sname=params.sname
         def year=params.year
+        def selectDepartmentList=SelectDepartment.findAllByCidAndUid(company.id,user.id)
         if(!year){
             Calendar cal = Calendar.getInstance();
             year=cal.get(Calendar.YEAR).toInteger();
@@ -4763,7 +4765,7 @@ class FrontController {
         def month10list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-10',sid)
         def month11list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-11',sid)
         def month12list=Bumenrenwu.findAllByCidAndUidAndEtimeAndSid(company.id,user.id,year+'-12',sid)
-        [year:year,sname:sname,sid:sid,month1list:month1list,month2list:month2list,month3list:month3list,month4list:month4list,month5list:month5list,month6list:month6list,month7list:month7list,month8list:month8list,month9list:month9list,month10list:month10list,month11list:month11list,month12list:month12list]
+        [year:year,sid:sid,sname:sname,selectDepartmentList:selectDepartmentList,month1list:month1list,month2list:month2list,month3list:month3list,month4list:month4list,month5list:month5list,month6list:month6list,month7list:month7list,month8list:month8list,month9list:month9list,month10list:month10list,month11list:month11list,month12list:month12list]
     }
     def bumentuijinAjax(){
         def rs=[:]
