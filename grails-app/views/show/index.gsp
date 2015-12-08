@@ -85,19 +85,39 @@
 				<h2>提升效率、达成目标</h2>
 				<div class="hm-mod-feature hm-mod-feature-acitve">
 					<div class="feature-list">
-						<a class="list-item list-first-size" href="" tppabs="">
+						<a class="list-item list-first-size" href="http://www.guihuabao.cn/guihuabao/show/function/#target">
 							<img src="${resource(dir: 'index/img/', file: 'bg_aim.png')}" width="651" height="270" />
+                            <div class="b-wrapper">
+                                <h2 class="b-animate b-from-left">
+                                    <img src="${resource(dir: 'index/img/', file: 'link.png')}" />
+                                </h2>
+                            </div>
 						</a>
-						<a class="list-item ml15" href="" tppabs="">
+						<a class="list-item ml15" href="http://www.guihuabao.cn/guihuabao/show/function/#guanli">
 							<img src="${resource(dir: 'index/img/', file: 'bg_task.png')}" width="318" height="270" />
+                            <div class="b-wrapper">
+                                <h2 class="b-animate b-from-left">
+                                    <img src="${resource(dir: 'index/img/', file: 'link.png')}" />
+                                </h2>
+                            </div>
 						</a>
-						<a class="list-item" href="" tppabs="">
+						<a class="list-item" href="http://www.guihuabao.cn/guihuabao/show/function/#xiezuo">
 							<img src="${resource(dir: 'index/img/', file: 'bg_repot.png')}" width="318" height="270" />
+                            <div class="b-wrapper">
+                                <h2 class="b-animate b-from-left">
+                                    <img src="${resource(dir: 'index/img/', file: 'link.png')}" />
+                                </h2>
+                            </div>
 						</a>
-						<a class="list-item ml15" href="" tppabs="">
+						<a class="list-item ml15" href="http://www.guihuabao.cn/guihuabao/show/function/#zhishi">
 							<img src="${resource(dir: 'index/img/', file: 'bg_know.png')}" width="318" height="270" />
+                            <div class="b-wrapper">
+                                <h2 class="b-animate b-from-left">
+                                    <img src="${resource(dir: 'index/img/', file: 'link.png')}" />
+                                </h2>
+                            </div>
 						</a>
-						<a class="list-item ml15" href="" tppabs="">
+						<a class="list-item ml15" href="http://www.guihuabao.cn/guihuabao/show/function/#yanshou">
 							<img src="${resource(dir: 'index/img/', file: 'bg_no.png')}" width="318" height="270" />
 						</a>
 					</div>

@@ -260,6 +260,10 @@ class GuihuabaoapiController {
             for (i = 0; i < myReplyInfo.size(); i++) {
                 myReplyInfo[i].status = 1
             }
+        for (def n = 0; n < allReplyInfo.size(); n++) {
+            def replyInfo=allReplyInfo.get(n)
+            replyInfo.img = CompanyUser.findByIdAndCid(replyInfo.puid,cid).img
+        }
 //        }
 
         if (userId==taskInstance.playuid){

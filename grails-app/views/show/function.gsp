@@ -65,7 +65,8 @@
 	</div>
 </div>
 <div id="wrapper" class="clearfix">
-	<div  class="content" style="background:url(${resource(dir: 'index/img/', file: 'bg1.png')}) no-repeat;margin-top:80px;">
+	<a name="target"></a>
+    <div  class="content" style="background:url(${resource(dir: 'index/img/', file: 'bg1.png')}) no-repeat;margin-top:80px;">
 		<div class="center_content clearfix">
 			<div class="text fl" style="color:#fff;">
 				<h2>科学合理的目标设计</h2>
@@ -79,7 +80,8 @@
 			</div>
 		</div>
 	</div>
-	<div  class="clearfix content" >
+    <a name="guanli"></a>
+    <div  class="clearfix content" >
 		<div class="center_content clearfix">
 			<div class="fl img clearfix">
 				<img src="${resource(dir: 'index/img/', file: 'computer2.png')}" alt="computer" class="fr"/>
@@ -94,7 +96,8 @@
 			</div>
 		</div>
 	</div>
-	<div  class="clearfix content" style="background:url(${resource(dir: 'index/img/', file: 'bg3.png')}) no-repeat;">
+    <a name="xiezuo"></a>
+    <div  class="clearfix content" style="background:url(${resource(dir: 'index/img/', file: 'bg3.png')}) no-repeat;">
 		<div class="center_content clearfix">
 			<div class="text fl">
 				<h2>行云流水的团队协作</h2>
@@ -108,7 +111,8 @@
 			</div>
 		</div>
 	</div>
-	<div  class="clearfix content" style="background:url(${resource(dir: 'index/img/', file: 'bg4.png')}) no-repeat;">
+    <a name="yanshou"></a>
+    <div  class="clearfix content" style="background:url(${resource(dir: 'index/img/', file: 'bg4.png')}) no-repeat;">
 		<div class="center_content clearfix">
 			<div class="fl img clearfix">
 				<img src="${resource(dir: 'index/img/', file: 'computer4.png')}" alt="computer" class="fr"/>
@@ -129,6 +133,7 @@
 			</div>
 		</div>
 	</div>
+    <a name="zhishi"></a>
 	<div  class="clearfix content" style="background:url(${resource(dir: 'index/img/', file: 'bg3.png')}) no-repeat;">
 		<div class="center_content clearfix">
 			<div class="text fl">

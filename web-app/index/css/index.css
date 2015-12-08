@@ -582,6 +582,14 @@
 .hm-sec4 .person .person-info{margin-left:40px;}
 .hm-sec4 .person .person-info h3{font-size:14px;}
 .hm-sec4 .person .person-info span{color:#0bc5ec; font-size:14px;}
+.list-item{position: relative;}
+.list-item .b-wrapper{position: absolute;top:0;left: 0;width: 100%;height: 100%;}
+.list-item .b-from-left{position: relative;left: -100%;}
+h2.b-animate.b-from-left{margin-top: 4em;text-align: center;}
+.b-animate{transition: all 0.5s; -moz-transition: all 0.5s; -ms-transition: all 0.5s; -o-transition: all 0.5s; -webkit-transition: all 0.5s; visibility: hidden;}
+.list-item:hover .b-wrapper{background-color: #333;filter:alpha(opacity:80);opacity:0.8;}
+.list-item:hover .b-animate{visibility: visible;}
+.list-item:hover .b-from-left{left: 0;}
 
 #bottom{width:100%;height:116px;background:#000;}
 #bottom p{width:660px;margin:0 auto;color:#aaa;text-align:center;display:block;padding-top:32px;}
