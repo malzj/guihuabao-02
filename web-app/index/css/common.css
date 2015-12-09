@@ -57,6 +57,10 @@ textarea { resize: none; outline: 0; }
 .center_content .person .person-info h3{font-size:14px;}
 .center_content .person .person-info span{color:#0bc5ec; font-size:14px;}
 
+.btn-tran{-webkit-transition:all 1s ease;-moz-transition:all 1s ease;-o-transition:all 1s ease;-ms-transition:all 1s ease;}
+.content .button:hover{background-color: #03a9f4;border: 1px solid #03a9f4;}
+
+
 /*安全页面*/
 .z-content .safe{margin-top: 40px;}
 .z-content .safe li{ width: 209px; float:left; margin-right: 23px;}
