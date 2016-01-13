@@ -24,7 +24,28 @@ class TargetController {
         def targetsize=Target.countByFzuidAndCidAndStatus(uid,cid,0)
         def offse=params.offset.toInteger()
         if(targetsize>offse) {
-            def targetlist = Target.findAllByFzuidAndCidAndStatus(uid, cid, 0, params)
+            def targetlist = []
+            def targetInfoList = Target.findAllByFzuidAndCidAndStatus(uid, cid, 0, params)
+            for(def i;i<targetInfoList.size();i++){
+                def info = targetInfoList.get(i);
+                def infoArr = [:]
+                infoArr.id = info.id
+                infoArr.begintime = info.begintime
+                infoArr.cid = info.cid
+                infoArr.content = info.content
+                infoArr.dateCreate = info.dateCreate
+                infoArr.etime = info.etime
+                infoArr.fzuid = info.fzuid
+                infoArr.img = info.img
+                infoArr.ischeck = info.ischeck
+                infoArr.isedit = info.isedit
+                infoArr.issubmit = info.issubmit
+                infoArr.percent = info.percent
+                infoArr.status = info.status
+                infoArr.targetzj = info.targetzj
+                infoArr.title = info.title
+                targetlist<<infoArr
+            }
             if (targetlist) {
                 rs.result = true
                 rs.targetlist = targetlist
